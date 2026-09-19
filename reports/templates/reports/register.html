@@ -1,0 +1,380 @@
+{% load static %}
+{% load citizen_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NDMS | Create Account</title>
+
+    <link rel="stylesheet"
+          href="{% static 'reports/register.css' %}">
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="register-page">
+
+
+<main class="register-wrapper">
+
+
+    <!-- =================================================
+         BRAND
+         ================================================= -->
+
+    <a href="{% url 'home' %}"
+       class="register-brand">
+
+        <div class="register-logo">
+            ND
+        </div>
+
+        <div class="register-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- =================================================
+         REGISTER CARD
+         ================================================= -->
+
+    <section class="register-card">
+
+
+        <!-- Heading -->
+
+        <div class="register-heading">
+
+            <span class="register-label">
+                CITIZEN PORTAL
+            </span>
+
+            <h1>
+                Create your account
+            </h1>
+
+            <p>
+                Register for an NDMS citizen account to report
+                incidents and stay informed.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        {% if error %}
+
+        <div class="register-message">
+
+            <span class="message-icon">
+                !
+            </span>
+
+            <span>
+                {{ error }}
+            </span>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             REGISTER FORM
+             ================================================= -->
+
+        <form method="POST"
+              class="register-form">
+
+            {% csrf_token %}
+
+
+            <!-- Full Name -->
+
+            <div class="form-group">
+
+                <label for="full_name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    placeholder="Enter your full name"
+                    value="{{ full_name|default:'' }}"
+                    autocomplete="name"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- Username -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Choose a username"
+                    value="{{ username|default:'' }}"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- Email + Phone -->
+
+            <div class="form-row">
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        value="{{ email|default:'' }}"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Phone number"
+                        value="{{ phone|default:'' }}"
+                        autocomplete="tel"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="password-input-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword(
+                            'password',
+                            'passwordEye'
+                        )"
+                        aria-label="Show password">
+
+                        <span id="passwordEye">
+                            ◉
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Confirm Password -->
+
+            <div class="form-group">
+
+                <label for="confirm_password">
+                    Confirm Password
+                </label>
+
+
+                <div class="password-input-wrapper">
+
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        placeholder="Confirm your password"
+                        autocomplete="new-password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword(
+                            'confirm_password',
+                            'confirmPasswordEye'
+                        )"
+                        aria-label="Show password">
+
+                        <span id="confirmPasswordEye">
+                            ◉
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Create Account -->
+
+            <button
+                type="submit"
+                class="register-button">
+
+                <span>
+                    Create Account
+                </span>
+
+                <span class="register-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- =================================================
+             LOGIN
+             ================================================= -->
+
+        <div class="already-account">
+
+            <span>
+                Already have an account?
+            </span>
+
+            <a href="{% url 'login' %}">
+                Sign in
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="register-footer">
+
+        © 2026 National Disaster Management System
+
+    </footer>
+
+
+</main>
+
+
+
+<script>
+
+function togglePassword(inputId, eyeId) {
+
+    const password =
+        document.getElementById(inputId);
+
+    const eye =
+        document.getElementById(eyeId);
+
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        eye.textContent = "◎";
+
+    } else {
+
+        password.type = "password";
+
+        eye.textContent = "◉";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

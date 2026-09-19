@@ -1,0 +1,339 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Support Requests | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-support-requests.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Support Requests</span>
+{% endblock %}
+
+{% block page_title %}
+Support Requests
+{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard support-page">
+
+    <header class="support-header">
+        <div class="sr-page-header-copy">
+            <span class="sr-kicker">SUPPORT REQUESTS</span>
+            <h1>Support Requests</h1>
+            <p>Review problems and assistance requests submitted by citizens</p>
+        </div>
+    </header>
+
+    <section class="support-toolbar" aria-label="Support request filters">
+        <form method="get" class="sr-filter-form">
+
+            <label class="sr-search-field">
+                <span class="sr-visually-hidden">
+                    Search support requests
+                </span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                </svg>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search support requests..."
+                    autocomplete="off"
+                >
+            </label>
+
+            <label class="sr-select-field">
+                <span class="sr-visually-hidden">
+                    Filter by issue type
+                </span>
+
+                <select name="issue_type" class="sr-select">
+                    <option value="ALL" {% if issue_type_filter == 'ALL' %}selected{% endif %}>All</option>
+                    <option value="TECHNICAL" {% if issue_type_filter == 'TECHNICAL' %}selected{% endif %}>Technical Issue</option>
+                    <option value="REPORT_SUBMISSION" {% if issue_type_filter == 'REPORT_SUBMISSION' %}selected{% endif %}>Report Submission Issue</option>
+                    <option value="NOTIFICATION" {% if issue_type_filter == 'NOTIFICATION' %}selected{% endif %}>Notification Issue</option>
+                    <option value="ACCOUNT" {% if issue_type_filter == 'ACCOUNT' %}selected{% endif %}>Account Issue</option>
+                    <option value="PROFILE" {% if issue_type_filter == 'PROFILE' %}selected{% endif %}>Profile Issue</option>
+                    <option value="OTHER" {% if issue_type_filter == 'OTHER' %}selected{% endif %}>Other</option>
+                </select>
+            </label>
+
+            <button type="submit" class="sr-filter-button">
+                Apply
+            </button>
+
+            {% if search_query or issue_type_filter != 'ALL' %}
+                <a href="{% url 'admin_support_requests' %}" class="sr-reset-button">
+                    Reset
+                </a>
+            {% endif %}
+
+        </form>
+    </section>
+
+    <section class="support-table">
+
+        <div class="sr-table-head">
+            <div class="sr-table-head-copy">
+
+                <div class="sr-table-heading-row">
+                    <h2>Support requests</h2>
+
+                    {% if page_obj.paginator.count %}
+                        <span class="sr-result-count">
+                            {{ page_obj.paginator.count }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <p>
+                    {% if page_obj.paginator.count %}
+                        {% if search_query or issue_type_filter != 'ALL' %}
+                            Matching support requests
+                        {% else %}
+                            Problems and assistance requests from citizens
+                        {% endif %}
+                    {% else %}
+                        No support requests available
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
+
+        {% if page_obj.object_list %}
+
+            <div class="sr-table-wrap">
+                <table class="sr-table-inner">
+
+                    <thead>
+                        <tr>
+                            <th class="sr-col-citizen">Citizen</th>
+                            <th class="sr-col-issue-type">Issue Type</th>
+                            <th class="sr-col-subject">Subject</th>
+                            <th class="sr-col-status">Status</th>
+                            <th class="sr-col-attachment">Attachment</th>
+                            <th class="sr-col-date">Date</th>
+                            <th class="sr-col-actions">
+                                <span class="sr-visually-hidden">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for support_request in page_obj.object_list %}
+
+                            <tr class="sr-table-row">
+
+                                <td>
+                                    <div class="citizen-cell">
+
+                                        <span class="citizen-avatar">
+                                            {% if support_request.user.avatar %}
+                                                <img src="{{ support_request.user.avatar.url }}" alt="" loading="lazy">
+                                            {% else %}
+                                                <span class="citizen-avatar-fallback">
+                                                    {{ support_request.user.full_name|default:support_request.user.username|first|upper }}
+                                                </span>
+                                            {% endif %}
+                                        </span>
+
+                                        <div class="sr-name-cell">
+                                            <span
+                                                class="sr-name-text"
+                                                title="{{ support_request.user.full_name|default:support_request.user.username }}"
+                                            >
+                                                {{ support_request.user.full_name|default:support_request.user.username }}
+                                            </span>
+
+                                            <span class="sr-username-text">
+                                                @{{ support_request.user.username }}
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="sr-issue-badge">
+                                        {{ support_request.get_issue_type_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span
+                                        class="sr-subject-text"
+                                        title="{{ support_request.subject }}"
+                                    >
+                                        {{ support_request.subject|truncatechars:60 }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="table-status table-status-{% if support_request.status == 'OPEN' %}pending{% elif support_request.status == 'IN_PROGRESS' %}under_review{% else %}verified{% endif %}">
+                                        {{ support_request.get_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if support_request.attachment %}
+                                        <span class="sr-attachment-badge sr-attachment-available">
+                                            Available
+                                        </span>
+                                    {% else %}
+                                        <span class="sr-attachment-none">&mdash;</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="sr-date-cell">
+                                    <time datetime="{{ support_request.created_at|date:'c' }}">
+                                        {{ support_request.created_at|date:"M d, Y" }}
+                                    </time>
+                                </td>
+
+                                <td class="sr-actions-cell">
+                                    <a
+                                        href="{% url 'admin_support_request_detail' support_request.id %}"
+                                        class="sr-action sr-action-view"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        <span>View</span>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <div class="sr-pagination">
+
+                    <span class="sr-pagination-summary">
+                        Showing
+                        <strong>{{ page_obj.start_index }}</strong>
+                        &ndash;
+                        <strong>{{ page_obj.end_index }}</strong>
+                        of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                    </span>
+
+                    <nav class="sr-pagination-nav" aria-label="Support requests pagination">
+
+                        {% if page_obj.has_previous %}
+                            <a
+                                href="?issue_type={{ issue_type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.previous_page_number }}"
+                                class="sr-pagination-button"
+                                aria-label="Previous page"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </a>
+                        {% else %}
+                            <span class="sr-pagination-button is-disabled">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </span>
+                        {% endif %}
+
+                        {% for number in page_obj.paginator.page_range %}
+                            {% if page_obj.number == number %}
+                                <span class="sr-pagination-number is-current">{{ number }}</span>
+                            {% else %}
+                                <a
+                                    href="?issue_type={{ issue_type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ number }}"
+                                    class="sr-pagination-number"
+                                >
+                                    {{ number }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <a
+                                href="?issue_type={{ issue_type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.next_page_number }}"
+                                class="sr-pagination-button"
+                                aria-label="Next page"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+                        {% else %}
+                            <span class="sr-pagination-button is-disabled">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+                        {% endif %}
+
+                    </nav>
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="sr-empty-state">
+
+                <div class="sr-empty-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 8v5"></path>
+                        <path d="M12 16h.01"></path>
+                        <circle cx="12" cy="12" r="9.5"></circle>
+                    </svg>
+                </div>
+
+                <h3>No support requests found</h3>
+
+                <p>
+                    There are no support requests matching your current search or filter.
+                </p>
+
+                {% if search_query or issue_type_filter != 'ALL' %}
+                    <a href="{% url 'admin_support_requests' %}" class="sr-secondary-button">
+                        Reset filters
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+{% endblock %}

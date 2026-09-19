@@ -1,0 +1,477 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Notifications | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-notifications.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Notifications</span>
+{% endblock %}
+
+{% block page_title %}
+Notifications
+{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard nt-page">
+
+    <header class="nt-page-header">
+        <div class="nt-page-header-copy">
+            <span class="nt-kicker">NOTIFICATION MANAGEMENT</span>
+            <h1>Notifications</h1>
+            <p>Send important alerts and updates to citizens.</p>
+        </div>
+
+        <a href="{% url 'admin_notification_create' %}" class="nt-primary-button">
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+            >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+            <span>Send Notification</span>
+        </a>
+    </header>
+
+    <section class="nt-filter-bar" aria-label="Notification filters">
+        <form method="get" class="nt-filter-form">
+
+            <label class="nt-search-field">
+                <span class="nt-visually-hidden">
+                    Search notifications
+                </span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                </svg>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search notifications..."
+                    autocomplete="off"
+                >
+            </label>
+
+            <label class="nt-select-field">
+                <span class="nt-visually-hidden">
+                    Filter notification type
+                </span>
+
+                <select name="type" class="nt-select">
+                    <option
+                        value="ALL"
+                        {% if type_filter == 'ALL' %}selected{% endif %}
+                    >
+                        All
+                    </option>
+
+                    <option
+                        value="BROADCAST"
+                        {% if type_filter == 'BROADCAST' %}selected{% endif %}
+                    >
+                        All Citizens
+                    </option>
+
+                    <option
+                        value="PERSONAL"
+                        {% if type_filter == 'PERSONAL' %}selected{% endif %}
+                    >
+                        Personal
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit" class="nt-filter-button">
+                Apply
+            </button>
+
+            {% if search_query or type_filter != 'ALL' %}
+                <a
+                    href="{% url 'admin_notifications' %}"
+                    class="nt-reset-button"
+                >
+                    Reset
+                </a>
+            {% endif %}
+
+        </form>
+    </section>
+
+    <section class="nt-table-panel">
+
+        <div class="nt-table-head">
+            <div class="nt-table-head-copy">
+
+                <div class="nt-table-heading-row">
+                    <h2>Notification history</h2>
+
+                    {% if page_obj.paginator.count %}
+                        <span class="nt-result-count">
+                            {{ page_obj.paginator.count }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <p>
+                    {% if page_obj.paginator.count %}
+                        {% if search_query or type_filter != 'ALL' %}
+                            Matching notifications
+                        {% else %}
+                            Alerts and updates sent to citizens
+                        {% endif %}
+                    {% else %}
+                        No notifications available
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
+
+        {% if page_obj.object_list %}
+
+            <div class="nt-table-wrap">
+                <table class="nt-table">
+
+                    <thead>
+                        <tr>
+                            <th class="nt-col-title">
+                                Title
+                            </th>
+
+                            <th class="nt-col-recipient">
+                                Recipient
+                            </th>
+
+                            <th class="nt-col-disaster">
+                                Disaster
+                            </th>
+
+                            <th class="nt-col-message">
+                                Message
+                            </th>
+
+                            <th class="nt-col-sent-by">
+                                Sent By
+                            </th>
+
+                            <th class="nt-col-date">
+                                Date
+                            </th>
+
+                            <th class="nt-col-actions">
+                                <span class="nt-visually-hidden">
+                                    Actions
+                                </span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for notification in page_obj.object_list %}
+
+                            <tr class="nt-table-row">
+
+                                <td>
+                                    <span
+                                        class="nt-title-text"
+                                        title="{{ notification.title }}"
+                                    >
+                                        {{ notification.title }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if notification.recipient %}
+
+                                        <span
+                                            class="nt-recipient-badge nt-recipient-personal"
+                                            title="{{ notification.recipient.full_name|default:notification.recipient.username }}"
+                                        >
+                                            {{ notification.recipient.full_name|default:notification.recipient.username }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="nt-recipient-badge nt-recipient-broadcast">
+                                            All Citizens
+                                        </span>
+
+                                    {% endif %}
+                                </td>
+
+                                <td>
+
+                                    {% if notification.disaster %}
+
+                                        <span
+                                            class="nt-disaster-name"
+                                            title="{{ notification.disaster.title }}"
+                                        >
+                                            {{ notification.disaster.title }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="nt-no-disaster">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    <span
+                                        class="nt-message-text"
+                                        title="{{ notification.message }}"
+                                    >
+                                        {{ notification.message|truncatechars:70 }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span
+                                        class="nt-sent-by-text"
+                                        title="{{ notification.published_by.full_name|default:notification.published_by.username }}"
+                                    >
+                                        {{ notification.published_by.full_name|default:notification.published_by.username }}
+                                    </span>
+                                </td>
+
+                                <td class="nt-date-cell">
+                                    <time datetime="{{ notification.publish_date|date:'c' }}">
+                                        {{ notification.publish_date|date:"M d, Y" }}
+                                    </time>
+                                </td>
+
+                                <td class="nt-actions-cell">
+
+                                    <a
+                                        href="{% url 'admin_notification_detail' notification.id %}"
+                                        class="nt-action nt-action-view"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+
+                                        <span>View</span>
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <div class="nt-pagination">
+
+                    <span class="nt-pagination-summary">
+                        Showing
+                        <strong>{{ page_obj.start_index }}</strong>
+                        –
+                        <strong>{{ page_obj.end_index }}</strong>
+                        of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                    </span>
+
+                    <nav
+                        class="nt-pagination-nav"
+                        aria-label="Notifications pagination"
+                    >
+
+                        {% if page_obj.has_previous %}
+
+                            <a
+                                href="?type={{ type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.previous_page_number }}"
+                                class="nt-pagination-button"
+                                aria-label="Previous page"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </a>
+
+                        {% else %}
+
+                            <span class="nt-pagination-button is-disabled">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </span>
+
+                        {% endif %}
+
+                        {% for number in page_obj.paginator.page_range %}
+
+                            {% if page_obj.number == number %}
+
+                                <span class="nt-pagination-number is-current">
+                                    {{ number }}
+                                </span>
+
+                            {% else %}
+
+                                <a
+                                    href="?type={{ type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ number }}"
+                                    class="nt-pagination-number"
+                                >
+                                    {{ number }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+
+                            <a
+                                href="?type={{ type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.next_page_number }}"
+                                class="nt-pagination-button"
+                                aria-label="Next page"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+
+                        {% else %}
+
+                            <span class="nt-pagination-button is-disabled">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+
+                        {% endif %}
+
+                    </nav>
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="nt-empty-state">
+
+                <div class="nt-empty-mark" aria-hidden="true">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                        <path d="M10 21h4"></path>
+                    </svg>
+                </div>
+
+                {% if search_query or type_filter != 'ALL' %}
+
+                    <h3>No matching notifications</h3>
+
+                    <p>
+                        Try changing your search or filter.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_notifications' %}"
+                        class="nt-secondary-button"
+                    >
+                        Reset filters
+                    </a>
+
+                {% else %}
+
+                    <h3>No notifications yet</h3>
+
+                    <p>
+                        Send the first alert to keep citizens informed.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_notification_create' %}"
+                        class="nt-secondary-button"
+                    >
+                        Send Notification
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,1704 @@
+/* =========================================================
+   NDMS — REPORT DETAIL (CITIZEN)
+   Uses the same design tokens as dashboard.css.
+   ========================================================= */
+
+
+/* =========================================================
+   DJANGO MESSAGES
+   (dashboard.css does not style these yet -- same markup
+   and classes already used on Profile/Home/Settings; needed
+   here for the error message shown after a blocked delete
+   attempt is safely rejected server-side)
+   ========================================================= */
+
+.django-messages {
+
+    position: fixed;
+    top: 90px;
+    right: 25px;
+    z-index: 9999;
+
+    width: min(420px, calc(100% - 30px));
+
+}
+
+.django-message {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px 16px;
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow-md);
+
+}
+
+.django-message-success {
+
+    border-left: 4px solid var(--green);
+
+}
+
+.django-message-error {
+
+    border-left: 4px solid var(--red);
+
+}
+
+.message-icon {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--green-bg);
+    color: var(--green);
+
+    font-weight: 800;
+
+}
+
+.message-text {
+
+    flex: 1;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    line-height: 1.5;
+    font-weight: 600;
+
+    color: var(--text);
+
+}
+
+.message-close {
+
+    border: none;
+    background: transparent;
+
+    color: var(--muted);
+    font-size: calc(20px * var(--ndms-font-scale, 1));
+    line-height: 1;
+
+    cursor: pointer;
+
+    padding: 2px 5px;
+
+}
+
+@media (max-width: 430px) {
+
+    .django-messages {
+        top: 75px;
+        left: 15px;
+        right: 15px;
+        width: auto;
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.rd-header {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    justify-content:
+        space-between;
+
+    gap:
+        16px;
+
+    flex-wrap:
+        wrap;
+
+    margin-bottom:
+        24px;
+
+}
+
+
+.rd-header-left .rd-eyebrow {
+
+    display:
+        block;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.rd-header-left h1 {
+
+    margin-top:
+        4px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(22px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.rd-header-left span.rd-subdate {
+
+    display:
+        block;
+
+    margin-top:
+        4px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   STATUS PILL (larger than the table's .status badge)
+   ========================================================= */
+
+.rd-status-pill {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    padding:
+        8px 16px;
+
+    border-radius:
+        999px;
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.rd-status-pill.pending {
+
+    background:
+        var(--orange-bg);
+
+    color:
+        var(--orange);
+
+}
+
+
+.rd-status-pill.review {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+}
+
+
+.rd-status-pill.verified {
+
+    background:
+        var(--green-bg);
+
+    color:
+        var(--green);
+
+}
+
+
+.rd-status-pill.rejected {
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.rd-card {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    padding:
+        22px;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.rd-card-title {
+
+    margin-bottom:
+        16px;
+
+}
+
+
+.rd-card-title span {
+
+    display:
+        block;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.rd-card-title h2 {
+
+    margin-top:
+        3px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(15px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   INFO GRID (Report ID / Type / Reported Severity / Status / Date)
+   ========================================================= */
+
+.rd-info-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(140px, 1fr));
+
+    gap:
+        16px;
+
+}
+
+
+.rd-info-item {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        5px;
+
+}
+
+
+.rd-info-label {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .4px;
+
+}
+
+
+.rd-info-value {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.rd-description-text {
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.8;
+
+    white-space:
+        pre-line;
+
+}
+
+
+/* =========================================================
+   LOCATION
+   ========================================================= */
+
+.rd-location-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr 1fr 2fr;
+
+    gap:
+        16px;
+
+    margin-bottom:
+        16px;
+
+}
+
+
+.rd-map-container {
+
+    width:
+        100%;
+
+    height:
+        300px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        10px;
+
+    overflow:
+        hidden;
+
+}
+
+
+.rd-map {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+}
+
+
+.rd-map-fallback {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    height:
+        100%;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    text-align:
+        center;
+
+    padding:
+        20px;
+
+}
+
+
+/* =========================================================
+   MAP LAYER CONTROL (Standard / Satellite toggle)
+   Same custom control as the Report Incident map — replaces
+   Google's stock blue-highlighted Map/Satellite buttons so the
+   active state matches the NDMS navy/red palette. This CSS was
+   missing before, which is why the buttons rendered unstyled
+   and overlapped Google's own Fullscreen icon in the same
+   corner, making clicks land on the wrong control.
+   ========================================================= */
+
+.rd-layer-control {
+
+    display: flex;
+
+    gap: 3px;
+
+    padding: 4px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    box-shadow: var(--shadow-sm);
+
+    font-family: inherit;
+}
+
+.rd-layer-btn {
+
+    border: none;
+
+    background: transparent;
+
+    min-width: 78px;
+
+    height: 32px;
+
+    padding: 0 12px;
+
+    border-radius: 6px;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    letter-spacing: .2px;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        box-shadow .18s ease,
+        transform .12s ease;
+}
+
+.rd-layer-btn:hover {
+    background: var(--soft-gray);
+}
+
+.rd-layer-btn:active {
+    transform: scale(0.96);
+}
+
+.rd-layer-btn.active {
+
+    background: var(--navy);
+
+    color: var(--white);
+
+    box-shadow: 0 2px 8px rgba(23, 32, 51, 0.35);
+}
+
+.rd-layer-btn.active:hover {
+    background: var(--navy-light);
+}
+
+.rd-layer-btn:focus-visible {
+
+    outline: 2px solid var(--navy);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   PHOTOS
+   ========================================================= */
+
+.rd-photo-gallery {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(120px, 1fr));
+
+    gap:
+        12px;
+
+}
+
+
+.rd-photo-thumb {
+
+    position:
+        relative;
+
+    display:
+        block;
+
+    width:
+        100%;
+
+    aspect-ratio:
+        1 / 1;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        9px;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--soft-gray);
+
+    cursor:
+        pointer;
+
+    padding:
+        0;
+
+}
+
+
+.rd-photo-thumb img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    display:
+        block;
+
+    transition:
+        transform .2s ease;
+
+}
+
+
+.rd-photo-thumb:hover img {
+
+    transform:
+        scale(1.05);
+
+}
+
+
+.rd-no-photos {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        90px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    text-align:
+        center;
+
+}
+
+
+/* =========================================================
+   REPORT STATUS CARD
+   ========================================================= */
+
+.rd-status-summary {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        14px;
+
+}
+
+
+.rd-status-icon {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border-radius:
+        11px;
+
+    font-size:
+        calc(17px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    flex-shrink:
+        0;
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+}
+
+
+.rd-status-icon.pending {
+
+    background:
+        var(--orange-bg);
+
+    color:
+        var(--orange);
+
+}
+
+
+.rd-status-icon.review {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+}
+
+
+.rd-status-icon.verified {
+
+    background:
+        var(--green-bg);
+
+    color:
+        var(--green);
+
+}
+
+
+.rd-status-icon.rejected {
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+}
+
+
+.rd-status-summary-text strong {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        .3px;
+
+}
+
+
+.rd-status-summary-text p {
+
+    margin-top:
+        5px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================================
+   RESPONSE UPDATES — TIMELINE
+   ========================================================= */
+
+.rd-timeline {
+
+    position:
+        relative;
+
+    list-style:
+        none;
+
+    margin:
+        0;
+
+    padding:
+        0;
+
+}
+
+
+.rd-timeline-item {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    gap:
+        14px;
+
+    padding-bottom:
+        18px;
+
+    padding-left:
+        4px;
+
+}
+
+
+.rd-timeline-item:last-child {
+
+    padding-bottom:
+        0;
+
+}
+
+
+.rd-timeline-item::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        9px;
+
+    top:
+        16px;
+
+    bottom:
+        0;
+
+    width:
+        1px;
+
+    background:
+        var(--border);
+
+}
+
+
+.rd-timeline-item:last-child::before {
+
+    display:
+        none;
+
+}
+
+
+.rd-timeline-node {
+
+    position:
+        relative;
+
+    z-index:
+        1;
+
+    flex-shrink:
+        0;
+
+    width:
+        19px;
+
+    height:
+        19px;
+
+    margin-top:
+        1px;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--green-bg);
+
+    border:
+        3px solid var(--green);
+
+    box-sizing:
+        border-box;
+
+}
+
+
+.rd-timeline-content strong {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+}
+
+
+.rd-timeline-date {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+}
+
+
+.rd-timeline-content p {
+
+    margin-top:
+        6px;
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.7;
+
+}
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.rd-actions {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        14px;
+
+    flex-wrap:
+        wrap;
+
+    margin-top:
+        6px;
+
+}
+
+/* Delete stays destructive but secondary in visual weight --
+   a plain outlined red action, not a solid filled button, so
+   it never competes with the (default, filled) primary-action
+   buttons used elsewhere on this page. */
+.rd-delete-action {
+
+    padding: 11px 20px;
+
+    border: 1px solid var(--red);
+    border-radius: 9px;
+
+    background: var(--white);
+    color: var(--red);
+
+    font-family: inherit;
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease;
+
+}
+
+.rd-delete-action:hover,
+.rd-delete-action:focus-visible {
+
+    background: var(--red);
+    color: var(--white);
+
+}
+
+.rd-delete-action:focus-visible {
+
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+
+}
+
+.rd-delete-disabled-note {
+
+    color: var(--muted);
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   DELETE REPORT CONFIRMATION MODAL
+   ========================================================= */
+
+.rd-delete-modal {
+
+    position: fixed;
+    inset: 0;
+    z-index: 2300;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(23, 32, 51, .72);
+
+}
+
+.rd-delete-modal[hidden] {
+
+    display: none;
+
+}
+
+.rd-delete-modal-content {
+
+    width: min(440px, 100%);
+
+    padding: 28px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    box-shadow: var(--shadow-md);
+
+    text-align: center;
+
+}
+
+.rd-delete-modal-content h2 {
+
+    margin: 0 0 9px;
+
+    color: var(--navy);
+    font-size: calc(19px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+
+}
+
+.rd-delete-modal-content p {
+
+    margin: 0 auto 22px;
+
+    max-width: 360px;
+
+    color: var(--muted);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    line-height: 1.6;
+
+}
+
+.rd-delete-modal-actions {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+}
+
+.rd-delete-modal-actions button {
+
+    min-width: 120px;
+    min-height: 40px;
+
+    padding: 9px 16px;
+
+    border-radius: 9px;
+
+    font-family: inherit;
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        opacity .2s ease;
+
+}
+
+.rd-delete-cancel {
+
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text);
+
+}
+
+.rd-delete-cancel:hover {
+
+    background: var(--soft-gray);
+
+}
+
+.rd-delete-confirm {
+
+    border: 1px solid var(--red);
+    background: var(--red);
+    color: var(--white);
+
+}
+
+.rd-delete-confirm:hover {
+
+    opacity: .92;
+
+}
+
+.rd-delete-modal-actions button:focus-visible {
+
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+
+}
+
+.rd-delete-modal-actions button:disabled {
+
+    opacity: .6;
+    cursor: not-allowed;
+
+}
+
+@media (max-width: 430px) {
+
+    .rd-delete-modal {
+
+        padding: 18px;
+
+    }
+
+    .rd-delete-modal-content {
+
+        padding: 24px 20px;
+
+    }
+
+    .rd-delete-modal-actions {
+
+        flex-direction: column-reverse;
+        align-items: stretch;
+
+    }
+
+    .rd-delete-modal-actions button {
+
+        width: 100%;
+
+    }
+
+}
+
+
+/* =========================================================
+   PHOTO MODAL / LIGHTBOX
+   ========================================================= */
+
+.rd-photo-modal {
+
+    position:
+        fixed;
+
+    inset:
+        0;
+
+    background:
+        rgba(23, 32, 51, .82);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    padding:
+        30px;
+
+    z-index:
+        2000;
+
+    opacity:
+        0;
+
+    visibility:
+        hidden;
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease;
+
+}
+
+
+.rd-photo-modal.show {
+
+    opacity:
+        1;
+
+    visibility:
+        visible;
+
+}
+
+
+.rd-photo-modal-content {
+
+    position:
+        relative;
+
+    max-width:
+        min(900px, 92vw);
+
+    max-height:
+        88vh;
+
+}
+
+
+.rd-photo-modal-content img {
+
+    display:
+        block;
+
+    max-width:
+        100%;
+
+    max-height:
+        88vh;
+
+    border-radius:
+        10px;
+
+    box-shadow:
+        var(--shadow-md);
+
+}
+
+
+.rd-photo-modal-close {
+
+    position:
+        absolute;
+
+    top:
+        -18px;
+
+    right:
+        -18px;
+
+    width:
+        36px;
+
+    height:
+        36px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--white);
+
+    color:
+        var(--navy);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(16px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    box-shadow:
+        var(--shadow-md);
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .rd-info-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .rd-location-grid {
+
+        grid-template-columns:
+            1fr 1fr;
+
+    }
+
+}
+
+
+@media (max-width: 560px) {
+
+    .rd-header {
+
+        flex-direction:
+            column;
+
+    }
+
+    .rd-info-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .rd-location-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .rd-map-container {
+
+        height:
+            230px;
+
+    }
+
+    .rd-photo-modal-close {
+
+        top:
+            -44px;
+
+        right:
+            0;
+
+    }
+
+    .rd-actions {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+    }
+
+    .rd-actions .secondary-action {
+
+        width:
+            100%;
+
+    }
+
+    .rd-actions .rd-delete-action {
+
+        width:
+            100%;
+
+    }
+
+}
+
+/* =========================================================
+   OFFICIAL SITUATION (STEP 4)
+   Public/citizen-safe summary of the official Disaster this
+   report was linked to. Uses the existing citizen palette
+   (:root in dashboard.css) and the existing .rd-card /
+   .rd-info-grid / .rd-photo-gallery / .rd-timeline-date system —
+   only the pieces genuinely new here are defined below.
+   ========================================================= */
+
+.rd-official-status-row {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+
+    margin-bottom:
+        18px;
+
+}
+
+
+.rd-official-badge {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        6px;
+
+    min-height:
+        24px;
+
+    padding:
+        0 9px;
+
+    border-radius:
+        6px;
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    letter-spacing:
+        .2px;
+
+}
+
+
+.rd-official-badge > i {
+
+    width:
+        5px;
+
+    height:
+        5px;
+
+    border-radius:
+        50%;
+
+    background:
+        currentColor;
+
+}
+
+
+/* DISASTER STATUS */
+
+.rd-official-status-active {
+    color: var(--red);
+    background: var(--light-red);
+}
+
+.rd-official-status-under_control {
+    color: var(--orange);
+    background: var(--orange-bg);
+}
+
+.rd-official-status-resolved {
+    color: var(--green);
+    background: var(--green-bg);
+}
+
+.rd-official-status-closed {
+    color: var(--muted);
+    background: var(--soft-gray);
+}
+
+
+/* SEVERITY */
+
+.rd-official-severity-low {
+    color: var(--green);
+    background: var(--green-bg);
+}
+
+.rd-official-severity-medium {
+    color: var(--orange);
+    background: var(--orange-bg);
+}
+
+.rd-official-severity-high {
+    color: var(--c-orange-600);
+    background: var(--c-orange-bg-2);
+}
+
+.rd-official-severity-critical {
+    color: var(--red);
+    background: var(--light-red);
+}
+
+
+.rd-official-description {
+
+    margin-top:
+        18px;
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.75;
+
+    white-space:
+        pre-line;
+
+}
+
+
+.rd-official-latest {
+
+    margin-top:
+        18px;
+
+    padding-top:
+        16px;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+.rd-official-latest-title {
+
+    display:
+        block;
+
+    margin-top:
+        8px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+}
+
+
+.rd-official-latest-details {
+
+    margin-top:
+        6px;
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.7;
+
+}
+
+
+.rd-official-photos {
+
+    margin-top:
+        18px;
+
+    padding-top:
+        16px;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+@media (max-width: 600px) {
+
+    .rd-official-status-row {
+        gap: 6px;
+    }
+
+}

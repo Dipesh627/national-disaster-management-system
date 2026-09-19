@@ -1,0 +1,887 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+Report #{{ report.id }} | NDMS Administration
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disaster-reports.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-report-detail.css' %}"
+>
+
+{% endblock %}
+
+
+{% block breadcrumb %}
+<span>Disaster Reports</span>
+{% endblock %}
+
+
+{% block page_title %}
+Report #{{ report.id }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ndms-dashboard">
+
+    <div class="dashboard-body rd-admin-page">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="rd-admin-header">
+
+            <div class="rd-admin-header-copy">
+
+                <p class="rd-admin-eyebrow">
+                    DISASTER REPORT
+                </p>
+
+                <div class="rd-admin-header-title-row">
+
+                    <h1>
+                        Report #{{ report.id }}
+                    </h1>
+
+                    <span class="table-status table-status-{{ report.status|lower }}">
+                        {{ report.get_status_display }}
+                    </span>
+
+                </div>
+
+                <div class="rd-admin-header-meta">
+
+                    <span class="rd-header-type">
+                        {{ report.disaster_type.name }}
+                    </span>
+
+                    <span class="rd-header-sep" aria-hidden="true">·</span>
+
+                    <span class="rd-header-time-item">
+                        <span class="rd-header-time-label">Incident Start:</span>
+                        {% if report.incident_start_date %}
+                            <strong>{{ report.incident_start_date|date:"d M Y, h:i A" }}</strong>
+                        {% else %}
+                            <span>Not recorded</span>
+                        {% endif %}
+                    </span>
+
+                    <span class="rd-header-sep" aria-hidden="true">·</span>
+
+                    <span class="rd-header-time-item">
+                        <span class="rd-header-time-label">Reported At:</span>
+                        <strong>{{ report.report_date|date:"d M Y, h:i A" }}</strong>
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{% url 'admin_reports' %}"
+                class="dr-btn dr-btn-outline">
+
+                ← Back to Reports
+
+            </a>
+
+        </header>
+
+
+        <!-- =================================================
+             MAIN GRID
+             ================================================= -->
+
+        <div class="rd-admin-grid">
+
+
+            <!-- =================================================
+                 LEFT COLUMN
+                 ================================================= -->
+
+            <div class="rd-admin-column">
+
+
+                <!-- INCIDENT INFORMATION -->
+
+                <section class="rd-admin-card">
+
+                    <header class="rd-admin-card-header">
+
+                        <div>
+
+                            <h2>
+                                Incident information
+                            </h2>
+
+                            <p>
+                                Submitted report details
+                            </p>
+
+                        </div>
+
+                    </header>
+
+
+                    <div class="rd-admin-info">
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Type
+                            </span>
+
+                            <span class="rd-admin-info-value">
+                                {{ report.disaster_type.name }}
+                            </span>
+
+                        </div>
+
+
+                        <!--
+                            Deliberately labeled "Reported Severity",
+                            never plain "Severity" -- this is the
+                            citizen's own initial assessment at
+                            submission time, and stays distinct from
+                            Disaster.severity (the actual/admin-managed
+                            severity of the linked disaster, if any).
+                            The citizen's original value is preserved
+                            here as-is and is not edited through the
+                            normal admin review flow below.
+                        -->
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Reported Severity
+                            </span>
+
+                            <span class="rd-admin-info-value">
+
+                                <span
+                                    class="dr-severity dr-severity-{{ report.reported_severity|lower }}">
+
+                                    {{ report.get_reported_severity_display }}
+
+                                </span>
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Incident Start
+                            </span>
+
+                            <span class="rd-admin-info-value">
+
+                                {% if report.incident_start_date %}
+                                    <time datetime="{{ report.incident_start_date|date:'c' }}">
+                                        {{ report.incident_start_date|date:"d M Y, h:i A" }}
+                                    </time>
+                                {% else %}
+                                    Not recorded
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Reported At
+                            </span>
+
+                            <span class="rd-admin-info-value">
+
+                                <time datetime="{{ report.report_date|date:'c' }}">
+                                    {{ report.report_date|date:"d M Y, h:i A" }}
+                                </time>
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Description
+                            </span>
+
+                            <span class="rd-admin-info-value rd-admin-description">
+                                {{ report.description|default:"No description provided." }}
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Address
+                            </span>
+
+                            <span class="rd-admin-info-value">
+
+                                {% if report.address %}
+                                    {{ report.address }}
+                                {% else %}
+                                    Not provided
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Coordinates
+                            </span>
+
+                            <span class="rd-admin-info-value">
+
+                                {{ report.latitude }},
+                                {{ report.longitude }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-info-row">
+
+                            <span class="rd-admin-info-label">
+                                Linked disaster
+                            </span>
+
+                            <span class="rd-admin-info-value">
+
+                                {% if report.disaster %}
+                                    <a href="{% url 'admin_disaster_edit' report.disaster.id %}">{{ report.disaster.title }}</a>
+                                {% else %}
+                                    Not linked to a disaster
+                                {% endif %}
+
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+                </section>
+
+
+                <!-- LOCATION -->
+
+                <section class="rd-admin-card">
+
+                    <header class="rd-admin-card-header">
+
+                        <div>
+
+                            <h2>
+                                Report location
+                            </h2>
+
+                            <p>
+                                Geographic location submitted with this report
+                            </p>
+
+                        </div>
+
+                    </header>
+
+
+                    <div class="rd-admin-map-wrap">
+
+                        <div
+                            id="reportDetailMap"
+                            class="rd-admin-map"
+                            data-latitude="{{ report.latitude }}"
+                            data-longitude="{{ report.longitude }}"
+                            data-address="{{ report.address|default:'' }}"
+                            aria-label="Report location map"
+                        ></div>
+
+
+                        <noscript>
+
+                            <div class="rd-map-fallback">
+
+                                Enable JavaScript to view the report location map.
+
+                            </div>
+
+                        </noscript>
+
+                    </div>
+
+                </section>
+
+
+                <!-- EVIDENCE -->
+
+                <section class="rd-admin-card">
+
+                    <header class="rd-admin-card-header">
+
+                        <div>
+
+                            <h2>
+                                Evidence
+                            </h2>
+
+                            <p>
+                                Photos attached to this report
+                            </p>
+
+                        </div>
+
+                    </header>
+
+
+                    {% if photos %}
+
+                        <div class="rd-admin-gallery">
+
+                            {% for photo in photos %}
+
+                                <button
+                                    type="button"
+                                    class="rd-admin-photo rd-photo-thumb"
+                                    data-full="{{ photo.image.url }}"
+                                    aria-label="View evidence photo {{ forloop.counter }}">
+
+                                    <img
+                                        src="{{ photo.image.url }}"
+                                        alt="Evidence photo {{ forloop.counter }}"
+                                        loading="lazy">
+
+                                </button>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <div class="rd-admin-no-photo">
+
+                            No evidence submitted.
+
+                        </div>
+
+                    {% endif %}
+
+                </section>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT COLUMN
+                 ================================================= -->
+
+            <div class="rd-admin-column">
+
+
+                <!-- REVIEW STATUS -->
+
+                <section class="rd-admin-card">
+
+                    <header class="rd-admin-card-header">
+
+                        <div>
+
+                            <h2>
+                                Review &amp; Status
+                            </h2>
+
+                            <p>
+                                Admin review decision and workflow
+                            </p>
+
+                        </div>
+
+                    </header>
+
+
+                    <div class="rd-admin-status-wrap">
+
+
+                        <div class="rd-admin-status-current">
+
+                            <span class="rd-admin-status-label">
+                                Current status
+                            </span>
+
+
+                            {% if report.status == "VERIFIED" %}
+
+                                <span class="rd-admin-status rd-admin-status-verified">
+                                    {{ report.get_status_display }}
+                                </span>
+
+                            {% elif report.status == "UNDER_REVIEW" %}
+
+                                <span class="rd-admin-status rd-admin-status-review">
+                                    {{ report.get_status_display }}
+                                </span>
+
+                            {% elif report.status == "REJECTED" %}
+
+                                <span class="rd-admin-status rd-admin-status-rejected">
+                                    {{ report.get_status_display }}
+                                </span>
+
+                            {% else %}
+
+                                <span class="rd-admin-status rd-admin-status-pending">
+                                    {{ report.get_status_display }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- STAGED REVIEW WORKFLOW -->
+
+                        {% if report.status == "PENDING" %}
+
+                            <div class="rd-status-staged-box">
+
+                                <p class="rd-status-staged-desc">
+                                    This report is awaiting review. Start review to assess incident details, location, and evidence.
+                                </p>
+
+                                <form
+                                    method="post"
+                                    action="{% url 'admin_report_update_status' report.id %}"
+                                    class="rd-admin-staged-form">
+
+                                    {% csrf_token %}
+
+                                    <input
+                                        type="hidden"
+                                        name="status"
+                                        value="UNDER_REVIEW">
+
+                                    <button
+                                        type="submit"
+                                        class="dr-btn dr-btn-primary dr-btn-block rd-btn-start-review">
+
+                                        Start Review
+
+                                    </button>
+
+                                </form>
+
+                            </div>
+
+                        {% elif report.status == "UNDER_REVIEW" %}
+
+                            <div class="rd-status-staged-box">
+
+                                <p class="rd-status-staged-desc">
+                                    Review incident details, location, and photos before making a decision.
+                                </p>
+
+                                <div class="rd-under-review-actions">
+
+                                    <form
+                                        method="post"
+                                        action="{% url 'admin_report_update_status' report.id %}"
+                                        class="rd-admin-staged-form rd-action-flex-1">
+
+                                        {% csrf_token %}
+
+                                        <input
+                                            type="hidden"
+                                            name="status"
+                                            value="VERIFIED">
+
+                                        <button
+                                            type="submit"
+                                            class="dr-btn dr-btn-primary dr-btn-block rd-btn-verify">
+
+                                            Verify Report
+
+                                        </button>
+
+                                    </form>
+
+
+                                    <button
+                                        type="button"
+                                        class="dr-btn dr-btn-danger dr-btn-block rd-btn-reject rd-action-flex-1"
+                                        id="rdOpenRejectModal"
+                                        aria-haspopup="dialog">
+
+                                        Reject Report
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        {% elif report.status == "VERIFIED" %}
+
+                            <div class="rd-admin-status-resolved rd-status-box-verified">
+
+                                <div class="rd-status-resolved-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </div>
+
+                                <div class="rd-status-resolved-content">
+                                    <strong>Report Verified</strong>
+                                    <span>This disaster report has been verified by NDMS administration.</span>
+                                </div>
+
+                            </div>
+
+
+                            <!-- CREATE / VIEW DISASTER -->
+
+                            {% if report.disaster %}
+
+                                <div class="rd-status-staged-box">
+
+                                    <p class="rd-status-staged-desc">
+                                        <strong>Disaster Created</strong><br>
+                                        This report has already been converted into an official disaster.
+                                    </p>
+
+                                    <a
+                                        href="{% url 'admin_disaster_edit' report.disaster.id %}"
+                                        class="dr-btn dr-btn-primary dr-btn-block">
+
+                                        View Disaster
+
+                                    </a>
+
+                                </div>
+
+                            {% else %}
+
+                                <div class="rd-status-staged-box">
+
+                                    <p class="rd-status-staged-desc">
+                                        This report is verified and ready to become an official disaster.
+                                    </p>
+
+                                    <a
+                                        href="{% url 'admin_disaster_create' %}?from_report={{ report.id }}"
+                                        class="dr-btn dr-btn-primary dr-btn-block">
+
+                                        Create Disaster from this Report
+
+                                    </a>
+
+                                </div>
+
+                            {% endif %}
+
+                        {% elif report.status == "REJECTED" %}
+
+                            <div class="rd-admin-status-resolved rd-status-box-rejected">
+
+                                <div class="rd-status-resolved-icon" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                                    </svg>
+                                </div>
+
+                                <div class="rd-status-resolved-content">
+                                    <strong>Report Rejected</strong>
+                                    <span>This report was reviewed and marked as rejected.</span>
+                                </div>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+
+                <!-- CITIZEN -->
+
+                <section class="rd-admin-card">
+
+                    <header class="rd-admin-card-header">
+
+                        <div>
+
+                            <h2>
+                                Citizen
+                            </h2>
+
+                            <p>
+                                Reporter information
+                            </p>
+
+                        </div>
+
+                    </header>
+
+
+                    <div class="rd-admin-citizen">
+
+
+                        <span class="rd-admin-avatar">
+
+                            {% if report.user.avatar %}
+
+                                <img
+                                    src="{{ report.user.avatar.url }}"
+                                    alt=""
+                                    loading="lazy">
+
+                            {% else %}
+
+                                <span class="rd-admin-avatar-fallback">
+
+                                    {{ report.user.full_name|default:report.user.username|first|upper }}
+
+                                </span>
+
+                            {% endif %}
+
+                        </span>
+
+
+                        <div class="rd-admin-citizen-copy">
+
+                            <span class="rd-admin-citizen-name">
+
+                                {{ report.user.full_name|default:report.user.username }}
+
+                            </span>
+
+                            <span class="rd-admin-citizen-username">
+
+                                @{{ report.user.username }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="rd-admin-citizen-count">
+
+                            <strong>
+                                {{ reporter_reports_count }}
+                            </strong>
+
+                            <span>
+                                reports
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div style="padding: 0 16px 16px;">
+
+                        <a
+                            href="{% url 'admin_user_detail' report.user.id %}"
+                            class="dr-btn dr-btn-outline dr-btn-block">
+
+                            Open citizen profile
+
+                        </a>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PHOTO LIGHTBOX
+     IDs intentionally preserved for report-detail.js
+     ===================================================== -->
+
+<div
+    class="rd-photo-modal"
+    id="rdPhotoModal">
+
+    <div class="rd-photo-modal-content">
+
+        <button
+            type="button"
+            class="rd-photo-modal-close"
+            id="rdPhotoModalClose"
+            aria-label="Close photo preview">
+
+            ✕
+
+        </button>
+
+
+        <img
+            id="rdPhotoModalImage"
+            src=""
+            alt="Full size evidence photo">
+
+    </div>
+
+</div>
+
+
+{% if report.status == "UNDER_REVIEW" %}
+
+<!-- =====================================================
+     REJECT CONFIRMATION MODAL
+     ===================================================== -->
+<div
+    class="rd-confirm-modal"
+    id="rdRejectModal"
+    hidden
+    aria-hidden="true"
+>
+    <div
+        class="rd-confirm-modal-backdrop"
+        id="rdRejectModalBackdrop"
+    ></div>
+
+    <div
+        class="rd-confirm-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="rdRejectModalTitle"
+        aria-describedby="rdRejectModalDescription"
+    >
+        <div class="rd-confirm-modal-top">
+            <div
+                class="rd-confirm-modal-danger-icon"
+                aria-hidden="true"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M12 9v4"></path>
+                    <path d="M12 17h.01"></path>
+                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                </svg>
+            </div>
+
+            <button
+                type="button"
+                class="rd-confirm-modal-close"
+                id="rdRejectModalClose"
+                aria-label="Close rejection dialog"
+            >
+                ✕
+            </button>
+        </div>
+
+        <div class="rd-confirm-modal-content">
+            <h3 id="rdRejectModalTitle">
+                Reject this report?
+            </h3>
+
+            <p id="rdRejectModalDescription">
+                Are you sure you want to reject this report? This will mark report #{{ report.id }} as rejected and notify the citizen.
+            </p>
+        </div>
+
+        <div class="rd-confirm-modal-actions">
+            <button
+                type="button"
+                class="dr-btn dr-btn-outline"
+                id="rdRejectModalCancel"
+            >
+                Cancel
+            </button>
+
+            <form
+                method="post"
+                action="{% url 'admin_report_update_status' report.id %}"
+            >
+                {% csrf_token %}
+                <input
+                    type="hidden"
+                    name="status"
+                    value="REJECTED"
+                >
+                <button
+                    type="submit"
+                    class="dr-btn dr-btn-danger"
+                >
+                    Reject Report
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script
+    src="{% static 'reports/js/report-detail.js' %}"
+    defer>
+</script>
+
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initReportDetailMap&loading=async"
+    defer
+    onerror="window.ndmsMapsScriptError && window.ndmsMapsScriptError();">
+</script>
+
+{% endblock %}

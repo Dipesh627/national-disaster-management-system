@@ -1,0 +1,362 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Global Search | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-search.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Global Search</span>
+{% endblock %}
+
+{% block page_title %}
+Global Search
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard search-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="search-page-header">
+
+        <div class="search-page-header-copy">
+
+            <span class="search-kicker">
+                ADMINISTRATION
+            </span>
+
+            <h1>Global Search</h1>
+
+            {% if search_query %}
+
+                <p>
+                    Search results for
+                    <strong>&ldquo;{{ search_query }}&rdquo;</strong>
+                    {% if total_results %}
+                        &middot; {{ total_results }} result{{ total_results|pluralize }}
+                    {% endif %}
+                </p>
+
+            {% else %}
+
+                <p>
+                    Search results across administration.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         RESULTS
+         ===================================================== -->
+
+    {% if not search_query %}
+
+        <div class="search-empty-state">
+
+            <span class="search-empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m16 16 5 5"></path>
+                </svg>
+            </span>
+
+            <strong>Global Search</strong>
+
+            <p>
+                Enter a search term to find records across administration.
+            </p>
+
+        </div>
+
+    {% elif total_results %}
+
+        <div class="search-results">
+
+            {% if report_results %}
+                <section class="search-section" aria-label="Disaster Reports results">
+
+                    <div class="search-section-header">
+                        <h2>Disaster Reports</h2>
+                        <span class="search-section-count">{{ report_results|length }}</span>
+                    </div>
+
+                    <div class="search-section-list">
+
+                        {% for report in report_results %}
+                            <a
+                                href="{% url 'admin_report_detail' report.id %}"
+                                class="search-result"
+                            >
+                                <span class="search-result-body">
+
+                                    <strong>
+                                        {{ report.disaster_type.name }}
+                                        {% if report.address %}
+                                            reported in {{ report.address }}
+                                        {% endif %}
+                                    </strong>
+
+                                    <span class="search-result-meta">
+                                        {{ report.get_status_display }}
+                                        &middot;
+                                        {{ report.user.full_name|default:report.user.username }}
+                                    </span>
+
+                                </span>
+
+                                <svg class="search-result-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="m9 6 6 6-6 6"></path>
+                                </svg>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if disaster_results %}
+                <section class="search-section" aria-label="Disasters results">
+
+                    <div class="search-section-header">
+                        <h2>Disasters</h2>
+                        <span class="search-section-count">{{ disaster_results|length }}</span>
+                    </div>
+
+                    <div class="search-section-list">
+
+                        {% for disaster in disaster_results %}
+                            <a
+                                href="{% url 'admin_disaster_edit' disaster.id %}"
+                                class="search-result"
+                            >
+                                <span class="search-result-body">
+
+                                    <strong>{{ disaster.title }}</strong>
+
+                                    <span class="search-result-meta">
+                                        {{ disaster.get_status_display }}
+                                        &middot;
+                                        {{ disaster.disaster_type.name }}
+                                    </span>
+
+                                </span>
+
+                                <svg class="search-result-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="m9 6 6 6-6 6"></path>
+                                </svg>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if type_results %}
+                <section class="search-section" aria-label="Disaster Types results">
+
+                    <div class="search-section-header">
+                        <h2>Disaster Types</h2>
+                        <span class="search-section-count">{{ type_results|length }}</span>
+                    </div>
+
+                    <div class="search-section-list">
+
+                        {% for disaster_type in type_results %}
+                            <a
+                                href="{% url 'admin_disaster_type_edit' disaster_type.id %}"
+                                class="search-result"
+                            >
+                                <span class="search-result-body">
+
+                                    <strong>{{ disaster_type.name }}</strong>
+
+                                    <span class="search-result-meta">
+                                        {% if disaster_type.is_active %}
+                                            Active
+                                        {% else %}
+                                            Inactive
+                                        {% endif %}
+                                    </span>
+
+                                </span>
+
+                                <svg class="search-result-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="m9 6 6 6-6 6"></path>
+                                </svg>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if agency_results %}
+                <section class="search-section" aria-label="Emergency Agencies results">
+
+                    <div class="search-section-header">
+                        <h2>Emergency Agencies</h2>
+                        <span class="search-section-count">{{ agency_results|length }}</span>
+                    </div>
+
+                    <div class="search-section-list">
+
+                        {% for agency in agency_results %}
+                            <a
+                                href="{% url 'admin_agency_edit' agency.id %}"
+                                class="search-result"
+                            >
+                                <span class="search-result-body">
+
+                                    <strong>{{ agency.agency_name }}</strong>
+
+                                    <span class="search-result-meta">
+                                        {{ agency.agency_type }}
+                                        &middot;
+                                        {{ agency.contact_number }}
+                                    </span>
+
+                                </span>
+
+                                <svg class="search-result-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="m9 6 6 6-6 6"></path>
+                                </svg>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if update_results %}
+                <section class="search-section" aria-label="Response Updates results">
+
+                    <div class="search-section-header">
+                        <h2>Response Updates</h2>
+                        <span class="search-section-count">{{ update_results|length }}</span>
+                    </div>
+
+                    <div class="search-section-list">
+
+                        {% for update in update_results %}
+                            <a
+                                href="{% url 'admin_response_update_edit' update.id %}"
+                                class="search-result"
+                            >
+                                <span class="search-result-body">
+
+                                    <strong>
+                                        {{ update.disaster.title }}
+                                        &ndash;
+                                        {{ update.agency.agency_name }}
+                                    </strong>
+
+                                    <span class="search-result-meta">
+                                        {{ update.get_response_status_display }}
+                                    </span>
+
+                                </span>
+
+                                <svg class="search-result-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="m9 6 6 6-6 6"></path>
+                                </svg>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+            {% endif %}
+
+
+            {% if citizen_results %}
+                <section class="search-section" aria-label="Citizens results">
+
+                    <div class="search-section-header">
+                        <h2>Citizens</h2>
+                        <span class="search-section-count">{{ citizen_results|length }}</span>
+                    </div>
+
+                    <div class="search-section-list">
+
+                        {% for citizen in citizen_results %}
+                            <a
+                                href="{% url 'admin_user_detail' citizen.id %}"
+                                class="search-result"
+                            >
+                                <span class="search-result-body">
+
+                                    <strong>
+                                        {{ citizen.full_name|default:citizen.username }}
+                                    </strong>
+
+                                    <span class="search-result-meta">
+                                        @{{ citizen.username }}
+                                        &middot;
+                                        {{ citizen.email }}
+                                    </span>
+
+                                </span>
+
+                                <svg class="search-result-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="m9 6 6 6-6 6"></path>
+                                </svg>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+
+                </section>
+            {% endif %}
+
+        </div>
+
+    {% else %}
+
+        <div class="search-empty-state">
+
+            <span class="search-empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6l12 12"></path>
+                    <path d="M18 6 6 18"></path>
+                </svg>
+            </span>
+
+            <strong>No results found</strong>
+
+            <p>
+                We couldn&rsquo;t find anything matching
+                &ldquo;{{ search_query }}&rdquo;.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

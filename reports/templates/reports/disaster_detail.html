@@ -1,0 +1,452 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Official Disaster Detail - {{ disaster.title }}. Verified information, official response updates, and incident location in Nepal."
+    >
+    <title>{{ disaster.title }} | Official Disaster Detail | NDMS</title>
+
+    <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/report-detail.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/disasters.css' %}">
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+<body class="public-disaster-page">
+
+{% if messages %}
+<div class="django-messages" aria-live="polite">
+    {% for message in messages %}
+    <div
+        class="django-message django-message-{{ message.tags }}"
+        role="alert"
+    >
+        <span class="message-icon">
+            {% if message.tags == 'error' %}!{% else %}✓{% endif %}
+        </span>
+        <span class="message-text">{{ message }}</span>
+        <button
+            type="button"
+            class="message-close"
+            aria-label="Close message"
+        >×</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- =====================================================
+     PUBLIC NAVBAR
+     ===================================================== -->
+{% include 'reports/partials/navbar.html' %}
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+<main class="public-main" id="main-content">
+    <div class="disaster-container">
+
+        <!-- Back Navigation -->
+        <a href="{% url 'disaster_list' %}" class="disaster-detail-back" aria-label="Return to disaster directory">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m15 18-6-6 6-6"></path>
+            </svg>
+            <span>Back to Disasters</span>
+        </a>
+
+        <!-- Detail Header -->
+        <header class="disaster-detail-header">
+            <div class="disaster-eyebrow">
+                <span class="disaster-eyebrow-dot" aria-hidden="true"></span>
+                <span>{{ disaster.disaster_type.name }}</span>
+            </div>
+
+            <div class="disaster-detail-title-row">
+                <h1 class="disaster-detail-title">
+                    {{ disaster.title }}
+                </h1>
+
+                <div class="ds-badge-row">
+                    <span class="ds-severity ds-severity-{{ disaster.severity|lower }}">
+                        {{ disaster.get_severity_display }}
+                    </span>
+
+                    <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                        <span class="ds-status-dot" aria-hidden="true"></span>
+                        {{ disaster.get_status_display }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="disaster-detail-meta-strip">
+                <div class="disaster-detail-meta-item">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span><strong>Location:</strong> {{ disaster.address|default:"Location recorded" }}</span>
+                </div>
+
+                <div class="disaster-detail-meta-item">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                        <line x1="16" x2="16" y1="2" y2="6"></line>
+                        <line x1="8" x2="8" y1="2" y2="6"></line>
+                        <line x1="3" x2="21" y1="10" y2="10"></line>
+                    </svg>
+                    <span><strong>Incident Started:</strong> {{ disaster.start_date|citizen_datetime:citizen_date_format }}</span>
+                </div>
+
+                {% if linked_reports_count > 0 %}
+                    <div class="disaster-detail-meta-item">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span><strong>{{ linked_reports_count }}</strong> verified report{{ linked_reports_count|pluralize }} linked</span>
+                    </div>
+                {% endif %}
+            </div>
+        </header>
+
+        <!-- Two-Column Layout -->
+        <div class="disaster-detail-grid">
+
+            <!-- LEFT COLUMN: Overview & Response Updates -->
+            <div class="disaster-detail-col">
+
+                <!-- Disaster Overview Card -->
+                <section class="disaster-section-card" aria-labelledby="overview-heading">
+                    <div class="disaster-section-header">
+                        <h2 id="overview-heading" class="disaster-section-title">
+                            Disaster Overview
+                        </h2>
+                        <span class="disaster-section-count">Official Record</span>
+                    </div>
+
+                    <div class="disaster-info-table">
+                        <div class="disaster-info-row">
+                            <span class="disaster-info-label">Type</span>
+                            <span class="disaster-info-value">{{ disaster.disaster_type.name }}</span>
+                        </div>
+
+                        <div class="disaster-info-row">
+                            <span class="disaster-info-label">Severity</span>
+                            <span class="disaster-info-value">
+                                <span class="ds-severity ds-severity-{{ disaster.severity|lower }}">
+                                    {{ disaster.get_severity_display }}
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="disaster-info-row">
+                            <span class="disaster-info-label">Current Status</span>
+                            <span class="disaster-info-value">
+                                <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                                    <span class="ds-status-dot" aria-hidden="true"></span>
+                                    {{ disaster.get_status_display }}
+                                </span>
+                            </span>
+                        </div>
+
+                        <div class="disaster-info-row">
+                            <span class="disaster-info-label">Incident Started</span>
+                            <span class="disaster-info-value">
+                                <time datetime="{{ disaster.start_date|date:'c' }}">
+                                    {{ disaster.start_date|citizen_date:citizen_date_format }} — {{ disaster.start_date|citizen_time }}
+                                </time>
+                            </span>
+                        </div>
+
+                        <div class="disaster-info-row">
+                            <span class="disaster-info-label">Location</span>
+                            <span class="disaster-info-value">{{ disaster.address|default:"Location recorded" }}</span>
+                        </div>
+
+                        {% if disaster.latitude and disaster.longitude %}
+                            <div class="disaster-info-row">
+                                <span class="disaster-info-label">Coordinates</span>
+                                <span class="disaster-info-value">
+                                    {{ disaster.latitude|floatformat:6 }}, {{ disaster.longitude|floatformat:6 }}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {% if disaster.description %}
+                        <div class="disaster-description-text">
+                            <strong>Official Summary:</strong><br>
+                            {{ disaster.description }}
+                        </div>
+                    {% endif %}
+                </section>
+
+                <!-- Official Response Updates Card -->
+                <section class="disaster-section-card" aria-labelledby="updates-heading">
+                    <div class="disaster-section-header">
+                        <h2 id="updates-heading" class="disaster-section-title">
+                            Official Response Updates
+                        </h2>
+                        <span class="disaster-section-count">
+                            {{ updates|length }} update{{ updates|length|pluralize }}
+                        </span>
+                    </div>
+
+                    {% if updates %}
+                        <ol class="disaster-timeline">
+                            {% for update in updates %}
+                                <li class="disaster-timeline-item">
+                                    <span class="disaster-timeline-dot" aria-hidden="true"></span>
+                                    <div class="disaster-timeline-content">
+                                        <div class="disaster-timeline-top">
+                                            <span class="disaster-timeline-agency">
+                                                <span>{{ update.agency.agency_name }}</span>
+                                                <span class="response-status response-{{ update.response_status|lower }}">
+                                                    {{ update.get_response_status_display }}
+                                                </span>
+                                            </span>
+                                            <time class="disaster-timeline-date" datetime="{{ update.update_date|date:'c' }}">
+                                                {{ update.update_date|citizen_date:citizen_date_format }} — {{ update.update_date|citizen_time }}
+                                            </time>
+                                        </div>
+                                        <p class="disaster-timeline-desc">
+                                            {{ update.update_details }}
+                                        </p>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    {% else %}
+                        <p style="color: var(--muted); font-size: 13.5px; margin: 0; padding: 12px 0;">
+                            No response updates available yet.
+                        </p>
+                    {% endif %}
+                </section>
+
+            </div>
+
+            <!-- RIGHT COLUMN: Location Map & Official Photos -->
+            <div class="disaster-detail-col">
+
+                <!-- Location Map Card -->
+                <section class="disaster-section-card" aria-labelledby="location-heading">
+                    <div class="disaster-section-header">
+                        <h2 id="location-heading" class="disaster-section-title">
+                            Location Map
+                        </h2>
+                        <span class="disaster-section-count">Incident Site</span>
+                    </div>
+
+                    {% if disaster.latitude and disaster.longitude %}
+                        <div class="disaster-map-wrapper">
+                            <div
+                                id="reportDetailMap"
+                                class="disaster-map-element rd-map"
+                                data-latitude="{{ disaster.latitude|stringformat:'s' }}"
+                                data-longitude="{{ disaster.longitude|stringformat:'s' }}"
+                                data-address="{{ disaster.address|default:'' }}"
+                                role="img"
+                                aria-label="Map showing the disaster location"
+                            ></div>
+                        </div>
+                    {% else %}
+                        <div class="disaster-map-wrapper">
+                            <div class="disaster-map-fallback">
+                                Coordinates not recorded for this disaster.
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if disaster.address %}
+                        <div class="disaster-map-address-box">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                            <span>{{ disaster.address }}</span>
+                        </div>
+                    {% endif %}
+                </section>
+
+                <!-- Official Photos Card -->
+                <section class="disaster-section-card" aria-labelledby="photos-heading">
+                    <div class="disaster-section-header">
+                        <h2 id="photos-heading" class="disaster-section-title">
+                            Official Photos
+                        </h2>
+                        <span class="disaster-section-count">
+                            {{ photos|length }} official photo{{ photos|length|pluralize }}
+                        </span>
+                    </div>
+
+                    {% if photos %}
+                        <div class="disaster-gallery-grid rd-photo-gallery">
+                            {% for photo in photos %}
+                                <button
+                                    type="button"
+                                    class="disaster-photo-item rd-photo-thumb"
+                                    data-full="{{ photo.image.url }}"
+                                    aria-label="Open official photo {{ forloop.counter }} full size"
+                                >
+                                    <img
+                                        src="{{ photo.image.url }}"
+                                        alt="Official photo for {{ disaster.title }}"
+                                        loading="lazy"
+                                    >
+                                </button>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p style="color: var(--muted); font-size: 13.5px; margin: 0; padding: 12px 0;">
+                            No official photos published for this disaster.
+                        </p>
+                    {% endif %}
+                </section>
+
+                <!-- Lightweight Linked Reports Card (Privacy-Safe) -->
+                {% if linked_reports_count > 0 %}
+                    <section class="disaster-reports-summary" aria-label="Associated verified reports">
+                        <svg class="disaster-reports-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            <path d="m9 12 2 2 4-4"></path>
+                        </svg>
+                        <div>
+                            <strong>{{ linked_reports_count }} verified citizen report{{ linked_reports_count|pluralize }}</strong>
+                            <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">
+                                Contributed to this official disaster verification and response.
+                            </div>
+                        </div>
+                    </section>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+<!-- =====================================================
+     PHOTO LIGHTBOX MODAL (Handled by report-detail.js)
+     ===================================================== -->
+<div class="rd-photo-modal" id="rdPhotoModal" aria-hidden="true">
+    <div class="rd-photo-modal-content">
+        <button
+            type="button"
+            class="rd-photo-modal-close"
+            id="rdPhotoModalClose"
+            aria-label="Close photo preview"
+        >✕</button>
+        <img
+            id="rdPhotoModalImage"
+            src=""
+            alt="Full size official disaster photo"
+        >
+    </div>
+</div>
+
+<!-- =====================================================
+     PUBLIC FOOTER (consistent with Home & About)
+     ===================================================== -->
+<footer class="about-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <a href="{% url 'home' %}" class="footer-brand-title">
+                <strong>NDMS</strong>
+                <span>National Disaster Management System</span>
+            </a>
+            <p>
+                Building a safer and better-informed community through connected disaster reporting across Nepal.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <div>
+                <strong>Navigation</strong>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'disaster_list' %}">Disasters</a>
+                <a href="{% url 'home' %}#contact">Contact</a>
+            </div>
+
+            <div>
+                <strong>Services</strong>
+                {% if not user.is_staff and not user.is_superuser %}
+                    <a href="{% url 'create_disaster_report' %}">Report Incident</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                    {% else %}
+                        <a href="{% url 'my_reports' %}">My Reports</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}">My Reports</a>
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Account</strong>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="footer-social">
+            <strong class="footer-social-title">Follow NDMS</strong>
+            <div class="footer-social-icons">
+                <a href="https://www.facebook.com/dip.esh.641646" class="footer-social-icon" aria-label="Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H16V5.6c-.26-.04-1.16-.1-2.2-.1-2.18 0-3.68 1.33-3.68 3.78V11H7.8v3.2h2.32V22h3.2v-7.8h2.3l.37-3.2h-2.67V9.6c0-.92.25-1.1 1.18-1.1Z" fill="currentColor"/></svg>
+                </a>
+                <a href="https://www.instagram.com/_212.m6_?stkn=MXg1ZHdma3IwMWxtYg==" class="footer-social-icon" aria-label="Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.1" cy="6.9" r="1" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="X">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="YouTube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M10.5 10.2v3.6l3.3-1.8-3.3-1.8Z" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="8" cy="8.3" r="1.15" fill="currentColor"/><path d="M8 11v6.2M12 11v6.2M12 13.6c0-1.4 1-2.3 2.2-2.3 1.3 0 2.1.9 2.1 2.4v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 National Disaster Management System</span>
+        <span>NDMS</span>
+    </div>
+</footer>
+
+<script src="{% static 'reports/js/public-nav.js' %}" defer></script>
+<script src="{% static 'reports/js/navbar-avatar.js' %}" defer></script>
+<script src="{% static 'reports/js/report-detail.js' %}" defer></script>
+
+{% if disaster.latitude and disaster.longitude %}
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initReportDetailMap&loading=async"
+    defer
+    onerror="window.ndmsMapsScriptError && window.ndmsMapsScriptError();">
+</script>
+{% endif %}
+
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!-- =====================================================
+     SHARED NOTIFICATION BELL + DROPDOWN
+
+     Included on every citizen page that has the dashboard
+     topbar (dashboard, alerts, profile, my_reports,
+     help_support, report_detail, report_incident,
+     password_change, settings, notification_detail) so the
+     bell/dropdown only exists in ONE place instead of being
+     copy-pasted per template.
+
+     Requires the including view to provide the same context
+     every one of those views already provides:
+         notifications             (latest 5, own + broadcast)
+         unread_count
+         read_notification_ids
+
+     Depends on:
+         reports/dashboard.css  (.notification-* rules)
+         reports/js/dashboard.js (open/close/outside-click/Escape)
+     both of which are already loaded on every one of those
+     pages, so no template-specific CSS/JS wiring is needed.
+     ===================================================== -->
+
+<div class="notification-wrapper">
+
+
+    <button
+        type="button"
+        class="notification-button"
+        id="notificationButton"
+        aria-label="Notifications"
+        aria-expanded="false"
+        aria-controls="notificationDropdown"
+    >
+
+        <svg
+            class="notification-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+        ><path d="M6 9.5a6 6 0 0 1 12 0c0 3.2.8 5 1.6 6H4.4c.8-1 1.6-2.8 1.6-6Z" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 18.5a2.5 2.5 0 0 0 5 0" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+
+        {% if unread_count > 0 %}
+
+            <span class="notification-badge">
+                {% if unread_count > 99 %}99+{% else %}{{ unread_count }}{% endif %}
+            </span>
+
+        {% endif %}
+
+
+    </button>
+
+
+
+    <!-- =================================================
+         NOTIFICATION DROPDOWN
+         ================================================= -->
+
+    <div
+        class="notification-dropdown"
+        id="notificationDropdown"
+    >
+
+
+        <div class="notification-header">
+
+            <div>
+
+                <strong>
+                    Notifications
+                </strong>
+
+                <span>
+                    Stay updated on your reports and NDMS alerts.
+                </span>
+
+            </div>
+
+
+            {% if unread_count > 0 %}
+
+                <span class="notification-count">
+                    {{ unread_count }} unread
+                </span>
+
+            {% else %}
+
+                <span class="notification-count">
+                    All caught up
+                </span>
+
+            {% endif %}
+
+
+        </div>
+
+
+        {% if unread_count > 0 %}
+
+            <form
+                action="{% url 'mark_all_notifications_read' %}"
+                method="post"
+                class="notification-mark-all-form"
+            >
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="notification-mark-all"
+                >
+                    Mark all as read
+                </button>
+
+            </form>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             NOTIFICATION LIST
+             ================================================= -->
+
+        <div class="notification-list">
+
+
+            {% for notification in notifications %}
+
+
+                {% if notification.id not in read_notification_ids %}
+
+                        <!-- Unread: clicking marks it read AND
+                             navigates, via the existing
+                             mark_notification_read endpoint (same
+                             POST-based pattern already used on the
+                             Alerts page) -- never a plain GET link
+                             for a state-changing action. -->
+
+                        <form
+                            action="{% url 'mark_notification_read' notification.id %}"
+                            method="post"
+                            class="notification-item-form"
+                        >
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="notification-item unread"
+                            >
+
+                                {% include 'reports/partials/notification_icon.html' with notification=notification %}
+
+                                <span class="notification-item-content">
+
+                                    <strong>
+                                        {{ notification.title }}
+                                    </strong>
+
+                                    <p>
+                                        {{ notification.message }}
+                                    </p>
+
+                                    <span>
+                                        {{ notification.publish_date|timesince }}
+                                        ago
+                                    </span>
+
+                                </span>
+
+                            </button>
+
+                        </form>
+
+                    {% else %}
+
+                        <!-- Already read: a plain link straight to
+                             wherever this notification points. -->
+
+                        <a
+                            href="{% if notification.report_id %}{% url 'report_detail' notification.report_id %}{% else %}{% url 'notification_detail' notification.id %}{% endif %}"
+                            class="notification-item"
+                        >
+
+                            {% include 'reports/partials/notification_icon.html' with notification=notification %}
+
+                            <div class="notification-item-content">
+
+                                <strong>
+                                    {{ notification.title }}
+                                </strong>
+
+                                <p>
+                                    {{ notification.message }}
+                                </p>
+
+                                <span>
+                                    {{ notification.publish_date|timesince }}
+                                    ago
+                                </span>
+
+                            </div>
+
+                        </a>
+
+                {% endif %}
+
+
+            {% empty %}
+
+
+                <div class="notification-empty">
+
+                    <div class="notification-empty-icon">
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9.5a6 6 0 0 1 12 0c0 2.4.5 4 1.1 5H4.9c.6-1 1.1-2.6 1.1-5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </div>
+
+                    <strong>
+                        You're all caught up
+                    </strong>
+
+                    <span>
+                        You have no new notifications right now.
+                    </span>
+
+                </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+
+        <a
+            href="{% url 'alerts' %}"
+            class="view-all-notifications"
+        >
+
+            View all alerts
+
+            <span>
+                →
+            </span>
+
+        </a>
+
+
+    </div>
+
+</div>

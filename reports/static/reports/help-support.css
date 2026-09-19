@@ -1,0 +1,2215 @@
+/* =========================================================
+   NDMS HELP & SUPPORT PAGE
+   PAGE-SPECIFIC STYLES ONLY
+   (uses --red / --navy / --text / --muted / --border /
+   --light-red / --white / --background / --soft-gray /
+   --shadow-xs / --shadow-sm / --shadow-md already defined
+   in dashboard.css)
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.hs-header {
+
+    padding:
+        26px 26px 24px;
+
+    margin-bottom:
+        22px;
+
+    background:
+        var(--navy);
+
+    border-radius:
+        14px;
+
+    box-shadow:
+        var(--shadow-md);
+
+    color:
+        var(--white);
+
+}
+
+
+.hs-header-label {
+
+    display:
+        inline-block;
+
+    color:
+        var(--c-red-300);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.hs-header h1 {
+
+    font-size:
+        calc(24px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.hs-header p {
+
+    max-width:
+        560px;
+
+    color:
+        rgba(255,255,255,.68);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.55;
+
+}
+
+
+.hs-status {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    margin-top:
+        16px;
+
+    padding:
+        7px 12px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    border-radius:
+        999px;
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    color:
+        rgba(255,255,255,.85);
+
+}
+
+
+.hs-status-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--c-green-400);
+
+    box-shadow:
+        0 0 0 3px rgba(52,211,153,.18);
+
+}
+
+
+/* =========================================================
+   SECTION TITLES (content sections below the header)
+   ========================================================= */
+
+.hs-section {
+
+    margin-bottom:
+        26px;
+
+}
+
+
+.hs-section-label {
+
+    display:
+        block;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.hs-section h2 {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(18px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+/* =========================================================
+   QUICK HELP GRID
+   ========================================================= */
+
+.hs-quick-help-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        13px;
+
+}
+
+
+.hs-quick-help-card {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    padding:
+        17px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    transition:
+        box-shadow .18s ease,
+        transform .18s ease;
+
+}
+
+
+.hs-quick-help-card:hover {
+
+    box-shadow:
+        var(--shadow-sm);
+
+    transform:
+        translateY(-2px);
+
+}
+
+
+.hs-quick-help-icon {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        34px;
+
+    height:
+        34px;
+
+    margin-bottom:
+        12px;
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+    border-radius:
+        9px;
+
+    font-size:
+        calc(15px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.hs-quick-help-card strong {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.hs-quick-help-card p {
+
+    flex:
+        1;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.55;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.hs-quick-help-card a {
+
+    align-self:
+        flex-start;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    text-decoration:
+        none;
+
+}
+
+
+.hs-quick-help-card a:hover {
+
+    color:
+        var(--red-dark);
+
+}
+
+
+/* =========================================================
+   HOW NDMS WORKS
+   ========================================================= */
+
+.hs-steps-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        13px;
+
+}
+
+
+.hs-step-card {
+
+    padding:
+        17px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+}
+
+
+.hs-step-number {
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(18px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    margin-bottom:
+        8px;
+
+}
+
+
+.hs-step-card strong {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.hs-step-card p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.55;
+
+}
+
+
+/* =========================================================
+   FAQ
+   ========================================================= */
+
+.hs-faq-list {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    overflow:
+        hidden;
+
+}
+
+
+.hs-faq-item {
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.hs-faq-item:last-child {
+
+    border-bottom:
+        none;
+
+}
+
+
+.hs-faq-question {
+
+    width:
+        100%;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    padding:
+        16px 18px;
+
+    background:
+        none;
+
+    border:
+        none;
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+}
+
+
+.hs-faq-question:hover {
+
+    background:
+        var(--soft-gray);
+
+}
+
+
+.hs-faq-icon {
+
+    flex-shrink:
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        22px;
+
+    height:
+        22px;
+
+    border-radius:
+        6px;
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(14px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    line-height:
+        1;
+
+    transition:
+        transform .2s ease;
+
+}
+
+
+.hs-faq-item[data-open="true"] .hs-faq-icon {
+
+    transform:
+        rotate(45deg);
+
+}
+
+
+.hs-faq-answer {
+
+    display:
+        grid;
+
+    grid-template-rows:
+        0fr;
+
+    transition:
+        grid-template-rows .22s ease;
+
+}
+
+
+.hs-faq-item[data-open="true"] .hs-faq-answer {
+
+    grid-template-rows:
+        1fr;
+
+}
+
+
+.hs-faq-answer-inner {
+
+    overflow:
+        hidden;
+
+}
+
+
+.hs-faq-answer p,
+.hs-faq-answer ul {
+
+    padding:
+        0 18px 18px 52px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.65;
+
+}
+
+
+.hs-faq-answer ul {
+
+    list-style:
+        none;
+
+}
+
+
+.hs-faq-answer li {
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.hs-faq-answer li strong {
+
+    color:
+        var(--navy);
+
+}
+
+
+/* =========================================================
+   CONTACT SUPPORT
+   ========================================================= */
+
+.hs-contact-card {
+
+    padding:
+        22px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+}
+
+
+.hs-contact-card > strong {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(14px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.hs-contact-card > p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.6;
+
+    margin-bottom:
+        18px;
+
+    max-width:
+        560px;
+
+}
+
+
+.hs-emergency-note {
+
+    padding:
+        14px 16px;
+
+    background:
+        var(--light-red);
+
+    border:
+        1px solid rgba(180,35,24,.18);
+
+    border-radius:
+        9px;
+
+}
+
+
+.hs-emergency-note strong {
+
+    display:
+        block;
+
+    color:
+        var(--red-dark);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.hs-emergency-note p {
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.55;
+
+}
+
+
+/* =========================================================
+   IMPORTANT / EMERGENCY NOTICE — STANDALONE VARIANT
+   (same visual language as .hs-emergency-note used inside
+   the Contact Support card, sized for its own section)
+   ========================================================= */
+
+.hs-emergency-note-standalone {
+
+    max-width:
+        720px;
+
+}
+
+
+/* =========================================================
+   BUTTON REFINEMENT — SCOPED TO THIS PAGE
+   dashboard.css's shared .primary-action/.secondary-action
+   are used site-wide and are left untouched; these rules
+   only apply inside .dashboard-main, which is unique to
+   this page's stylesheet include, so no other page is
+   affected. Calms the resting shadow (a resting shadow on
+   every button read as "heavy" for a public-service page)
+   and keeps the hover lift subtle and consistent across
+   every Report a Problem / Send a Support Request /
+   Send Support Request button on this page.
+   ========================================================= */
+
+.dashboard-main .primary-action {
+
+    box-shadow:
+        none;
+
+}
+
+
+.dashboard-main .primary-action:hover {
+
+    box-shadow:
+        0 3px 8px
+        rgba(180,35,24,.16);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+.dashboard-main .secondary-action:hover {
+
+    border-color:
+        var(--muted);
+
+}
+
+
+.dashboard-main .hs-submit-btn.is-loading:hover {
+
+    transform:
+        none;
+
+    box-shadow:
+        none;
+
+}
+
+
+/* =========================================================
+   DJANGO MESSAGES
+   (dashboard.css does not style these yet — same markup
+   and classes as the ones already used on Settings/Profile)
+   ========================================================= */
+
+.django-messages {
+
+    position: fixed;
+
+    top: 90px;
+
+    right: 25px;
+
+    z-index: 9999;
+
+    width:
+        min(420px, calc(100% - 30px));
+}
+
+
+.django-message {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow-md);
+}
+
+
+.django-message-success {
+
+    border-left:
+        4px solid
+        var(--green);
+}
+
+
+.django-message-error {
+
+    border-left:
+        4px solid
+        var(--red);
+}
+
+
+.message-icon {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--green-bg);
+
+    color: var(--green);
+
+    font-weight: 800;
+}
+
+
+.message-text {
+
+    flex: 1;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+
+    line-height: 1.5;
+
+    color: var(--text);
+
+    font-weight: 600;
+}
+
+
+.message-close {
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: calc(20px * var(--ndms-font-scale, 1));
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    padding: 2px 5px;
+}
+
+
+/* =========================================================
+   SEARCH HELP
+   ========================================================= */
+
+.hs-search-section {
+
+    margin-bottom:
+        26px;
+}
+
+
+.hs-search-wrap {
+
+    position:
+        relative;
+}
+
+
+.hs-search-box {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+
+    padding:
+        0 16px;
+
+    height:
+        48px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.hs-search-box:focus-within {
+
+    border-color:
+        var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180,35,24,.10);
+}
+
+
+.hs-search-icon {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(16px * var(--ndms-font-scale, 1));
+
+    flex-shrink:
+        0;
+}
+
+
+.hs-search-input {
+
+    flex:
+        1;
+
+    border:
+        none;
+
+    outline:
+        none;
+
+    background:
+        transparent;
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        600;
+
+    color:
+        var(--text);
+}
+
+
+.hs-search-input::placeholder {
+
+    color:
+        var(--muted);
+
+    font-weight:
+        500;
+}
+
+
+.hs-search-clear {
+
+    border:
+        none;
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--muted);
+
+    width:
+        22px;
+
+    height:
+        22px;
+
+    border-radius:
+        50%;
+
+    font-size:
+        calc(14px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1;
+
+    cursor:
+        pointer;
+
+    flex-shrink:
+        0;
+}
+
+
+.hs-search-suggestions {
+
+    position:
+        absolute;
+
+    top:
+        calc(100% + 8px);
+
+    left:
+        0;
+
+    right:
+        0;
+
+    z-index:
+        40;
+
+    max-height:
+        320px;
+
+    overflow-y:
+        auto;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-md);
+
+    padding:
+        6px;
+}
+
+
+.hs-search-suggestion {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        10px;
+
+    width:
+        100%;
+
+    padding:
+        10px 11px;
+
+    border:
+        none;
+
+    background:
+        transparent;
+
+    border-radius:
+        8px;
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .15s ease;
+}
+
+
+.hs-search-suggestion:hover,
+.hs-search-suggestion:focus,
+.hs-search-suggestion.is-active {
+
+    background:
+        var(--light-red);
+
+    outline:
+        none;
+}
+
+
+.hs-search-suggestion-icon {
+
+    flex-shrink:
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        26px;
+
+    height:
+        26px;
+
+    margin-top:
+        1px;
+
+    border-radius:
+        7px;
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+}
+
+
+.hs-search-suggestion-text {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+}
+
+
+.hs-search-suggestion-question {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    line-height:
+        1.45;
+}
+
+
+.hs-search-suggestion-question mark {
+
+    background:
+        rgba(180,35,24,.16);
+
+    color:
+        var(--red-dark);
+
+    border-radius:
+        3px;
+
+    padding:
+        0 1px;
+}
+
+.hs-search-suggestion-answer {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    line-height: 1.5;
+}
+
+.hs-search-suggestions-label {
+
+    padding:
+        8px 11px 4px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        .04em;
+
+    text-transform:
+        uppercase;
+}
+
+
+.hs-search-suggestions-empty {
+
+    padding:
+        14px 12px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    text-align:
+        center;
+}
+
+
+.hs-search-hint {
+
+    margin-top:
+        8px;
+
+    padding-left:
+        4px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    min-height:
+        13px;
+}
+
+
+.hs-search-empty {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    text-align:
+        center;
+
+    gap:
+        6px;
+
+    padding:
+        34px 20px;
+
+    margin-bottom:
+        26px;
+
+    background:
+        var(--white);
+
+    border:
+        1px dashed var(--border);
+
+    border-radius:
+        11px;
+}
+
+
+/* Author `display: flex` above otherwise always beats the
+   browser's built-in `[hidden] { display: none }` rule, so
+   the box would stay visible even after JS/HTML sets the
+   `hidden` attribute. This restores that behavior. */
+
+.hs-search-empty[hidden] {
+
+    display:
+        none;
+
+}
+
+
+.hs-search-empty-icon {
+
+    font-size:
+        calc(22px * var(--ndms-font-scale, 1));
+
+    color:
+        var(--muted);
+
+    margin-bottom:
+        4px;
+}
+
+
+.hs-search-empty strong {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+}
+
+
+.hs-search-empty p {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    margin-bottom:
+        10px;
+}
+
+
+.hs-search-empty-topics {
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    margin-bottom:
+        16px;
+}
+
+
+.hs-search-empty-topic {
+
+    padding:
+        7px 14px;
+
+    background:
+        var(--soft-gray);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        999px;
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    color:
+        var(--navy);
+
+    text-decoration:
+        none;
+
+    transition:
+        background 0.15s ease, border-color 0.15s ease;
+}
+
+
+.hs-search-empty-topic:hover {
+
+    background:
+        var(--white);
+
+    border-color:
+        var(--red);
+
+    color:
+        var(--red);
+}
+
+
+.hs-search-empty-cta-label {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    margin-bottom:
+        4px;
+}
+
+
+/* =========================================================
+   WAS THIS HELPFUL
+   ========================================================= */
+
+.hs-helpful {
+
+    margin-bottom:
+        26px;
+
+    padding:
+        18px 20px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+}
+
+
+.hs-helpful-prompt {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        14px;
+
+    flex-wrap:
+        wrap;
+}
+
+
+.hs-helpful-prompt > span {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+}
+
+
+.hs-helpful-buttons {
+
+    display:
+        flex;
+
+    gap:
+        10px;
+}
+
+
+.hs-helpful-btn {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    padding:
+        8px 16px;
+
+    background:
+        var(--background);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    cursor:
+        pointer;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        transform .18s ease;
+}
+
+
+.hs-helpful-btn:hover {
+
+    background:
+        var(--light-red);
+
+    border-color:
+        rgba(180,35,24,.2);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.hs-helpful-response {
+
+    margin-top:
+        14px;
+
+    padding-top:
+        14px;
+
+    border-top:
+        1px solid var(--border);
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.6;
+}
+
+
+.hs-helpful-response-yes {
+
+    color:
+        var(--green);
+
+    font-weight:
+        700;
+}
+
+
+.hs-helpful-response-no p {
+
+    color:
+        var(--text);
+
+    margin-bottom:
+        12px;
+}
+
+
+/* =========================================================
+   REPORT A PROBLEM
+   ========================================================= */
+
+.hs-report-intro {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.6;
+
+    margin-bottom:
+        18px;
+
+    max-width:
+        560px;
+}
+
+
+.hs-report-form {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        16px;
+
+    padding:
+        22px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+}
+
+
+.hs-form-group {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        6px;
+}
+
+
+.hs-form-label {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+}
+
+
+.hs-required {
+
+    color:
+        var(--red);
+}
+
+
+.hs-optional {
+
+    color:
+        var(--muted);
+
+    font-weight:
+        500;
+
+    text-transform:
+        none;
+
+    letter-spacing:
+        0;
+}
+
+
+.hs-select,
+.hs-input,
+.hs-textarea {
+
+    width:
+        100%;
+
+    padding:
+        11px 13px;
+
+    background:
+        var(--background);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(12.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        600;
+
+    font-family:
+        inherit;
+
+    outline:
+        none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.hs-select:focus,
+.hs-input:focus,
+.hs-textarea:focus {
+
+    border-color:
+        var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180,35,24,.10);
+}
+
+
+.hs-textarea {
+
+    resize:
+        vertical;
+
+    min-height:
+        110px;
+
+    line-height:
+        1.55;
+}
+
+
+.hs-field-error {
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+}
+
+
+.hs-hint {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+}
+
+
+.hs-file-upload {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    flex-wrap:
+        wrap;
+}
+
+
+.hs-file-upload-btn {
+
+    cursor:
+        pointer;
+}
+
+
+.hs-file-input {
+
+    position:
+        absolute;
+
+    width:
+        1px;
+
+    height:
+        1px;
+
+    padding:
+        0;
+
+    margin:
+        -1px;
+
+    overflow:
+        hidden;
+
+    clip:
+        rect(0, 0, 0, 0);
+
+    white-space:
+        nowrap;
+
+    border:
+        0;
+}
+
+
+.hs-file-upload-name {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        600;
+}
+
+
+.hs-submit-btn {
+
+    align-self:
+        flex-start;
+
+    margin-top:
+        4px;
+}
+
+
+.hs-submit-btn.is-loading {
+
+    opacity:
+        0.7;
+
+    cursor:
+        not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .hs-quick-help-grid,
+    .hs-steps-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .hs-header {
+
+        padding:
+            22px 18px 20px;
+
+    }
+
+    .hs-header h1 {
+
+        font-size:
+            calc(19px * var(--ndms-font-scale, 1));
+
+    }
+
+    .hs-quick-help-grid,
+    .hs-steps-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .hs-faq-answer p,
+    .hs-faq-answer ul {
+
+        padding-left:
+            18px;
+
+    }
+
+    .django-messages {
+
+        top:
+            76px;
+
+        right:
+            12px;
+
+        left:
+            12px;
+
+        width:
+            auto;
+
+    }
+
+    .hs-helpful-prompt {
+
+        flex-direction:
+            column;
+
+        align-items:
+            flex-start;
+
+    }
+
+    .hs-report-form {
+
+        padding:
+            18px;
+
+    }
+
+    .hs-submit-btn {
+
+        align-self:
+            stretch;
+
+    }
+
+}
+
+/* =========================================================
+   MY SUPPORT REQUESTS (Phase A)
+   Same card language as .hs-quick-help-card above; reuses the
+   existing .status / .status.pending / .status.under-review /
+   .status.verified pills already defined in dashboard.css.
+   ========================================================= */
+
+.hs-support-request-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        12px;
+
+}
+
+
+.hs-support-request-card {
+
+    padding:
+        16px 17px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+}
+
+
+.hs-sr-top {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        10px;
+
+    flex-wrap:
+        wrap;
+
+    margin-bottom:
+        6px;
+
+}
+
+
+.hs-sr-subject {
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+
+    color:
+        var(--text);
+
+}
+
+
+.hs-sr-meta {
+
+    font-size:
+        11px;
+
+    font-weight:
+        550;
+
+    color:
+        var(--muted);
+
+    margin-bottom:
+        10px;
+
+}
+
+
+.hs-sr-response {
+
+    padding:
+        12px 13px;
+
+    background:
+        var(--soft-gray);
+
+    border-radius:
+        9px;
+
+}
+
+
+.hs-sr-response-label {
+
+    display:
+        block;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        .3px;
+
+    text-transform:
+        uppercase;
+
+    color:
+        var(--muted);
+
+    margin-bottom:
+        5px;
+
+}
+
+
+.hs-sr-response p {
+
+    font-size:
+        11.5px;
+
+    font-weight:
+        500;
+
+    line-height:
+        1.55;
+
+    color:
+        var(--text);
+
+    white-space:
+        pre-line;
+
+}
+
+
+.hs-sr-awaiting {
+
+    font-size:
+        11px;
+
+    font-weight:
+        550;
+
+    color:
+        var(--muted);
+
+    font-style:
+        italic;
+
+}

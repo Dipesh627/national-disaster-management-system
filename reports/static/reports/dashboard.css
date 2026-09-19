@@ -1,0 +1,4874 @@
+/* =========================================================
+   NDMS DASHBOARD
+   PROFESSIONAL CITIZEN DASHBOARD
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT
+   ========================================================= */
+
+:root {
+
+    --red: #b42318;
+    --red-dark: #8f1d16;
+
+    --navy: #172033;
+    --navy-light: #202b40;
+    --navy-soft: #2b364b;
+
+    --text: #344054;
+    --muted: #667085;
+
+    --border: #e4e7ec;
+
+    --light-red: #fff7f6;
+    --white: #ffffff;
+
+    --background: #f8f9fb;
+    --soft-gray: #f2f4f7;
+
+    --green: #16794a;
+    --green-bg: #ecfdf3;
+
+    --orange: #b54708;
+    --orange-bg: #fffaeb;
+
+    --shadow-xs:
+        0 2px 8px rgba(23, 32, 51, .035);
+
+    --shadow-sm:
+        0 4px 14px rgba(23, 32, 51, .055);
+
+    --shadow-md:
+        0 10px 30px rgba(23, 32, 51, .075);
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+
+
+html {
+
+    scroll-behavior: smooth;
+
+}
+
+
+body {
+
+    margin: 0;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background:
+        var(--background);
+
+    color:
+        var(--text);
+
+    line-height:
+        1.6;
+
+    font-size:
+        calc(15px * var(--ndms-font-scale, 1));
+
+    -webkit-font-smoothing:
+        antialiased;
+
+    overflow-x:
+        hidden;
+
+}
+
+
+body.sidebar-open {
+
+    overflow:
+        hidden;
+
+}
+
+
+a {
+
+    color:
+        inherit;
+
+    text-decoration:
+        none;
+
+}
+
+
+button {
+
+    font-family:
+        inherit;
+
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.dashboard-sidebar {
+
+    position:
+        fixed;
+
+    top:
+        0;
+
+    left:
+        0;
+
+    width:
+        255px;
+
+    /* Fallback for browsers without dvh support. Kept first so it
+       is simply overridden, never relied on, where dvh works. */
+    height:
+        100vh;
+
+    /* 100vh on mobile browsers is sized to the LARGEST possible
+       viewport (address bar hidden), not the one actually visible.
+       Because this sidebar is position:fixed, any extra height it
+       gains from that mismatch renders below the visible screen
+       instead of becoming scrollable — which is why the
+       .sidebar-footer ("Back to Website") could disappear off the
+       bottom of the drawer with no way to reach it. 100dvh tracks
+       the real, currently-visible viewport instead. */
+    height:
+        100dvh;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    min-height:
+        0;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--navy-light);
+
+    color:
+        var(--white);
+
+    z-index:
+        1100;
+
+    border-right:
+        1px solid
+        rgba(255,255,255,.06);
+
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.dashboard-brand {
+
+    min-height:
+        78px;
+
+    /* Brand must stay pinned to the top at full size — never
+       compressed by the flex column when navigation content is
+       tall. (min-height already blocked visible shrinking; this
+       makes that intent explicit.) */
+    flex-shrink:
+        0;
+
+    padding:
+        0 22px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        11px;
+
+    border-bottom:
+        1px solid
+        rgba(255,255,255,.07);
+
+}
+
+
+.dashboard-logo {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border-radius:
+        8px;
+
+    background:
+        var(--red);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    color:
+        var(--white);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        .6px;
+
+    flex-shrink:
+        0;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.dashboard-brand:hover .dashboard-logo {
+
+    background:
+        var(--red-dark);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 6px 16px
+        rgba(180,35,24,.28);
+
+}
+
+
+.dashboard-brand-text {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    min-width:
+        0;
+
+}
+
+
+.dashboard-brand-text strong {
+
+    font-size:
+        calc(18px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.15;
+
+    letter-spacing:
+        .2px;
+
+}
+
+
+.dashboard-brand-text span {
+
+    margin-top:
+        4px;
+
+    color:
+        rgba(255,255,255,.52);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.25;
+
+}
+
+
+/* =========================================================
+   SIDEBAR NAV
+   ========================================================= */
+
+.sidebar-navigation {
+
+    flex:
+        1 1 auto;
+
+    min-height:
+        0;
+
+    padding:
+        16px 12px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        1px;
+
+    overflow-x:
+        hidden;
+
+    overflow-y:
+        auto;
+
+    overscroll-behavior:
+        contain;
+
+    -webkit-overflow-scrolling:
+        touch;
+
+}
+
+
+/* slim, near-invisible scrollbar — premium, matches admin sidebar */
+
+.sidebar-navigation::-webkit-scrollbar {
+
+    width:
+        4px;
+
+}
+
+
+.sidebar-navigation::-webkit-scrollbar-track {
+
+    background:
+        transparent;
+
+}
+
+
+.sidebar-navigation::-webkit-scrollbar-thumb {
+
+    background:
+        rgba(255,255,255,.12);
+
+    border-radius:
+        10px;
+
+}
+
+
+.sidebar-navigation::-webkit-scrollbar-thumb:hover {
+
+    background:
+        rgba(255,255,255,.22);
+
+}
+
+
+.sidebar-navigation {
+
+    scrollbar-width:
+        thin;
+
+    scrollbar-color:
+        rgba(255,255,255,.14) transparent;
+
+}
+
+
+.sidebar-section-title {
+
+    display:
+        block;
+
+    padding:
+        0 11px;
+
+    margin:
+        4px 0 6px;
+
+    color:
+        rgba(255,255,255,.38);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        1.2px;
+
+}
+
+
+.sidebar-link {
+
+    position:
+        relative;
+
+    min-height:
+        40px;
+
+    padding:
+        0 11px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    color:
+        rgba(255,255,255,.68);
+
+    border-radius:
+        8px;
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        650;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+
+.sidebar-link:hover {
+
+    color:
+        var(--white);
+
+    background:
+        rgba(255,255,255,.065);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.035);
+
+}
+
+
+.sidebar-link.active {
+
+    color:
+        var(--white);
+
+    background:
+        linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.045);
+
+    font-weight:
+        600;
+
+}
+
+
+.sidebar-link.active::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        0;
+
+    top:
+        8px;
+
+    bottom:
+        8px;
+
+    width:
+        3px;
+
+    border-radius:
+        0 3px 3px 0;
+
+    background:
+        var(--red);
+
+}
+
+
+.sidebar-icon {
+
+    width:
+        19px;
+
+    height:
+        19px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-shrink:
+        0;
+
+}
+
+
+
+
+.sidebar-badge {
+
+    margin-left:
+        auto;
+
+    min-width:
+        21px;
+
+    height:
+        21px;
+
+    padding:
+        0 6px;
+
+    border-radius:
+        20px;
+
+    background:
+        var(--red);
+
+    color:
+        var(--white);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.sidebar-divider {
+
+    height:
+        1px;
+
+    margin:
+        7px 10px;
+
+    background:
+        rgba(255,255,255,.07);
+
+}
+
+
+/* =========================================================
+   SIDEBAR FOOTER
+   Deliberately lighter than the Admin sidebar footer
+   (dashboard-shell.css) — this is a single low-emphasis
+   "leave the app" link, so it borrows the same flat,
+   restrained treatment as a regular .sidebar-link instead
+   of a bordered/shadowed card.
+   ========================================================= */
+
+.sidebar-footer {
+
+    flex: 0 0 auto;
+
+    /* Base bottom padding unchanged (14px); env() only adds extra
+       space on devices with a real bottom safe area (e.g. a home
+       indicator), and resolves to 0 everywhere else, so existing
+       spacing on other devices/desktop is untouched. */
+    padding: 22px 12px calc(14px + env(safe-area-inset-bottom, 0px));
+
+    border-top:
+        1px solid rgba(255,255,255,.08);
+
+}
+
+
+.sidebar-footer-link {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    width: 100%;
+    padding: 9px 10px;
+
+    border-radius: 8px;
+
+    color: rgba(255,255,255,.68);
+
+    text-decoration: none;
+
+    transition:
+        background .2s ease,
+        color .2s ease;
+
+}
+
+
+.sidebar-footer-link:hover,
+.sidebar-footer-link:focus-visible {
+
+    background:
+        rgba(255,255,255,.065);
+
+    color: var(--white);
+
+}
+
+
+.sidebar-footer-link:focus-visible {
+
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+
+}
+
+
+.sidebar-footer-icon {
+
+    width: 25px;
+    height: 25px;
+
+    flex: 0 0 25px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 6px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    color: rgba(255,255,255,.64);
+
+    transition:
+        color .2s ease,
+        background .2s ease;
+
+}
+
+
+.sidebar-footer-icon svg {
+
+    width: 14px;
+    height: 14px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+}
+
+
+.sidebar-footer-link:hover .sidebar-footer-icon,
+.sidebar-footer-link:focus-visible .sidebar-footer-icon {
+
+    background: var(--red);
+
+    color: var(--white);
+
+}
+
+
+.sidebar-footer-copy {
+
+    min-width: 0;
+    flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+
+}
+
+
+.sidebar-footer-title {
+
+    display: block;
+
+    color: rgba(255,255,255,.92);
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+
+.sidebar-footer-subtitle {
+
+    display: block;
+
+    color: rgba(255,255,255,.5);
+
+    font-size: calc(8.5px * var(--ndms-font-scale, 1));
+    font-weight: 500;
+    line-height: 1.25;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+
+.sidebar-footer-arrow {
+
+    width: 20px;
+    height: 20px;
+
+    margin-left: auto;
+    flex: 0 0 20px;
+
+    display: grid;
+    place-items: center;
+
+    color: rgba(255,255,255,.45);
+
+    transition:
+        color .2s ease,
+        transform .2s ease;
+
+}
+
+
+.sidebar-footer-arrow svg {
+
+    width: 12px;
+    height: 12px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+}
+
+
+.sidebar-footer-link:hover .sidebar-footer-arrow,
+.sidebar-footer-link:focus-visible .sidebar-footer-arrow {
+
+    color: var(--white);
+
+    transform: translateX(2px);
+
+}
+
+
+/* =========================================================
+   MAIN WRAPPER
+   ========================================================= */
+
+.dashboard-wrapper {
+
+    min-height:
+        100vh;
+
+    margin-left:
+        255px;
+
+}
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.dashboard-topbar {
+
+    height:
+        78px;
+
+    padding:
+        0 30px;
+
+    background:
+        rgba(255,255,255,.97);
+
+    border-bottom:
+        1px solid var(--border);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    position:
+        sticky;
+
+    top:
+        0;
+
+    z-index:
+        900;
+
+    backdrop-filter:
+        blur(12px);
+
+}
+
+
+.topbar-left {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        15px;
+
+}
+
+
+.page-heading > span {
+
+    display:
+        block;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.page-heading h1 {
+
+    margin:
+        1px 0 0;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(21px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.25;
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR BUTTON
+   ========================================================= */
+
+.mobile-sidebar-toggle {
+
+    display:
+        none;
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    background:
+        var(--white);
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    flex-direction:
+        column;
+
+    gap:
+        5px;
+
+    cursor:
+        pointer;
+
+}
+
+
+.mobile-sidebar-toggle span {
+
+    width:
+        18px;
+
+    height:
+        2px;
+
+    border-radius:
+        2px;
+
+    background:
+        var(--navy);
+
+    transition:
+        transform .25s ease,
+        opacity .2s ease;
+
+}
+
+
+/* =========================================================
+   TOPBAR RIGHT
+   ========================================================= */
+
+.topbar-right {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        18px;
+
+}
+
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
+
+.notification-wrapper {
+
+    position:
+        relative;
+
+}
+
+
+/* Same box model + hover language as the Administration
+   topbar's .topbar-icon-button (dashboard-shell.css): no
+   border, transparent by default, plain gray hover fill --
+   not the previous bordered-white-box + red-tinted hover. */
+.notification-button {
+
+    position:
+        relative;
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    border:
+        none;
+
+    border-radius:
+        9px;
+
+    background:
+        transparent;
+
+    color:
+        var(--muted);
+
+    cursor:
+        pointer;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    transition:
+        background .2s ease,
+        color .2s ease;
+
+}
+
+
+.notification-button:hover {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+}
+
+
+.notification-button:focus-visible {
+
+    outline: 2px solid rgba(180,35,24,.55);
+    outline-offset: 2px;
+
+}
+
+
+.notification-icon {
+
+    font-size:
+        calc(21px * var(--ndms-font-scale, 1));
+
+    transform:
+        rotate(45deg);
+
+}
+
+
+.notification-badge {
+
+    position:
+        absolute;
+
+    top:
+        -4px;
+
+    right:
+        -4px;
+
+    min-width:
+        18px;
+
+    height:
+        18px;
+
+    padding:
+        0 4px;
+
+    border:
+        2px solid var(--white);
+
+    border-radius:
+        50px;
+
+    background:
+        var(--red);
+
+    color:
+        var(--white);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    animation:
+        notification-pulse
+        3s
+        ease-in-out
+        infinite;
+
+}
+
+
+@keyframes notification-pulse {
+
+    0%,
+    70%,
+    100% {
+
+        box-shadow:
+            0 0 0 0
+            rgba(180,35,24,.15);
+
+    }
+
+    80% {
+
+        box-shadow:
+            0 0 0 5px
+            rgba(180,35,24,.05);
+
+    }
+
+}
+
+
+/* =========================================================
+   NOTIFICATION DROPDOWN
+   ========================================================= */
+
+.notification-dropdown {
+
+    position:
+        absolute;
+
+    top:
+        calc(100% + 12px);
+
+    right:
+        0;
+
+    width:
+        380px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        12px;
+
+    box-shadow:
+        0 18px 45px
+        rgba(23,32,51,.14);
+
+    overflow:
+        hidden;
+
+    opacity:
+        0;
+
+    visibility:
+        hidden;
+
+    pointer-events:
+        none;
+
+    transform:
+        translateY(-6px);
+
+    transition:
+        opacity .2s ease,
+        visibility .2s ease,
+        transform .2s ease;
+
+}
+
+
+.notification-dropdown.show {
+
+    opacity:
+        1;
+
+    visibility:
+        visible;
+
+    pointer-events:
+        auto;
+
+    transform:
+        translateY(0);
+
+}
+
+
+.notification-header {
+
+    padding:
+        16px 17px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    border-bottom:
+        1px solid var(--border);
+
+}
+
+
+.notification-header strong {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+}
+
+
+.notification-header span {
+
+    display:
+        block;
+
+    margin-top:
+        2px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+}
+
+
+.notification-header .notification-count {
+
+    margin:
+        0;
+
+    padding:
+        4px 8px;
+
+    border-radius:
+        20px;
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.notification-item {
+
+    padding:
+        13px 16px;
+
+    display:
+        flex;
+
+    gap:
+        11px;
+
+    border-bottom:
+        1px solid var(--c-surface-8);
+
+    transition:
+        background .2s ease;
+
+}
+
+
+.notification-item:hover {
+
+    background:
+        var(--c-surface-1);
+
+}
+
+
+.notification-item-icon {
+
+    width:
+        31px;
+
+    height:
+        31px;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        8px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.notification-item-content {
+
+    min-width:
+        0;
+
+}
+
+
+.notification-item-content strong {
+
+    display:
+        block;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+.notification-item-content p {
+
+    margin:
+        2px 0;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.45;
+
+}
+
+
+.notification-item-content span {
+
+    color:
+        var(--c-muted-2);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+}
+
+
+.notification-item.unread::after {
+
+    content:
+        "";
+
+    width:
+        5px;
+
+    height:
+        5px;
+
+    flex-shrink:
+        0;
+
+    margin:
+        5px 0 0 auto;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--red);
+
+}
+
+
+.notification-empty {
+
+    min-height:
+        135px;
+
+    padding:
+        22px 15px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+}
+
+
+.notification-empty-icon {
+
+    width:
+        35px;
+
+    height:
+        35px;
+
+    margin-bottom:
+        8px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--green-bg);
+
+    color:
+        var(--green);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(14px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.notification-empty strong {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+.notification-empty span {
+
+    margin-top:
+        2px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+}
+
+
+.view-all-notifications {
+
+    height:
+        43px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        7px;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    background:
+        var(--c-red-20);
+
+}
+
+
+.view-all-notifications:hover {
+
+    background:
+        var(--light-red);
+
+}
+
+
+/* =========================================================
+   USER
+   ========================================================= */
+
+.topbar-user {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+    padding-left:
+        16px;
+
+    border-left:
+        1px solid var(--border);
+
+}
+
+
+.user-avatar {
+
+    width:
+        38px;
+
+    height:
+        38px;
+
+    border-radius:
+        50%;
+
+    overflow:
+        hidden;
+
+    background:
+        var(--red);
+
+    color:
+        var(--white);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+.user-avatar img {
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+}
+
+
+.user-details strong {
+
+    display:
+        block;
+
+    max-width:
+        150px;
+
+    overflow:
+        hidden;
+
+    text-overflow:
+        ellipsis;
+
+    white-space:
+        nowrap;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+.user-details span {
+
+    display:
+        block;
+
+    margin-top:
+        1px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+}
+
+
+.user-arrow {
+
+    color:
+        var(--c-muted-2);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.dashboard-main {
+
+    width:
+        min(1220px, calc(100% - 52px));
+
+    margin:
+        0 auto;
+
+    padding:
+        30px 0 55px;
+
+}
+
+
+/* =========================================================
+   WELCOME
+   ========================================================= */
+
+.welcome-section {
+
+    min-height:
+        auto;
+
+    padding:
+        16px 24px;
+
+    /* Flat fill, not a gradient -- matches the NDMS design
+       system's existing flat-card language and themes correctly
+       across Light / Dark / High Contrast (--c-red-20 is redefined
+       per theme in citizen-prefs.css). */
+    background:
+        var(--c-red-20);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        15px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    box-shadow:
+        var(--shadow-xs);
+
+}
+
+
+.welcome-section::before {
+
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        380px;
+
+    height:
+        380px;
+
+    right:
+        -160px;
+
+    top:
+        -190px;
+
+    border-radius:
+        50%;
+
+    border:
+        1px solid
+        rgba(180,35,24,.06);
+
+}
+
+
+.welcome-content {
+
+    position:
+        relative;
+
+    z-index:
+        5;
+
+    max-width:
+        690px;
+
+}
+
+
+.welcome-label {
+
+    display:
+        block;
+
+    margin-bottom:
+        5px;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.4px;
+
+}
+
+
+.welcome-content h2 {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(19px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.2;
+
+    font-weight:
+        800;
+
+    margin-bottom:
+        4px;
+
+}
+
+
+.welcome-content p {
+
+    max-width:
+        560px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.5;
+
+    margin-bottom:
+        12px;
+
+}
+
+
+
+.welcome-actions {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        9px;
+
+}
+
+
+.primary-action,
+.secondary-action {
+
+    min-height:
+        36px;
+
+    padding:
+        0 15px;
+
+    border-radius:
+        7px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        8px;
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.primary-action {
+
+    color:
+        var(--white);
+
+    background:
+        var(--red);
+
+    box-shadow:
+        0 5px 14px
+        rgba(180,35,24,.14);
+
+}
+
+
+.primary-action:hover {
+
+    background:
+        var(--red-dark);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 7px 18px
+        rgba(180,35,24,.20);
+
+}
+
+
+.secondary-action {
+
+    color:
+        var(--navy);
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+}
+
+
+.secondary-action:hover {
+
+    background:
+        var(--soft-gray);
+
+    transform:
+        translateY(-1px);
+
+}
+
+
+/* =========================================================
+   NDMS RESPONSE NETWORK
+   ORIGINAL DASHBOARD ANIMATION
+   ========================================================= */
+
+.welcome-symbol {
+
+    width: 178px;
+    height: 156px;
+
+    flex-shrink: 0;
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 4px;
+
+    z-index: 3;
+
+    isolation: isolate;
+
+    /* preserves the exact original animation —
+       only the visual footprint is scaled down
+       so the welcome card can be more compact */
+    transform: scale(.82);
+
+    background:
+        linear-gradient(
+            35deg,
+            transparent 49.5%,
+            rgba(180, 35, 24, .10) 50%,
+            transparent 50.5%
+        )
+        0 0 / 100% 100% no-repeat;
+}
+
+
+/* OUTER CIRCLE */
+
+.welcome-symbol::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(23, 32, 51, .08);
+
+    animation:
+        network-breathe
+        6s
+        ease-in-out
+        infinite;
+}
+
+
+/* ROTATING DASHED CIRCLE */
+
+.welcome-symbol::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 145px;
+    height: 145px;
+
+    border-radius: 50%;
+
+    border:
+        1px dashed
+        rgba(180, 35, 24, .18);
+
+    animation:
+        network-drift
+        18s
+        linear
+        infinite;
+}
+
+
+/* =========================================================
+   CENTRAL RING
+   ========================================================= */
+
+.symbol-ring {
+
+    width: 82px;
+    height: 82px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255, 255, 255, .98);
+
+    border:
+        1px solid
+        rgba(23, 32, 51, .13);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+
+    z-index: 10;
+
+    box-shadow:
+
+        0 14px 35px
+        rgba(23, 32, 51, .10),
+
+        0 0 0 22px
+        rgba(180, 35, 24, .025);
+
+    animation:
+        central-float
+        5s
+        ease-in-out
+        infinite;
+}
+
+
+/* INNER PULSE */
+
+.symbol-ring::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 7px;
+
+    border-radius: 50%;
+
+    border:
+        1px solid
+        rgba(180, 35, 24, .25);
+
+    animation:
+        core-pulse
+        3.5s
+        ease-in-out
+        infinite;
+}
+
+
+/* RADAR ROTATION */
+
+.symbol-ring::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -11px;
+
+    border-radius: 50%;
+
+    border:
+        2px solid transparent;
+
+    border-top-color:
+        rgba(180, 35, 24, .42);
+
+    border-right-color:
+        rgba(180, 35, 24, .08);
+
+    animation:
+        radar-scan
+        8s
+        linear
+        infinite;
+}
+
+
+/* CENTER TEXT */
+
+.symbol-ring span {
+
+    position: relative;
+
+    z-index: 20;
+
+    color: var(--navy);
+
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+
+    font-weight: 850;
+
+    letter-spacing: 1.3px;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes network-breathe {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+
+        opacity: .72;
+    }
+
+    50% {
+
+        transform: scale(1.035);
+
+        opacity: 1;
+    }
+}
+
+
+@keyframes network-drift {
+
+    from {
+
+        transform: rotate(0deg);
+    }
+
+    to {
+
+        transform: rotate(360deg);
+    }
+}
+
+
+@keyframes central-float {
+
+    0%,
+    100% {
+
+        transform: translateY(0);
+    }
+
+    50% {
+
+        transform: translateY(-7px);
+    }
+}
+
+
+@keyframes core-pulse {
+
+    0%,
+    100% {
+
+        transform: scale(1);
+
+        opacity: .55;
+    }
+
+    50% {
+
+        transform: scale(1.08);
+
+        opacity: 1;
+    }
+}
+
+
+@keyframes radar-scan {
+
+    from {
+
+        transform: rotate(0deg);
+    }
+
+    to {
+
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================================================
+   SECTION HEADINGS
+   ========================================================= */
+
+.stats-section,
+.quick-services,
+.recent-section,
+.active-disasters-section,
+.alerts-section {
+
+    margin-top:
+        34px;
+
+}
+
+
+.section-title-row {
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.section-title-row > div > span {
+
+    display:
+        block;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.section-title-row h2 {
+
+    margin-top:
+        2px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(20px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.25;
+
+    font-weight:
+        800;
+
+}
+
+
+.section-view-link {
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    transition:
+        color .18s ease;
+
+}
+
+
+.section-view-link:hover {
+
+    color:
+        var(--red-dark);
+
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.stats-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap:
+        13px;
+
+}
+
+
+/* =========================================================
+   STAT CARDS
+   Visual language matches the Admin Disaster Reports summary
+   cards (.dr-summary-card): left accent bar, no icon block,
+   compact label / value / meta stack.
+   ========================================================= */
+
+.stat-card {
+
+    position: relative;
+
+    min-width: 0;
+    min-height: 104px;
+
+    padding: 15px 16px 15px 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    box-shadow: var(--shadow-xs);
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.stat-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 13px;
+    bottom: 13px;
+
+    width: 3px;
+
+    border-radius: 0 3px 3px 0;
+
+    background: var(--navy);
+
+}
+
+
+.stats-grid .stat-card:nth-child(2)::before {
+
+    background: var(--orange);
+
+}
+
+
+.stats-grid .stat-card:nth-child(3)::before {
+
+    background: var(--navy-light);
+
+}
+
+
+.stats-grid .stat-card:nth-child(4)::before {
+
+    background: var(--green);
+
+}
+
+
+.stat-card:hover {
+
+    transform: translateY(-1px);
+
+    border-color: var(--c-border-5);
+
+    box-shadow: 0 6px 18px rgba(16,24,40,.055);
+
+}
+
+
+.stat-label {
+
+    display: block;
+
+    color: var(--muted);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    line-height: 1.25;
+
+}
+
+
+.stat-number {
+
+    display: block;
+
+    margin-top: 7px;
+
+    color: var(--navy);
+
+    font-size: calc(24px * var(--ndms-font-scale, 1));
+    line-height: 1;
+    font-weight: 750;
+    letter-spacing: -.025em;
+
+}
+
+
+.stat-card p {
+
+    display: block;
+
+    margin-top: 5px;
+
+    color: var(--muted);
+
+    font-size: calc(9px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   SERVICES
+   ========================================================= */
+
+.services-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap:
+        13px;
+
+}
+
+
+.service-card {
+
+    min-height:
+        132px;
+
+    padding:
+        19px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    display:
+        flex;
+
+    gap:
+        14px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        border-color .2s ease;
+
+}
+
+
+.service-card:hover {
+
+    transform:
+        translateY(-3px);
+
+    border-color:
+        var(--c-border-4);
+
+    box-shadow:
+        var(--shadow-md);
+
+}
+
+
+.service-icon {
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        9px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(17px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    transition:
+        transform .2s ease;
+
+}
+
+
+.service-card:hover .service-icon {
+
+    transform:
+        scale(1.07);
+
+}
+
+
+.service-icon.red {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.service-icon.navy {
+
+    color:
+        var(--navy);
+
+    background:
+        var(--soft-gray);
+
+}
+
+
+.service-icon.soft {
+
+    color:
+        var(--red);
+
+    background:
+        var(--c-red-20);
+
+}
+
+
+.service-icon.gray {
+
+    color:
+        var(--muted);
+
+    background:
+        var(--soft-gray);
+
+}
+
+
+.service-content {
+
+    min-width:
+        0;
+
+}
+
+
+.service-content h3 {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.35;
+
+}
+
+
+.service-content p {
+
+    margin:
+        5px 0 8px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.5;
+
+}
+
+
+.service-content span {
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+}
+
+
+/* =========================================================
+   REPORT TABLE
+   ========================================================= */
+
+.reports-card {
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    overflow:
+        hidden;
+
+}
+
+
+.reports-table-wrapper {
+
+    width:
+        100%;
+
+    overflow-x:
+        auto;
+
+}
+
+
+.reports-table {
+
+    width:
+        100%;
+
+    border-collapse:
+        collapse;
+
+    min-width:
+        700px;
+
+}
+
+
+.reports-table th {
+
+    height:
+        45px;
+
+    padding:
+        0 17px;
+
+    text-align:
+        left;
+
+    background:
+        var(--c-surface-4);
+
+    border-bottom:
+        1px solid var(--border);
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .4px;
+
+}
+
+
+.reports-table td {
+
+    height:
+        54px;
+
+    padding:
+        0 17px;
+
+    border-bottom:
+        1px solid var(--c-surface-8);
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+}
+
+
+.reports-table tbody tr:last-child td {
+
+    border-bottom:
+        0;
+
+}
+
+
+.reports-table tbody tr:nth-child(even) {
+
+    background:
+        var(--c-surface-3);
+
+}
+
+
+.reports-table tbody tr {
+
+    transition:
+        background .15s ease;
+
+}
+
+
+.reports-table tbody tr:hover {
+
+    background:
+        var(--c-surface-6);
+
+}
+
+
+.reports-table td strong {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-variant-numeric:
+        tabular-nums;
+
+}
+
+
+.report-id {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    font-variant-numeric:
+        tabular-nums;
+
+    text-decoration:
+        none;
+
+    transition:
+        color .15s ease;
+
+}
+
+
+.report-id:hover {
+
+    color:
+        var(--red);
+
+    text-decoration:
+        underline;
+
+}
+
+
+.mr-date-unset {
+
+    color:
+        var(--muted);
+
+}
+
+
+.status {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    padding:
+        4px 10px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    letter-spacing:
+        .2px;
+
+}
+
+
+.status.verified {
+
+    color:
+        var(--green);
+
+    background:
+        var(--green-bg);
+
+}
+
+
+.status.pending {
+
+    color:
+        var(--orange);
+
+    background:
+        var(--orange-bg);
+
+}
+
+
+.status.rejected {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.status.under-review {
+
+    color:
+        var(--navy-light);
+
+    background:
+        var(--soft-gray);
+
+}
+
+
+/* =========================================================
+   REPORTED SEVERITY BADGE
+   Same pill shape as .status above, used wherever a citizen's
+   reported incident severity (DisasterReport.reported_severity)
+   is shown outside the Report Incident form itself -- e.g. My
+   Reports and Report Detail.
+   ========================================================= */
+
+.severity-badge {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    padding:
+        4px 10px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    letter-spacing:
+        .2px;
+
+    text-transform:
+        uppercase;
+
+}
+
+
+.severity-badge.low {
+
+    color:
+        var(--green);
+
+    background:
+        var(--green-bg);
+
+}
+
+
+.severity-badge.medium {
+
+    color:
+        var(--orange);
+
+    background:
+        var(--orange-bg);
+
+}
+
+
+.severity-badge.high {
+
+    color:
+        var(--c-orange-600);
+
+    background:
+        var(--c-orange-bg-2);
+
+}
+
+
+.severity-badge.critical {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.table-empty {
+
+    min-height:
+        110px;
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+}
+
+
+.table-empty strong {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+.table-empty span {
+
+    margin-top:
+        3px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.alerts-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+
+}
+
+
+.alert-card {
+
+    min-height:
+        90px;
+
+    padding:
+        15px 17px;
+
+    text-decoration:
+        none;
+
+    color:
+        inherit;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-left:
+        4px solid var(--red);
+
+    border-radius:
+        10px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        13px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+
+}
+
+
+.alert-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--shadow-sm);
+
+}
+
+
+.alert-card.alert-unread {
+
+    background:
+        var(--c-red-10);
+
+}
+
+
+.alert-card-icon {
+
+    width:
+        37px;
+
+    height:
+        37px;
+
+    flex-shrink:
+        0;
+
+    border-radius:
+        9px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(15px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+}
+
+
+.alert-card-icon.danger {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.alert-card-icon.information {
+
+    color:
+        var(--navy);
+
+    background:
+        var(--soft-gray);
+
+}
+
+
+.alert-card-content {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+}
+
+
+.alert-card-heading {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        10px;
+
+}
+
+
+.alert-card-heading h3 {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+}
+
+
+.alert-card-heading span {
+
+    color:
+        var(--c-muted-2);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    white-space:
+        nowrap;
+
+}
+
+
+.alert-card-content p {
+
+    margin-top:
+        4px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.5;
+
+}
+
+
+.alert-arrow {
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(15px * var(--ndms-font-scale, 1));
+
+}
+
+
+.alert-new-label {
+
+    padding:
+        4px 7px;
+
+    border-radius:
+        20px;
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(7px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        .5px;
+
+    flex-shrink:
+        0;
+
+}
+
+
+.empty-alert-card {
+
+    border-left-color:
+        var(--c-border-5);
+
+}
+
+
+/* =========================================================
+   ACTIVE DISASTERS
+   Compact preview cards -- same card language as the alert
+   cards above (white surface, colored left accent, hover
+   lift), with a severity pill matching the Admin dashboard's
+   .disaster-severity convention (low=green, medium/high=
+   orange, critical=red) so the two dashboards stay visually
+   consistent.
+   ========================================================= */
+
+.active-disasters-list {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        10px;
+
+}
+
+
+.active-disaster-card {
+
+    min-height:
+        68px;
+
+    padding:
+        13px 16px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        14px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+    border-left:
+        4px solid var(--navy);
+
+    border-radius:
+        10px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+    text-decoration:
+        none;
+    color:
+        inherit;
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease;
+
+}
+
+
+.active-disaster-card:hover {
+
+    transform:
+        translateY(-2px);
+
+    box-shadow:
+        var(--shadow-sm);
+
+}
+
+
+.ad-severity {
+
+    flex-shrink:
+        0;
+
+    padding:
+        4px 9px;
+
+    border-radius:
+        20px;
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+    font-weight:
+        800;
+    letter-spacing:
+        .2px;
+    text-transform:
+        uppercase;
+
+}
+
+
+.ad-severity-low {
+
+    color:
+        var(--green);
+    background:
+        var(--green-bg);
+
+}
+
+
+.ad-severity-medium,
+.ad-severity-high {
+
+    color:
+        var(--orange);
+    background:
+        var(--orange-bg);
+
+}
+
+
+.ad-severity-critical {
+
+    color:
+        var(--red);
+    background:
+        var(--light-red);
+
+}
+
+
+.ad-main {
+
+    min-width:
+        0;
+
+    flex:
+        1;
+
+    display:
+        flex;
+    flex-direction:
+        column;
+    gap:
+        3px;
+
+}
+
+
+.ad-main strong {
+
+    color:
+        var(--navy);
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+    line-height:
+        1.3;
+
+    overflow:
+        hidden;
+    text-overflow:
+        ellipsis;
+    white-space:
+        nowrap;
+
+}
+
+
+.ad-meta {
+
+    display:
+        flex;
+    flex-wrap:
+        wrap;
+    gap:
+        3px 10px;
+
+    color:
+        var(--muted);
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+}
+
+
+.ad-arrow {
+
+    flex-shrink:
+        0;
+
+    color:
+        var(--red);
+    font-size:
+        calc(14px * var(--ndms-font-scale, 1));
+
+}
+
+
+.active-disasters-empty {
+
+    padding:
+        22px 18px;
+
+    display:
+        flex;
+    flex-direction:
+        column;
+    gap:
+        4px;
+
+    background:
+        var(--white);
+    border:
+        1px solid var(--border);
+    border-radius:
+        10px;
+
+    text-align:
+        center;
+
+}
+
+
+.active-disasters-empty strong {
+
+    color:
+        var(--navy);
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+}
+
+
+.active-disasters-empty span {
+
+    color:
+        var(--muted);
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.dashboard-footer {
+
+    min-height:
+        62px;
+
+    padding:
+        0 30px;
+
+    border-top:
+        1px solid var(--border);
+
+    background:
+        var(--white);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    color:
+        var(--c-muted-2);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   SIDEBAR OVERLAY
+   ========================================================= */
+
+.sidebar-overlay {
+
+    display:
+        none;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .dashboard-sidebar {
+
+        width:
+            230px;
+
+    }
+
+    .dashboard-wrapper {
+
+        margin-left:
+            230px;
+
+    }
+
+    .dashboard-main {
+
+        width:
+            min(100% - 36px, 1100px);
+
+    }
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    .dashboard-sidebar {
+
+        transform:
+            translateX(-100%);
+
+        transition:
+            transform .25s ease;
+
+        box-shadow:
+            12px 0 30px
+            rgba(0,0,0,.12);
+
+    }
+
+    .dashboard-sidebar.open {
+
+        transform:
+            translateX(0);
+
+    }
+
+    .dashboard-wrapper {
+
+        margin-left:
+            0;
+
+    }
+
+    .mobile-sidebar-toggle {
+
+        display:
+            flex;
+
+    }
+
+    .sidebar-overlay {
+
+        position:
+            fixed;
+
+        inset:
+            0;
+
+        background:
+            rgba(23,32,51,.42);
+
+        z-index:
+            1050;
+
+        opacity:
+            0;
+
+        visibility:
+            hidden;
+
+        transition:
+            opacity .25s ease,
+            visibility .25s ease;
+
+    }
+
+    .sidebar-overlay.show {
+
+        display:
+            block;
+
+        opacity:
+            1;
+
+        visibility:
+            visible;
+
+    }
+
+    .dashboard-topbar {
+
+        padding:
+            0 18px;
+
+    }
+
+
+    /* =====================================================
+       COMPACT MOBILE SIDEBAR
+       Mobile-only (this whole block sits inside the existing
+       max-width:850px query, so desktop is untouched). Trims
+       the brand / nav links / section titles / dividers /
+       footer so the full nav + "Back to Website" normally fit
+       in one screen on a real phone without the user ever
+       needing to scroll the drawer. .sidebar-navigation keeps
+       overflow-y:auto as a safety net only (very large system
+       font size, many sidebar badges, etc.) — it is not the
+       primary way the footer is reached anymore.
+       ===================================================== */
+
+    .dashboard-brand {
+
+        min-height:
+            56px;
+
+        padding:
+            0 18px;
+
+    }
+
+    .sidebar-navigation {
+
+        padding:
+            8px 10px;
+
+    }
+
+    .sidebar-link {
+
+        min-height:
+            34px;
+
+    }
+
+    .sidebar-section-title {
+
+        margin:
+            3px 0 2px;
+
+    }
+
+    .sidebar-divider {
+
+        margin:
+            4px 10px;
+
+    }
+
+    .sidebar-footer {
+
+        padding:
+            10px 12px
+            calc(10px + env(safe-area-inset-bottom, 0px));
+
+    }
+
+    .sidebar-footer-link {
+
+        padding:
+            7px 10px;
+
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .dashboard-main {
+
+        width:
+            calc(100% - 28px);
+
+        padding:
+            20px 0 40px;
+
+    }
+
+    .dashboard-topbar {
+
+        height:
+            68px;
+
+    }
+
+    .page-heading h1 {
+
+        font-size:
+            calc(18px * var(--ndms-font-scale, 1));
+
+    }
+
+    .user-details,
+    .user-arrow {
+
+        display:
+            none;
+
+    }
+
+    .topbar-user {
+
+        padding-left:
+            10px;
+
+        border-left:
+            0;
+
+    }
+
+    .notification-dropdown {
+
+        position:
+            fixed;
+
+        top:
+            75px;
+
+        left:
+            14px;
+
+        right:
+            14px;
+
+        width:
+            auto;
+
+    }
+
+    .welcome-section {
+
+        min-height:
+            auto;
+
+        padding:
+            25px 22px;
+
+    }
+
+    .welcome-content h2 {
+
+        font-size:
+            calc(23px * var(--ndms-font-scale, 1));
+
+    }
+
+    .welcome-content p {
+
+        font-size:
+            calc(12px * var(--ndms-font-scale, 1));
+
+    }
+
+    .welcome-symbol {
+
+        display:
+            none;
+
+    }
+
+    .welcome-actions {
+
+        align-items:
+            stretch;
+
+        flex-direction:
+            column;
+
+    }
+
+    .primary-action,
+    .secondary-action {
+
+        width:
+            100%;
+
+    }
+
+    .stats-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+        gap:
+            9px;
+
+    }
+
+    .stat-card {
+
+        min-height:
+            96px;
+
+        padding:
+            13px 14px 13px 16px;
+
+    }
+
+    .stat-number {
+
+        font-size:
+            calc(22px * var(--ndms-font-scale, 1));
+
+    }
+
+    .services-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .section-title-row h2 {
+
+        font-size:
+            calc(18px * var(--ndms-font-scale, 1));
+
+    }
+
+    .alert-card {
+
+        align-items:
+            flex-start;
+
+    }
+
+    .active-disaster-card {
+
+        align-items:
+            flex-start;
+
+        flex-wrap:
+            wrap;
+
+    }
+
+    .ad-arrow {
+
+        margin-left:
+            auto;
+
+    }
+
+    .alert-card-heading {
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+
+        gap:
+            1px;
+
+    }
+
+    .alert-new-label {
+
+        margin-left:
+            auto;
+
+    }
+
+    .settings-preview {
+
+        align-items:
+            flex-start;
+
+    }
+
+    .dashboard-footer {
+
+        padding:
+            0 15px;
+
+        flex-direction:
+            column;
+
+        justify-content:
+            center;
+
+        gap:
+            2px;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .stats-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .stat-card {
+
+        min-height:
+            88px;
+
+    }
+
+    .dashboard-topbar {
+
+        padding:
+            0 13px;
+
+    }
+
+    .dashboard-main {
+
+        width:
+            calc(100% - 20px);
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+
+        scroll-behavior:
+            auto;
+
+    }
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+    }
+
+}
+
+
+/* =========================================================
+   NOTIFICATION -- SVG BELL, CONTEXTUAL ICONS, MARK ALL AS READ
+   (added for the NDMS Citizen Notification System finalization
+   -- the .notification-button / .notification-item-icon /
+   .notification-empty-icon rules above still apply, these only
+   add what the SVG icons + new controls need on top of them)
+   ========================================================= */
+
+.notification-icon {
+
+    width:
+        18px;
+
+    height:
+        18px;
+
+    color:
+        inherit;
+
+    flex-shrink:
+        0;
+
+    /* Undo the 45deg rotation from the old text-glyph icon (♢)
+       -- irrelevant/harmful for the new SVG outline bell. */
+    transform:
+        none;
+
+}
+
+
+/* =========================================================
+   DASHBOARD MAIN -- SECTION RHYTHM (Citizen Dashboard final
+   polish). Larger breathing room before the Recent Reports /
+   Active Disasters group and before Important Updates, on top
+   of the normal 34px used between Welcome/Overview. Scoped to
+   .dashboard-main so the shared .recent-section / .alerts-section
+   rules above (also used on Alerts and My Reports) are untouched.
+   ========================================================= */
+
+.dashboard-main .dash-gap-lg {
+
+    margin-top:
+        52px;
+
+}
+
+
+/* =========================================================
+   BACK TO WEBSITE -- MINIMAL VARIANT (Citizen Dashboard final
+   polish). A single left arrow + label, no subtitle, no boxed
+   icon container, no second arrow. Scoped to the --minimal /
+   --plain modifiers so the shared .sidebar-footer-link base
+   (used as-is on Alerts, My Reports, Profile, Report Detail,
+   Report Incident, Settings, Help & Support) is untouched.
+   ========================================================= */
+
+.sidebar-footer-link--minimal {
+
+    gap:
+        9px;
+
+}
+
+
+.sidebar-footer-link--minimal .sidebar-footer-title {
+
+    flex:
+        1;
+
+    min-width:
+        0;
+
+}
+
+
+.sidebar-footer-icon--plain {
+
+    width:
+        16px;
+
+    height:
+        16px;
+
+    flex:
+        0 0 16px;
+
+    display:
+        grid;
+
+    place-items:
+        center;
+
+    color:
+        rgba(255,255,255,.55);
+
+    transition:
+        color .18s ease,
+        transform .18s ease;
+
+}
+
+
+.sidebar-footer-icon--plain svg {
+
+    width:
+        16px;
+
+    height:
+        16px;
+
+    fill:
+        none;
+
+    stroke:
+        currentColor;
+
+    stroke-width:
+        1.8;
+
+    stroke-linecap:
+        round;
+
+    stroke-linejoin:
+        round;
+
+}
+
+
+.sidebar-footer-link--minimal:hover .sidebar-footer-icon--plain,
+.sidebar-footer-link--minimal:focus-visible .sidebar-footer-icon--plain {
+
+    color:
+        var(--white);
+
+    transform:
+        translateX(-3px);
+
+}
+
+
+.notification-item-icon svg {
+
+    width:
+        16px;
+
+    height:
+        16px;
+
+}
+
+
+.notification-item-icon.verified {
+
+    color:
+        var(--green);
+
+    background:
+        var(--green-bg);
+
+}
+
+
+.notification-item-icon.rejected {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.notification-item-icon.under-review {
+
+    color:
+        var(--orange);
+
+    background:
+        var(--orange-bg);
+
+}
+
+
+.notification-item-icon.disaster-alert {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.notification-item-icon.received,
+.notification-item-icon.general {
+
+    color:
+        var(--navy);
+
+    background:
+        var(--soft-gray);
+
+}
+
+
+.notification-empty-icon svg {
+
+    width:
+        18px;
+
+    height:
+        18px;
+
+}
+
+
+/* Unread notification items are now real <button> elements
+   inside a <form> (so clicking one both marks it read AND
+   navigates via a single POST -- never a plain GET link for a
+   state-changing action). Reset default button chrome so they
+   look identical to the plain <a> used for already-read items. */
+
+.notification-item-form {
+
+    display:
+        block;
+
+}
+
+
+button.notification-item {
+
+    width:
+        100%;
+
+    border:
+        0;
+
+    background:
+        none;
+
+    text-align:
+        left;
+
+    font:
+        inherit;
+
+    cursor:
+        pointer;
+
+}
+
+
+.notification-mark-all-form {
+
+    padding:
+        9px 16px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    background:
+        var(--background);
+
+    display:
+        flex;
+
+    justify-content:
+        flex-end;
+
+}
+
+
+.notification-mark-all {
+
+    border:
+        0;
+
+    background:
+        none;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    cursor:
+        pointer;
+
+    padding:
+        2px 0;
+
+    transition:
+        color .15s ease;
+
+}
+
+
+.notification-mark-all:hover {
+
+    color:
+        var(--red-dark);
+
+}
+
+
+@media (max-width: 700px) {
+
+    .notification-dropdown {
+
+        width:
+            calc(100vw - 24px);
+
+        max-width:
+            380px;
+
+    }
+
+}
+
+
+
+.alert-card-icon svg {
+
+    width:
+        17px;
+
+    height:
+        17px;
+
+}
+
+
+.alert-card-icon.verified {
+
+    color:
+        var(--green);
+
+    background:
+        var(--green-bg);
+
+}
+
+
+.alert-card-icon.rejected {
+
+    color:
+        var(--red);
+
+    background:
+        var(--light-red);
+
+}
+
+
+.alert-card-icon.under-review {
+
+    color:
+        var(--orange);
+
+    background:
+        var(--orange-bg);
+
+}
+
+/* =========================================================
+   CITIZEN SHELL REFINEMENT
+   Breadcrumb, SVG sidebar icons, Disasters submenu and
+   accessibility polish added on top of the sidebar/topbar
+   rules above. Kept as one block so the additions are easy
+   to find, review, or roll back as a unit.
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   BREADCRUMB
+   Exact same treatment as the Administration topbar's
+   .page-breadcrumb (dashboard-shell.css): brand segment bold
+   navy, everything after it -- including the current page --
+   plain muted text, separated by a light gray slash.
+   --------------------------------------------------------- */
+
+.page-identity {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 4px;
+
+}
+
+
+.page-breadcrumb {
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    min-width: 0;
+
+    color: var(--muted);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 500;
+
+    letter-spacing: .01em;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+
+.page-breadcrumb span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.page-breadcrumb span:first-child {
+    color: var(--navy);
+    font-weight: 650;
+}
+
+.page-breadcrumb .breadcrumb-separator {
+    flex: 0 0 auto;
+    color: #98a2b3;
+    font-weight: 400;
+}
+
+
+/* ---------------------------------------------------------
+   SIDEBAR — SVG ICON SYSTEM
+   .sidebar-icon previously sized itself for a single glyph
+   character; these rules size the SVG consistently across
+   every sidebar item (top-level links AND the Disasters
+   group toggle) without changing the existing box.
+   --------------------------------------------------------- */
+
+.sidebar-icon svg {
+
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    transition: transform .18s ease;
+
+}
+
+.sidebar-link:hover .sidebar-icon svg,
+.sidebar-group-toggle:hover .sidebar-icon svg {
+    transform: scale(1.05);
+}
+
+.sidebar-link-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ---------------------------------------------------------
+   SIDEBAR — DISASTERS GROUP (collapsible submenu)
+   The toggle re-uses every .sidebar-link visual rule (same
+   height/padding/hover/active language) while being a real
+   <button> instead of an <a>, so it needs its own reset.
+   --------------------------------------------------------- */
+
+.sidebar-group-toggle {
+
+    width: 100%;
+
+    background: transparent;
+    border: 0;
+
+    text-align: left;
+    cursor: pointer;
+
+    font-family: inherit;
+
+}
+
+.sidebar-group.is-active-group > .sidebar-group-toggle {
+
+    position: relative;
+
+    color: var(--white);
+    background: linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.045);
+    font-weight: 600;
+
+}
+
+.sidebar-group.is-active-group > .sidebar-group-toggle::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 8px;
+    bottom: 8px;
+
+    width: 3px;
+
+    border-radius: 0 3px 3px 0;
+
+    background: var(--red);
+
+}
+
+.sidebar-group-caret {
+
+    width: 14px;
+    height: 14px;
+
+    margin-left: auto;
+    flex-shrink: 0;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    color: rgba(255,255,255,.45);
+
+    transition: transform .18s ease;
+
+}
+
+.sidebar-group.is-open .sidebar-group-caret {
+    transform: rotate(180deg);
+    color: rgba(255,255,255,.8);
+}
+
+.sidebar-submenu {
+    display: block;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .2s ease;
+}
+
+.sidebar-group.is-open .sidebar-submenu {
+    max-height: 220px;
+}
+
+.sidebar-sublink {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    min-height: 36px;
+
+    margin: 1px 0 1px 34px;
+    padding: 0 11px;
+
+    border-radius: 7px;
+
+    color: rgba(255,255,255,.6);
+
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    font-weight: 550;
+
+    transition: background .18s ease, color .18s ease;
+
+}
+
+.sidebar-sublink::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: -14px;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,.22);
+
+}
+
+.sidebar-sublink:hover {
+    color: var(--white);
+    background: rgba(255,255,255,.06);
+}
+
+.sidebar-sublink.active {
+    color: var(--white);
+    font-weight: 700;
+    background: linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.045);
+}
+
+.sidebar-sublink.active::before {
+    background: var(--red);
+}
+
+
+/* ---------------------------------------------------------
+   DISASTER UNREAD RED-DOT INDICATOR
+   Same small, non-animated dot as the public navbar (see
+   navbar-avatar.css) -- reused here beside the sidebar
+   "Disasters" group and its "View Disasters" submenu item.
+   Uses the existing --red token (already theme-aware via
+   citizen-prefs.css), so Light / Dark / High Contrast all
+   just work with no extra overrides.
+   --------------------------------------------------------- */
+
+.disaster-unread-dot {
+    display: inline-block;
+    flex-shrink: 0;
+
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background: var(--red);
+}
+
+/* .sidebar-group-toggle already lays its children out with
+   .sidebar-link's gap:12px, so the dot naturally sits right
+   after "Disasters" while the caret keeps its own
+   margin-left:auto and stays pinned to the far right -- no
+   extra spacing rule needed here. */
+
+/* .sidebar-sublink has no trailing element of its own, so the
+   dot is pushed to the row's right edge -- the same convention
+   already used by .sidebar-badge above. */
+.sidebar-sublink .disaster-unread-dot {
+    margin-left: auto;
+}
+
+
+/* ---------------------------------------------------------
+   FOCUS STATES
+   Keyboard users need a visible outline on every interactive
+   shell control — sidebar links, the Disasters toggle, its
+   submenu links, and the mobile hamburger.
+   --------------------------------------------------------- */
+
+.sidebar-link:focus-visible,
+.sidebar-group-toggle:focus-visible,
+.sidebar-sublink:focus-visible,
+.mobile-sidebar-toggle:focus-visible {
+
+    outline: 2px solid rgba(180,35,24,.7);
+    outline-offset: 2px;
+
+}
+
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   Breadcrumb keeps a single line and truncates gracefully
+   instead of wrapping into the page title on narrow screens.
+   --------------------------------------------------------- */
+
+@media (max-width: 700px) {
+
+    .page-breadcrumb {
+        max-width: 100%;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   REDUCED MOTION
+   The broad `body.dashboard-page *` rule above (see the
+   `prefers-reduced-motion` block near the top of this file)
+   already collapses these transition durations; this simply
+   folds the Disasters caret rotation into the same
+   data-motion="reduced" preference list dashboard.css already
+   drives for every other interactive shell control.
+   --------------------------------------------------------- */
+
+html[data-motion="reduced"] .sidebar-group-caret {
+    transition: none;
+}
+
+html[data-motion="reduced"] .sidebar-submenu {
+    transition: none;
+}

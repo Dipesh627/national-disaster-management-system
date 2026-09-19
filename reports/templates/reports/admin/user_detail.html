@@ -1,0 +1,576 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+{{ target_user.full_name|default:target_user.username }} | NDMS Administration
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disaster-reports.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-user-detail.css' %}"
+>
+
+{% endblock %}
+
+
+{% block breadcrumb %}
+<span>Citizens</span>
+{% endblock %}
+
+
+{% block page_title %}
+Citizen Profile
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ndms-dashboard">
+
+    <div class="dashboard-body ud-admin-page">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="ud-admin-header">
+
+            <div class="ud-admin-header-copy">
+
+                <p class="ud-admin-eyebrow">
+                    CITIZEN PROFILE
+                </p>
+
+
+                <div class="ud-admin-header-main">
+
+                    <span class="ud-admin-avatar">
+
+                        {% if target_user.avatar %}
+
+                            <img
+                                src="{{ target_user.avatar.url }}"
+                                alt=""
+                                loading="lazy">
+
+                        {% else %}
+
+                            <span class="ud-admin-avatar-fallback">
+
+                                {{ target_user.full_name|default:target_user.username|first|upper }}
+
+                            </span>
+
+                        {% endif %}
+
+                    </span>
+
+
+                    <div>
+
+                        <h1>
+                            {{ target_user.full_name|default:target_user.username }}
+                        </h1>
+
+                        <p class="ud-admin-header-meta">
+
+                            @{{ target_user.username }}
+
+                            ·
+
+                            Joined
+                            {{ target_user.date_joined|date:"d M Y" }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+<!-- 
+            {% if not target_user.is_superuser and target_user.id != request.user.id %}
+
+                <form
+                    method="post"
+                    action="{% url 'admin_user_toggle_active' target_user.id %}">
+
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="dr-btn dr-btn-outline dr-btn-danger">
+
+                        {% if target_user.is_active %}
+
+                            Deactivate account
+
+                        {% else %}
+
+                            Activate account
+
+                        {% endif %}
+
+                    </button>
+
+                </form>
+
+            {% endif %} -->
+
+        </header>
+
+
+        <!-- =================================================
+             PROFILE + ACTIVITY
+             ================================================= -->
+
+        <div class="ud-admin-grid">
+
+
+            <!-- PROFILE -->
+
+            <section class="ud-admin-card">
+
+                <header class="ud-admin-card-header">
+
+                    <h2>
+                        Citizen profile
+                    </h2>
+
+                    <p>
+                        Account and contact information
+                    </p>
+
+                </header>
+
+
+                <div class="ud-admin-info">
+
+
+                    <div class="ud-admin-info-row">
+
+                        <span class="ud-admin-info-label">
+                            Full name
+                        </span>
+
+                        <span class="ud-admin-info-value">
+
+                            {{ target_user.full_name|default:target_user.username }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="ud-admin-info-row">
+
+                        <span class="ud-admin-info-label">
+                            Username
+                        </span>
+
+                        <span class="ud-admin-info-value">
+
+                            @{{ target_user.username }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="ud-admin-info-row">
+
+                        <span class="ud-admin-info-label">
+                            Email
+                        </span>
+
+                        <span class="ud-admin-info-value">
+
+                            {{ target_user.email|default:"Not provided" }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="ud-admin-info-row">
+
+                        <span class="ud-admin-info-label">
+                            Phone
+                        </span>
+
+                        <span class="ud-admin-info-value">
+
+                            {{ target_user.phone|default:"Not provided" }}
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="ud-admin-info-row">
+
+                        <span class="ud-admin-info-label">
+                            Account
+                        </span>
+
+                        <span class="ud-admin-info-value">
+
+                            {% if target_user.is_active %}
+
+                                <span class="ud-account-status ud-account-active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="ud-account-status ud-account-inactive">
+                                    Inactive
+                                </span>
+
+                            {% endif %}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                {% if not target_user.is_superuser and target_user.id != request.user.id %}
+
+                    <div class="ud-account-action">
+
+                        <form
+                            method="post"
+                            action="{% url 'admin_user_toggle_active' target_user.id %}">
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="dr-btn dr-btn-danger dr-btn-block">
+
+                                {% if target_user.is_active %}
+                                    Deactivate account
+                                {% else %}
+                                    Activate account
+                                {% endif %}
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- REPORT ACTIVITY -->
+
+            <section class="ud-admin-card">
+
+                <header class="ud-admin-card-header">
+
+                    <h2>
+                        Reporting activity
+                    </h2>
+
+                    <p>
+                        Disaster reports submitted by this citizen
+                    </p>
+
+                </header>
+
+
+                <div class="ud-report-summary">
+
+
+                    <div class="ud-report-total">
+
+                        <strong>
+                            {{ reports_count }}
+                        </strong>
+
+                        <span>
+                            Total reports
+                        </span>
+
+                    </div>
+
+
+                    <div class="ud-report-breakdown">
+
+
+                        <div class="ud-report-stat ud-report-stat-pending">
+
+                            <strong>
+                                {{ pending_reports_count }}
+                            </strong>
+
+                            <span>
+                                Pending
+                            </span>
+
+                        </div>
+
+
+                        <div class="ud-report-stat ud-report-stat-review">
+
+                            <strong>
+                                {{ under_review_reports_count }}
+                            </strong>
+
+                            <span>
+                                Under review
+                            </span>
+
+                        </div>
+
+
+                        <div class="ud-report-stat ud-report-stat-verified">
+
+                            <strong>
+                                {{ verified_reports_count }}
+                            </strong>
+
+                            <span>
+                                Verified
+                            </span>
+
+                        </div>
+
+
+                        <div class="ud-report-stat ud-report-stat-rejected">
+
+                            <strong>
+                                {{ rejected_reports_count }}
+                            </strong>
+
+                            <span>
+                                Rejected
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- =================================================
+             RECENT REPORTS
+             ================================================= -->
+
+        <section class="dashboard-panel dashboard-panel-table ud-recent-reports">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        Recent reports
+                    </h2>
+
+                    <p>
+                        Latest disaster reports submitted by this citizen.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if recent_reports %}
+
+                <div class="table-wrap">
+
+                    <table class="dashboard-table">
+
+                        <caption class="sr-only">
+                            Recent reports for {{ target_user.username }}
+                        </caption>
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Report ID
+                                </th>
+
+                                <th>
+                                    Disaster Type
+                                </th>
+
+                                <th>
+                                    Location
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    <span class="sr-only">
+                                        Action
+                                    </span>
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for report in recent_reports %}
+
+                                <tr>
+
+
+                                    <td>
+
+                                        <a
+                                            href="{% url 'admin_report_detail' report.id %}"
+                                            class="report-id">
+
+                                            #{{ report.id }}
+
+                                        </a>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span class="ud-recent-report-type">
+
+                                            {{ report.disaster_type.name }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span
+                                            class="dr-location-cell"
+                                            title="{{ report.address }}">
+
+                                            {% if report.address %}
+                                                {{ report.address }}
+                                            {% else %}
+                                                Not provided
+                                            {% endif %}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <time
+                                            datetime="{{ report.report_date|date:'c' }}">
+
+                                            {{ report.report_date|date:"M d, Y" }}
+
+                                        </time>
+
+                                    </td>
+
+
+                                    <td>
+
+                                        <span
+                                            class="table-status table-status-{{ report.status|lower }}">
+
+                                            {{ report.get_status_display }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <td class="table-action-cell">
+
+                                        <a
+                                            href="{% url 'admin_report_detail' report.id %}"
+                                            class="table-action">
+
+                                            View
+
+                                            <span aria-hidden="true">
+                                                ›
+                                            </span>
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state table-empty">
+
+                    <span
+                        class="empty-state-icon"
+                        aria-hidden="true">
+                        •
+                    </span>
+
+                    <strong>
+                        No reports yet
+                    </strong>
+
+                    <span>
+                        This citizen hasn't submitted any disaster reports.
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

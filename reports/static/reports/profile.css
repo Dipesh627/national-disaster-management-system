@@ -1,0 +1,1788 @@
+/* =========================================================
+   NDMS — MY PROFILE
+   Extends dashboard.css. Reuses the same design tokens
+   (--red, --navy, --border, --shadow-xs, etc.) defined in
+   dashboard.css :root — no new colors are introduced here.
+   ========================================================= */
+
+
+/* =========================================================
+   DJANGO MESSAGES
+   (dashboard.css does not style these yet — same markup
+   and classes as the ones already used on the Home page)
+   ========================================================= */
+
+.django-messages {
+
+    position: fixed;
+
+    top: 90px;
+
+    right: 25px;
+
+    z-index: 9999;
+
+    width:
+        min(420px, calc(100% - 30px));
+}
+
+
+.django-message {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px 16px;
+
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow-md);
+}
+
+
+.django-message-success {
+
+    border-left:
+        4px solid
+        var(--green);
+}
+
+
+.django-message-error {
+
+    border-left:
+        4px solid
+        var(--red);
+}
+
+
+.message-icon {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--green-bg);
+
+    color: var(--green);
+
+    font-weight: 800;
+}
+
+
+.message-text {
+
+    flex: 1;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+
+    line-height: 1.5;
+
+    color: var(--text);
+
+    font-weight: 600;
+}
+
+
+.message-close {
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    font-size: calc(20px * var(--ndms-font-scale, 1));
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    padding: 2px 5px;
+}
+
+
+/* =========================================================
+   GENERIC PROFILE CARD
+   (same visual language as .reports-card / .stat-card)
+   ========================================================= */
+
+.pf-card {
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+
+    padding: 20px;
+
+    margin-top: 14px;
+}
+
+
+/* =========================================================
+   PROFILE HEADER CARD
+   ========================================================= */
+
+.pf-header-card {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 16px;
+
+    width: min(760px, 100%);
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .04);
+
+    padding: 18px 20px;
+
+    margin-top: 14px;
+}
+
+
+.pf-header-avatar-block {
+
+    flex-shrink: 0;
+}
+
+
+.pf-avatar-edit-wrapper {
+
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+
+.pf-header-avatar {
+
+    width: 60px;
+    height: 60px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: calc(22px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+}
+
+
+.pf-header-avatar img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =========================================================
+   AVATAR EDIT BADGE
+   (small camera badge on the avatar's edge, opens the
+   Take Photo / Choose from Gallery / Remove Photo popover)
+   ========================================================= */
+
+.pf-avatar-edit-badge {
+
+    position: absolute;
+
+    right: -2px;
+    bottom: -2px;
+
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 2px solid var(--white);
+    border-radius: 50%;
+
+    background: var(--navy);
+
+    color: var(--white);
+
+    cursor: pointer;
+
+    box-shadow: 0 1px 3px rgba(16, 24, 40, .18);
+
+    transition:
+        background-color .18s ease,
+        transform .18s ease;
+}
+
+
+.pf-avatar-edit-badge svg {
+
+    width: 13px;
+    height: 13px;
+}
+
+
+.pf-avatar-edit-badge:hover {
+
+    background: var(--red);
+
+    transform: scale(1.05);
+}
+
+
+.pf-avatar-edit-badge:focus-visible {
+
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, .18);
+}
+
+
+.pf-avatar-popover {
+
+    position: absolute;
+
+    top: calc(100% + 8px);
+    left: 0;
+
+    transform: translateY(6px);
+
+    width: 200px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: var(--shadow-md);
+
+    padding: 6px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    z-index: 40;
+
+    transition:
+        opacity .16s ease,
+        transform .16s ease,
+        visibility .16s ease;
+}
+
+
+.pf-avatar-popover.show {
+
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+
+    transform: translateY(0);
+}
+
+
+.pf-avatar-popover-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: 100%;
+
+    padding: 8px 9px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--navy);
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 630;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    transition: background-color .15s ease;
+}
+
+
+.pf-avatar-popover-item:hover {
+    background: var(--soft-gray);
+}
+
+
+.pf-avatar-popover-icon {
+
+    width: 15px;
+    height: 15px;
+
+    flex-shrink: 0;
+
+    color: var(--muted);
+}
+
+
+.pf-avatar-popover-item-danger {
+    color: var(--red);
+}
+
+
+.pf-avatar-popover-item-danger .pf-avatar-popover-icon {
+    color: var(--red);
+}
+
+
+.pf-avatar-popover-item-danger:hover {
+    background: var(--light-red);
+}
+
+
+.pf-avatar-popover-divider {
+
+    height: 1px;
+
+    margin: 6px 4px;
+
+    background: var(--border);
+}
+
+
+.pf-header-info {
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+}
+
+
+.pf-header-info h2 {
+
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: calc(17px * var(--ndms-font-scale, 1));
+
+    font-weight: 750;
+
+    line-height: 1.3;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+.pf-header-username {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight: 600;
+}
+
+
+.pf-identity-meta {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    margin-top: 7px;
+
+    color: var(--muted);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight: 650;
+}
+
+
+.pf-identity-meta-divider {
+    color: var(--c-muted-2);
+}
+
+
+.pf-status-dot {
+
+    width: 7px;
+    height: 7px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--green);
+}
+
+
+.pf-identity-edit-button {
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   PERSONAL INFORMATION — VIEW MODE
+   ========================================================= */
+
+.pf-view-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 4px 28px;
+
+    padding: 6px 0 4px;
+}
+
+
+.pf-view-field {
+
+    display: grid;
+
+    grid-template-columns: 130px minmax(0, 1fr);
+
+    align-items: center;
+
+    gap: 14px;
+
+    min-height: 42px;
+
+    padding: 8px 0;
+
+    border-bottom: 1px solid var(--c-surface-8);
+}
+
+
+.pf-view-field:nth-last-child(-n+2) {
+    border-bottom: 0;
+}
+
+
+.pf-view-label {
+
+    color: var(--muted);
+
+    font-size: calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight: 720;
+
+    letter-spacing: .035em;
+
+    text-transform: uppercase;
+}
+
+
+.pf-view-value {
+
+    min-width: 0;
+
+    color: var(--text);
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight: 500;
+
+    line-height: 1.45;
+
+    overflow-wrap: anywhere;
+}
+
+
+.pf-status-pill {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 3px 8px;
+
+    border-radius: 5px;
+
+    font-size: calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight: 780;
+
+    line-height: 1.4;
+}
+
+
+.pf-status-pill-active {
+
+    color: var(--green);
+
+    background: var(--green-bg);
+}
+
+
+.pf-status-pill-inactive {
+
+    color: var(--red);
+
+    background: var(--light-red);
+}
+
+
+/* =========================================================
+   PERSONAL INFORMATION — EDIT MODE
+   ========================================================= */
+
+.pf-edit-form {
+
+    display: none;
+
+    margin-top: 4px;
+}
+
+
+/* Scoped to the Personal Information view block's own id
+   (#pfViewMode) rather than the shared ".pf-view-grid" class —
+   Account Information further down the page also uses
+   ".pf-view-grid" and must stay visible while edit mode is
+   active. Scoping by class here was the bug: it hid every
+   ".pf-view-grid" on the page, not just this one. */
+.profile-page.pf-edit-mode #pfViewMode {
+    display: none;
+}
+
+
+.profile-page.pf-edit-mode #pfEditForm {
+    display: block;
+}
+
+
+.pf-edit-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 14px 20px;
+}
+
+
+.pf-form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+.pf-form-group label {
+
+    color: var(--text);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+
+.pf-required {
+
+    margin-left: 2px;
+
+    color: var(--red);
+
+    font-weight: 800;
+}
+
+
+.pf-form-group input[type="text"],
+.pf-form-group input[type="email"],
+.pf-form-group input[type="tel"],
+.pf-form-group input[type="password"] {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 0 11px;
+
+    min-height: 39px;
+
+    background: var(--white);
+
+    border: 1px solid var(--c-border-5);
+
+    border-radius: 7px;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 500;
+
+    outline: none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background-color .18s ease;
+}
+
+
+.pf-form-group input:hover {
+
+    border-color: var(--c-muted-2);
+}
+
+
+.pf-form-group input:focus {
+
+    border-color: var(--navy);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 32, 51, 0.07);
+}
+
+
+.pf-readonly-input {
+
+    background: var(--soft-gray) !important;
+
+    color: var(--muted) !important;
+
+    cursor: not-allowed;
+}
+
+
+.pf-hint {
+
+    color: var(--c-muted-2);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+
+    font-weight: 550;
+}
+
+
+.pf-field-error {
+
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--red-dark);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+
+    line-height: 1.35;
+}
+
+
+.pf-edit-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   MY ACTIVITY — EXTRA STAT ICON VARIANTS
+   (pending/verified/alert already exist in dashboard.css;
+   review + rejected are added here for this page)
+   ========================================================= */
+/* 
+.stat-icon.review {
+
+    background: var(--soft-gray);
+
+    color: var(--navy);
+}
+
+
+.stat-icon.rejected {
+
+    background: var(--light-red);
+
+    color: var(--red);
+}
+
+
+.pf-activity-grid {
+
+    grid-template-columns: repeat(5, 1fr);
+} */
+
+
+/* =========================================================
+   QUICK ACTIONS
+   ========================================================= */
+
+.pf-quick-actions {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.pf-security-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    flex-wrap: wrap;
+}
+
+
+.pf-security-text {
+
+    flex: 1;
+
+    min-width: 220px;
+
+    color: var(--text);
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   CHANGE PASSWORD PAGE
+   ========================================================= */
+
+.pf-password-card {
+
+    max-width: 480px;
+}
+
+
+.pf-password-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+    margin-top: 4px;
+}
+
+
+/* =========================================================
+   CHANGE PHOTO MODAL
+   (same fade/overlay pattern already used by the report photo
+   modal on report_detail.html — `.rd-photo-modal` — so the
+   motion language stays consistent across the app)
+   ========================================================= */
+
+.pf-photo-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(23, 32, 51, .82);
+
+    z-index: 2000;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+
+.pf-photo-modal.show {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+.pf-photo-modal-content {
+
+    width: min(420px, 100%);
+
+    background: var(--white);
+
+    border-radius: 16px;
+
+    box-shadow: var(--shadow-md);
+
+    padding: 0 24px 24px;
+
+    transform: translateY(6px);
+
+    transition: transform .18s ease;
+}
+
+
+.pf-photo-modal.show .pf-photo-modal-content {
+    transform: translateY(0);
+}
+
+
+.pf-photo-modal-header {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 20px 0 16px;
+
+    margin-bottom: 4px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.pf-photo-modal-header h2 {
+
+    color: var(--navy);
+
+    font-size: calc(16px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+
+    letter-spacing: -.01em;
+}
+
+
+.pf-photo-modal-close {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    border: none;
+    border-radius: 50%;
+
+    background: var(--soft-gray);
+
+    color: var(--muted);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+
+    cursor: pointer;
+
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+
+.pf-photo-modal-close:hover {
+    background: var(--border);
+    color: var(--navy);
+}
+
+
+.pf-photo-modal-preview {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin: 20px 0 6px;
+}
+
+
+.pf-photo-modal-avatar {
+
+    width: 96px;
+    height: 96px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: calc(34px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+}
+
+
+.pf-photo-modal-avatar img {
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* Without this, the `display: flex` above wins over the
+   browser's own `[hidden]{display:none}` rule (same-origin
+   author CSS always beats the user-agent stylesheet), so
+   toggling `.hidden` from profile.js would leave this circle
+   visible at the same time as the crop stage below. Same
+   pattern already used for `.pf-choose-photo-btn` and the
+   other modals across the app (e.g. `.mr-delete-modal[hidden]`,
+   `.ds-modal[hidden]`). */
+.pf-photo-modal-avatar[hidden] {
+    display: none;
+}
+
+
+/* =========================================================
+   PHOTO CROP + ZOOM
+   Shown in place of .pf-photo-modal-avatar once a new photo
+   has been picked, so the citizen can position and zoom it
+   before it's uploaded — the same admin-style crop stage used
+   on the Admin Profile page. The final crop is rendered
+   client-side onto #pfCropOutputCanvas and attached to the
+   existing #id_avatar file input, so AvatarUploadForm /
+   change_photo() still just receive a normal image upload and
+   needed no backend changes.
+   ========================================================= */
+
+.pf-crop-shell {
+
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+
+    margin: 20px 0 6px;
+}
+
+
+/* Same `[hidden]` fix as `.pf-photo-modal-avatar` above — keeps
+   the crop stage fully hidden until a photo is actually picked. */
+.pf-crop-shell[hidden] {
+    display: none;
+}
+
+
+.pf-crop-stage {
+
+    position: relative;
+
+    width: 224px;
+    height: 224px;
+
+    overflow: hidden;
+
+    background: var(--soft-gray);
+
+    border-radius: 50%;
+
+    cursor: grab;
+
+    touch-action: none;
+
+    box-shadow:
+        inset 0 0 0 3px var(--white),
+        0 0 0 1px var(--border),
+        0 10px 22px -10px rgba(16, 24, 40, .3);
+}
+
+
+.pf-crop-stage.is-dragging {
+    cursor: grabbing;
+}
+
+
+.pf-crop-stage img {
+
+    position: absolute;
+
+    left: 50%;
+    top: 50%;
+
+    max-width: none;
+
+    user-select: none;
+
+    pointer-events: none;
+}
+
+
+.pf-crop-zoom-row {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    width: 100%;
+    max-width: 260px;
+
+    margin-top: 16px;
+}
+
+
+.pf-crop-zoom-icon {
+
+    width: 15px;
+    height: 15px;
+
+    flex-shrink: 0;
+
+    color: var(--muted);
+}
+
+
+.pf-crop-zoom-icon-lg {
+    width: 18px;
+    height: 18px;
+}
+
+
+/* Custom slider — the bare OS control (plain grey track, dark
+   circular thumb) reads as unfinished next to the rest of the
+   NDMS UI, so it's rebuilt per-browser with a thin navy track
+   and a bordered white thumb that matches the app's button/
+   card styling instead of the browser default. */
+
+.pf-crop-zoom-slider {
+
+    flex: 1 1 auto;
+
+    height: 18px;
+
+    margin: 0;
+
+    background: transparent;
+
+    accent-color: var(--navy);
+
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+
+.pf-crop-zoom-slider::-webkit-slider-runnable-track {
+
+    height: 4px;
+
+    border-radius: 4px;
+
+    background: var(--border);
+}
+
+
+.pf-crop-zoom-slider::-moz-range-track {
+
+    height: 4px;
+
+    border-radius: 4px;
+
+    background: var(--border);
+}
+
+
+.pf-crop-zoom-slider::-moz-range-progress {
+
+    height: 4px;
+
+    border-radius: 4px;
+
+    background: var(--navy);
+}
+
+
+.pf-crop-zoom-slider::-webkit-slider-thumb {
+
+    width: 16px;
+    height: 16px;
+
+    margin-top: -6px;
+
+    border: 2px solid var(--navy);
+    border-radius: 50%;
+
+    background: var(--white);
+
+    box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
+
+    cursor: pointer;
+
+    -webkit-appearance: none;
+    appearance: none;
+
+    transition: transform .12s ease;
+}
+
+
+.pf-crop-zoom-slider::-moz-range-thumb {
+
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid var(--navy);
+    border-radius: 50%;
+
+    background: var(--white);
+
+    box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
+
+    cursor: pointer;
+
+    transition: transform .12s ease;
+}
+
+
+.pf-crop-zoom-slider:hover::-webkit-slider-thumb,
+.pf-crop-zoom-slider:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.12);
+}
+
+
+.pf-crop-zoom-slider:hover::-moz-range-thumb,
+.pf-crop-zoom-slider:focus-visible::-moz-range-thumb {
+    transform: scale(1.12);
+}
+
+
+.pf-crop-actions-row {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    width: 100%;
+    max-width: 260px;
+
+    margin-top: 12px;
+}
+
+
+.pf-crop-hint {
+
+    color: var(--muted);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 550;
+
+    line-height: 1.4;
+}
+
+
+.pf-crop-reset {
+
+    flex-shrink: 0;
+
+    padding: 5px 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 6px;
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    font-family: inherit;
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        border-color .15s ease,
+        background-color .15s ease,
+        color .15s ease;
+}
+
+
+.pf-crop-reset:hover {
+    border-color: var(--red);
+    background: var(--light-red);
+    color: var(--red);
+}
+
+
+.pf-photo-modal-hint {
+
+    margin-top: 4px;
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 550;
+
+    line-height: 1.6;
+}
+
+
+.pf-avatar-file-input {
+
+    /* Real input stays visually hidden — the label styled as
+       .pf-choose-photo-btn is what the user actually clicks. */
+
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+}
+
+
+.pf-choose-photo-btn {
+
+    display: block;
+
+    width: 100%;
+
+    margin-top: 14px;
+
+    padding: 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    text-align: center;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease;
+}
+
+
+.pf-choose-photo-btn:hover {
+
+    border-color: var(--red);
+
+    background: var(--light-red);
+
+    color: var(--red);
+}
+
+
+/* Same `[hidden]` fix as the elements above. */
+.pf-choose-photo-btn[hidden] {
+    display: none;
+}
+
+
+.pf-avatar-file-input:focus-visible + .pf-photo-modal-filename,
+.pf-avatar-file-input:focus + ~ .pf-choose-photo-btn {
+
+    outline: none;
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, .15);
+}
+
+
+.pf-photo-modal-filename {
+
+    display: block;
+
+    margin-top: 8px;
+
+    color: var(--muted);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+
+    text-align: center;
+
+    word-break: break-all;
+}
+
+
+.pf-photo-modal-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 18px;
+}
+
+
+.pf-photo-modal-actions .primary-action,
+.pf-photo-modal-actions .secondary-action {
+
+    flex: 1;
+
+    justify-content: center;
+}
+
+
+.pf-photo-modal-actions .primary-action:disabled {
+
+    opacity: .5;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   ADMIN-MATCHED DENSITY — PAGE-SCOPED REFINEMENTS
+   Small, page-scoped refinements layered on top of the base
+   rules above (which already carry Admin Profile's values).
+   Scoped to .profile-page so nothing here touches the shared
+   .pf-card / .section-title-row / .primary-action /
+   .secondary-action classes on any other dashboard page.
+   ========================================================= */
+
+.profile-page .pf-card .section-title-row {
+
+    padding-bottom: 12px;
+
+    margin-bottom: 12px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.profile-page .pf-card .section-title-row h2 {
+
+    margin-top: 1px;
+
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+}
+
+
+/* =========================================================
+   VIEW PHOTO — LIGHTBOX
+   Opened only from the avatar popover's "View Photo" option
+   (only rendered when a real photo exists). Same fade/overlay
+   pattern as .pf-photo-modal above, so the motion language
+   stays consistent — but with no form, no crop stage, just a
+   centered, aspect-ratio-preserving image and a close button.
+   ========================================================= */
+
+.pf-photo-view-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(23, 32, 51, .82);
+
+    z-index: 2000;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+
+.pf-photo-view-modal.show {
+
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .pf-photo-view-modal {
+        transition: none;
+    }
+
+}
+
+
+.pf-photo-view-content {
+
+    display: flex;
+
+    flex-direction: column;
+
+    width: min(480px, 100%);
+
+    max-height: calc(100vh - 48px);
+
+    background: var(--white);
+
+    border-radius: 16px;
+
+    box-shadow: var(--shadow-md);
+
+    overflow: hidden;
+}
+
+
+.pf-photo-view-header {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 16px 16px 14px 20px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.pf-photo-view-header h2 {
+
+    color: var(--navy);
+
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+
+    letter-spacing: -.01em;
+}
+
+
+.pf-photo-view-body {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: var(--soft-gray);
+}
+
+
+.pf-photo-view-body img {
+
+    display: block;
+
+    max-width: 100%;
+
+    max-height: calc(100vh - 160px);
+
+    /* Preserve the original photo's aspect ratio — never
+       cropped or distorted here, unlike the circular avatar
+       used everywhere else in the app. */
+    width: auto;
+    height: auto;
+
+    border-radius: 8px;
+}
+
+
+@media (max-width: 700px) {
+
+    .pf-photo-view-modal {
+        padding: 16px;
+    }
+
+    .pf-photo-view-header {
+        padding: 14px 14px 12px 16px;
+    }
+
+    .pf-photo-view-body {
+        padding: 14px;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   (same breakpoints already used across the NDMS dashboard)
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .pf-activity-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 800px) {
+
+    .pf-view-field {
+        grid-template-columns: 110px minmax(0, 1fr);
+    }
+
+}
+
+
+@media (max-width: 640px) {
+
+    .pf-header-card {
+        flex-wrap: wrap;
+    }
+
+    .pf-header-info {
+        flex: 1 1 100%;
+        order: 2;
+    }
+
+    .pf-identity-edit-button {
+        order: 3;
+        width: 100%;
+        margin-top: 4px;
+    }
+
+    .pf-view-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-view-field {
+        grid-template-columns: 1fr;
+
+        gap: 2px;
+
+        align-items: start;
+
+        min-height: 0;
+    }
+
+    .pf-view-field:nth-last-child(-n+2) {
+        border-bottom: 1px solid var(--c-surface-8);
+    }
+
+    .pf-view-field:last-child {
+        border-bottom: 0;
+    }
+
+    .pf-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pf-activity-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .pf-card,
+    .pf-header-card {
+        padding: 16px;
+    }
+
+    .pf-security-row {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+    .pf-quick-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+    .pf-quick-actions a {
+        justify-content: center;
+    }
+
+    .pf-photo-modal {
+        padding: 16px;
+    }
+
+    .pf-photo-modal-content {
+        padding: 0 18px 18px;
+    }
+
+    .pf-photo-modal-header {
+        padding: 16px 0 14px;
+    }
+
+    .pf-crop-stage {
+        width: 190px;
+        height: 190px;
+    }
+
+    .pf-crop-zoom-row,
+    .pf-crop-actions-row {
+        max-width: 100%;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .pf-header-card {
+        padding: 16px;
+    }
+
+    .pf-avatar-popover {
+        width: 180px;
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .pf-activity-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .django-messages {
+        top: 75px;
+
+        left: 15px;
+        right: 15px;
+
+        width: auto;
+    }
+
+    .pf-edit-actions {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+}
+
+/* =========================================================
+   AVATAR PHOTO MENU — SAME ALIGNMENT ON MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+    .pf-avatar-popover {
+        top: calc(100% + 8px);
+        left: 0;
+        transform: translateY(6px);
+    }
+
+    .pf-avatar-popover.show {
+        transform: translateY(0);
+    }
+
+}

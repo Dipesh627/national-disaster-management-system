@@ -1,0 +1,473 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Settings | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-settings.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Settings</span>
+{% endblock %}
+
+{% block page_title %}
+Settings
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard as-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="as-page-header">
+
+        <div class="as-page-header-copy">
+
+            <span class="as-kicker">
+                SYSTEM SETTINGS
+            </span>
+
+            <h1>Settings</h1>
+
+            <p>
+                Manage your administration preferences and security.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         SINGLE FORM — General + Accessibility save together
+         (Security/Change Password submits separately, below)
+         ===================================================== -->
+
+    <form
+        method="POST"
+        action="{% url 'admin_settings' %}"
+        class="as-settings-form"
+        id="asSettingsForm"
+    >
+
+        {% csrf_token %}
+
+        <input type="hidden" name="form" value="settings">
+
+
+        <!-- =================================================
+             1. GENERAL PREFERENCES
+             ================================================= -->
+
+        <section class="as-card">
+
+            <div class="as-card-header">
+
+                <div>
+
+                    <span class="as-card-kicker">
+                        GENERAL
+                    </span>
+
+                    <h2>
+                        General Preferences
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="as-field-list">
+
+                <div class="as-field">
+
+                    <label for="id_language">
+                        Language
+                    </label>
+
+                    {{ settings_form.language }}
+
+                    {% if settings_form.language.help_text %}
+
+                        <span class="as-hint">
+                            {{ settings_form.language.help_text }}
+                        </span>
+
+                    {% endif %}
+
+                    {% if settings_form.language.errors %}
+
+                        <span class="as-field-error">
+                            {{ settings_form.language.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="as-field">
+
+                    <label for="id_time_zone">
+                        Time Zone
+                    </label>
+
+                    {{ settings_form.time_zone }}
+
+                    {% if settings_form.time_zone.errors %}
+
+                        <span class="as-field-error">
+                            {{ settings_form.time_zone.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="as-field">
+
+                    <label for="id_date_format">
+                        Date Format
+                    </label>
+
+                    {{ settings_form.date_format }}
+
+                    {% if settings_form.date_format.errors %}
+
+                        <span class="as-field-error">
+                            {{ settings_form.date_format.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             2. ACCESSIBILITY
+             ================================================= -->
+
+        <section class="as-card as-accessibility">
+
+            <div class="as-card-header">
+
+                <div>
+
+                    <span class="as-card-kicker">
+                        ACCESSIBILITY
+                    </span>
+
+                    <h2>
+                        Accessibility
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="as-toggle-list">
+
+                <div class="as-toggle-row">
+
+                    <div class="as-toggle-text">
+
+                        <strong>
+                            Reduce Motion
+                        </strong>
+
+                        <span>
+                            Minimize animation and transition
+                            effects across the admin interface.
+                        </span>
+
+                    </div>
+
+                    <label class="as-toggle">
+                        {{ settings_form.reduce_motion }}
+                        <span class="as-toggle-track"></span>
+                    </label>
+
+                </div>
+
+
+                <div class="as-toggle-row">
+
+                    <div class="as-toggle-text">
+
+                        <strong>
+                            High Contrast
+                        </strong>
+
+                        <span>
+                            Increase contrast for improved
+                            readability.
+                        </span>
+
+                    </div>
+
+                    <label class="as-toggle">
+                        {{ settings_form.high_contrast }}
+                        <span class="as-toggle-track"></span>
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <div class="as-divider"></div>
+
+
+            <div class="as-field as-font-size-field">
+
+                <label>
+                    Font Size
+                </label>
+
+                <div class="as-radio-pills">
+
+                    {% for radio in settings_form.font_size %}
+
+                        <label class="as-radio-pill">
+                            {{ radio.tag }}
+                            <span>{{ radio.choice_label }}</span>
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+                {% if settings_form.font_size.errors %}
+
+                    <span class="as-field-error">
+                        {{ settings_form.font_size.errors.0 }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        {% if settings_form.non_field_errors %}
+
+            <span class="as-field-error as-form-error">
+                {{ settings_form.non_field_errors.0 }}
+            </span>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             SAVE — General + Accessibility
+             ================================================= -->
+
+        <div class="as-save-bar">
+
+            <button
+                type="submit"
+                class="as-primary-button"
+            >
+                Save Changes
+            </button>
+
+        </div>
+
+    </form>
+
+
+    <!-- =====================================================
+         3. SECURITY
+         (submits separately — form=password, matching
+         admin_settings()'s POST discriminator)
+         ===================================================== -->
+
+    <section class="as-card as-security">
+
+        <div class="as-card-header">
+
+            <div>
+
+                <span class="as-card-kicker">
+                    SECURITY
+                </span>
+
+                <h2>
+                    Account Security
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="as-security-row"
+            id="asSecurityRow"
+        >
+
+            <div class="as-security-text">
+
+                <strong>
+                    Password
+                </strong>
+
+                <span>
+                    Change your administrator account password.
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                class="as-secondary-button"
+                id="asChangePasswordButton"
+                aria-expanded="false"
+                aria-controls="asPasswordForm"
+            >
+                Change Password
+            </button>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{% url 'admin_settings' %}"
+            class="as-password-form"
+            id="asPasswordForm"
+        >
+
+            {% csrf_token %}
+
+            <input type="hidden" name="form" value="password">
+
+            <div class="as-field-list">
+
+                <div class="as-field">
+
+                    <label for="id_old_password">
+                        Current Password
+                    </label>
+
+                    {{ password_form.old_password }}
+
+                    {% if password_form.old_password.errors %}
+
+                        <span class="as-field-error">
+                            {{ password_form.old_password.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="as-field">
+
+                    <label for="id_new_password1">
+                        New Password
+                    </label>
+
+                    {{ password_form.new_password1 }}
+
+                    {% if password_form.new_password1.errors %}
+
+                        <span class="as-field-error">
+                            {{ password_form.new_password1.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                    {% if password_form.new_password1.help_text %}
+
+                        <span class="as-hint">
+                            {{ password_form.new_password1.help_text|safe }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="as-field">
+
+                    <label for="id_new_password2">
+                        Confirm New Password
+                    </label>
+
+                    {{ password_form.new_password2 }}
+
+                    {% if password_form.new_password2.errors %}
+
+                        <span class="as-field-error">
+                            {{ password_form.new_password2.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            {% if password_form.non_field_errors %}
+
+                <span class="as-field-error as-form-error">
+                    {{ password_form.non_field_errors.0 }}
+                </span>
+
+            {% endif %}
+
+
+            <div class="as-password-actions">
+
+                <button
+                    type="submit"
+                    class="as-primary-button"
+                >
+                    Update Password
+                </button>
+
+                <button
+                    type="button"
+                    class="as-secondary-button"
+                    id="asCancelPasswordButton"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script
+    src="{% static 'reports/admin/admin-settings.js' %}"
+    defer
+></script>
+{% endblock %}

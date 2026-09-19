@@ -1,0 +1,1221 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Important disaster alerts, emergency information and NDMS updates."
+    >
+
+    <title>
+        NDMS | Alerts
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/navbar-avatar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/alerts.css' %}"
+    >
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="dashboard-page alerts-page">
+
+
+<!-- =====================================================
+     MOBILE OVERLAY
+     ===================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+
+<!-- =====================================================
+     SIDEBAR
+     SAME AS DASHBOARD
+     ===================================================== -->
+
+<aside
+    class="dashboard-sidebar"
+    id="dashboardSidebar"
+>
+
+
+    <!-- BRAND -->
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="dashboard-brand"
+    >
+
+        <div class="dashboard-logo">
+            ND
+        </div>
+
+        <div class="dashboard-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- SIDEBAR NAVIGATION -->
+
+        <nav
+        class="sidebar-navigation"
+        aria-label="Dashboard navigation"
+    >
+
+
+        <span class="sidebar-section-title">
+            OVERVIEW
+        </span>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            REPORTING
+        </span>
+
+
+        <!-- REPORT INCIDENT -->
+
+        <a
+            href="{% url 'create_disaster_report' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'create_disaster_report' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'create_disaster_report' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 10v4"></path><path d="M12 17.2v.1"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Report Incident
+            </span>
+
+        </a>
+
+
+        <!-- MY REPORTS -->
+
+        <a
+            href="{% url 'my_reports' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Reports
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            DISCOVER
+        </span>
+
+
+        <!-- DISASTERS — collapsible group -->
+
+        <div class="sidebar-group{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %} is-open is-active-group{% endif %}">
+
+            <button
+                type="button"
+                class="sidebar-link sidebar-group-toggle"
+                aria-expanded="{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %}true{% else %}false{% endif %}"
+                aria-controls="sidebarDisastersMenu"
+            >
+
+                <span class="sidebar-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 8v8l8 5 8-5V8z"></path><path d="m4 8 8 5 8-5"></path><path d="M12 13v8"></path></svg>
+                </span>
+
+                <span class="sidebar-link-text">
+                    Disasters
+                </span>
+
+                <svg class="sidebar-group-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+
+            </button>
+
+            <div
+                class="sidebar-submenu"
+                id="sidebarDisastersMenu"
+            >
+
+                <a
+                    href="{% url 'disaster_list' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %}aria-current="page"{% endif %}
+                >
+                    View Disasters
+                </a>
+
+                <a
+                    href="{% url 'home' %}#disasters"
+                    class="sidebar-sublink"
+                >
+                    Disaster Types
+                </a>
+
+                <a
+                    href="{% url 'disaster_guidelines' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_guidelines' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_guidelines' %}aria-current="page"{% endif %}
+                >
+                    Awareness &amp; Guidelines
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            SAFETY
+        </span>
+
+
+        <!-- ALERTS -->
+
+        <a
+            href="{% url 'alerts' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Alerts
+            </span>
+
+
+            {% if unread_count > 0 %}
+
+                <span class="sidebar-badge">
+                    {{ unread_count }}
+                </span>
+
+            {% endif %}
+
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            ACCOUNT
+        </span>
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{% url 'profile' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path><circle cx="12" cy="7" r="3.6"></circle></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Profile
+            </span>
+
+        </a>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="{% url 'settings' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'settings' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         SIDEBAR FOOTER -- "Back to Website"
+         Minimal variant: one arrow + label, no subtitle, no
+         boxed icon, no second arrow, with a subtle translateX
+         hover on the arrow (dashboard.css .sidebar-footer-link--
+         minimal / .sidebar-footer-icon--plain). Destination and
+         underlying .sidebar-footer-link base are unchanged; the
+         modifier classes keep this scoped to the Citizen
+         Dashboard so Alerts / My Reports / Profile / Report
+         Detail / Report Incident / Settings / Help & Support
+         keep their existing footer link as-is.
+         ================================================= -->
+
+    <div class="sidebar-footer">
+
+        <a
+            href="{% url 'home' %}"
+            class="sidebar-footer-link sidebar-footer-link--minimal"
+            aria-label="Back to Website"
+        >
+
+            <span class="sidebar-footer-icon--plain" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5"></path>
+                    <path d="m11 18-6-6 6-6"></path>
+                </svg>
+            </span>
+
+            <span class="sidebar-footer-title">Back to Website</span>
+
+        </a>
+
+    </div>
+
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN WRAPPER
+     ===================================================== -->
+
+<div class="dashboard-wrapper">
+
+
+    <!-- =================================================
+         TOPBAR
+         EXACT DASHBOARD STYLE
+         ================================================= -->
+
+    <header class="dashboard-topbar">
+
+
+        <div class="topbar-left">
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="mobile-sidebar-toggle"
+                id="mobileSidebarToggle"
+                aria-label="Open dashboard menu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <div class="page-identity">
+
+                <div class="page-breadcrumb" aria-label="Breadcrumb">
+                    <span>NDMS</span>
+                    <span class="breadcrumb-separator" aria-hidden="true">/</span>
+                    <span>Citizen</span>
+                    <span class="breadcrumb-separator" aria-hidden="true">/</span>
+                    <span>Alerts</span>
+                </div>
+
+
+                <div class="page-heading">
+
+                    <h1>
+                        Alerts
+                    </h1>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="topbar-right">
+
+
+            <!-- =================================================
+                 NOTIFICATION
+                 ================================================= -->
+
+            {% include 'reports/partials/notification_dropdown.html' %}
+
+
+
+            <!-- =================================================
+                 USER
+                 ================================================= -->
+
+            <div
+                class="topbar-user ndms-avatar-wrapper"
+                id="ndmsAvatarWrapper"
+            >
+
+                {% with display_name=user.full_name|default:user.username %}
+
+                <button
+                    type="button"
+                    class="ndms-avatar-btn"
+                    id="ndmsAvatarBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="ndmsAvatarMenu"
+                    aria-label="Open account menu"
+                >
+
+                    <span class="ndms-avatar-circle">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% else %}
+
+                            {{ display_name|first|upper }}
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="ndms-avatar-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="ndms-avatar-menu"
+                    id="ndmsAvatarMenu"
+                    role="menu"
+                >
+
+                    <div class="ndms-avatar-menu-header">
+
+                        <span class="ndms-avatar-menu-avatar">
+
+                            {% if user.avatar %}
+
+                                <img
+                                    src="{{ user.avatar.url }}"
+                                    alt=""
+                                >
+
+                            {% else %}
+
+                                {{ display_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                        <div class="ndms-avatar-menu-info">
+
+                            <strong class="ndms-avatar-menu-name">
+                                {{ display_name }}
+                            </strong>
+
+                            {% if user.email %}
+
+                                <span class="ndms-avatar-menu-email">
+                                    {{ user.email }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'profile' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3.6" stroke="currentColor" stroke-width="1.8"/></svg>
+                            Profile
+                        </a>
+
+                        <a
+                            href="{% url 'settings' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                            Settings
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#contact"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v10H9l-4 3.5v-3.5H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Contact Us
+                        </a>
+
+                        <a
+                            href="{% url 'help_support' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9.3a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .9-1 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                            Help &amp; Support
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#feedback-section-title"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7L12 4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Feedback
+                        </a>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="ndms-avatar-menu-item ndms-avatar-menu-logout"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4.5H6a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 6 19.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 8 20 12l-4.5 4M20 12H9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endwith %}
+
+            </div>
+
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         ALERTS CONTENT
+         ================================================= -->
+
+    <main class="dashboard-main alerts-main">
+
+
+        <!-- PAGE HEADER (compact — no hero/banner) -->
+
+        <section class="alerts-header">
+
+            <h1>
+                Alerts
+            </h1>
+
+            <p>
+                Stay informed about disaster events, report updates,
+                and important information from NDMS.
+            </p>
+
+        </section>
+
+
+
+        <!-- SUMMARY CARDS -->
+
+        <section
+            class="alerts-stats"
+            aria-label="Alert summary"
+        >
+
+
+            <article class="alerts-stat-card">
+
+                <div class="alerts-stat-icon">
+                    ≡
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ total_alerts }}
+                    </strong>
+
+                    <span>
+                        Total Alerts
+                    </span>
+
+                </div>
+
+            </article>
+
+
+
+            <article class="alerts-stat-card alerts-stat-card-danger">
+
+                <div class="alerts-stat-icon">
+                    !
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ unread_alerts }}
+                    </strong>
+
+                    <span>
+                        Unread Alerts
+                    </span>
+
+                </div>
+
+            </article>
+
+
+
+            <article class="alerts-stat-card">
+
+                <div class="alerts-stat-icon">
+                    ◔
+                </div>
+
+                <div>
+
+                    <strong>
+                        {{ recent_alerts }}
+                    </strong>
+
+                    <span>
+                        Recent Alerts
+                    </span>
+
+                    <small>
+                        Last 7 days
+                    </small>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+
+        <!-- ALERT CONTENT -->
+
+        <section class="alerts-content-card">
+
+
+            <!-- HEADER -->
+
+            <div class="alerts-content-head">
+
+                <div>
+
+                    <span class="alerts-section-label">
+                        YOUR ALERTS
+                    </span>
+
+                    <h3>
+                        Important notifications
+                    </h3>
+
+                    <p>
+                        Review the latest information available to you.
+                    </p>
+
+                </div>
+
+
+                {% if unread_alerts > 0 %}
+
+                    <form
+                        method="post"
+                        action="{% url 'mark_all_notifications_read' %}"
+                    >
+
+                        {% csrf_token %}
+
+                        <button
+                            type="submit"
+                            class="alerts-mark-all"
+                        >
+                            Mark all as read
+                        </button>
+
+                    </form>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- FILTERS -->
+
+            <div class="alerts-filter-row">
+
+                <nav
+                    class="alerts-filter-tabs"
+                    aria-label="Alert filters"
+                >
+
+                    <a
+                        href="?filter=ALL"
+                        class="alerts-filter-tab {% if alert_filter == 'ALL' %}active{% endif %}"
+                        {% if alert_filter == 'ALL' %}aria-current="page"{% endif %}
+                    >
+
+                        All
+
+                        <span>
+                            {{ total_alerts }}
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="?filter=UNREAD"
+                        class="alerts-filter-tab {% if alert_filter == 'UNREAD' %}active{% endif %}"
+                        {% if alert_filter == 'UNREAD' %}aria-current="page"{% endif %}
+                    >
+
+                        Unread
+
+                        <span>
+                            {{ unread_alerts }}
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="?filter=READ"
+                        class="alerts-filter-tab {% if alert_filter == 'READ' %}active{% endif %}"
+                        {% if alert_filter == 'READ' %}aria-current="page"{% endif %}
+                    >
+                        Read
+                    </a>
+
+                </nav>
+
+            </div>
+
+
+
+            <!-- ALERT LIST -->
+
+            <div class="alerts-list">
+
+
+                {% for notification in alert_list %}
+
+
+                    {% if notification.id not in read_notification_ids %}
+
+
+                        <!-- UNREAD -->
+
+                        <form
+                            method="post"
+                            action="{% url 'mark_notification_read' notification.id %}"
+                            class="alert-read-form"
+                        >
+
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="alert-item alert-item-unread"
+                            >
+
+
+                                <span class="alert-item-icon {% if notification.notification_type == 'REPORT_VERIFIED' %}alert-icon-verified{% elif notification.notification_type == 'REPORT_REJECTED' %}alert-icon-rejected{% elif notification.notification_type == 'REPORT_UNDER_REVIEW' %}alert-icon-under-review{% elif notification.notification_type == 'REPORT_RECEIVED' %}alert-icon-received{% elif notification.notification_type == 'DISASTER_ALERT' or notification.disaster %}alert-icon-disaster-alert{% else %}alert-icon-general{% endif %}">
+                                    {% if notification.notification_type == 'REPORT_VERIFIED' %}
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M8.7 12.3l2.1 2.1 4.3-4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    {% elif notification.notification_type == 'REPORT_REJECTED' %}
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M9.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                    {% elif notification.notification_type == 'REPORT_UNDER_REVIEW' %}
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="14.2" r="3.1" stroke="currentColor" stroke-width="1.5"/><path d="M14.3 16.5l1.7 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                    {% elif notification.notification_type == 'REPORT_RECEIVED' %}
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M8.3 9.2h7.4M8.3 12.4h7.4M8.3 15.6h4.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                    {% elif notification.notification_type == 'DISASTER_ALERT' or notification.disaster %}
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.3l8.5 14.7H3.5L12 4.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                                    {% else %}
+                                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="8.1" r="0.95" fill="currentColor"/></svg>
+                                    {% endif %}
+                                </span>
+
+
+                                <span class="alert-item-content">
+
+
+                                    <span class="alert-item-title-row">
+
+                                        <strong>
+                                            {{ notification.title }}
+                                        </strong>
+
+                                        <span
+                                            class="alert-unread-dot"
+                                            aria-label="Unread"
+                                        ></span>
+
+                                    </span>
+
+
+                                    <span class="alert-item-message">
+                                        {{ notification.message }}
+                                    </span>
+
+
+                                    <span class="alert-item-meta">
+
+
+                                        {% if notification.disaster %}
+
+                                            <span>
+                                                {{ notification.disaster.disaster_type.name }}
+                                            </span>
+
+                                            <span
+                                                class="alert-severity alert-severity-{{ notification.disaster.severity|lower }}"
+                                            >
+                                                {{ notification.disaster.get_severity_display }}
+                                            </span>
+
+                                            <span>
+                                                {{ notification.disaster.get_status_display }}
+                                            </span>
+
+                                        {% endif %}
+
+
+                                        <span>
+                                            {{ notification.publish_date|citizen_date:citizen_date_format }} · {{ notification.publish_date|citizen_time }}
+                                        </span>
+
+
+                                    </span>
+
+
+                                </span>
+
+
+                                <span class="alert-item-action">
+
+                                    Unread
+
+                                    <small>
+                                        Mark as read
+                                    </small>
+
+                                </span>
+
+
+                            </button>
+
+                        </form>
+
+
+                    {% else %}
+
+
+                        <!-- READ -->
+
+                        <article class="alert-item alert-item-read">
+
+
+                            <span class="alert-item-icon {% if notification.notification_type == 'REPORT_VERIFIED' %}alert-icon-verified{% elif notification.notification_type == 'REPORT_REJECTED' %}alert-icon-rejected{% elif notification.notification_type == 'REPORT_UNDER_REVIEW' %}alert-icon-under-review{% elif notification.notification_type == 'REPORT_RECEIVED' %}alert-icon-received{% elif notification.notification_type == 'DISASTER_ALERT' or notification.disaster %}alert-icon-disaster-alert{% else %}alert-icon-general{% endif %}">
+                                {% if notification.notification_type == 'REPORT_VERIFIED' %}
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M8.7 12.3l2.1 2.1 4.3-4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                {% elif notification.notification_type == 'REPORT_REJECTED' %}
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M9.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+                                {% elif notification.notification_type == 'REPORT_UNDER_REVIEW' %}
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="14.2" r="3.1" stroke="currentColor" stroke-width="1.5"/><path d="M14.3 16.5l1.7 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                {% elif notification.notification_type == 'REPORT_RECEIVED' %}
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M8.3 9.2h7.4M8.3 12.4h7.4M8.3 15.6h4.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                                {% elif notification.notification_type == 'DISASTER_ALERT' or notification.disaster %}
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.3l8.5 14.7H3.5L12 4.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                                {% else %}
+                                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="8.1" r="0.95" fill="currentColor"/></svg>
+                                {% endif %}
+                            </span>
+
+
+                            <span class="alert-item-content">
+
+
+                                <span class="alert-item-title-row">
+
+                                    <strong>
+                                        {{ notification.title }}
+                                    </strong>
+
+                                </span>
+
+
+                                <span class="alert-item-message">
+                                    {{ notification.message }}
+                                </span>
+
+
+                                <span class="alert-item-meta">
+
+
+                                    {% if notification.disaster %}
+
+                                        <span>
+                                            {{ notification.disaster.disaster_type.name }}
+                                        </span>
+
+                                        <span
+                                            class="alert-severity alert-severity-{{ notification.disaster.severity|lower }}"
+                                        >
+                                            {{ notification.disaster.get_severity_display }}
+                                        </span>
+
+                                        <span>
+                                            {{ notification.disaster.get_status_display }}
+                                        </span>
+
+                                    {% endif %}
+
+
+                                    <span>
+                                        {{ notification.publish_date|citizen_date:citizen_date_format }} · {{ notification.publish_date|citizen_time }}
+                                    </span>
+
+
+                                </span>
+
+
+                            </span>
+
+
+                            <span class="alert-item-action alert-action-read">
+
+                                Read
+
+                                <a
+                                    href="{% if notification.report_id %}{% url 'report_detail' notification.report_id %}{% else %}{% url 'notification_detail' notification.id %}{% endif %}"
+                                    class="alert-view-details-link"
+                                >
+                                    View details
+                                </a>
+
+                            </span>
+
+
+                        </article>
+
+
+                    {% endif %}
+
+
+                {% empty %}
+
+
+                    <div class="alerts-empty">
+
+                        <div class="alerts-empty-icon">
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 9.5a6 6 0 0 1 12 0c0 2.4.5 4 1.1 5H4.9c.6-1 1.1-2.6 1.1-5Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 15.5l2 2 4-4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </div>
+
+
+                        {% if alert_filter == 'UNREAD' %}
+
+                            <h4>
+                                You're all caught up
+                            </h4>
+
+                            <p>
+                                There are no unread alerts at the moment.
+                            </p>
+
+                        {% elif alert_filter == 'READ' %}
+
+                            <h4>
+                                No read alerts
+                            </h4>
+
+                            <p>
+                                You do not have any read alerts to display.
+                            </p>
+
+                        {% else %}
+
+                            <h4>
+                                No alerts yet
+                            </h4>
+
+                            <p>
+                                Important NDMS notifications will appear
+                                here when they are available.
+                            </p>
+
+                        {% endif %}
+
+
+                        {% if alert_filter != 'ALL' %}
+
+                            <a href="?filter=ALL">
+                                View all alerts
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                {% endfor %}
+
+
+            </div>
+
+
+
+            <!-- PAGINATION -->
+
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <nav
+                    class="alerts-pagination"
+                    aria-label="Alerts pagination"
+                >
+
+
+                    {% if page_obj.has_previous %}
+
+                        <a
+                            href="?filter={{ alert_filter }}&amp;page={{ page_obj.previous_page_number }}"
+                            class="alerts-page-link"
+                        >
+                            ‹ Previous
+                        </a>
+
+                    {% else %}
+
+                        <span class="alerts-page-link disabled">
+                            ‹ Previous
+                        </span>
+
+                    {% endif %}
+
+
+
+                    <div class="alerts-page-numbers">
+
+
+                        {% for page_number in page_obj.paginator.page_range %}
+
+                            <a
+                                href="?filter={{ alert_filter }}&amp;page={{ page_number }}"
+                                class="alerts-page-number {% if page_number == page_obj.number %}active{% endif %}"
+                            >
+                                {{ page_number }}
+                            </a>
+
+                        {% endfor %}
+
+
+                    </div>
+
+
+
+                    {% if page_obj.has_next %}
+
+                        <a
+                            href="?filter={{ alert_filter }}&amp;page={{ page_obj.next_page_number }}"
+                            class="alerts-page-link"
+                        >
+                            Next ›
+                        </a>
+
+                    {% else %}
+
+                        <span class="alerts-page-link disabled">
+                            Next ›
+                        </span>
+
+                    {% endif %}
+
+
+                </nav>
+
+            {% endif %}
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="dashboard-footer">
+
+
+        <span>
+            © 2026 National Disaster Management System
+        </span>
+
+
+        <span>
+            NDMS
+        </span>
+
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     SCRIPTS
+     ===================================================== -->
+
+<script
+    src="{% static 'reports/js/dashboard.js' %}"
+    defer
+></script>
+
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+
+<script
+    src="{% static 'reports/js/alerts.js' %}"
+    defer
+></script>
+
+
+</body>
+
+</html>

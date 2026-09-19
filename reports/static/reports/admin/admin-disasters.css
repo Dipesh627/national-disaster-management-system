@@ -1,0 +1,1431 @@
+/* =========================================================
+   NDMS ADMIN — DISASTERS
+   Clean / Compact / Professional
+   Existing NDMS palette (same values as
+   admin-disaster-types.css / admin-emergency-agencies.css /
+   admin-response-updates.css, self-scoped here as .ds-page)
+   ========================================================= */
+
+.ds-page {
+    --ds-navy: #172033;
+    --ds-navy-light: #202b40;
+
+    --ds-red: #b42318;
+    --ds-red-dark: #8f1d16;
+    --ds-red-soft: #fef3f2;
+
+    --ds-green: #16794a;
+    --ds-green-soft: #ecfdf3;
+
+    --ds-orange: #b54708;
+    --ds-orange-soft: #fffaeb;
+
+    --ds-text: #344054;
+    --ds-muted: #667085;
+    --ds-light-muted: #98a2b3;
+
+    --ds-border: #e4e7ec;
+    --ds-border-strong: #d0d5dd;
+
+    --ds-bg: #f8f9fb;
+    --ds-soft: #f2f4f7;
+    --ds-white: #ffffff;
+
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.ds-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.ds-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 22px;
+    margin-bottom: 16px;
+}
+
+.ds-page-header-copy {
+    min-width: 0;
+}
+
+.ds-kicker {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--ds-red);
+    font-size: 9.5px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: .085em;
+}
+
+.ds-page-header h1 {
+    margin: 0;
+    color: var(--ds-navy);
+    font-size: 25px;
+    font-weight: 720;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+}
+
+.ds-page-header p {
+    max-width: 650px;
+    margin: 6px 0 0;
+    color: var(--ds-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.ds-primary-button,
+.ds-secondary-button,
+.ds-form-cancel,
+.ds-filter-button,
+.ds-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    border-radius: 7px;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.ds-primary-button {
+    flex: 0 0 auto;
+    padding: 0 13px;
+    color: #ffffff;
+    background: var(--ds-navy);
+    border: 1px solid var(--ds-navy);
+}
+
+.ds-primary-button:hover {
+    background: var(--ds-navy-light);
+    border-color: var(--ds-navy-light);
+}
+
+.ds-primary-button svg {
+    width: 14px;
+    height: 14px;
+}
+
+.ds-secondary-button {
+    padding: 0 12px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+}
+
+.ds-secondary-button:hover {
+    color: var(--ds-navy);
+    background: #fbfcfd;
+    border-color: #bfc6d0;
+}
+
+.ds-secondary-button svg {
+    width: 14px;
+    height: 14px;
+}
+
+
+/* =========================================================
+   SUMMARY CARD ACCENTS
+   (cards themselves use the shared .dr-summary-card /
+   .dr-summary-grid from admin-disaster-reports.css — only the
+   left accent colors for the Disaster-specific statuses live
+   here)
+   ========================================================= */
+
+.ds-summary-active::before {
+    background: var(--ds-red);
+}
+
+.ds-summary-under_control::before {
+    background: #f79009;
+}
+
+.ds-summary-resolved::before {
+    background: var(--ds-green);
+}
+
+.ds-summary-closed::before {
+    background: #667085;
+}
+
+
+/* =========================================================
+   FILTER BAR
+   ========================================================= */
+
+.ds-filter-bar {
+    margin-bottom: 14px;
+}
+
+.ds-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ds-search-field,
+.ds-select-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.ds-search-field {
+    flex: 1 1 240px;
+    min-width: 200px;
+}
+
+.ds-search-field svg {
+    position: absolute;
+    left: 11px;
+    width: 15px;
+    height: 15px;
+    color: var(--ds-light-muted);
+    pointer-events: none;
+}
+
+.ds-search-field input {
+    width: 100%;
+    min-height: 38px;
+    padding: 0 12px 0 33px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 7px;
+    outline: none;
+    font-family: inherit;
+    font-size: 11px;
+}
+
+.ds-search-field input:focus {
+    border-color: #9ca5b2;
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+}
+
+.ds-select-field {
+    flex: 0 0 auto;
+}
+
+.ds-select-field select {
+    min-height: 38px;
+    padding: 0 26px 0 11px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 7px;
+    outline: none;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 600;
+    appearance: none;
+    cursor: pointer;
+}
+
+.ds-select-field svg {
+    position: absolute;
+    right: 9px;
+    width: 13px;
+    height: 13px;
+    color: var(--ds-light-muted);
+    pointer-events: none;
+}
+
+.ds-filter-button {
+    padding: 0 15px;
+    color: #ffffff;
+    background: var(--ds-navy);
+    border: 1px solid var(--ds-navy);
+}
+
+.ds-filter-button:hover {
+    background: var(--ds-navy-light);
+}
+
+.ds-reset-button {
+    padding: 0 12px;
+    color: var(--ds-muted);
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.ds-reset-button:hover {
+    color: var(--ds-navy);
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.ds-table-panel {
+    overflow: visible;
+    background: #ffffff;
+    border: 1px solid var(--ds-border);
+    border-radius: 10px;
+}
+
+.ds-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.ds-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.ds-table thead th {
+    height: 37px;
+    padding: 0 17px;
+    color: var(--ds-muted);
+    background: #fcfcfd;
+    border-bottom: 1px solid var(--ds-border);
+    font-size: 9px;
+    font-weight: 720;
+    line-height: 1;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.ds-table tbody td {
+    padding: 11px 17px;
+    color: var(--ds-text);
+    border-bottom: 1px solid #f0f1f3;
+    font-size: 10.5px;
+    line-height: 1.35;
+    vertical-align: middle;
+}
+
+.ds-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.ds-table-row {
+    transition: background-color .14s ease;
+}
+
+.ds-table-row:hover {
+    background: #fcfdfd;
+}
+
+.ds-col-actions {
+    text-align: right !important;
+}
+
+.ds-title-name {
+    display: block;
+    overflow: hidden;
+    max-width: 260px;
+    color: var(--ds-navy);
+    font-size: 11px;
+    font-weight: 690;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ds-type-name {
+    color: var(--ds-text);
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SEVERITY / STATUS BADGES
+   ========================================================= */
+
+.ds-severity,
+.ds-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 22px;
+    padding: 0 7px;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 720;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.ds-severity > i,
+.ds-status > i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+.ds-severity-low { color: var(--ds-green); background: var(--ds-green-soft); }
+.ds-severity-low > i { background: var(--ds-green); }
+
+.ds-severity-medium { color: var(--ds-orange); background: var(--ds-orange-soft); }
+.ds-severity-medium > i { background: var(--ds-orange); }
+
+.ds-severity-high { color: #b93815; background: #fff4ed; }
+.ds-severity-high > i { background: #b93815; }
+
+.ds-severity-critical { color: var(--ds-red); background: var(--ds-red-soft); }
+.ds-severity-critical > i { background: var(--ds-red); }
+
+.ds-status-active { color: var(--ds-red); background: var(--ds-red-soft); }
+.ds-status-active > i { background: var(--ds-red); }
+
+.ds-status-under_control { color: var(--ds-orange); background: var(--ds-orange-soft); }
+.ds-status-under_control > i { background: var(--ds-orange); }
+
+.ds-status-resolved { color: var(--ds-green); background: var(--ds-green-soft); }
+.ds-status-resolved > i { background: var(--ds-green); }
+
+.ds-status-closed { color: var(--ds-muted); background: var(--ds-soft); }
+.ds-status-closed > i { background: #98a2b3; }
+
+
+/* =========================================================
+   ACTIONS
+   ========================================================= */
+
+.ds-actions-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.ds-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.ds-close-form {
+    margin: 0;
+}
+
+.ds-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 28px;
+    padding: 0;
+    color: var(--ds-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 9.5px;
+    font-weight: 650;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        color .14s ease,
+        background-color .14s ease;
+}
+
+.ds-action svg {
+    width: 13px;
+    height: 13px;
+}
+
+.ds-action-edit:hover,
+.ds-action-view:hover {
+    color: var(--ds-navy);
+}
+
+.ds-action-close {
+    color: #8f5a55;
+}
+
+.ds-action-close:hover {
+    color: var(--ds-red);
+}
+
+.ds-action:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .09);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.ds-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 46px 20px;
+    text-align: center;
+}
+
+.ds-empty-state h3 {
+    margin: 0;
+    color: var(--ds-navy);
+    font-size: 13px;
+    font-weight: 720;
+}
+
+.ds-empty-state p {
+    margin: 0;
+    max-width: 320px;
+    color: var(--ds-muted);
+    font-size: 10.5px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.ds-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 13px 17px;
+    border-top: 1px solid var(--ds-border);
+}
+
+.ds-pagination-summary {
+    color: var(--ds-muted);
+    font-size: 9.5px;
+}
+
+.ds-pagination-summary strong {
+    color: var(--ds-navy);
+}
+
+.ds-pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.ds-pagination-button,
+.ds-pagination-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 6px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.ds-pagination-button svg {
+    width: 13px;
+    height: 13px;
+}
+
+.ds-pagination-number:hover,
+.ds-pagination-button:not(.is-disabled):hover {
+    color: var(--ds-navy);
+    background: var(--ds-soft);
+}
+
+.ds-pagination-number.is-current {
+    color: #ffffff;
+    background: var(--ds-navy);
+    border-color: var(--ds-navy);
+}
+
+.ds-pagination-button.is-disabled {
+    color: var(--ds-light-muted);
+    cursor: not-allowed;
+    opacity: .6;
+}
+
+
+/* =========================================================
+   FORM — PAGE HEADER VARIANT
+   ========================================================= */
+
+.ds-form-header {
+    margin-bottom: 18px;
+}
+
+.ds-form-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.ds-breadcrumb-divider {
+    margin: 0 5px;
+    color: var(--ds-light-muted);
+}
+
+
+/* =========================================================
+   FORM — 2-COLUMN LAYOUT
+   ========================================================= */
+
+.ds-form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: 14px;
+    align-items: start;
+}
+
+.ds-form-shell {
+    min-width: 0;
+    background: #ffffff;
+    border: 1px solid var(--ds-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ds-form-section {
+    padding: 18px 20px 22px;
+}
+
+.ds-form-section-heading {
+    margin-bottom: 16px;
+}
+
+.ds-section-kicker {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ds-red);
+    font-size: 8.5px;
+    font-weight: 750;
+    letter-spacing: .08em;
+}
+
+.ds-form-section-heading h2 {
+    margin: 0;
+    color: var(--ds-navy);
+    font-size: 14px;
+    font-weight: 710;
+}
+
+.ds-form-section-hint {
+    margin: -8px 0 14px;
+    color: var(--ds-muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FIELDS
+   ========================================================= */
+
+.ds-field {
+    margin-top: 18px;
+}
+
+.ds-field:first-of-type {
+    margin-top: 0;
+}
+
+.ds-field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 18px;
+}
+
+.ds-field-row .ds-field {
+    margin-top: 0;
+}
+
+.ds-field-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--ds-text);
+    font-size: 10px;
+    font-weight: 680;
+    line-height: 1.35;
+}
+
+.ds-form-control {
+    width: 100%;
+    min-height: 39px;
+    padding: 0 10px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 7px;
+    outline: none;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.ds-form-control::placeholder {
+    color: var(--ds-light-muted);
+}
+
+.ds-form-control:focus {
+    border-color: #9ca5b2;
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+}
+
+.ds-form-control[readonly] {
+    background: var(--ds-soft);
+    color: var(--ds-muted);
+    cursor: not-allowed;
+}
+
+textarea.ds-form-textarea {
+    min-height: 118px;
+    padding: 10px;
+    resize: vertical;
+}
+
+.ds-field-hint {
+    display: block;
+    margin-top: 5px;
+    color: var(--ds-light-muted);
+    font-size: 9px;
+}
+
+.ds-field-hint a {
+    color: var(--ds-navy);
+    font-weight: 700;
+}
+
+.ds-field-error {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 5px;
+    color: var(--ds-red);
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   LOCATION MAP CARD
+   ========================================================= */
+
+.ds-map-status {
+    display: block;
+    min-height: 12px;
+    margin-bottom: 8px;
+    color: var(--ds-muted);
+    font-size: 9.5px;
+}
+
+.ds-map-status.ds-status-success { color: var(--ds-green); }
+.ds-map-status.ds-status-error { color: var(--ds-red); }
+
+.ds-map-container {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    margin-bottom: 16px;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.ds-map {
+    width: 100%;
+    height: 100%;
+}
+
+.ds-map-load-error {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 16px;
+    color: var(--ds-muted);
+    font-size: 11px;
+    text-align: center;
+}
+
+.ds-map-search-wrap {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    pointer-events: none;
+    right: 10px;
+    z-index: 5;
+}
+
+.ds-map-search-box {
+    position: relative;
+    max-width: 300px;
+    pointer-events: auto;
+}
+
+.ds-map-search-icon {
+    position: absolute;
+    left: 11px;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translateY(-50%);
+    color: var(--ds-light-muted);
+    pointer-events: none;
+}
+
+.ds-map-search-input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 32px;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 7px;
+    outline: none;
+    background: #ffffff;
+    color: var(--ds-text);
+    font-family: inherit;
+    font-size: 11px;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, .09);
+}
+
+.ds-map-search-input:focus {
+    border-color: #9ca5b2;
+}
+
+
+/* =========================================================
+   MAP / SATELLITE TOGGLE
+   Custom-styled replacement for Google's default map-type
+   control, matching the dashboard's own button language
+   instead of the generic gray Google chrome.
+   ========================================================= */
+
+.ds-map-type-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+
+    padding: 3px;
+
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(16, 24, 40, .09);
+}
+
+.ds-map-type-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 56px;
+    height: 28px;
+    padding: 0 10px;
+
+    color: var(--ds-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 680;
+    line-height: 1;
+
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.ds-map-type-btn:hover {
+    color: var(--ds-navy);
+}
+
+.ds-map-type-btn.is-active {
+    color: #ffffff;
+    background: var(--ds-navy);
+}
+
+.ds-map-type-btn.is-active:hover {
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   SOURCE REPORT BANNER
+   Lightweight informational strip shown when the Add Disaster
+   page was opened from a verified report (or, in compact
+   form, when viewing/editing a Disaster that was created from
+   one). Deliberately small — this is a pointer back to the
+   report, not a duplicate of the Report Detail page.
+   ========================================================= */
+
+.ds-source-report-banner {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 16px;
+    margin-bottom: 14px;
+    background: var(--ds-soft);
+    border: 1px solid var(--ds-border);
+    border-left: 3px solid var(--ds-green);
+    border-radius: 8px;
+}
+
+.ds-source-report-banner-heading {
+    color: var(--ds-navy);
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.ds-source-report-banner-heading a {
+    color: var(--ds-green);
+    text-decoration: none;
+}
+
+.ds-source-report-banner-heading a:hover {
+    text-decoration: underline;
+}
+
+.ds-source-report-banner-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    color: var(--ds-muted);
+    font-size: 10px;
+}
+
+.ds-source-report-banner-meta strong {
+    color: var(--ds-text);
+    font-weight: 650;
+}
+
+.ds-source-report-banner-compact {
+    margin-bottom: 14px;
+    padding: 9px 16px;
+}
+
+
+/* =========================================================
+   EVIDENCE PHOTO SELECTION
+   Admin picks which report-evidence photos become official,
+   public Disaster media (see admin_disaster_create). Nothing
+   here changes the underlying DisasterReportPhoto records.
+   ========================================================= */
+
+.ds-form-section-bordered {
+    border-top: 1px solid var(--ds-border);
+}
+
+.ds-photo-select-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 10px;
+}
+
+.ds-photo-select-item {
+    position: relative;
+    display: block;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.ds-photo-select-checkbox {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    z-index: 2;
+    width: 16px;
+    height: 16px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.ds-photo-select-thumb {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ds-photo-select-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ds-photo-select-check {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 6px;
+    color: #ffffff;
+    background: rgba(22, 121, 74, .28);
+}
+
+.ds-photo-select-check svg {
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    background: var(--ds-green);
+    border-radius: 50%;
+}
+
+.ds-photo-select-checkbox:checked ~ .ds-photo-select-check {
+    display: flex;
+}
+
+.ds-photo-select-item:has(.ds-photo-select-checkbox:checked) {
+    border-color: var(--ds-green);
+}
+
+.ds-photo-select-checkbox:focus-visible {
+    outline: 2px solid var(--ds-green);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   OFFICIAL DISASTER PHOTO UPLOAD (Manual Add Disaster)
+   Admin-uploaded photos saved directly as official
+   DisasterPhoto records on creation. Deliberately distinct
+   from the EVIDENCE PHOTO SELECTION grid above
+   (.ds-photo-select-*), which picks from existing
+   DisasterReportPhoto records instead — these two never share
+   markup or styling on purpose, to keep the two workflows
+   visually and functionally separate.
+   ========================================================= */
+
+.ds-photo-upload-dropzone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.ds-photo-upload-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.ds-photo-upload-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 37px;
+    padding: 0 14px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 7px;
+    font-size: 10.5px;
+    font-weight: 680;
+    cursor: pointer;
+    transition:
+        color .15s ease,
+        border-color .15s ease;
+}
+
+.ds-photo-upload-button:hover {
+    color: var(--ds-navy);
+    border-color: #9ca5b2;
+}
+
+.ds-photo-upload-input:focus-visible ~ .ds-photo-upload-button {
+    outline: 2px solid var(--ds-navy);
+    outline-offset: 2px;
+}
+
+.ds-photo-upload-button svg {
+    width: 15px;
+    height: 15px;
+}
+
+.ds-photo-upload-hint {
+    color: var(--ds-light-muted);
+    font-size: 9px;
+}
+
+.ds-photo-upload-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.ds-photo-upload-preview-grid:empty {
+    display: none;
+}
+
+.ds-photo-upload-item {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--ds-border);
+}
+
+.ds-photo-upload-thumb {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ds-photo-upload-thumb img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.ds-photo-upload-remove {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    color: #ffffff;
+    background: rgba(23, 32, 51, .68);
+    border: 0;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.ds-photo-upload-remove:hover {
+    background: var(--ds-red);
+}
+
+.ds-photo-upload-remove:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 1px;
+}
+
+.ds-photo-upload-remove svg {
+    width: 11px;
+    height: 11px;
+}
+
+
+/* =========================================================
+   FORM ERROR / FOOTER
+   ========================================================= */
+
+.ds-form-error {
+    margin: 14px 0 0;
+    padding: 10px 11px;
+    color: var(--ds-red);
+    background: var(--ds-red-soft);
+    border: 1px solid #f1c9c6;
+    border-radius: 7px;
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.ds-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.ds-form-cancel {
+    min-width: 67px;
+    padding: 0 12px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+}
+
+.ds-form-cancel:hover {
+    color: var(--ds-navy);
+    background: #fbfcfd;
+}
+
+.ds-form-submit {
+    min-width: 130px;
+}
+
+
+/* =========================================================
+   CLOSE CONFIRMATION MODAL
+   (mirrors .dt-modal exactly — see admin-disaster-types.css)
+   ========================================================= */
+
+.ds-modal[hidden] { display: none; }
+
+.ds-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+.ds-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 40, .46);
+    backdrop-filter: blur(2px);
+}
+
+.ds-modal-dialog {
+    position: relative;
+    width: min(430px, calc(100vw - 32px));
+    margin: 12vh auto 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--ds-border);
+    border-radius: 12px;
+    box-shadow:
+        0 22px 48px rgba(16, 24, 40, .15),
+        0 4px 12px rgba(16, 24, 40, .06);
+}
+
+.ds-modal-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 20px 20px 0;
+}
+
+.ds-modal-danger-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--ds-red);
+    background: #fff7f6;
+    border: 1px solid #f4d7d4;
+    border-radius: 9px;
+}
+
+.ds-modal-danger-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.ds-modal-close {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    margin: -3px -3px 0 0;
+    color: var(--ds-light-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.ds-modal-close:hover {
+    color: var(--ds-navy);
+    background: var(--ds-soft);
+}
+
+.ds-modal-close svg {
+    width: 15px;
+    height: 15px;
+}
+
+.ds-modal-content {
+    padding: 15px 20px 19px;
+}
+
+.ds-modal-content h3 {
+    margin: 0;
+    color: var(--ds-navy);
+    font-size: 15px;
+    font-weight: 720;
+    line-height: 1.3;
+}
+
+.ds-modal-content p {
+    margin: 6px 0 0;
+    color: var(--ds-muted);
+    font-size: 10.5px;
+    font-weight: 450;
+    line-height: 1.55;
+}
+
+.ds-modal-content p strong {
+    color: var(--ds-text);
+    font-weight: 700;
+}
+
+.ds-modal-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    min-height: 58px;
+    padding: 11px 20px;
+    background: #fcfcfd;
+    border-top: 1px solid var(--ds-border);
+}
+
+.ds-modal-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 70px;
+    height: 35px;
+    padding: 0 12px;
+    color: var(--ds-text);
+    background: #ffffff;
+    border: 1px solid var(--ds-border-strong);
+    border-radius: 7px;
+    font-size: 9.5px;
+    font-weight: 680;
+    cursor: pointer;
+}
+
+.ds-modal-cancel:hover {
+    color: var(--ds-navy);
+    background: #fafbfc;
+}
+
+.ds-confirm-close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-width: 130px;
+    height: 35px;
+    padding: 0 13px;
+    color: #ffffff;
+    background: var(--ds-red);
+    border: 1px solid var(--ds-red);
+    border-radius: 7px;
+    font-size: 9.5px;
+    font-weight: 680;
+    cursor: pointer;
+}
+
+.ds-confirm-close-button:hover {
+    background: var(--ds-red-dark);
+    border-color: var(--ds-red-dark);
+}
+
+.ds-confirm-close-button svg {
+    width: 13px;
+    height: 13px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 980px) {
+
+    .ds-form-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 720px) {
+
+    .ds-table {
+        min-width: 780px;
+    }
+
+    .ds-field-row {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .ds-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ds-map-container {
+        height: 220px;
+    }
+
+    .ds-photo-select-grid {
+        grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    }
+
+    .ds-photo-upload-preview-grid {
+        grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    }
+
+    .ds-source-report-banner-meta {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+}

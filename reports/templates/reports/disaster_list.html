@@ -1,0 +1,412 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Official Disaster Information - Stay informed about verified and officially managed disaster situations across Nepal."
+    >
+    <title>Official Disaster Information | NDMS</title>
+
+    <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/disasters.css' %}">
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+<body
+    class="public-disaster-page"
+    {% if has_unread_disaster_alert %}
+        data-mark-disaster-alerts-read="1"
+        data-mark-disaster-alerts-read-url="{% url 'mark_disaster_alerts_read' %}"
+    {% endif %}
+>
+
+{% if messages %}
+<div class="django-messages" aria-live="polite">
+    {% for message in messages %}
+    <div
+        class="django-message django-message-{{ message.tags }}"
+        role="alert"
+    >
+        <span class="message-icon">
+            {% if message.tags == 'error' %}!{% else %}✓{% endif %}
+        </span>
+        <span class="message-text">{{ message }}</span>
+        <button
+            type="button"
+            class="message-close"
+            aria-label="Close message"
+        >×</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- =====================================================
+     PUBLIC NAVBAR
+     ===================================================== -->
+{% include 'reports/partials/navbar.html' %}
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+<main class="public-main" id="main-content">
+    <div class="disaster-container">
+
+        <!-- Header -->
+        <header class="disaster-page-header">
+            <div class="disaster-eyebrow">
+                <span class="disaster-eyebrow-dot" aria-hidden="true"></span>
+                <span>Official Disaster Information</span>
+            </div>
+            <h1 class="disaster-page-title">Official Disaster Situations</h1>
+            <p class="disaster-page-subtitle">
+                Stay informed about verified and officially managed disaster situations across Nepal.
+            </p>
+        </header>
+
+        <!-- Search & Filter Card -->
+        <section class="disaster-filter-card" aria-label="Search and filter disasters">
+            <form method="get" action="{% url 'disaster_list' %}" class="disaster-filter-form" role="search">
+
+                <!-- Search Input -->
+                <div class="disaster-search-wrap">
+                    <svg class="disaster-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ q }}"
+                        placeholder="Search disasters or locations..."
+                        class="disaster-search-input"
+                        aria-label="Search disasters or locations"
+                    >
+                </div>
+
+                <!-- Disaster Type Filter -->
+                <div class="disaster-filter-select-wrap">
+                    <select name="type" class="disaster-filter-select" aria-label="Filter by Disaster Type">
+                        <option value="">All Disaster Types</option>
+                        {% for dtype in disaster_types %}
+                            <option value="{{ dtype.id }}" {% if selected_type == dtype.id|stringformat:'s' %}selected{% endif %}>
+                                {{ dtype.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Severity Filter -->
+                <div class="disaster-filter-select-wrap">
+                    <select name="severity" class="disaster-filter-select" aria-label="Filter by Severity">
+                        <option value="">All Severities</option>
+                        {% for val, label in severity_choices %}
+                            <option value="{{ val }}" {% if selected_severity == val %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="disaster-filter-select-wrap">
+                    <select name="status" class="disaster-filter-select" aria-label="Filter by Status">
+                        <option value="">All Statuses</option>
+                        {% for val, label in status_choices %}
+                            <option value="{{ val }}" {% if selected_status == val %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="disaster-filter-actions">
+                    <button type="submit" class="disaster-btn-search">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.3-4.3"></path>
+                        </svg>
+                        Filter
+                    </button>
+
+                    {% if has_active_filters %}
+                        <a href="{% url 'disaster_list' %}" class="disaster-btn-clear" title="Clear all filters">
+                            Clear Filters
+                        </a>
+                    {% endif %}
+                </div>
+
+            </form>
+        </section>
+
+        <!-- Results Meta Strip -->
+        <div class="disaster-meta-strip">
+            <span class="disaster-meta-count">
+                Showing <strong>{{ page_obj.paginator.count }}</strong> official disaster{{ page_obj.paginator.count|pluralize }}
+                {% if has_active_filters %} matching your criteria{% endif %}
+            </span>
+
+            {% if has_active_filters %}
+                <a href="{% url 'disaster_list' %}" style="color: var(--red); font-size: 12.5px; text-decoration: none; font-weight: 600;">
+                    Reset Filters
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Disaster Cards Grid -->
+        {% if disasters %}
+            <div class="disaster-grid">
+                {% for disaster in disasters %}
+                    <article class="disaster-card">
+                        <div>
+                            <!-- Card Header: Type and Badges -->
+                            <div class="disaster-card-header">
+                                <span class="disaster-card-type">
+                                    {{ disaster.disaster_type.name }}
+                                </span>
+
+                                <div class="ds-badge-row">
+                                    <span class="ds-severity ds-severity-{{ disaster.severity|lower }}">
+                                        {{ disaster.get_severity_display }}
+                                    </span>
+
+                                    <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                                        <span class="ds-status-dot" aria-hidden="true"></span>
+                                        {{ disaster.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Title -->
+                            <h2 class="disaster-card-title">
+                                {{ disaster.title }}
+                            </h2>
+                        </div>
+
+                        <!-- Meta Info List -->
+                        <div class="disaster-card-meta-list">
+                            <div class="disaster-card-meta-item">
+                                <svg class="disaster-card-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                                <span>
+                                    <span class="disaster-card-meta-label">Location:</span>
+                                    {{ disaster.address|default:"Location recorded" }}
+                                </span>
+                            </div>
+
+                            <div class="disaster-card-meta-item">
+                                <svg class="disaster-card-meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"></rect>
+                                    <line x1="16" x2="16" y1="2" y2="6"></line>
+                                    <line x1="8" x2="8" y1="2" y2="6"></line>
+                                    <line x1="3" x2="21" y1="10" y2="10"></line>
+                                </svg>
+                                <span>
+                                    <span class="disaster-card-meta-label">Started:</span>
+                                    <time datetime="{{ disaster.start_date|date:'c' }}">
+                                        {{ disaster.start_date|citizen_datetime:citizen_date_format }}
+                                    </time>
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Short Description -->
+                        {% if disaster.description %}
+                            <p class="disaster-card-desc">
+                                {{ disaster.description|truncatewords:22 }}
+                            </p>
+                        {% endif %}
+
+                        <!-- Card Footer -->
+                        <div class="disaster-card-footer">
+                            <span style="font-size: 12px; color: var(--muted);">
+                                {% with update_count=disaster.updates.count %}
+                                    {% if update_count > 0 %}
+                                        {{ update_count }} official update{{ update_count|pluralize }}
+                                    {% else %}
+                                        Situation monitored
+                                    {% endif %}
+                                {% endwith %}
+                            </span>
+
+                            <a href="{% url 'disaster_detail' disaster.id %}" class="disaster-view-btn" aria-label="View details for {{ disaster.title }}">
+                                <span>View Details</span>
+                                <span class="disaster-view-arrow" aria-hidden="true">→</span>
+                            </a>
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if page_obj.has_other_pages %}
+                <nav class="disaster-pagination" aria-label="Disaster directory pagination">
+                    {% if page_obj.has_previous %}
+                        <a
+                            href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.previous_page_number }}"
+                            class="disaster-page-link"
+                            aria-label="Previous page"
+                        >
+                            ‹ Prev
+                        </a>
+                    {% else %}
+                        <span class="disaster-page-disabled" aria-disabled="true">
+                            ‹ Prev
+                        </span>
+                    {% endif %}
+
+                    {% for page_num in page_obj.paginator.page_range %}
+                        {% if page_num == page_obj.number %}
+                            <span class="disaster-page-current" aria-current="page">
+                                {{ page_num }}
+                            </span>
+                        {% elif page_num > page_obj.number|add:'-3' and page_num < page_obj.number|add:'3' %}
+                            <a
+                                href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_num }}"
+                                class="disaster-page-link"
+                            >
+                                {{ page_num }}
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a
+                            href="?{% if query_string %}{{ query_string }}&{% endif %}page={{ page_obj.next_page_number }}"
+                            class="disaster-page-link"
+                            aria-label="Next page"
+                        >
+                            Next ›
+                        </a>
+                    {% else %}
+                        <span class="disaster-page-disabled" aria-disabled="true">
+                            Next ›
+                        </span>
+                    {% endif %}
+                </nav>
+            {% endif %}
+
+        {% else %}
+            <!-- Empty State -->
+            <div class="disaster-empty-state">
+                <svg class="disaster-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+                <h3 class="disaster-empty-title">No disasters found</h3>
+                <p class="disaster-empty-desc">
+                    {% if has_active_filters %}
+                        Try changing your search term or clearing your filters to see more official records.
+                    {% else %}
+                        There are currently no official disasters published in the directory.
+                    {% endif %}
+                </p>
+
+                {% if has_active_filters %}
+                    <a href="{% url 'disaster_list' %}" class="disaster-btn-clear" style="display: inline-flex;">
+                        Clear Filters
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+
+    </div>
+</main>
+
+<!-- =====================================================
+     PUBLIC FOOTER (consistent with Home & About)
+     ===================================================== -->
+<footer class="about-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <a href="{% url 'home' %}" class="footer-brand-title">
+                <strong>NDMS</strong>
+                <span>National Disaster Management System</span>
+            </a>
+            <p>
+                Building a safer and better-informed community through connected disaster reporting across Nepal.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <div>
+                <strong>Navigation</strong>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'disaster_list' %}">Disasters</a>
+                <a href="{% url 'home' %}#contact">Contact</a>
+            </div>
+
+            <div>
+                <strong>Services</strong>
+                {% if not user.is_staff and not user.is_superuser %}
+                    <a href="{% url 'create_disaster_report' %}">Report Incident</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                    {% else %}
+                        <a href="{% url 'my_reports' %}">My Reports</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}">My Reports</a>
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Account</strong>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="footer-social">
+            <strong class="footer-social-title">Follow NDMS</strong>
+            <div class="footer-social-icons">
+                <a href="https://www.facebook.com/dip.esh.641646" class="footer-social-icon" aria-label="Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H16V5.6c-.26-.04-1.16-.1-2.2-.1-2.18 0-3.68 1.33-3.68 3.78V11H7.8v3.2h2.32V22h3.2v-7.8h2.3l.37-3.2h-2.67V9.6c0-.92.25-1.1 1.18-1.1Z" fill="currentColor"/></svg>
+                </a>
+                <a href="https://www.instagram.com/_212.m6_?stkn=MXg1ZHdma3IwMWxtYg==" class="footer-social-icon" aria-label="Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.1" cy="6.9" r="1" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="X">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="YouTube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M10.5 10.2v3.6l3.3-1.8-3.3-1.8Z" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="8" cy="8.3" r="1.15" fill="currentColor"/><path d="M8 11v6.2M12 11v6.2M12 13.6c0-1.4 1-2.3 2.2-2.3 1.3 0 2.1.9 2.1 2.4v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 National Disaster Management System</span>
+        <span>NDMS</span>
+    </div>
+</footer>
+
+<script src="{% static 'reports/js/public-nav.js' %}" defer></script>
+<script src="{% static 'reports/js/navbar-avatar.js' %}" defer></script>
+<script src="{% static 'reports/js/disaster-alerts-read.js' %}" defer></script>
+
+</body>
+</html>

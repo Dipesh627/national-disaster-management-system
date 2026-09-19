@@ -1,0 +1,266 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ form_title }} | NDMS Administration
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-notifications.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Notifications</span>
+<span class="nt-breadcrumb-divider">/</span>
+<span>Send</span>
+{% endblock %}
+
+{% block page_title %}
+{{ form_title }}
+{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard nt-page">
+
+    <header class="nt-page-header nt-form-header">
+
+        <div class="nt-page-header-copy">
+            <span class="nt-kicker">
+                NOTIFICATION MANAGEMENT
+            </span>
+
+            <h1>
+                {{ form_title }}
+            </h1>
+
+            <p>
+                {{ form_description }}
+            </p>
+        </div>
+
+        <a
+            href="{% url 'admin_notifications' %}"
+            class="nt-secondary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+
+            <span>Back</span>
+        </a>
+
+    </header>
+
+
+    <section class="nt-form-shell">
+
+        <form
+            method="post"
+            class="nt-form"
+            novalidate
+        >
+
+            {% csrf_token %}
+
+
+            <div class="nt-form-section">
+
+                <div class="nt-form-section-heading">
+
+                    <span class="nt-section-kicker">
+                        SEND NOTIFICATION
+                    </span>
+
+                    <h2>
+                        Notification details
+                    </h2>
+
+                    <p>
+                        Choose the recipient, add an optional disaster
+                        reference, and write the alert.
+                    </p>
+
+                </div>
+
+
+                <div class="nt-field">
+
+                    <label
+                        for="{{ form.recipient.id_for_label }}"
+                        class="nt-field-label"
+                    >
+                        Recipient
+                    </label>
+
+                    {{ form.recipient }}
+
+                    <span class="nt-field-hint">
+                        Choose All Citizens to send the alert to everyone,
+                        or select one citizen for a personal alert.
+                    </span>
+
+                    {% if form.recipient.errors %}
+
+                        <div
+                            class="nt-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.recipient.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="nt-field">
+
+                    <label
+                        for="{{ form.disaster.id_for_label }}"
+                        class="nt-field-label"
+                    >
+                        Disaster
+                    </label>
+
+                    {{ form.disaster }}
+
+                    <span class="nt-field-hint">
+                        Optional. Link the notification to a specific
+                        disaster when relevant.
+                    </span>
+
+                    {% if form.disaster.errors %}
+
+                        <div
+                            class="nt-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.disaster.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="nt-field">
+
+                    <label
+                        for="{{ form.title.id_for_label }}"
+                        class="nt-field-label"
+                    >
+                        Title
+                    </label>
+
+                    {{ form.title }}
+
+                    {% if form.title.errors %}
+
+                        <div
+                            class="nt-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.title.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="nt-field">
+
+                    <label
+                        for="{{ form.message.id_for_label }}"
+                        class="nt-field-label"
+                    >
+                        Message
+                    </label>
+
+                    {{ form.message }}
+
+                    {% if form.message.errors %}
+
+                        <div
+                            class="nt-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.message.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+                <div
+                    class="nt-form-error"
+                    role="alert"
+                >
+                    {% for error in form.non_field_errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+
+            <div class="nt-form-actions">
+
+                <a
+                    href="{% url 'admin_notifications' %}"
+                    class="nt-form-cancel"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="nt-primary-button nt-form-submit"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="m22 2-7 20-4-9-9-4Z"></path>
+                        <path d="M22 2 11 13"></path>
+                    </svg>
+
+                    <span>Send Notification</span>
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+{% endblock %}

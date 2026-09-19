@@ -1,0 +1,734 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Response Updates | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-response-updates.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Response Updates</span>
+{% endblock %}
+
+{% block page_title %}
+Response Updates
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard ru-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ru-page-header">
+
+        <div class="ru-page-header-copy">
+
+            <span class="ru-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>Response Updates</h1>
+
+            <p>
+                Track emergency response progress and agency actions.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'admin_response_update_create' %}"
+            class="ru-primary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+            >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+
+            <span>Add Response Update</span>
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         SEARCH + STATUS FILTER TOOLBAR
+         ===================================================== -->
+    <section
+        class="ru-filter-bar"
+        aria-label="Response update filters"
+    >
+
+        <form
+            method="get"
+            class="ru-filter-form"
+        >
+
+            <label class="ru-search-field">
+
+                <span class="ru-visually-hidden">
+                    Search response updates
+                </span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                </svg>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search disaster, agency or update..."
+                    autocomplete="off"
+                >
+
+            </label>
+
+
+            <label class="ru-select-field">
+
+                <span class="ru-visually-hidden">
+                    Filter by status
+                </span>
+
+                <select
+                    name="status"
+                    class="ru-select"
+                >
+
+                    <option
+                        value="ALL"
+                        {% if status_filter == 'ALL' %}selected{% endif %}
+                    >
+                        All
+                    </option>
+
+                    {% for value, label in status_choices %}
+
+                        <option
+                            value="{{ value }}"
+                            {% if status_filter == value %}selected{% endif %}
+                        >
+                            {{ label }}
+                        </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </label>
+
+
+            <button
+                type="submit"
+                class="ru-filter-button"
+            >
+                Apply
+            </button>
+
+
+            {% if search_query or status_filter != 'ALL' %}
+
+                <a
+                    href="{% url 'admin_response_updates' %}"
+                    class="ru-reset-button"
+                >
+                    Reset
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         TABLE
+         ===================================================== -->
+    <section class="ru-table-panel">
+
+        <div class="ru-table-head">
+
+            <div class="ru-table-head-copy">
+
+                <div class="ru-table-heading-row">
+                    <h2>Response updates</h2>
+
+                    {% if page_obj.paginator.count %}
+                        <span class="ru-result-count">
+                            {{ page_obj.paginator.count }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <p>
+                    {% if page_obj.paginator.count %}
+                        {% if search_query or status_filter != 'ALL' %}
+                            Matching response updates
+                        {% else %}
+                            Agency actions logged against disasters
+                        {% endif %}
+                    {% else %}
+                        No response updates available
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if page_obj.object_list %}
+
+            <div class="ru-table-wrap">
+
+                <table class="ru-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th scope="col" class="ru-col-disaster">
+                                Disaster
+                            </th>
+
+                            <th scope="col" class="ru-col-agency">
+                                Agency
+                            </th>
+
+                            <th scope="col" class="ru-col-update">
+                                Update
+                            </th>
+
+                            <th scope="col" class="ru-col-status">
+                                Status
+                            </th>
+
+                            <th scope="col" class="ru-col-updated-by">
+                                Updated By
+                            </th>
+
+                            <th scope="col" class="ru-col-date">
+                                Date
+                            </th>
+
+                            <th scope="col" class="ru-col-actions">
+                                <span class="ru-visually-hidden">
+                                    Actions
+                                </span>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for update in page_obj.object_list %}
+
+                            <tr class="ru-table-row">
+
+                                <!-- DISASTER -->
+                                <td class="ru-disaster-cell">
+                                    <span
+                                        class="ru-disaster-name"
+                                        title="{{ update.disaster.title }}"
+                                    >
+                                        {{ update.disaster.title }}
+                                    </span>
+                                </td>
+
+
+                                <!-- AGENCY -->
+                                <td class="ru-agency-cell">
+                                    <span
+                                        class="ru-agency-name"
+                                        title="{{ update.agency.agency_name }}"
+                                    >
+                                        {{ update.agency.agency_name }}
+                                    </span>
+                                </td>
+
+
+                                <!-- UPDATE -->
+                                <td class="ru-update-cell">
+                                    <span
+                                        class="ru-update-text"
+                                        title="{{ update.update_details }}"
+                                    >
+                                        {{ update.update_details|truncatechars:70 }}
+                                    </span>
+                                </td>
+
+
+                                <!-- STATUS -->
+                                <td class="ru-status-cell">
+                                    <span class="response-status response-{{ update.response_status|lower }}">
+                                        {{ update.get_response_status_display }}
+                                    </span>
+                                </td>
+
+
+                                <!-- UPDATED BY -->
+                                <td class="ru-updated-by-cell">
+                                    <span
+                                        class="ru-updated-by-text"
+                                        title="{{ update.updated_by.full_name|default:update.updated_by.username }}"
+                                    >
+                                        {{ update.updated_by.full_name|default:update.updated_by.username }}
+                                    </span>
+                                </td>
+
+
+                                <!-- DATE -->
+                                <td class="ru-date-cell">
+                                    <time datetime="{{ update.update_date|date:'c' }}">
+                                        {{ update.update_date|date:"M d, Y" }}
+                                    </time>
+                                </td>
+
+
+                                <!-- ACTIONS -->
+                                <td class="ru-actions-cell">
+
+                                    <div class="ru-actions">
+
+                                        <a
+                                            href="{% url 'admin_response_update_edit' update.id %}"
+                                            class="ru-action ru-action-edit"
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                aria-hidden="true"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path d="M12 20h9"></path>
+                                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
+                                            </svg>
+
+                                            <span>Edit</span>
+                                        </a>
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_response_update_delete' update.id %}"
+                                            class="ru-delete-form"
+                                            data-disaster="{{ update.disaster.title|escape }}"
+                                            data-agency="{{ update.agency.agency_name|escape }}"
+                                        >
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="ru-action ru-action-delete"
+                                            >
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                >
+                                                    <path d="M3 6h18"></path>
+                                                    <path d="M8 6V4h8v2"></path>
+                                                    <path d="M19 6l-1 14H6L5 6"></path>
+                                                    <path d="M10 11v5"></path>
+                                                    <path d="M14 11v5"></path>
+                                                </svg>
+
+                                                <span>Delete</span>
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- =================================================
+                 PAGINATION
+                 ================================================= -->
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <div class="ru-pagination">
+
+                    <span class="ru-pagination-summary">
+                        Showing
+                        <strong>{{ page_obj.start_index }}</strong>
+                        –
+                        <strong>{{ page_obj.end_index }}</strong>
+                        of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                    </span>
+
+
+                    <nav
+                        class="ru-pagination-nav"
+                        aria-label="Response updates pagination"
+                    >
+
+                        {% if page_obj.has_previous %}
+
+                            <a
+                                href="?status={{ status_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.previous_page_number }}"
+                                class="ru-pagination-button"
+                                aria-label="Previous page"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </a>
+
+                        {% else %}
+
+                            <span class="ru-pagination-button is-disabled">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </span>
+
+                        {% endif %}
+
+
+                        {% for number in page_obj.paginator.page_range %}
+
+                            {% if page_obj.number == number %}
+
+                                <span class="ru-pagination-number is-current">
+                                    {{ number }}
+                                </span>
+
+                            {% else %}
+
+                                <a
+                                    href="?status={{ status_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ number }}"
+                                    class="ru-pagination-number"
+                                >
+                                    {{ number }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
+                        {% if page_obj.has_next %}
+
+                            <a
+                                href="?status={{ status_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.next_page_number }}"
+                                class="ru-pagination-button"
+                                aria-label="Next page"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+
+                        {% else %}
+
+                            <span class="ru-pagination-button is-disabled">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+
+                        {% endif %}
+
+                    </nav>
+
+                </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <!-- =================================================
+                 EMPTY STATE
+                 ================================================= -->
+            <div class="ru-empty-state">
+
+                <div class="ru-empty-mark" aria-hidden="true">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M12 3 3.5 6.5v5.8c0 4.3 3.1 7.9 8.5 9.7 5.4-1.8 8.5-5.4 8.5-9.7V6.5Z"></path>
+                        <path d="M12 8v4.5"></path>
+                        <path d="M12 16.25h.01"></path>
+                    </svg>
+
+                </div>
+
+
+                {% if search_query or status_filter != 'ALL' %}
+
+                    <h3>No matching response updates</h3>
+
+                    <p>
+                        Try changing your search or filter.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_response_updates' %}"
+                        class="ru-secondary-button"
+                    >
+                        Reset filters
+                    </a>
+
+                {% else %}
+
+                    <h3>No response updates yet</h3>
+
+                    <p>
+                        Log the first agency response to start tracking progress.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_response_update_create' %}"
+                        class="ru-secondary-button"
+                    >
+                        Add Response Update
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<!-- =========================================================
+     DELETE CONFIRMATION MODAL
+     ========================================================= -->
+<div
+    id="ruDeleteModal"
+    class="ru-modal"
+    hidden
+    aria-hidden="true"
+>
+    <div
+        class="ru-modal-backdrop"
+        data-modal-close
+    ></div>
+
+
+    <div
+        class="ru-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ruDeleteModalTitle"
+        aria-describedby="ruDeleteModalDescription"
+    >
+
+        <!-- HEADER -->
+        <div class="ru-modal-top">
+
+            <div
+                class="ru-modal-danger-icon"
+                aria-hidden="true"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M12 3 3.5 6.5v5.8c0 4.3 3.1 7.9 8.5 9.7 5.4-1.8 8.5-5.4 8.5-9.7V6.5Z"></path>
+                    <path d="M12 8v4.5"></path>
+                    <path d="M12 16.25h.01"></path>
+                </svg>
+            </div>
+
+
+            <button
+                type="button"
+                class="ru-modal-close"
+                data-modal-close
+                aria-label="Close delete confirmation"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <path d="M6 6l12 12"></path>
+                    <path d="M18 6 6 18"></path>
+                </svg>
+            </button>
+
+        </div>
+
+
+        <!-- CONTENT -->
+        <div class="ru-modal-content">
+
+            <h3 id="ruDeleteModalTitle">
+                Delete response update?
+            </h3>
+
+
+            <p id="ruDeleteModalDescription">
+                This response update will be permanently removed.
+            </p>
+
+
+            <div class="ru-delete-context" id="ruDeleteContext" hidden>
+                <strong id="ruDeleteDisasterName"></strong>
+                <span id="ruDeleteAgencyName"></span>
+            </div>
+
+
+            <!-- FINAL CONFIRMATION -->
+            <div class="ru-delete-final-note">
+
+                <span class="ru-delete-final-dot"></span>
+
+                <span>
+                    This action cannot be undone.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+        <div class="ru-modal-actions">
+
+            <button
+                type="button"
+                class="ru-modal-cancel"
+                data-modal-close
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="ru-confirm-delete-button"
+                id="ruConfirmDelete"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 6h18"></path>
+                    <path d="M8 6V4h8v2"></path>
+                    <path d="M19 6l-1 14H6L5 6"></path>
+                    <path d="M10 11v5"></path>
+                    <path d="M14 11v5"></path>
+                </svg>
+
+                <span>Delete update</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'reports/admin/admin-response-updates.js' %}"></script>
+{% endblock %}

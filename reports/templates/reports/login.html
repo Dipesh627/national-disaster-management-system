@@ -1,0 +1,286 @@
+{% load static %}
+{% load citizen_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>NDMS | Login</title>
+
+    <link rel="stylesheet"
+          href="{% static 'reports/login.css' %}">
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="login-page">
+
+
+<main class="login-wrapper">
+
+
+    <!-- =================================================
+         BRAND
+         ================================================= -->
+
+    <a href="{% url 'home' %}"
+       class="login-brand">
+
+        <div class="login-logo">
+            ND
+        </div>
+
+        <div class="login-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- =================================================
+         LOGIN CARD
+         ================================================= -->
+
+    <section class="login-card">
+
+
+        <!-- Heading -->
+
+        <div class="login-heading">
+
+            <span class="login-label">
+                CITIZEN PORTAL
+            </span>
+
+            <h1>
+                Welcome back
+            </h1>
+
+            <p>
+                Sign in to your NDMS account to continue.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             ERROR
+             ================================================= -->
+
+        {% if error %}
+
+        <div class="login-error">
+
+            <span class="error-icon">
+                !
+            </span>
+
+            <span>
+                {{ error }}
+            </span>
+
+        </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             LOGIN FORM
+             ================================================= -->
+
+        <form method="POST"
+              class="login-form">
+
+            {% csrf_token %}
+
+
+            <!-- Preserve next URL -->
+
+            <input
+                type="hidden"
+                name="next"
+                value="{{ next }}"
+            >
+
+
+            <!-- Username -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    value="{{ username|default:'' }}"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+
+                <div class="password-input-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword()"
+                        aria-label="Show password">
+
+                        <span id="passwordEye">
+                            ◉
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- Forgot password -->
+
+                <div class="forgot-password">
+
+                    <a href="{% url 'password_reset' %}">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Login -->
+
+            <button
+                type="submit"
+                class="login-button">
+
+                <span>
+                    Sign In
+                </span>
+
+                <span class="login-arrow">
+                    →
+                </span>
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- =================================================
+             REGISTER
+             ================================================= -->
+
+        <div class="create-account">
+
+            <span>
+                Don't have an account?
+            </span>
+
+            <a href="{% url 'register' %}">
+                Create an account
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="login-footer">
+
+        © 2026 National Disaster Management System
+
+    </footer>
+
+
+</main>
+
+
+
+<script>
+
+function togglePassword() {
+
+    const password =
+        document.getElementById("password");
+
+    const eye =
+        document.getElementById("passwordEye");
+
+
+    if (password.type === "password") {
+
+        password.type = "text";
+
+        eye.textContent = "◎";
+
+    } else {
+
+        password.type = "password";
+
+        eye.textContent = "◉";
+
+    }
+
+}
+
+</script>
+
+
+</body>
+
+</html>

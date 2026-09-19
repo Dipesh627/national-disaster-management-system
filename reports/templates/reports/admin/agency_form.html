@@ -1,0 +1,302 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ form_title }} | NDMS Administration
+{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-emergency-agencies.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Emergency Agencies</span>
+<span class="ea-breadcrumb-divider">/</span>
+<span>{{ form_mode|title }}</span>
+{% endblock %}
+
+{% block page_title %}
+{{ form_title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard ea-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ea-page-header ea-form-header">
+
+        <div class="ea-page-header-copy">
+
+            <span class="ea-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>{{ form_title }}</h1>
+
+            <p>
+                {% if form_mode == 'edit' %}
+                    Update this agency's information.
+                {% else %}
+                    Add a new organization involved in disaster response and coordination.
+                {% endif %}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'admin_agencies' %}"
+            class="ea-secondary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+
+            <span>Back</span>
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         COMPACT FORM
+         ===================================================== -->
+    <section class="ea-form-shell">
+
+        <form
+            method="post"
+            class="ea-form"
+            novalidate
+        >
+
+            {% csrf_token %}
+
+
+            <!-- AGENCY -->
+            <div class="ea-form-section">
+
+                <div class="ea-form-section-heading">
+
+                    <span class="ea-section-kicker">
+                        AGENCY
+                    </span>
+
+                    <h2>
+                        Basic information
+                    </h2>
+
+                </div>
+
+
+                <!-- AGENCY NAME -->
+                <div class="ea-field">
+
+                    <label
+                        for="{{ form.agency_name.id_for_label }}"
+                        class="ea-field-label"
+                    >
+                        Agency name
+                    </label>
+
+                    {{ form.agency_name }}
+
+                    {% if form.agency_name.errors %}
+
+                        <div
+                            class="ea-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.agency_name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- AGENCY TYPE -->
+                <div class="ea-field">
+
+                    <label
+                        for="{{ form.agency_type.id_for_label }}"
+                        class="ea-field-label"
+                    >
+                        Agency type
+                    </label>
+
+                    {{ form.agency_type }}
+
+                    {% if form.agency_type.errors %}
+
+                        <div
+                            class="ea-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.agency_type.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- CONTACT NUMBER -->
+                <div class="ea-field">
+
+                    <label
+                        for="{{ form.contact_number.id_for_label }}"
+                        class="ea-field-label"
+                    >
+                        Contact number
+                    </label>
+
+                    {{ form.contact_number }}
+
+                    {% if form.contact_number.errors %}
+
+                        <div
+                            class="ea-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.contact_number.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- LOCATION -->
+                <div class="ea-field">
+
+                    <label
+                        for="{{ form.location.id_for_label }}"
+                        class="ea-field-label"
+                    >
+                        Location
+                        <span class="ea-field-label-optional">(optional)</span>
+                    </label>
+
+                    {{ form.location }}
+
+                    {% if form.location.errors %}
+
+                        <div
+                            class="ea-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.location.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM ERRORS -->
+            {% if form.non_field_errors %}
+
+                <div
+                    class="ea-form-error"
+                    role="alert"
+                >
+                    {% for error in form.non_field_errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+
+            <!-- ACTION FOOTER -->
+            <div class="ea-form-actions">
+
+                <a
+                    href="{% url 'admin_agencies' %}"
+                    class="ea-form-cancel"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="ea-primary-button ea-form-submit"
+                >
+
+                    {% if form_mode == 'edit' %}
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M5 4h11l3 3v13H5z"></path>
+                            <path d="M8 4v6h8V4"></path>
+                            <path d="M8 20v-6h8v6"></path>
+                        </svg>
+
+                        <span>Save changes</span>
+
+                    {% else %}
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        >
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+                        </svg>
+
+                        <span>Create agency</span>
+
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

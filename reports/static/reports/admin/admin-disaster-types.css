@@ -1,0 +1,1520 @@
+/* =========================================================
+   NDMS ADMIN — DISASTER TYPES
+   Clean / Compact / Professional
+   Existing NDMS palette
+   =========================================================
+
+   RESPONSIVE / SCROLL CONTRACT (read this before adding any
+   new mobile fix here):
+
+   - This page never sets its own height/min-height/overflow-y
+     on .dt-page, .dt-table-panel or any of their ancestors.
+     Vertical sizing is intentionally left to normal document
+     flow, owned by the shared shell (dashboard-shell.css's
+     .admin-main / .admin-content). Do NOT add height: 100vh,
+     overflow-y: auto, or similar to any element in this file --
+     that would create a second, competing scroll container
+     inside the page and reproduce the original mobile bug.
+
+   - The ONLY intentional scroll container in this file is
+     .dt-table-wrap (overflow-x: auto), which isolates the
+     table's horizontal scroll so the rest of the page never
+     scrolls sideways. .dt-table has min-width: 880px on
+     purpose -- it is meant to be wider than a mobile viewport
+     and scroll within .dt-table-wrap only.
+
+   - Mobile breakpoint here is 820px, matching the shell's
+     sidebar/topbar breakpoint in dashboard-shell.css exactly,
+     so both files agree on where "mobile" starts. If the
+     shell's breakpoint ever changes, update it here too. */
+
+.dt-page {
+    --dt-navy: #172033;
+    --dt-navy-light: #202b40;
+
+    --dt-red: #b42318;
+    --dt-red-dark: #8f1d16;
+    --dt-red-soft: #fef3f2;
+
+    --dt-green: #16794a;
+    --dt-green-soft: #ecfdf3;
+
+    --dt-text: #344054;
+    --dt-muted: #667085;
+    --dt-light-muted: #98a2b3;
+
+    --dt-border: #e4e7ec;
+    --dt-border-strong: #d0d5dd;
+
+    --dt-bg: #f8f9fb;
+    --dt-soft: #f2f4f7;
+    --dt-white: #ffffff;
+
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.dt-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.dt-page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 22px;
+    margin-bottom: 20px;
+}
+
+.dt-page-header-copy {
+    min-width: 0;
+}
+
+.dt-kicker {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--dt-red);
+    font-size: 9.5px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: .085em;
+}
+
+.dt-page-header h1 {
+    margin: 0;
+    color: var(--dt-navy);
+    font-size: 25px;
+    font-weight: 720;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+}
+
+.dt-page-header p {
+    max-width: 650px;
+    margin: 6px 0 0;
+    color: var(--dt-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.dt-primary-button,
+.dt-secondary-button,
+.dt-form-cancel,
+.dt-filter-button,
+.dt-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    border-radius: 7px;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.dt-primary-button {
+    flex: 0 0 auto;
+    padding: 0 13px;
+    color: #ffffff;
+    background: var(--dt-navy);
+    border: 1px solid var(--dt-navy);
+}
+
+.dt-primary-button:hover {
+    background: var(--dt-navy-light);
+    border-color: var(--dt-navy-light);
+}
+
+.dt-primary-button:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .10);
+    outline-offset: 2px;
+}
+
+.dt-primary-button svg {
+    width: 14px;
+    height: 14px;
+}
+
+.dt-secondary-button {
+    padding: 0 12px;
+    color: var(--dt-text);
+    background: #ffffff;
+    border: 1px solid var(--dt-border-strong);
+}
+
+.dt-secondary-button:hover {
+    color: var(--dt-navy);
+    background: #fbfcfd;
+    border-color: #bfc6d0;
+}
+
+.dt-secondary-button svg {
+    width: 14px;
+    height: 14px;
+}
+
+
+/* =========================================================
+   FILTER
+   ========================================================= */
+
+.dt-filter-bar {
+    margin-bottom: 14px;
+}
+
+.dt-filter-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.dt-search-field,
+.dt-select-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 37px;
+    background: #ffffff;
+    border: 1px solid var(--dt-border);
+    border-radius: 7px;
+}
+
+.dt-search-field {
+    width: min(350px, 100%);
+}
+
+.dt-select-field {
+    width: 154px;
+}
+
+.dt-search-field:focus-within,
+.dt-select-field:focus-within {
+    border-color: #b4bbc6;
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+}
+
+.dt-search-field svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 11px;
+    flex: 0 0 auto;
+    color: var(--dt-light-muted);
+}
+
+.dt-search-field input,
+.dt-select-field select {
+    width: 100%;
+    min-width: 0;
+    height: 35px;
+    border: 0;
+    outline: 0;
+    color: var(--dt-text);
+    background: transparent;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 500;
+}
+
+.dt-search-field input {
+    padding: 0 10px 0 8px;
+}
+
+.dt-search-field input::placeholder {
+    color: var(--dt-light-muted);
+}
+
+.dt-select-field select {
+    appearance: none;
+    padding: 0 31px 0 10px;
+    cursor: pointer;
+}
+
+.dt-select-field > svg {
+    position: absolute;
+    right: 9px;
+    width: 12px;
+    height: 12px;
+    color: var(--dt-muted);
+    pointer-events: none;
+}
+
+.dt-filter-button {
+    padding: 0 13px;
+    color: #ffffff;
+    background: var(--dt-navy);
+    border: 1px solid var(--dt-navy);
+}
+
+.dt-filter-button:hover {
+    background: var(--dt-navy-light);
+}
+
+.dt-reset-button {
+    padding: 0 9px;
+    color: var(--dt-muted);
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.dt-reset-button:hover {
+    color: var(--dt-navy);
+    background: #ffffff;
+    border-color: var(--dt-border);
+}
+
+
+/* =========================================================
+   TABLE PANEL
+   ========================================================= */
+
+.dt-table-panel {
+    overflow: visible;
+    background: #ffffff;
+    border: 1px solid var(--dt-border);
+    border-radius: 10px;
+}
+
+.dt-table-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 63px;
+    padding: 13px 17px;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.dt-table-head-copy {
+    min-width: 0;
+}
+
+.dt-table-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dt-table-head h2 {
+    margin: 0;
+    color: var(--dt-navy);
+    font-size: 12.5px;
+    font-weight: 710;
+    line-height: 1.3;
+}
+
+.dt-table-head p {
+    margin: 3px 0 0;
+    color: var(--dt-muted);
+    font-size: 9.5px;
+    line-height: 1.35;
+}
+
+.dt-result-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 21px;
+    padding: 0 6px;
+    color: var(--dt-muted);
+    background: var(--dt-soft);
+    border: 1px solid #e9ebef;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 720;
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.dt-table-wrap {
+    /* Sole horizontal scroll container on this page -- see the
+       file header. Keep this the only element on the page with
+       overflow-x set to auto/scroll. */
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.dt-table {
+    width: 100%;
+    min-width: 880px;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.dt-table thead th {
+    height: 37px;
+    padding: 0 17px;
+    color: var(--dt-muted);
+    background: #fcfcfd;
+    border-bottom: 1px solid var(--dt-border);
+    font-size: 9px;
+    font-weight: 720;
+    line-height: 1;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.dt-table tbody td {
+    padding: 11px 17px;
+    color: var(--dt-text);
+    border-bottom: 1px solid #f0f1f3;
+    font-size: 10.5px;
+    line-height: 1.35;
+    vertical-align: middle;
+}
+
+.dt-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.dt-table-row {
+    transition: background-color .14s ease;
+}
+
+.dt-table-row:hover {
+    background: #fcfdfd;
+}
+
+.dt-col-type {
+    width: 21%;
+}
+
+.dt-col-description {
+    width: 34%;
+}
+
+.dt-col-usage {
+    width: 22%;
+}
+
+.dt-col-status {
+    width: 13%;
+}
+
+.dt-col-actions {
+    width: 10%;
+    text-align: right !important;
+}
+
+
+/* =========================================================
+   TYPE
+   ========================================================= */
+
+.dt-type-name {
+    display: block;
+    overflow: hidden;
+    max-width: 230px;
+    color: var(--dt-navy);
+    font-size: 11px;
+    font-weight: 690;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.dt-description-cell {
+    max-width: 340px;
+}
+
+.dt-description-text {
+    display: block;
+    overflow: hidden;
+    color: var(--dt-text);
+    font-size: 10px;
+    font-weight: 450;
+    line-height: 1.35;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dt-description-empty {
+    color: var(--dt-light-muted);
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   USAGE
+   ========================================================= */
+
+.dt-usage {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+}
+
+.dt-usage-value {
+    color: var(--dt-navy);
+    font-size: 10.5px;
+    font-weight: 700;
+}
+
+.dt-usage-label {
+    color: var(--dt-muted);
+    font-size: 9.5px;
+}
+
+.dt-usage-separator {
+    margin: 0 2px;
+    color: #c7ccd4;
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.dt-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 22px;
+    padding: 0 7px;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 720;
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.dt-status > i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+}
+
+.dt-status-active {
+    color: var(--dt-green);
+    background: var(--dt-green-soft);
+}
+
+.dt-status-active > i {
+    background: var(--dt-green);
+}
+
+.dt-status-inactive {
+    color: var(--dt-muted);
+    background: var(--dt-soft);
+}
+
+.dt-status-inactive > i {
+    background: #98a2b3;
+}
+
+
+/* =========================================================
+   DIRECT ACTIONS
+   ========================================================= */
+
+.dt-actions-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.dt-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.dt-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-height: 28px;
+    padding: 0;
+    color: var(--dt-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 9.5px;
+    font-weight: 650;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        color .14s ease,
+        background-color .14s ease;
+}
+
+.dt-action svg {
+    width: 13px;
+    height: 13px;
+}
+
+.dt-action-edit:hover {
+    color: var(--dt-navy);
+}
+
+.dt-action-delete {
+    color: #8f5a55;
+}
+
+.dt-action-delete:hover {
+    color: var(--dt-red);
+}
+
+.dt-delete-form {
+    margin: 0;
+}
+
+.dt-action:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .09);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.dt-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    min-height: 55px;
+    padding: 9px 17px;
+    border-top: 1px solid var(--dt-border);
+}
+
+.dt-pagination-summary {
+    color: var(--dt-muted);
+    font-size: 9.5px;
+}
+
+.dt-pagination-summary strong {
+    color: var(--dt-text);
+    font-weight: 700;
+}
+
+.dt-pagination-nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dt-pagination-button,
+.dt-pagination-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 27px;
+    height: 27px;
+    padding: 0 7px;
+    color: var(--dt-muted);
+    background: #ffffff;
+    border: 1px solid var(--dt-border);
+    border-radius: 6px;
+    font-size: 9.5px;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.dt-pagination-button {
+    width: 27px;
+    padding: 0;
+}
+
+.dt-pagination-button svg {
+    width: 12px;
+    height: 12px;
+}
+
+.dt-pagination-number:hover,
+.dt-pagination-button:not(.is-disabled):hover {
+    color: var(--dt-navy);
+    background: #fafbfc;
+    border-color: #c5cbd5;
+}
+
+.dt-pagination-number.is-current {
+    color: #ffffff;
+    background: var(--dt-navy);
+    border-color: var(--dt-navy);
+}
+
+.dt-pagination-button.is-disabled {
+    opacity: .4;
+    cursor: default;
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.dt-empty-state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 285px;
+    padding: 40px 20px;
+    text-align: center;
+    flex-direction: column;
+}
+
+.dt-empty-mark {
+    display: grid;
+    place-items: center;
+    width: 47px;
+    height: 47px;
+    margin-bottom: 13px;
+    color: var(--dt-muted);
+    background: var(--dt-soft);
+    border-radius: 11px;
+}
+
+.dt-empty-mark svg {
+    width: 21px;
+    height: 21px;
+}
+
+.dt-empty-state h3 {
+    margin: 0;
+    color: var(--dt-navy);
+    font-size: 13px;
+    font-weight: 710;
+    line-height: 1.35;
+}
+
+.dt-empty-state p {
+    max-width: 410px;
+    margin: 5px 0 15px;
+    color: var(--dt-muted);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FORM PAGE
+   ========================================================= */
+
+.dt-form-header {
+    margin-bottom: 17px;
+}
+
+.dt-form-shell {
+    width: min(760px, 100%);
+    background: #ffffff;
+    border: 1px solid var(--dt-border);
+    border-radius: 10px;
+}
+
+.dt-form-section {
+    padding: 20px 22px;
+}
+
+.dt-form-section + .dt-form-section {
+    border-top: 1px solid var(--dt-border);
+}
+
+.dt-form-section-heading {
+    margin-bottom: 18px;
+}
+
+.dt-section-kicker {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--dt-red);
+    font-size: 8.5px;
+    font-weight: 750;
+    letter-spacing: .08em;
+    line-height: 1.2;
+}
+
+.dt-form-section-heading h2 {
+    margin: 0;
+    color: var(--dt-navy);
+    font-size: 12px;
+    font-weight: 710;
+    line-height: 1.35;
+}
+
+.dt-field {
+    width: 100%;
+    max-width: 650px;
+}
+
+.dt-field + .dt-field {
+    margin-top: 18px;
+}
+
+.dt-field-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--dt-text);
+    font-size: 10px;
+    font-weight: 680;
+    line-height: 1.35;
+}
+
+.dt-form-control {
+    width: 100%;
+    min-height: 39px;
+    padding: 0 10px;
+    color: var(--dt-text);
+    background: #ffffff;
+    border: 1px solid var(--dt-border-strong);
+    border-radius: 7px;
+    outline: none;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 1.4;
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.dt-form-control::placeholder {
+    color: var(--dt-light-muted);
+}
+
+.dt-form-control:focus {
+    border-color: #9ca5b2;
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+}
+
+textarea.dt-form-control {
+    min-height: 112px;
+    padding: 10px;
+    resize: vertical;
+}
+
+.dt-description-meta {
+    display: flex;
+    justify-content: flex-end;
+    min-height: 15px;
+    margin-top: 5px;
+    color: var(--dt-light-muted);
+    font-size: 8.5px;
+    line-height: 1.3;
+}
+
+.dt-field-error {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 5px;
+    color: var(--dt-red);
+    font-size: 9px;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+
+/* =========================================================
+   CHECKBOX — SCREENSHOT STYLE
+   ========================================================= */
+
+.dt-checkbox-row {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 22px;
+    color: var(--dt-text);
+    font-size: 10px;
+    font-weight: 650;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.dt-toggle-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.dt-checkbox-box {
+    display: grid;
+    place-items: center;
+    width: 15px;
+    height: 15px;
+    flex: 0 0 15px;
+    color: #ffffff;
+    background: #ffffff;
+    border: 1px solid var(--dt-border-strong);
+    border-radius: 3px;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease;
+}
+
+.dt-checkbox-box svg {
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    transform: scale(.8);
+    transition:
+        opacity .12s ease,
+        transform .12s ease;
+}
+
+.dt-toggle-input:checked + .dt-checkbox-box {
+    background: var(--dt-navy);
+    border-color: var(--dt-navy);
+}
+
+.dt-toggle-input:checked + .dt-checkbox-box svg {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.dt-toggle-input:focus-visible + .dt-checkbox-box {
+    outline: 3px solid rgba(23, 32, 51, .09);
+    outline-offset: 2px;
+}
+
+.dt-checkbox-label {
+    line-height: 1;
+}
+
+
+/* =========================================================
+   FORM ERROR
+   ========================================================= */
+
+.dt-form-error {
+    margin: 0 22px 18px;
+    padding: 10px 11px;
+    color: var(--dt-red);
+    background: var(--dt-red-soft);
+    border: 1px solid #f1c9c6;
+    border-radius: 7px;
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.dt-form-error span {
+    display: block;
+}
+
+.dt-form-error span + span {
+    margin-top: 2px;
+}
+
+
+/* =========================================================
+   FORM FOOTER
+   ========================================================= */
+
+.dt-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+    padding: 11px 15px;
+    background: #fcfcfd;
+    border-top: 1px solid var(--dt-border);
+}
+
+.dt-form-cancel {
+    min-width: 67px;
+    padding: 0 12px;
+    color: var(--dt-text);
+    background: #ffffff;
+    border: 1px solid var(--dt-border-strong);
+}
+
+.dt-form-cancel:hover {
+    color: var(--dt-navy);
+    background: #fbfcfd;
+}
+
+.dt-form-submit {
+    min-width: 112px;
+}
+
+
+/* =========================================================
+   BREADCRUMB
+   ========================================================= */
+
+.dt-breadcrumb-divider {
+    margin: 0 5px;
+    color: var(--dt-light-muted);
+}
+
+
+/* =========================================================
+   DELETE MODAL
+   ========================================================= */
+
+.dt-modal[hidden] {
+    display: none;
+}
+
+.dt-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+}
+
+.dt-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 40, .46);
+    backdrop-filter: blur(2px);
+}
+
+.dt-modal-dialog {
+    position: relative;
+    width: min(430px, calc(100vw - 32px));
+    margin: 12vh auto 0;
+    overflow: hidden;
+    background: #ffffff;
+    border: 1px solid var(--dt-border);
+    border-radius: 12px;
+    box-shadow:
+        0 22px 48px rgba(16, 24, 40, .15),
+        0 4px 12px rgba(16, 24, 40, .06);
+}
+
+
+/* ---------------------------------------------------------
+   TOP AREA
+   --------------------------------------------------------- */
+
+.dt-modal-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 20px 20px 0;
+}
+
+.dt-modal-danger-icon {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: var(--dt-red);
+    background: #fff7f6;
+    border: 1px solid #f4d7d4;
+    border-radius: 9px;
+}
+
+.dt-modal-danger-icon svg {
+    width: 19px;
+    height: 19px;
+}
+
+.dt-modal-close {
+    display: grid;
+    place-items: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    margin: -3px -3px 0 0;
+    color: var(--dt-light-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+        color .15s ease,
+        background-color .15s ease;
+}
+
+.dt-modal-close:hover {
+    color: var(--dt-navy);
+    background: var(--dt-soft);
+}
+
+.dt-modal-close:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .09);
+    outline-offset: 1px;
+}
+
+.dt-modal-close svg {
+    width: 15px;
+    height: 15px;
+}
+
+
+/* ---------------------------------------------------------
+   CONTENT
+   --------------------------------------------------------- */
+
+.dt-modal-content {
+    padding: 15px 20px 19px;
+}
+
+.dt-modal-content h3 {
+    margin: 0;
+    color: var(--dt-navy);
+    font-size: 15px;
+    font-weight: 720;
+    line-height: 1.3;
+    letter-spacing: -.01em;
+}
+
+.dt-modal-content p {
+    margin: 6px 0 0;
+    color: var(--dt-muted);
+    font-size: 10.5px;
+    font-weight: 450;
+    line-height: 1.55;
+}
+
+.dt-modal-content p strong {
+    color: var(--dt-text);
+    font-weight: 700;
+}
+
+
+/* ---------------------------------------------------------
+   USAGE WARNING
+   --------------------------------------------------------- */
+
+.dt-delete-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+    margin-top: 15px;
+    padding: 10px 11px;
+    background: #fffaf7;
+    border: 1px solid #efd9ce;
+    border-radius: 8px;
+}
+
+.dt-delete-warning-mark {
+    display: grid;
+    place-items: center;
+    width: 27px;
+    height: 27px;
+    flex: 0 0 27px;
+    color: var(--dt-red);
+    background: #fff3ef;
+    border-radius: 6px;
+}
+
+.dt-delete-warning-mark svg {
+    width: 14px;
+    height: 14px;
+}
+
+.dt-delete-warning-copy {
+    min-width: 0;
+}
+
+.dt-delete-warning-copy strong {
+    display: block;
+    color: var(--dt-text);
+    font-size: 9.5px;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.dt-delete-warning-copy span {
+    display: block;
+    margin-top: 3px;
+    color: var(--dt-muted);
+    font-size: 9px;
+    line-height: 1.5;
+}
+
+
+/* ---------------------------------------------------------
+   FINAL NOTE
+   --------------------------------------------------------- */
+
+.dt-delete-final-note {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-top: 13px;
+    color: var(--dt-light-muted);
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+.dt-delete-final-dot {
+    width: 5px;
+    height: 5px;
+    flex: 0 0 5px;
+    background: var(--dt-light-muted);
+    border-radius: 50%;
+}
+
+
+/* ---------------------------------------------------------
+   MODAL ACTION AREA
+   --------------------------------------------------------- */
+
+.dt-modal-actions {
+    position: relative;
+    z-index: 4;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 8px !important;
+
+    min-height: 58px;
+
+    padding: 11px 20px;
+
+    background: #fcfcfd;
+    border-top: 1px solid var(--dt-border);
+}
+
+.dt-modal-cancel {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: auto !important;
+    min-width: 70px !important;
+    height: 35px !important;
+    min-height: 35px !important;
+
+    margin: 0 !important;
+    padding: 0 12px !important;
+
+    color: var(--dt-text) !important;
+    background: #ffffff !important;
+
+    border: 1px solid var(--dt-border-strong) !important;
+    border-radius: 7px !important;
+
+    font-family: inherit;
+    font-size: 9.5px;
+    font-weight: 680;
+    line-height: 1;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    cursor: pointer;
+
+    appearance: none;
+    -webkit-appearance: none;
+
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease;
+}
+
+.dt-modal-cancel:hover {
+    color: var(--dt-navy) !important;
+    background: #fafbfc !important;
+    border-color: #c2c8d1 !important;
+}
+
+.dt-modal-cancel:focus,
+.dt-modal-cancel:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .09);
+    outline-offset: 2px;
+}
+
+
+/* ---------------------------------------------------------
+   CONFIRM DELETE BUTTON
+   Final collision-proof visibility fix
+   --------------------------------------------------------- */
+
+.dt-confirm-delete-button {
+    position: relative !important;
+    z-index: 5 !important;
+
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 6px !important;
+
+    width: auto !important;
+    min-width: 108px !important;
+    height: 35px !important;
+    min-height: 35px !important;
+
+    margin: 0 !important;
+    padding: 0 13px !important;
+
+    color: #ffffff !important;
+    background-color: #b42318 !important;
+    background-image: none !important;
+
+    border: 1px solid #b42318 !important;
+    border-radius: 7px !important;
+
+    font-family: inherit !important;
+    font-size: 9.5px !important;
+    font-weight: 700 !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    text-indent: 0 !important;
+    white-space: nowrap !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    overflow: visible !important;
+    pointer-events: auto !important;
+
+    box-shadow: none !important;
+
+    appearance: none !important;
+    -webkit-appearance: none !important;
+
+    cursor: pointer !important;
+
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        box-shadow .15s ease,
+        transform .12s ease !important;
+}
+
+.dt-confirm-delete-button svg {
+    display: block !important;
+
+    width: 13px !important;
+    height: 13px !important;
+    min-width: 13px !important;
+    min-height: 13px !important;
+
+    flex: 0 0 13px !important;
+
+    color: #ffffff !important;
+    stroke: #ffffff !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.dt-confirm-delete-button span {
+    display: inline-block !important;
+
+    color: #ffffff !important;
+
+    opacity: 1 !important;
+    visibility: visible !important;
+
+    white-space: nowrap !important;
+}
+
+.dt-confirm-delete-button:hover {
+    color: #ffffff !important;
+
+    background-color: #8f1d16 !important;
+
+    border-color: #8f1d16 !important;
+}
+
+.dt-confirm-delete-button:active {
+    transform: translateY(1px) !important;
+}
+
+.dt-confirm-delete-button:focus,
+.dt-confirm-delete-button:focus-visible {
+    color: #ffffff !important;
+
+    background-color: #b42318 !important;
+
+    outline: 3px solid rgba(180, 35, 24, .16) !important;
+    outline-offset: 2px !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 820px) {
+
+    .dt-page-header {
+        align-items: flex-start;
+    }
+
+    .dt-col-type {
+        width: 20%;
+    }
+
+    .dt-col-description {
+        width: 30%;
+    }
+
+    .dt-col-usage {
+        width: 23%;
+    }
+
+    .dt-col-status {
+        width: 14%;
+    }
+
+}
+
+
+@media (max-width: 640px) {
+
+    .dt-page {
+        padding-bottom: 20px;
+    }
+
+    .dt-page-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 13px;
+    }
+
+    .dt-page-header h1 {
+        font-size: 22px;
+    }
+
+    .dt-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dt-search-field,
+    .dt-select-field,
+    .dt-filter-button,
+    .dt-reset-button {
+        width: 100%;
+    }
+
+    .dt-filter-button {
+        min-height: 38px;
+    }
+
+    .dt-table-head {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .dt-table thead th,
+    .dt-table tbody td {
+        padding-left: 13px;
+        padding-right: 13px;
+    }
+
+    .dt-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dt-pagination-nav {
+        align-self: flex-end;
+    }
+
+    .dt-form-shell {
+        width: 100%;
+    }
+
+    .dt-form-section {
+        padding: 18px 15px;
+    }
+
+    .dt-form-actions {
+        padding: 10px 13px;
+    }
+
+    .dt-form-cancel,
+    .dt-form-submit {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .dt-modal-dialog {
+        margin-top: 8vh;
+    }
+
+    .dt-modal-top {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .dt-modal-content {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .dt-modal-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+}
+
+
+@media (max-width: 480px) {
+
+    .dt-modal-actions {
+        gap: 7px !important;
+    }
+
+    .dt-modal-cancel,
+    .dt-confirm-delete-button {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+    }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .dt-page *,
+    .dt-page *::before,
+    .dt-page *::after {
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+
+}

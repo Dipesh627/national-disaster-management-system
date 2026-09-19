@@ -1,0 +1,781 @@
+{% load static %}
+{% load citizen_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NDMS notification details"
+    >
+
+    <title>
+        NDMS | {{ notification.title }}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/navbar-avatar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/notification-detail.css' %}"
+    >
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+<!-- =====================================================
+     MOBILE OVERLAY
+     ===================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside
+    class="dashboard-sidebar"
+    id="dashboardSidebar"
+>
+
+
+    <!-- BRAND -->
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="dashboard-brand"
+    >
+
+        <div class="dashboard-logo">
+            ND
+        </div>
+
+        <div class="dashboard-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- SIDEBAR NAVIGATION -->
+
+    <nav
+        class="sidebar-navigation"
+        aria-label="Dashboard navigation"
+    >
+
+
+        <span class="sidebar-section-title">
+            MAIN MENU
+        </span>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="sidebar-link"
+        >
+
+            <span class="sidebar-icon">
+                ▦
+            </span>
+
+            <span>
+                Dashboard
+            </span>
+
+        </a>
+
+
+
+        <!-- REPORT -->
+
+        <a
+            href="{% url 'create_disaster_report' %}"
+            class="sidebar-link"
+        >
+
+            <span class="sidebar-icon">
+                +
+            </span>
+
+            <span>
+                Report Incident
+            </span>
+
+        </a>
+
+
+
+        <!-- MY REPORTS -->
+
+        <a
+            href="{% url 'my_reports' %}"
+            class="sidebar-link"
+        >
+
+            <span class="sidebar-icon">
+                ≡
+            </span>
+
+            <span>
+                My Reports
+            </span>
+
+        </a>
+
+
+
+        <!-- ALERTS -->
+
+        <a
+            href="{% url 'alerts' %}"
+            class="sidebar-link active"
+        >
+
+            <span class="sidebar-icon notification-sidebar-icon">
+                !
+            </span>
+
+            <span>
+                Alerts
+            </span>
+
+
+            {% if unread_count > 0 %}
+
+                <span class="sidebar-badge">
+                    {{ unread_count }}
+                </span>
+
+            {% endif %}
+
+
+        </a>
+
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{% url 'profile' %}"
+            class="sidebar-link"
+        >
+
+            <span class="sidebar-icon">
+                ○
+            </span>
+
+            <span>
+                My Profile
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            ACCOUNT
+        </span>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="{% url 'settings' %}"
+            class="sidebar-link"
+        >
+
+            <span class="sidebar-icon">
+                ⚙
+            </span>
+
+            <span>
+                Settings
+            </span>
+
+        </a>
+
+
+
+        <!-- BACK TO HOME -->
+
+        <a
+            href="{% url 'home' %}"
+            class="sidebar-back-home"
+        >
+
+            <span
+                class="sidebar-back-home-icon"
+                aria-hidden="true"
+            >
+                ←
+            </span>
+
+            <span>
+                Back to Home
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         SIDEBAR FOOTER -- "Back to Website"
+         Matches the .sidebar-footer / .sidebar-footer-link--minimal
+         markup used on every other Citizen Dashboard page (see
+         dashboard.html, alerts.html, my_reports.html, etc.). This
+         page previously used an unrelated .sidebar-bottom /
+         .sidebar-help-card block that has no CSS anywhere in the
+         project, so it rendered unstyled and without a working
+         "Back to Website" link.
+         ================================================= -->
+
+    <div class="sidebar-footer">
+
+        <a
+            href="{% url 'home' %}"
+            class="sidebar-footer-link sidebar-footer-link--minimal"
+            aria-label="Back to Website"
+        >
+
+            <span class="sidebar-footer-icon--plain" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5"></path>
+                    <path d="m11 18-6-6 6-6"></path>
+                </svg>
+            </span>
+
+            <span class="sidebar-footer-title">Back to Website</span>
+
+        </a>
+
+    </div>
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN WRAPPER
+     ===================================================== -->
+
+<div class="dashboard-wrapper">
+
+
+    <!-- =================================================
+         TOPBAR
+         ================================================= -->
+
+    <header class="dashboard-topbar">
+
+
+        <div class="topbar-left">
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="mobile-sidebar-toggle"
+                id="mobileSidebarToggle"
+                aria-label="Open dashboard menu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <div class="page-heading">
+
+                <span>
+                    NDMS PORTAL
+                </span>
+
+                <h1>
+                    Notification Details
+                </h1>
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="topbar-right">
+
+
+            <!-- NOTIFICATION -->
+
+            {% include 'reports/partials/notification_dropdown.html' %}
+
+
+
+            <!-- USER -->
+
+            <div
+                class="topbar-user ndms-avatar-wrapper"
+                id="ndmsAvatarWrapper"
+            >
+
+                {% with display_name=user.full_name|default:user.username %}
+
+                <button
+                    type="button"
+                    class="ndms-avatar-btn"
+                    id="ndmsAvatarBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="ndmsAvatarMenu"
+                    aria-label="Open account menu"
+                >
+
+                    <span class="ndms-avatar-circle">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% else %}
+
+                            {{ display_name|first|upper }}
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="ndms-avatar-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="ndms-avatar-menu"
+                    id="ndmsAvatarMenu"
+                    role="menu"
+                >
+
+                    <div class="ndms-avatar-menu-header">
+
+                        <span class="ndms-avatar-menu-avatar">
+
+                            {% if user.avatar %}
+
+                                <img
+                                    src="{{ user.avatar.url }}"
+                                    alt=""
+                                >
+
+                            {% else %}
+
+                                {{ display_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                        <div class="ndms-avatar-menu-info">
+
+                            <strong class="ndms-avatar-menu-name">
+                                {{ display_name }}
+                            </strong>
+
+                            {% if user.email %}
+
+                                <span class="ndms-avatar-menu-email">
+                                    {{ user.email }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'profile' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            My Profile
+                        </a>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'settings' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            Settings
+                        </a>
+
+                        <a
+                            href="{% url 'help_support' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            Help &amp; Support
+                        </a>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="ndms-avatar-menu-item ndms-avatar-menu-logout"
+                            role="menuitem"
+                        >
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endwith %}
+
+            </div>
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+         ================================================= -->
+
+    <main class="dashboard-main">
+
+
+        <a
+            href="{% url 'alerts' %}"
+            class="nd-back-link"
+        >
+            ← Back to Alerts
+        </a>
+
+
+
+        <!-- =============================================
+             NOTIFICATION HEADER
+             ============================================= -->
+
+        <section class="nd-header">
+
+            <div class="nd-header-left">
+
+                <span class="nd-eyebrow">
+                    NOTIFICATION
+                </span>
+
+                <h1>
+                    {{ notification.title }}
+                </h1>
+
+                <span class="nd-subdate">
+                    Published
+                    {{ notification.publish_date|citizen_date:citizen_date_format }}
+                    at {{ notification.publish_date|citizen_time }}
+                </span>
+
+            </div>
+
+
+            {% if disaster %}
+
+                <div class="nd-header-right">
+
+                    <span class="nd-disaster-pill">
+                        ● Linked to a disaster
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =============================================
+             MESSAGE
+             ============================================= -->
+
+        <section class="nd-card">
+
+            <div class="nd-card-title">
+
+                <span>
+                    MESSAGE
+                </span>
+
+                <h2>
+                    Notification Message
+                </h2>
+
+            </div>
+
+            <p class="nd-message-text">{{ notification.message }}</p>
+
+        </section>
+
+
+
+        {% if disaster %}
+
+            <!-- =========================================
+                 DISASTER INFORMATION
+                 ========================================= -->
+
+            <section class="nd-card">
+
+                <div class="nd-card-title">
+
+                    <span>
+                        DISASTER
+                    </span>
+
+                    <h2>
+                        Disaster Information
+                    </h2>
+
+                </div>
+
+
+                <div class="nd-info-grid">
+
+                    <div class="nd-info-item">
+                        <span class="nd-info-label">Disaster Type</span>
+                        <strong class="nd-info-value">{{ disaster.disaster_type.name }}</strong>
+                    </div>
+
+                    <div class="nd-info-item">
+                        <span class="nd-info-label">Severity</span>
+                        <span class="nd-severity-badge nd-severity-{{ disaster.severity|lower }}">
+                            {{ disaster.get_severity_display }}
+                        </span>
+                    </div>
+
+                    <div class="nd-info-item">
+                        <span class="nd-info-label">Status</span>
+                        <span class="nd-status-badge nd-status-{{ disaster.status|lower }}">
+                            {{ disaster.get_status_display }}
+                        </span>
+                    </div>
+
+                    <div class="nd-info-item">
+                        <span class="nd-info-label">Start Date</span>
+                        <strong class="nd-info-value">{{ disaster.start_date|citizen_datetime:citizen_date_format }}</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =========================================
+                 LOCATION
+                 ========================================= -->
+
+            <section class="nd-card">
+
+                <div class="nd-card-title">
+
+                    <span>
+                        WHERE
+                    </span>
+
+                    <h2>
+                        Location
+                    </h2>
+
+                </div>
+
+
+                {% if has_location %}
+
+                    <div class="nd-location-grid">
+
+                        <div class="nd-info-item">
+                            <span class="nd-info-label">Latitude</span>
+                            <strong class="nd-info-value">{{ disaster.latitude }}</strong>
+                        </div>
+
+                        <div class="nd-info-item">
+                            <span class="nd-info-label">Longitude</span>
+                            <strong class="nd-info-value">{{ disaster.longitude }}</strong>
+                        </div>
+
+                        <div class="nd-info-item">
+                            <span class="nd-info-label">Address</span>
+                            <strong class="nd-info-value">
+                                {% if disaster.address %}{{ disaster.address }}{% else %}Not provided{% endif %}
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="nd-map-container">
+
+                        <div
+                            id="notificationMap"
+                            class="nd-map"
+                            data-latitude="{{ disaster.latitude }}"
+                            data-longitude="{{ disaster.longitude }}"
+                            data-address="{{ disaster.address|default:'' }}"
+                            aria-label="Disaster location map"
+                        ></div>
+
+                        <div class="nd-map-type-toggle" id="ndMapTypeToggle" role="group" aria-label="Map view">
+                            <button type="button" class="nd-map-type-btn is-active" data-map-type="roadmap">
+                                Map
+                            </button>
+                            <button type="button" class="nd-map-type-btn" data-map-type="hybrid">
+                                Satellite
+                            </button>
+                        </div>
+
+                        <noscript>
+                            <div class="nd-map-fallback">
+                                Enable JavaScript to view the map for
+                                this disaster.
+                            </div>
+                        </noscript>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="nd-no-location">
+                        Location not available for this disaster.
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+        {% endif %}
+
+
+    </main>
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script
+    src="{% static 'reports/js/dashboard.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+{% if has_location %}
+
+<!--
+    IMPORTANT: notification-detail.js must load (and therefore
+    define window.initNotificationDetailMap) BEFORE the Google
+    Maps script below. Both are loaded with `defer`, so the
+    browser guarantees they execute in this document order.
+-->
+<script
+    src="{% static 'reports/js/notification-detail.js' %}"
+    defer
+></script>
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initNotificationDetailMap&loading=async"
+    defer
+    onerror="window.ndmsNotificationMapsScriptError && window.ndmsNotificationMapsScriptError();"
+></script>
+
+{% endif %}
+
+
+</body>
+
+</html>

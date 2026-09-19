@@ -1,0 +1,281 @@
+/* =========================================================
+   NDMS — NOTIFICATION DETAIL (CITIZEN)
+   Uses the same design tokens as dashboard.css, styled to
+   match report-detail.css's card/info-grid/map patterns.
+   ========================================================= */
+
+.nd-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    margin-bottom: 16px;
+}
+
+.nd-back-link:hover {
+    color: var(--navy);
+}
+
+.nd-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.nd-header-left .nd-eyebrow {
+    display: block;
+    color: var(--red);
+    font-size: calc(8px * var(--ndms-font-scale, 1));
+    font-weight: 850;
+    letter-spacing: 1.3px;
+}
+
+.nd-header-left h1 {
+    margin-top: 4px;
+    color: var(--navy);
+    font-size: calc(22px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+}
+
+.nd-header-left span.nd-subdate {
+    display: block;
+    margin-top: 4px;
+    color: var(--muted);
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+}
+
+.nd-disaster-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 999px;
+    background: var(--light-red);
+    color: var(--red);
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.nd-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    box-shadow: var(--shadow-xs);
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.nd-card-title {
+    margin-bottom: 16px;
+}
+
+.nd-card-title span {
+    display: block;
+    color: var(--red);
+    font-size: calc(8px * var(--ndms-font-scale, 1));
+    font-weight: 850;
+    letter-spacing: 1.3px;
+}
+
+.nd-card-title h2 {
+    margin-top: 3px;
+    color: var(--navy);
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+}
+
+.nd-message-text {
+    color: var(--text);
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.nd-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.nd-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.nd-info-label {
+    color: var(--muted);
+    font-size: calc(9px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+.nd-info-value {
+    color: var(--navy);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+}
+
+.nd-severity-badge,
+.nd-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .03em;
+    width: fit-content;
+}
+
+.nd-severity-low { color: var(--green); background: var(--green-bg); }
+.nd-severity-medium { color: var(--orange); background: var(--orange-bg); }
+.nd-severity-high { color: var(--c-orange-600); background: var(--c-orange-bg-2); }
+.nd-severity-critical { color: var(--red); background: var(--light-red); }
+
+.nd-status-active { color: var(--red); background: var(--light-red); }
+.nd-status-under_control { color: var(--orange); background: var(--orange-bg); }
+.nd-status-resolved { color: var(--green); background: var(--green-bg); }
+.nd-status-closed { color: var(--muted); background: var(--soft-gray); }
+
+.nd-location-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.nd-map-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.nd-map {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   MAP / SATELLITE TOGGLE
+   ========================================================= */
+
+.nd-map-type-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+
+    padding: 3px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-xs);
+}
+
+.nd-map-type-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 56px;
+    height: 28px;
+    padding: 0 10px;
+
+    color: var(--muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    line-height: 1;
+
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.nd-map-type-btn:hover {
+    color: var(--navy);
+}
+
+.nd-map-type-btn.is-active {
+    color: var(--white);
+    background: var(--navy);
+}
+
+.nd-map-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 16px;
+    color: var(--muted);
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    text-align: center;
+}
+
+.nd-no-location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    padding: 20px;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    color: var(--muted);
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+
+    .nd-info-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .nd-location-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .nd-header {
+        flex-direction: column;
+    }
+
+    .nd-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nd-location-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .nd-map-container {
+        height: 220px;
+    }
+
+}

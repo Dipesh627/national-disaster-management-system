@@ -1,0 +1,49 @@
+<!-- =====================================================
+     SHARED NOTIFICATION ICON
+
+     One professional SVG icon + contextual color per
+     Notification.notification_type, reused by the topbar
+     dropdown, the Alerts page and the notification detail
+     page so all three always agree on what a given
+     notification type looks like.
+
+     Expects a single `notification` variable in context.
+     ===================================================== -->
+
+{% if notification.notification_type == 'REPORT_VERIFIED' %}
+
+    <div class="notification-item-icon verified" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M8.7 12.3l2.1 2.1 4.3-4.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+
+{% elif notification.notification_type == 'REPORT_REJECTED' %}
+
+    <div class="notification-item-icon rejected" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M9.5 9.5l5 5m0-5l-5 5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+    </div>
+
+{% elif notification.notification_type == 'REPORT_UNDER_REVIEW' %}
+
+    <div class="notification-item-icon under-review" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.6" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="14.2" r="3.1" stroke="currentColor" stroke-width="1.5"/><path d="M14.3 16.5l1.7 1.7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+
+{% elif notification.notification_type == 'REPORT_RECEIVED' %}
+
+    <div class="notification-item-icon received" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="1.6" stroke="currentColor" stroke-width="1.6"/><path d="M8.3 9.2h7.4M8.3 12.4h7.4M8.3 15.6h4.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </div>
+
+{% elif notification.notification_type == 'DISASTER_ALERT' or notification.disaster %}
+
+    <div class="notification-item-icon disaster-alert" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 4.3l8.5 14.7H3.5L12 4.3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 10v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+    </div>
+
+{% else %}
+
+    <div class="notification-item-icon general" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M12 11v5.2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="8.1" r="0.95" fill="currentColor"/></svg>
+    </div>
+
+{% endif %}

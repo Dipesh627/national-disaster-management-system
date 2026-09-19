@@ -1,0 +1,1421 @@
+/* =========================================================
+   NDMS ADMIN LOGIN
+   Clean Enterprise + Existing NDMS Disaster Image
+   ========================================================= */
+
+:root {
+
+    --navy: #111827;
+    --navy-deep: #0d1420;
+
+    --red: #b42318;
+    --red-dark: #971d15;
+    --red-light: #fff6f5;
+
+    --text: #344054;
+    --muted: #667085;
+    --placeholder: #98a2b3;
+
+    --border: #e4e7ec;
+    --border-hover: #d0d5dd;
+
+    --white: #ffffff;
+
+    --green: #16804f;
+
+    --radius: 9px;
+
+    --transition: .18s ease;
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+html {
+    min-height: 100%;
+}
+
+
+body {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+
+    overflow-x: hidden;
+
+    background:
+        #f8f9fb;
+
+    color:
+        var(--text);
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+button,
+input {
+    font: inherit;
+}
+
+
+button {
+    border: 0;
+}
+
+
+svg {
+    display: block;
+}
+
+
+::selection {
+
+    background:
+        rgba(180,35,24,.14);
+
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+.admin-login-page {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+}
+
+
+.admin-login-shell {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: grid;
+
+    grid-template-columns:
+        43% 57%;
+
+}
+
+
+/* =========================================================
+   LEFT PANEL
+   ========================================================= */
+
+.admin-brand-panel {
+
+    position: relative;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    background:
+        var(--navy-deep);
+
+    color:
+        var(--white);
+
+}
+
+
+/* =========================================================
+   EXISTING ZIP IMAGE
+   reports/static/reports/images/disaster-about.jpg
+   ========================================================= */
+
+.admin-brand-image {
+
+    position: absolute;
+
+    z-index: -3;
+
+    inset: 0;
+
+    background-image:
+        url("/static/reports/images/disaster-about.jpg");
+
+    background-size:
+        cover;
+
+    background-position:
+        center center;
+
+    transform:
+        scale(1.015);
+
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+   Keeps existing photo visible but makes content readable
+   ========================================================= */
+
+.admin-brand-overlay {
+
+    position: absolute;
+
+    z-index: -2;
+
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            rgba(13,20,32,.97) 0%,
+            rgba(13,20,32,.86) 48%,
+            rgba(13,20,32,.67) 100%
+        ),
+
+        linear-gradient(
+            180deg,
+            rgba(13,20,32,.34) 0%,
+            rgba(13,20,32,.12) 48%,
+            rgba(13,20,32,.68) 100%
+        );
+
+}
+
+
+/* =========================================================
+   VERY SUBTLE IMAGE DETAIL
+   ========================================================= */
+
+.admin-brand-panel::after {
+
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 34%;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(7,12,20,.45),
+            transparent
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+   ========================================================= */
+
+.admin-brand-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding:
+        46px
+        clamp(42px, 6vw, 82px);
+
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.admin-brand {
+
+    width: fit-content;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+}
+
+
+.admin-brand:focus-visible {
+
+    outline:
+        2px solid
+        rgba(255,255,255,.65);
+
+    outline-offset: 6px;
+
+}
+
+
+.admin-logo {
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background:
+        var(--red);
+
+    color:
+        #ffffff;
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    letter-spacing: .2px;
+
+    box-shadow:
+        0 5px 18px
+        rgba(0,0,0,.16);
+
+}
+
+
+.admin-brand-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+.admin-brand-text strong {
+
+    font-size: 17px;
+
+    font-weight: 780;
+
+    line-height: 1;
+
+}
+
+
+.admin-brand-text small {
+
+    color:
+        rgba(255,255,255,.48);
+
+    font-size: 8px;
+
+    line-height: 1.3;
+
+}
+
+
+/* =========================================================
+   BRAND MESSAGE
+   ========================================================= */
+
+.admin-brand-message {
+
+    max-width: 510px;
+
+    margin-top: auto;
+
+    margin-bottom: auto;
+
+    padding:
+        70px 0;
+
+}
+
+
+.admin-brand-kicker {
+
+    display: block;
+
+    margin-bottom: 18px;
+
+    color:
+        rgba(255,255,255,.50);
+
+    font-size: 9px;
+
+    font-weight: 750;
+
+    letter-spacing: 1.35px;
+
+}
+
+
+.admin-brand-message h1 {
+
+    margin: 0;
+
+    color:
+        #ffffff;
+
+    font-size:
+        clamp(35px, 4vw, 50px);
+
+    font-weight: 720;
+
+    line-height: 1.08;
+
+    letter-spacing: -.045em;
+
+    text-shadow:
+        0 2px 18px
+        rgba(0,0,0,.12);
+
+}
+
+
+.admin-brand-message h1 span {
+
+    color:
+        rgba(255,255,255,.70);
+
+}
+
+
+.admin-brand-message p {
+
+    max-width: 450px;
+
+    margin:
+        23px 0 0;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size: 13px;
+
+    line-height: 1.8;
+
+}
+
+
+/* =========================================================
+   LEFT FOOTER
+   ========================================================= */
+
+.admin-brand-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color:
+        rgba(255,255,255,.40);
+
+    font-size: 9px;
+
+}
+
+
+.brand-footer-dot {
+
+    width: 6px;
+    height: 6px;
+
+    flex: 0 0 6px;
+
+    border-radius: 50%;
+
+    background:
+        #43b976;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(67,185,118,.10);
+
+}
+
+
+/* =========================================================
+   RIGHT PANEL
+   ========================================================= */
+
+.admin-form-panel {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        48px 70px;
+
+    background:
+        #ffffff;
+
+}
+
+
+/* =========================================================
+   FORM CONTAINER
+   ========================================================= */
+
+.admin-form-container {
+
+    width: 100%;
+
+    max-width: 390px;
+
+}
+
+
+/* =========================================================
+   MOBILE BRAND
+   ========================================================= */
+
+.mobile-brand {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.login-heading {
+
+    margin-bottom: 30px;
+
+}
+
+
+.login-kicker {
+
+    display: block;
+
+    margin-bottom: 13px;
+
+    color:
+        var(--red);
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+}
+
+
+.login-heading h2 {
+
+    margin: 0;
+
+    color:
+        var(--navy);
+
+    font-size: 30px;
+
+    font-weight: 720;
+
+    line-height: 1.15;
+
+    letter-spacing: -.035em;
+
+}
+
+
+.login-heading p {
+
+    max-width: 350px;
+
+    margin:
+        9px 0 0;
+
+    color:
+        var(--muted);
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.login-error {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    margin-bottom: 20px;
+
+    padding:
+        10px 11px;
+
+    border:
+        1px solid
+        #efd1cd;
+
+    border-radius:
+        var(--radius);
+
+    background:
+        var(--red-light);
+
+    color:
+        var(--red-dark);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+
+}
+
+
+.error-icon {
+
+    width: 18px;
+    height: 18px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 18px;
+
+    border-radius: 50%;
+
+    background:
+        var(--red);
+
+    color:
+        #ffffff;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.login-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+
+.field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.field label {
+
+    color:
+        var(--text);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.input-container {
+
+    position: relative;
+
+}
+
+
+.input-container input {
+
+    width: 100%;
+
+    height: 47px;
+
+    padding:
+        0 43px;
+
+    border:
+        1px solid
+        var(--border);
+
+    border-radius:
+        var(--radius);
+
+    outline: none;
+
+    background:
+        #ffffff;
+
+    color:
+        var(--navy);
+
+    font-size: 12px;
+
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition);
+
+}
+
+
+.input-container input::placeholder {
+
+    color:
+        var(--placeholder);
+
+}
+
+
+.input-container input:hover {
+
+    border-color:
+        var(--border-hover);
+
+}
+
+
+.input-container input:focus {
+
+    border-color:
+        var(--red);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(180,35,24,.06);
+
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    width: 16px;
+    height: 16px;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        var(--placeholder);
+
+    pointer-events: none;
+
+    transition:
+        color var(--transition);
+
+}
+
+
+.input-icon svg {
+
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.input-container:focus-within
+.input-icon {
+
+    color:
+        var(--red);
+
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+   ========================================================= */
+
+.password-toggle {
+
+    position: absolute;
+
+    top: 50%;
+    right: 8px;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform:
+        translateY(-50%);
+
+    border-radius: 7px;
+
+    background:
+        transparent;
+
+    color:
+        var(--placeholder);
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition),
+        background var(--transition);
+
+}
+
+
+.password-toggle:hover {
+
+    color:
+        var(--text);
+
+    background:
+        #f2f4f7;
+
+}
+
+
+.password-toggle:focus-visible {
+
+    outline:
+        2px solid
+        rgba(180,35,24,.25);
+
+    outline-offset: 2px;
+
+}
+
+
+.password-toggle svg {
+
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.eye-closed {
+
+    display: none;
+
+}
+
+
+.password-toggle.is-visible
+.eye-open {
+
+    display: none;
+
+}
+
+
+.password-toggle.is-visible
+.eye-closed {
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.login-button {
+
+    width: 100%;
+
+    height: 47px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 4px;
+
+    border-radius:
+        var(--radius);
+
+    background:
+        var(--red);
+
+    color:
+        #ffffff;
+
+    cursor: pointer;
+
+    font-size: 11px;
+
+    font-weight: 750;
+
+    transition:
+        background var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+
+}
+
+
+.login-button:hover {
+
+    background:
+        var(--red-dark);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 7px 18px
+        rgba(180,35,24,.14);
+
+}
+
+
+.login-button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+.login-button:focus-visible {
+
+    outline:
+        2px solid
+        rgba(180,35,24,.28);
+
+    outline-offset: 3px;
+
+}
+
+
+.button-default {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+}
+
+
+.button-default svg {
+
+    width: 15px;
+    height: 15px;
+
+    transition:
+        transform var(--transition);
+
+}
+
+
+.login-button:hover
+.button-default svg {
+
+    transform:
+        translateX(2px);
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.button-loading {
+
+    display: none;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.login-button.is-loading {
+
+    pointer-events: none;
+
+    opacity: .82;
+
+}
+
+
+.login-button.is-loading
+.button-default {
+
+    display: none;
+
+}
+
+
+.login-button.is-loading
+.button-loading {
+
+    display: flex;
+
+}
+
+
+.spinner {
+
+    width: 14px;
+    height: 14px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.35);
+
+    border-top-color:
+        #ffffff;
+
+    border-radius: 50%;
+
+    animation:
+        spin .7s linear infinite;
+
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.login-security {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 19px;
+
+    color:
+        #98a2b3;
+
+    font-size: 8.5px;
+
+    line-height: 1.5;
+
+}
+
+
+.login-security svg {
+
+    width: 13px;
+    height: 13px;
+
+    flex: 0 0 13px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 28px;
+
+    padding-top: 17px;
+
+    border-top:
+        1px solid
+        #f0f1f3;
+
+    color:
+        #98a2b3;
+
+    font-size: 8.5px;
+
+}
+
+
+.return-home {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color:
+        var(--muted);
+
+    font-weight: 650;
+
+    transition:
+        color var(--transition);
+
+}
+
+
+.return-home:hover {
+
+    color:
+        var(--red);
+
+}
+
+
+.return-home:focus-visible {
+
+    outline:
+        2px solid
+        rgba(180,35,24,.25);
+
+    outline-offset: 4px;
+
+}
+
+
+.return-home svg {
+
+    width: 13px;
+    height: 13px;
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .admin-login-shell {
+
+        grid-template-columns:
+            40% 60%;
+
+    }
+
+
+    .admin-brand-content {
+
+        padding:
+            40px;
+
+    }
+
+
+    .admin-form-panel {
+
+        padding:
+            40px;
+
+    }
+
+
+    .admin-brand-message h1 {
+
+        font-size: 38px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    .admin-login-shell {
+
+        display: block;
+
+    }
+
+
+    .admin-brand-panel {
+
+        display: none;
+
+    }
+
+
+    .admin-form-panel {
+
+        min-height: 100vh;
+        min-height: 100dvh;
+
+        align-items: flex-start;
+
+        padding:
+            25px 20px 35px;
+
+    }
+
+
+    .admin-form-container {
+
+        max-width: 420px;
+
+        margin:
+            0 auto;
+
+    }
+
+
+    .mobile-brand {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        margin-bottom: 62px;
+
+    }
+
+
+    .mobile-brand:focus-visible {
+
+        outline:
+            2px solid
+            rgba(180,35,24,.25);
+
+        outline-offset: 5px;
+
+    }
+
+
+    .mobile-logo {
+
+        width: 36px;
+        height: 36px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 7px;
+
+        background:
+            var(--red);
+
+        color:
+            #ffffff;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+    }
+
+
+    .mobile-brand > span:last-child {
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 2px;
+
+    }
+
+
+    .mobile-brand strong {
+
+        color:
+            var(--navy);
+
+        font-size: 15px;
+
+    }
+
+
+    .mobile-brand small {
+
+        color:
+            var(--muted);
+
+        font-size: 8px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    .admin-form-panel {
+
+        padding:
+            22px 17px 30px;
+
+    }
+
+
+    .mobile-brand {
+
+        margin-bottom: 48px;
+
+    }
+
+
+    .login-heading h2 {
+
+        font-size: 28px;
+
+    }
+
+
+    .login-heading p {
+
+        font-size: 11px;
+
+    }
+
+
+    .login-footer {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 8px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+    }
+
+}

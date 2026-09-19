@@ -1,0 +1,1730 @@
+/* =========================================================
+   NDMS — MY REPORTS (CITIZEN)
+   Uses the same design tokens/classes as dashboard.css.
+   This file only adds what My Reports needs on top of it.
+   ========================================================= */
+
+
+/* =========================================================
+   DJANGO MESSAGES
+   (dashboard.css does not style these yet -- same markup
+   and classes already used on Profile/Home/Settings; needed
+   here for the success/error message shown after a delete)
+   ========================================================= */
+
+.django-messages {
+
+    position: fixed;
+    top: 90px;
+    right: 25px;
+    z-index: 9999;
+
+    width: min(420px, calc(100% - 30px));
+
+}
+
+.django-message {
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 14px 16px;
+    margin-bottom: 10px;
+
+    border-radius: 12px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+
+    box-shadow: var(--shadow-md);
+
+}
+
+.django-message-success {
+
+    border-left: 4px solid var(--green);
+
+}
+
+.django-message-error {
+
+    border-left: 4px solid var(--red);
+
+}
+
+.message-icon {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--green-bg);
+    color: var(--green);
+
+    font-weight: 800;
+
+}
+
+.message-text {
+
+    flex: 1;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    line-height: 1.5;
+    font-weight: 600;
+
+    color: var(--text);
+
+}
+
+.message-close {
+
+    border: none;
+    background: transparent;
+
+    color: var(--muted);
+    font-size: calc(20px * var(--ndms-font-scale, 1));
+    line-height: 1;
+
+    cursor: pointer;
+
+    padding: 2px 5px;
+
+}
+
+@media (max-width: 430px) {
+
+    .django-messages {
+        top: 75px;
+        left: 15px;
+        right: 15px;
+        width: auto;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY UTILITY
+   ========================================================= */
+
+.sr-only {
+
+    position: absolute;
+    width: 1px;
+    height: 1px;
+
+    padding: 0;
+    margin: -1px;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+
+    border: 0;
+
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.mr-page-header {
+
+    margin-bottom:
+        26px;
+
+}
+
+
+.mr-page-header-top {
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+
+}
+
+
+.mr-page-header-text {
+
+    min-width: 0;
+
+}
+
+
+.mr-header-cta {
+
+    flex-shrink: 0;
+    white-space: nowrap;
+
+}
+
+
+.mr-page-header .mr-eyebrow {
+
+    display:
+        block;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(8px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    letter-spacing:
+        1.3px;
+
+}
+
+
+.mr-page-header h1 {
+
+    margin-top:
+        4px;
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(23px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.25;
+
+    font-weight:
+        800;
+
+}
+
+
+.mr-page-header p {
+
+    margin-top:
+        6px;
+
+    max-width:
+        520px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.6;
+
+}
+
+
+/* =========================================================
+   STAT ICON
+   (base circle + status color variants -- used by the
+   stat-card-top/stat-icon/stat-status row on this page)
+   ========================================================= */
+
+.stat-icon {
+
+    width:
+        30px;
+
+    height:
+        30px;
+
+    border-radius:
+        9px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    flex-shrink:
+        0;
+
+}
+
+
+.stat-icon.pending {
+
+    background:
+        var(--orange-bg);
+
+    color:
+        var(--orange);
+
+}
+
+
+.stat-icon.review {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+}
+
+
+.stat-icon.verified {
+
+    background:
+        var(--green-bg);
+
+    color:
+        var(--green);
+
+}
+
+
+.stat-icon.rejected {
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+}
+
+
+.stat-card-top {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    margin-bottom:
+        10px;
+
+}
+
+
+.stat-status {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .3px;
+
+}
+
+
+/* =========================================================
+   SUMMARY CARDS — 3 COMPACT CARDS ON THIS PAGE
+   (base .stats-grid in dashboard.css is 4-column; My Reports
+   intentionally shows only Total / Awaiting Review / Verified
+   so the page stays lightweight -- rejected reports remain
+   visible through the report list/status filter instead of
+   another card. Column count and accent colors are overridden
+   here only for .my-reports-page, leaving the shared dashboard
+   grid untouched)
+   ========================================================= */
+
+.my-reports-page .stats-grid {
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+}
+
+
+.my-reports-page .stats-grid .stat-card:nth-child(2)::before {
+
+    background:
+        var(--orange);
+
+}
+
+
+.my-reports-page .stats-grid .stat-card:nth-child(3)::before {
+
+    background:
+        var(--green);
+
+}
+
+
+@media (max-width: 700px) {
+
+    .my-reports-page .stats-grid {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+    .my-reports-page .stats-grid .stat-card:nth-child(3) {
+
+        grid-column:
+            1 / -1;
+
+    }
+
+}
+
+
+@media (max-width: 430px) {
+
+    .my-reports-page .stats-grid {
+
+        grid-template-columns:
+            1fr;
+
+    }
+
+    .my-reports-page .stats-grid .stat-card:nth-child(3) {
+
+        grid-column:
+            auto;
+
+    }
+
+}
+
+
+/* =========================================================
+   COMPACT CARD SIZE
+   (My Reports only needs 3 small at-a-glance cards -- the
+   table below is the real focus of the page, so these are
+   deliberately smaller/quieter than the base dashboard cards)
+   ========================================================= */
+
+.my-reports-page .stats-grid .stat-card {
+
+    min-height:
+        76px;
+
+    padding:
+        11px 13px;
+
+    border-radius:
+        9px;
+
+}
+
+
+.my-reports-page .stats-grid .stat-icon {
+
+    width:
+        24px;
+
+    height:
+        24px;
+
+    border-radius:
+        7px;
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+.my-reports-page .stats-grid .stat-status {
+
+    font-size:
+        calc(8.5px * var(--ndms-font-scale, 1));
+
+}
+
+
+.my-reports-page .stats-grid .stat-number {
+
+    margin-top:
+        4px;
+
+    font-size:
+        calc(19px * var(--ndms-font-scale, 1));
+
+}
+
+
+.my-reports-page .stats-grid .stat-label {
+
+    font-size:
+        calc(9.5px * var(--ndms-font-scale, 1));
+
+}
+
+
+.my-reports-page .stats-grid .stat-card p {
+
+    margin-top:
+        2px;
+
+    font-size:
+        calc(8.5px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   SECTION SUBTITLE
+   ========================================================= */
+
+.mr-section-subtitle {
+
+    margin:
+        -9px 0 15px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+
+/* =========================================================
+   TOOLBAR — FILTER + SEARCH
+   ========================================================= */
+
+.mr-toolbar {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        14px;
+
+    flex-wrap:
+        wrap;
+
+    margin-bottom:
+        15px;
+
+}
+
+
+.mr-search-form {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        8px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+.mr-search-box {
+
+    position:
+        relative;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+}
+
+
+.mr-search-box input[type="text"] {
+
+    width:
+        230px;
+
+    max-width:
+        60vw;
+
+    box-sizing:
+        border-box;
+
+    padding:
+        9px 13px 9px 30px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    color:
+        var(--text);
+
+    font-family:
+        inherit;
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        500;
+
+    outline:
+        none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.mr-search-box input[type="text"]:hover {
+
+    border-color:
+        var(--c-border-9);
+
+}
+
+
+.mr-search-box input[type="text"]:focus {
+
+    border-color:
+        var(--navy);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 32, 51, .08);
+
+}
+
+
+.mr-search-box .mr-search-icon {
+
+    position:
+        absolute;
+
+    left:
+        10px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(12px * var(--ndms-font-scale, 1));
+
+    pointer-events:
+        none;
+
+}
+
+
+.mr-search-clear {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.mr-search-clear:hover {
+
+    color:
+        var(--red);
+
+}
+
+
+/* =========================================================
+   FILTERS — COMPACT POPOVER
+   (replaces the old always-visible status tabs; Status +
+   Disaster Type live here instead, opened on demand)
+   ========================================================= */
+
+.mr-filters-wrapper {
+
+    position:
+        relative;
+
+}
+
+
+.mr-filters-toggle {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    height:
+        36px;
+
+    padding:
+        0 14px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    color:
+        var(--text);
+
+    font-family:
+        inherit;
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    white-space:
+        nowrap;
+
+    cursor:
+        pointer;
+
+    transition:
+        border-color .18s ease,
+        color .18s ease;
+
+}
+
+
+.mr-filters-icon {
+
+    width:
+        14px;
+
+    height:
+        14px;
+
+    color:
+        var(--muted);
+
+}
+
+
+.mr-filters-toggle:hover {
+
+    border-color:
+        var(--c-border-9);
+
+    color:
+        var(--navy);
+
+}
+
+
+.mr-filters-toggle[aria-expanded="true"] {
+
+    border-color:
+        var(--navy);
+
+    color:
+        var(--navy);
+
+}
+
+
+.mr-filters-dot {
+
+    width:
+        7px;
+
+    height:
+        7px;
+
+    border-radius:
+        999px;
+
+    background:
+        var(--red);
+
+}
+
+
+.mr-filters-panel {
+
+    position:
+        absolute;
+
+    top:
+        calc(100% + 8px);
+
+    right:
+        0;
+
+    z-index:
+        40;
+
+    width:
+        260px;
+
+    padding:
+        16px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-md, 0 10px 30px rgba(23, 32, 51, .12));
+
+    opacity:
+        0;
+
+    transform:
+        translateY(-4px);
+
+    pointer-events:
+        none;
+
+    transition:
+        opacity .16s ease,
+        transform .16s ease;
+
+}
+
+
+.mr-filters-panel[data-open="true"] {
+
+    opacity:
+        1;
+
+    transform:
+        translateY(0);
+
+    pointer-events:
+        auto;
+
+}
+
+
+.mr-filters-field {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        6px;
+
+    margin-bottom:
+        14px;
+
+}
+
+
+.mr-filters-field label {
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(9.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        800;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        .4px;
+
+}
+
+
+.mr-filters-field select {
+
+    box-sizing:
+        border-box;
+
+    width:
+        100%;
+
+    height:
+        36px;
+
+    padding:
+        0 28px 0 12px;
+
+    background:
+        var(--white)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
+        no-repeat right 8px center;
+
+    background-size:
+        13px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        8px;
+
+    color:
+        var(--text);
+
+    font-family:
+        inherit;
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        550;
+
+    appearance:
+        none;
+
+    cursor:
+        pointer;
+
+    outline:
+        none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+
+}
+
+
+.mr-filters-field select:hover {
+
+    border-color:
+        var(--c-border-9);
+
+}
+
+
+.mr-filters-field select:focus {
+
+    border-color:
+        var(--navy);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 32, 51, .08);
+
+}
+
+
+.mr-filters-actions {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        flex-end;
+
+    gap:
+        8px;
+
+    margin-top:
+        4px;
+
+}
+
+
+.mr-filters-clear {
+
+    padding:
+        8px 12px;
+
+    background:
+        transparent;
+
+    border:
+        1px solid transparent;
+
+    border-radius:
+        7px;
+
+    color:
+        var(--muted);
+
+    font-family:
+        inherit;
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    cursor:
+        pointer;
+
+}
+
+
+.mr-filters-clear:hover {
+
+    color:
+        var(--red);
+
+}
+
+
+.mr-filters-apply {
+
+    padding:
+        8px 16px;
+
+    background:
+        var(--navy);
+
+    border:
+        1px solid var(--navy);
+
+    border-radius:
+        7px;
+
+    color:
+        var(--white);
+
+    font-family:
+        inherit;
+
+    font-size:
+        calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    cursor:
+        pointer;
+
+    transition:
+        background-color .18s ease;
+
+}
+
+
+.mr-filters-apply:hover {
+
+    background:
+        var(--navy-light);
+
+}
+
+
+.mr-clear-filters-link {
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+    white-space:
+        nowrap;
+
+}
+
+
+.mr-clear-filters-link:hover {
+
+    color:
+        var(--red-dark);
+
+}
+
+
+/* =========================================================
+   REPORTS TABLE — ADDITIONS
+   (table/th/td/status/table-empty reused from dashboard.css)
+   ========================================================= */
+
+.status.review {
+
+    color:
+        var(--navy);
+
+}
+
+
+/* =========================================================
+   REPORT ID — CLICKABLE, SAME TREATMENT AS ADMIN'S
+   DISASTER REPORTS TABLE (.dashboard-table .report-id in
+   admin-disaster-reports.css / admin-dashboard.css): NDMS red,
+   no underline at rest, underline on hover/focus.
+   ========================================================= */
+
+.reports-table .report-id {
+    color: var(--red);
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.reports-table .report-id:hover,
+.reports-table .report-id:focus-visible {
+    color: var(--red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+
+.reports-table td.mr-action-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Secondary date/time shown inline next to the primary date
+   in the Incident Start / Reported At columns. */
+.mr-time-inline {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--muted);
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+}
+
+/* =========================================================
+   VIEW DETAILS — DIRECT ROW ACTION
+   (replaces the old 3-dot action menu; a single, always-
+   visible action rather than a hidden dropdown)
+   ========================================================= */
+
+.mr-view-details-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    color: var(--red);
+
+    font-family: inherit;
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    text-decoration: none;
+
+    transition:
+        color .18s ease,
+        transform .18s ease;
+}
+
+.mr-view-details-link span {
+    transition: transform .18s ease;
+}
+
+.mr-view-details-link:hover,
+.mr-view-details-link:focus-visible {
+    color: var(--red-dark);
+}
+
+.mr-view-details-link:hover span,
+.mr-view-details-link:focus-visible span {
+    transform: translateX(2px);
+}
+
+.mr-view-details-link:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+
+/* =========================================================
+   EMPTY STATE (NO REPORTS AT ALL)
+   ========================================================= */
+
+.mr-empty-state {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    text-align:
+        center;
+
+    padding:
+        60px 24px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        11px;
+
+    box-shadow:
+        var(--shadow-xs);
+
+}
+
+
+.mr-empty-icon {
+
+    width:
+        52px;
+
+    height:
+        52px;
+
+    border-radius:
+        12px;
+
+    background:
+        var(--light-red);
+
+    color:
+        var(--red);
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-size:
+        calc(22px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        850;
+
+    margin-bottom:
+        16px;
+
+}
+
+
+.mr-empty-state strong {
+
+    color:
+        var(--navy);
+
+    font-size:
+        calc(15px * var(--ndms-font-scale, 1));
+
+}
+
+
+.mr-empty-state p {
+
+    margin-top:
+        6px;
+
+    max-width:
+        320px;
+
+    color:
+        var(--muted);
+
+    font-size:
+        calc(11.5px * var(--ndms-font-scale, 1));
+
+    line-height:
+        1.6;
+
+}
+
+
+.mr-empty-state .primary-action {
+
+    margin-top:
+        20px;
+
+}
+
+
+/* =========================================================
+   NO RESULTS FOR CURRENT FILTER/SEARCH
+   ========================================================= */
+
+.mr-no-results p {
+
+    margin-top:
+        3px;
+
+}
+
+
+.mr-no-results .mr-reset-link {
+
+    display:
+        inline-block;
+
+    margin-top:
+        10px;
+
+    color:
+        var(--red);
+
+    font-size:
+        calc(9.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        750;
+
+}
+
+
+.mr-no-results .mr-reset-link:hover {
+
+    color:
+        var(--red-dark);
+
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.mr-pagination {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        6px;
+
+    padding:
+        16px;
+
+    border-top:
+        1px solid var(--border);
+
+}
+
+
+.mr-page-link {
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-width:
+        28px;
+
+    height:
+        28px;
+
+    padding:
+        0 8px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius:
+        7px;
+
+    color:
+        var(--text);
+
+    font-size:
+        calc(10.5px * var(--ndms-font-scale, 1));
+
+    font-weight:
+        700;
+
+    background:
+        var(--white);
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease,
+        color .18s ease;
+
+}
+
+
+.mr-page-link:hover {
+
+    border-color:
+        var(--c-border-9);
+
+    color:
+        var(--navy);
+
+}
+
+
+.mr-page-link.active {
+
+    background:
+        var(--navy);
+
+    border-color:
+        var(--navy);
+
+    color:
+        var(--white);
+
+}
+
+
+.mr-page-link.disabled {
+
+    opacity:
+        .4;
+
+    pointer-events:
+        none;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .mr-page-header h1 {
+
+        font-size:
+            calc(19px * var(--ndms-font-scale, 1));
+
+    }
+
+    .mr-toolbar {
+
+        flex-direction:
+            column;
+
+        align-items:
+            stretch;
+
+    }
+
+    .mr-search-form {
+
+        width:
+            100%;
+
+    }
+
+    .mr-search-box input[type="text"] {
+
+        width:
+            100%;
+
+        max-width:
+            none;
+
+    }
+
+    .mr-filters-wrapper {
+
+        width:
+            100%;
+
+    }
+
+    .mr-filters-toggle {
+
+        width:
+            100%;
+
+        justify-content:
+            center;
+
+    }
+
+    .mr-filters-panel {
+
+        left:
+            0;
+
+        right:
+            0;
+
+        width:
+            auto;
+
+    }
+
+}
+
+/* =========================================================
+   LOCATION COLUMN — TRUNCATE LONG ADDRESSES
+   (full address stays available via the title tooltip)
+   ========================================================= */
+
+.mr-location-cell {
+
+    max-width: 190px;
+
+}
+
+.mr-location-cell span {
+
+    display: block;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+
+/* =========================================================
+   MOBILE REPORT CARDS
+   Hidden on desktop; shown instead of the table below 700px
+   so nothing gets squeezed into a horizontal scroll.
+   ========================================================= */
+
+.mr-mobile-cards {
+
+    display: none;
+
+}
+
+.my-reports-page .mr-report-card {
+
+    padding: 16px;
+
+    border-bottom: 1px solid var(--c-surface-8);
+
+}
+
+.my-reports-page .mr-report-card:last-child {
+
+    border-bottom: 0;
+
+}
+
+.mr-report-card-top {
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+
+}
+
+.mr-report-card-top-text {
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+
+    min-width: 0;
+
+}
+
+.mr-report-card-type {
+
+    color: var(--navy);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+
+}
+
+.mr-report-card-meta {
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    margin-top: 10px;
+
+    color: var(--muted);
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+.mr-report-card-location {
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+
+}
+
+.mr-report-card-rows {
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    margin-top: 12px;
+    padding-top: 12px;
+
+    border-top: 1px solid var(--c-surface-8);
+
+}
+
+.mr-report-card-row {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+}
+
+.mr-report-card-row > span:first-child {
+
+    color: var(--muted);
+    font-weight: 550;
+
+}
+
+.mr-report-card-row strong {
+
+    color: var(--navy);
+    font-weight: 750;
+
+}
+
+.mr-report-card-link {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-top: 12px;
+
+    color: var(--red);
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+
+}
+
+.mr-report-card-link:hover {
+
+    color: var(--red-dark);
+
+}
+
+.mr-mobile-cards .mr-no-results {
+
+    padding: 30px 16px;
+    text-align: center;
+
+}
+
+
+@media (max-width: 700px) {
+
+    .my-reports-page .reports-table-wrapper {
+
+        display: none;
+
+    }
+
+    .my-reports-page .mr-mobile-cards {
+
+        display: block;
+
+    }
+
+}

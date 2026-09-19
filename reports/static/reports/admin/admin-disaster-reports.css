@@ -1,0 +1,605 @@
+/* =========================================================
+   NDMS ADMIN — DISASTER REPORTS SHARED UI
+   Used by:
+   - Disaster Reports
+   - Report Detail
+   - User Detail
+
+   Visual language intentionally follows:
+   dashboard-shell.css
+   admin-dashboard.css
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE INTRO
+   ========================================================= */
+
+.dr-page-intro {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+}
+
+.dr-page-intro-copy {
+    min-width: 0;
+}
+
+.dr-page-eyebrow {
+    margin: 0 0 6px;
+    color: var(--ndms-red);
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 800;
+    letter-spacing: .1em;
+}
+
+.dr-page-intro h1 {
+    margin: 0;
+    color: var(--ndms-navy);
+    font-size: 25px;
+    line-height: 1.2;
+    font-weight: 750;
+    letter-spacing: -.025em;
+}
+
+.dr-page-description {
+    max-width: 700px;
+    margin: 7px 0 0;
+    color: var(--ndms-muted);
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   REPORT SUMMARY CARDS
+   ========================================================= */
+
+.dr-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dr-summary-card {
+    position: relative;
+    min-width: 0;
+    min-height: 104px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding: 15px 16px 15px 18px;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 10px;
+
+    background: #fff;
+
+    overflow: hidden;
+
+    transition:
+        transform .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.dr-summary-card::before {
+    content: "";
+    position: absolute;
+
+    left: 0;
+    top: 13px;
+    bottom: 13px;
+
+    width: 3px;
+
+    border-radius: 0 3px 3px 0;
+
+    background: var(--ndms-navy);
+}
+
+.dr-summary-card:hover {
+    transform: translateY(-1px);
+    border-color: #d0d5dd;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, .055);
+}
+
+.dr-summary-total::before {
+    background: var(--ndms-navy);
+}
+
+.dr-summary-pending::before {
+    background: var(--ndms-orange-light);
+}
+
+.dr-summary-review::before {
+    background: #667085;
+}
+
+.dr-summary-verified::before {
+    background: var(--ndms-green);
+}
+
+.dr-summary-rejected::before {
+    background: var(--ndms-red);
+}
+
+.dr-summary-label {
+    display: block;
+    color: var(--ndms-muted);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.dr-summary-value {
+    display: block;
+    margin-top: 7px;
+    color: var(--ndms-navy);
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 750;
+    letter-spacing: -.025em;
+}
+
+.dr-summary-meta {
+    display: block;
+    margin-top: 5px;
+    color: var(--ndms-light-muted);
+    font-size: 9px;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER
+   Matches the Disaster Types filter bar (.dt-filter-bar /
+   .dt-search-field / .dt-select-field) — same pill-shaped
+   compact fields, same palette, own scoped class names so
+   nothing else on the page is affected.
+   ========================================================= */
+
+.dr-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.dr-filter-bar {
+    margin-bottom: 14px;
+}
+
+.dr-filter-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.dr-search-field,
+.dr-select-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 37px;
+    background: #ffffff;
+    border: 1px solid var(--ndms-border);
+    border-radius: 7px;
+}
+
+.dr-search-field {
+    width: min(320px, 100%);
+}
+
+.dr-select-field {
+    width: 154px;
+}
+
+.dr-search-field:focus-within,
+.dr-select-field:focus-within {
+    border-color: #b4bbc6;
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+}
+
+.dr-search-field svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 11px;
+    flex: 0 0 auto;
+    color: var(--ndms-light-muted);
+}
+
+.dr-search-field input,
+.dr-select-field select {
+    width: 100%;
+    min-width: 0;
+    height: 35px;
+    border: 0;
+    outline: 0;
+    color: var(--ndms-text);
+    background: transparent;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 500;
+}
+
+.dr-search-field input {
+    padding: 0 10px 0 8px;
+}
+
+.dr-search-field input::placeholder {
+    color: var(--ndms-light-muted);
+}
+
+.dr-select-field select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: none;
+    position: relative;
+    z-index: 1;
+    padding: 0 31px 0 10px;
+    cursor: pointer;
+}
+
+.dr-select-field > svg {
+    position: absolute;
+    z-index: 2;
+    right: 9px;
+    width: 13px;
+    height: 13px;
+    color: var(--ndms-text);
+    pointer-events: none;
+}
+
+.dr-filter-button,
+.dr-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.dr-filter-button {
+    padding: 0 13px;
+    color: #ffffff;
+    background: var(--ndms-navy);
+    border: 1px solid var(--ndms-navy);
+}
+
+.dr-filter-button:hover {
+    background: var(--ndms-navy-light);
+}
+
+.dr-reset-button {
+    padding: 0 9px;
+    color: var(--ndms-muted);
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.dr-reset-button:hover {
+    color: var(--ndms-navy);
+    background: #ffffff;
+    border-color: var(--ndms-border);
+}
+
+
+/* =========================================================
+   SHARED BUTTONS
+   ========================================================= */
+
+.dr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    min-height: 40px;
+
+    padding: 0 15px;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 8px;
+
+    background: #fff;
+    color: var(--ndms-text);
+
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 700;
+
+    text-decoration: none;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background .18s ease,
+        border-color .18s ease,
+        color .18s ease,
+        transform .18s ease;
+}
+
+.dr-btn:hover {
+    background: var(--ndms-soft);
+    border-color: #d0d5dd;
+}
+
+.dr-btn-primary {
+    border-color: var(--ndms-navy);
+    background: var(--ndms-navy);
+    color: #fff;
+}
+
+.dr-btn-primary:hover {
+    border-color: var(--ndms-navy-light);
+    background: var(--ndms-navy-light);
+    color: #fff;
+}
+
+.dr-btn-outline {
+    background: #fff;
+    color: var(--ndms-navy);
+}
+
+.dr-btn-danger {
+    color: var(--ndms-red);
+}
+
+.dr-btn-danger:hover {
+    border-color: #f0b8b3;
+    background: #fef3f2;
+    color: var(--ndms-red);
+}
+
+.dr-btn-ghost {
+    background: transparent;
+    color: var(--ndms-muted);
+}
+
+.dr-btn-block {
+    width: 100%;
+}
+
+.dr-btn:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   TABLE EXTRAS
+   Dashboard table itself comes from admin-dashboard.css.
+   ========================================================= */
+
+.dr-location-cell {
+    display: block;
+
+    max-width: 220px;
+
+    overflow: hidden;
+
+    color: var(--ndms-muted);
+
+    font-size: 10px;
+    line-height: 1.4;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dr-table-type {
+    color: var(--ndms-text);
+    font-size: 10px;
+    font-weight: 650;
+}
+
+/* =========================================================
+   REPORTED SEVERITY BADGE
+   Citizen-reported severity (DisasterReport.reported_severity)
+   -- kept visually distinct from, but consistent in shape
+   with, the existing .table-status badges (status pill),
+   using the same global --ndms-* tokens as the rest of this
+   stylesheet.
+   ========================================================= */
+
+.dr-severity {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .2px;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.dr-severity-low {
+    color: var(--ndms-green);
+    background: #ecfdf3;
+}
+
+.dr-severity-medium {
+    color: var(--ndms-orange);
+    background: #fffaeb;
+}
+
+.dr-severity-high {
+    color: #b93815;
+    background: #fff4ed;
+}
+
+.dr-severity-critical {
+    color: var(--ndms-red);
+    background: #fef3f2;
+}
+
+.dashboard-table .report-id {
+    color: var(--ndms-red);
+    font-weight: 750;
+    text-decoration: none;
+}
+
+.dashboard-table .report-id:hover,
+.dashboard-table .report-id:focus-visible {
+    color: var(--ndms-red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.dashboard-table .table-primary-link {
+    color: var(--ndms-navy);
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.dashboard-table .table-primary-link:hover {
+    color: var(--ndms-red);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* All Reports table: citizen name should only change color on
+   hover, no underline. Scoped to this table only. */
+.dr-reports-table .table-primary-link:hover {
+    text-decoration: none;
+}
+
+.dr-datetime-cell {
+    color: var(--ndms-text);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.dr-text-muted {
+    color: var(--ndms-light-muted);
+    font-size: 10px;
+    font-style: italic;
+}
+
+.table-action-header {
+    text-align: right;
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.dr-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    padding: 13px 16px;
+}
+
+.dr-page-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 30px;
+    height: 30px;
+
+    padding: 0 8px;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 7px;
+
+    background: #fff;
+    color: var(--ndms-text);
+
+    font-size: 9px;
+    font-weight: 650;
+
+    text-decoration: none;
+
+    transition:
+        background .15s ease,
+        border-color .15s ease,
+        color .15s ease;
+}
+
+.dr-page-link:hover {
+    background: var(--ndms-soft);
+    border-color: #d0d5dd;
+}
+
+.dr-page-link.active {
+    background: var(--ndms-navy);
+    border-color: var(--ndms-navy);
+    color: #fff;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1180px) {
+
+    .dr-summary-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 650px) {
+
+    .dr-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .dr-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dr-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .dr-search-field,
+    .dr-select-field,
+    .dr-filter-button,
+    .dr-reset-button {
+        width: 100%;
+    }
+
+    .dr-filter-button {
+        order: 2;
+    }
+
+}

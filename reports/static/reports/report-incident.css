@@ -1,0 +1,2022 @@
+/* =========================================================
+   NDMS — REPORT INCIDENT PAGE
+   FINAL PROFESSIONAL / OFFICIAL UI
+   Sidebar, Topbar & Footer are controlled by dashboard.css
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE INTRO
+   ========================================================= */
+
+.ri-intro {
+    margin-bottom: 26px;
+}
+
+/* Plain kicker text (no pill/badge) — matches the Admin Profile
+   .ap-kicker treatment instead of the previous badge-style tag. */
+.ri-eyebrow {
+    display: block;
+    margin-bottom: 6px;
+
+    color: var(--red);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+
+    line-height: 1.2;
+    letter-spacing: .085em;
+    text-transform: uppercase;
+}
+
+.ri-intro h2 {
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: calc(25px * var(--ndms-font-scale, 1));
+    font-weight: 720;
+
+    line-height: 1.2;
+    letter-spacing: -0.025em;
+}
+
+.ri-intro p {
+    margin-top: 6px;
+
+    max-width: 650px;
+
+    color: var(--muted);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   VISUAL PROGRESS INDICATOR
+   Purely visual — 01 Details / 02 Location / 03 Evidence are
+   all part of the same single-page form below. This is not a
+   wizard: it never gates navigation and every section stays
+   editable regardless of scroll position.
+   ========================================================= */
+
+.ri-progress {
+    display: flex;
+
+    align-items: center;
+
+    margin: 0 0 26px;
+    padding: 10px 16px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+
+    list-style: none;
+}
+
+.ri-progress-step {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: var(--muted);
+}
+
+.ri-progress-number {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 22px;
+
+    width: 22px;
+    height: 22px;
+
+    /* Same color treatment as the "01 Incident Details" style
+       number badge (.ri-step-number) below — red-tinted
+       background/border/text — just kept circular here instead
+       of that badge's rounded-square shape. */
+    border: 1px solid var(--c-red-210);
+    border-radius: 50%;
+
+    background: var(--c-red-30);
+
+    color: var(--red);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+}
+
+.ri-progress-label {
+    color: var(--text);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 680;
+
+    white-space: nowrap;
+}
+
+.ri-progress-line {
+    flex: 1 1 auto;
+
+    height: 2px;
+
+    margin: 0 14px;
+
+    border-radius: 2px;
+
+    background: var(--border);
+}
+
+
+/* =========================================================
+   ALERT
+   ========================================================= */
+
+.ri-alert {
+    margin-bottom: 22px;
+
+    padding: 14px 16px;
+
+    border-radius: 9px;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+}
+
+.ri-alert-error {
+    background: var(--light-red);
+
+    border: 1px solid var(--c-red-220);
+
+    color: var(--red-dark);
+}
+
+.ri-alert p {
+    margin: 0;
+}
+
+.ri-alert p + p {
+    margin-top: 4px;
+}
+
+.ri-alert ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+}
+
+.ri-alert li {
+    margin-top: 2px;
+
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+}
+
+
+/* =========================================================
+   MAIN FORM CARD
+   ========================================================= */
+
+.ri-card {
+    position: relative;
+
+    margin-bottom: 26px;
+
+    /* No overflow:hidden here (unlike .ap-card) -- the Disaster
+       Type custom dropdown panel below is an absolutely-positioned
+       child of this card and must be able to extend past its
+       bottom edge without being clipped. The card header no
+       longer uses a differently-colored background, so there's
+       nothing that still needs corner-clipping. */
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.ri-card-header {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 12px;
+
+    padding: 16px 20px 14px;
+
+    background: var(--white);
+
+    border-bottom: 1px solid var(--border);
+}
+
+.ri-step-number {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 28px;
+
+    width: 28px;
+    height: 28px;
+
+    margin-top: 1px;
+
+    border-radius: 50%;
+
+    background: var(--c-red-30);
+
+    border: 1px solid var(--c-red-210);
+
+    color: var(--red);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+
+    letter-spacing: .3px;
+}
+
+.ri-card-header h3 {
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    font-weight: 730;
+
+    line-height: 1.3;
+}
+
+.ri-card-header p {
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.ri-card-body {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 16px 20px;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.ri-form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+.ri-form-group label {
+    color: var(--text);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    line-height: 1.4;
+}
+
+.ri-required {
+    margin-left: 2px;
+
+    color: var(--red);
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   FORM ROW
+   Places Disaster Type and Incident Start Date & Time on the
+   same horizontal line on desktop/tablet -- each column is
+   still a normal .ri-form-group underneath, this only
+   arranges the two side by side. Falls back to a single
+   stacked column on mobile (see the 700px media query below)
+   so neither field feels cramped on a small screen.
+   ========================================================= */
+
+.ri-form-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   INCIDENT SEVERITY — CARD SELECTOR
+   Real radio inputs underneath (see form.reported_severity /
+   forms.RadioSelect) -- the card is just CSS around them, so
+   the selected value always reaches Django normally.
+   ========================================================= */
+
+.ri-severity-hint {
+    margin-top: -3px;
+}
+
+.ri-severity-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 10px;
+}
+
+.ri-severity-card {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 13px 14px;
+
+    background: var(--white);
+
+    /* Same border treatment as #id_disaster_type and every other
+       form control: 1px var(--border), 8px radius, var(--c-muted-2) on
+       hover — so the severity cards read as the same control
+       family as the dropdown above them. */
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.ri-severity-card:hover {
+
+    border-color: var(--c-muted-2);
+
+    background: var(--c-surface-4);
+}
+
+/* The real radio input stays in the DOM (and in the tab order)
+   for accessibility/keyboard use and to reach Django on submit
+   -- it's only visually hidden, never removed or disabled. */
+.ri-severity-card input[type="radio"] {
+
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    margin: 0;
+    padding: 0;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.ri-severity-card-indicator {
+
+    flex: 0 0 16px;
+
+    width: 16px;
+    height: 16px;
+
+    margin-top: 2px;
+
+    border: 1.5px solid var(--c-muted-2);
+    border-radius: 50%;
+
+    background: var(--white);
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.ri-severity-card-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+
+    min-width: 0;
+}
+
+.ri-severity-card-title {
+
+    color: var(--navy);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 730;
+
+    line-height: 1.35;
+}
+
+.ri-severity-card-desc {
+
+    color: var(--muted);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+
+    line-height: 1.45;
+}
+
+/* Selected state -- driven by the real :checked radio (works with
+   no JS at all) and mirrored onto .is-selected by report-incident.js
+   for browsers/cases where the :has() selector isn't applied. Only
+   NDMS red is used for the selected accent, regardless of which
+   level is picked, to keep the picker itself to one accent color. */
+.ri-severity-card:has(input:checked),
+.ri-severity-card.is-selected {
+
+    border-color: var(--red);
+
+    background: var(--c-red-25);
+}
+
+.ri-severity-card:has(input:checked) .ri-severity-card-indicator,
+.ri-severity-card.is-selected .ri-severity-card-indicator {
+
+    border-color: var(--red);
+
+    background: var(--red);
+
+    box-shadow: inset 0 0 0 3px var(--white);
+}
+
+/* Same focus treatment as #id_disaster_type:focus (soft glow,
+   not a solid ring) — box-shadow (not outline) so it still
+   follows the card's own border-radius. */
+.ri-severity-card:focus-within {
+
+    outline: none;
+
+    border-color: var(--red);
+
+    box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.09);
+}
+
+/* Error state -- applied to the whole grid (matches the pattern
+   used by #id_disaster_type.ri-invalid etc.) when the form is
+   submitted with no severity selected. Single border only, no
+   glow ring, to match the rest of the form's border system. */
+.ri-severity-grid.ri-invalid .ri-severity-card {
+
+    border-color: var(--red);
+}
+
+
+/* =========================================================
+   ALL FORM CONTROLS
+   ========================================================= */
+
+.ri-form-group select,
+.ri-form-group input[type="text"],
+.ri-form-group textarea,
+#id_disaster_type,
+#id_description,
+#id_address,
+#id_incident_start_date {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 7px 13px;
+
+    min-height: 39px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    color: var(--c-ink-2);
+
+    font-family: inherit;
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 500;
+
+    outline: none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background-color .18s ease;
+}
+
+
+/* =========================================================
+   NORMAL HOVER
+   ========================================================= */
+
+.ri-form-group select:hover,
+.ri-form-group input[type="text"]:hover,
+.ri-form-group textarea:hover {
+
+    border-color: var(--c-muted-2);
+}
+
+
+/* =========================================================
+   DISASTER TYPE — CUSTOM DROPDOWN
+   The real <select id="id_disaster_type"> stays in the DOM
+   (Django still renders/validates/submits it exactly as
+   before) but is visually hidden — report-incident.js builds
+   the list below from its <option>s. This avoids the native,
+   unstyled, browser/OS-specific dropdown list a plain <select>
+   always opens, no matter how the closed box itself is styled.
+   ========================================================= */
+
+#id_disaster_type {
+
+    position: absolute;
+
+    width: 1px;
+    height: 1px;
+
+    margin: -1px;
+    padding: 0;
+
+    overflow: hidden;
+
+    clip: rect(0, 0, 0, 0);
+
+    white-space: nowrap;
+
+    border: 0;
+}
+
+.ri-select {
+
+    position: relative;
+}
+
+.ri-select-trigger {
+
+    width: 100%;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    min-height: 39px;
+
+    padding: 7px 13px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    color: var(--c-ink-2);
+
+    font-family: inherit;
+
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 500;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease,
+        background-color .18s ease;
+}
+
+.ri-select-trigger:hover {
+
+    border-color: var(--c-muted-2);
+}
+
+.ri-select-trigger:focus-visible,
+.ri-select.ri-select-open .ri-select-trigger {
+
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, 0.09);
+
+    background-color: var(--c-red-10);
+}
+
+/* Mirrors the real (hidden) select's .ri-invalid class, added
+   by the existing submit-validation in report-incident.js —
+   pure CSS, no extra class-syncing JS needed. */
+#id_disaster_type.ri-invalid ~ .ri-select-trigger {
+
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, 0.07);
+}
+
+.ri-select-trigger-text {
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ri-select-trigger.ri-select-placeholder .ri-select-trigger-text {
+
+    color: var(--c-muted-2);
+}
+
+.ri-select-trigger-arrow {
+
+    flex: 0 0 auto;
+
+    color: var(--muted);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+    transition: transform .18s ease;
+}
+
+.ri-select.ri-select-open .ri-select-trigger-arrow {
+
+    transform: rotate(180deg);
+}
+
+.ri-select-panel {
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: calc(100% + 6px);
+
+    z-index: 50;
+
+    max-height: 236px;
+
+    margin: 0;
+    padding: 6px;
+
+    list-style: none;
+
+    overflow-y: auto;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 30px rgba(23, 32, 51, 0.12),
+        0 2px 6px rgba(23, 32, 51, 0.06);
+
+    opacity: 0;
+
+    transform: translateY(-4px);
+
+    pointer-events: none;
+
+    transition:
+        opacity .14s ease,
+        transform .14s ease;
+}
+
+.ri-select.ri-select-open .ri-select-panel {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
+
+/* Slim, modern custom scrollbar (instead of the browser's
+   default thick gray one) for whenever the option list is tall
+   enough to scroll -- Firefox via scrollbar-width/-color, every
+   other browser via the -webkit- pseudo-elements below. Kept
+   very thin (4px) and pill-shaped, with some track padding via
+   background-clip so it reads as a light floating indicator
+   rather than a hard gray bar. */
+.ri-select-panel {
+    scrollbar-width: thin;
+    scrollbar-color: var(--c-border-5) transparent;
+}
+
+.ri-select-panel::-webkit-scrollbar {
+    width: 4px;
+}
+
+.ri-select-panel::-webkit-scrollbar-track {
+    background: transparent;
+    margin: 4px 0;
+}
+
+.ri-select-panel::-webkit-scrollbar-thumb {
+    background-color: var(--c-border-5);
+    border-radius: 999px;
+
+    transition: background-color .15s ease;
+}
+
+.ri-select-panel::-webkit-scrollbar-thumb:hover {
+    background-color: var(--c-muted-2);
+}
+
+.ri-select-option {
+
+    padding: 9px 11px;
+
+    border-radius: 6px;
+
+    color: var(--text);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 550;
+
+    cursor: pointer;
+
+    outline: none;
+
+    transition: background-color .12s ease;
+}
+
+.ri-select-option:hover,
+.ri-select-option:focus {
+
+    background: var(--c-surface-5);
+}
+
+.ri-select-option.ri-select-option-selected {
+
+    background: var(--c-red-30);
+
+    color: var(--red-dark);
+
+    font-weight: 700;
+}
+
+.ri-select-option.ri-select-option-empty {
+
+    color: var(--c-muted-2);
+}
+
+
+/* =========================================================
+   ADDRESS + DESCRIPTION — FOCUS
+   ========================================================= */
+
+#id_address:focus,
+#id_description:focus,
+#id_incident_start_date:focus {
+
+    border-color: var(--navy);
+
+    box-shadow:
+        0 0 0 3px rgba(23, 32, 51, 0.07);
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+#id_description {
+
+    min-height: 120px;
+
+    resize: vertical;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+#id_description::placeholder,
+#id_address::placeholder {
+
+    color: var(--c-muted-2);
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   INVALID FIELD
+   ========================================================= */
+
+#id_disaster_type.ri-invalid,
+#id_description.ri-invalid,
+#id_address.ri-invalid,
+#id_incident_start_date.ri-invalid {
+
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, 0.07);
+}
+
+
+/* =========================================================
+   INCIDENT START DATE & TIME
+   Same box-model as the other text-style inputs above; only
+   the native datetime-local calendar/clock icon needs a small
+   nudge so it lines up with the rest of the form on both
+   desktop and mobile widths.
+   ========================================================= */
+
+#id_incident_start_date {
+
+    max-width: 100%;
+}
+
+#id_incident_start_date::-webkit-calendar-picker-indicator {
+
+    margin-left: 6px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   FIELD ERROR
+   ========================================================= */
+
+.ri-field-error {
+    display: block;
+
+    margin-top: 1px;
+
+    color: var(--red-dark);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+
+    line-height: 1.45;
+}
+
+
+/* =========================================================
+   HINT
+   ========================================================= */
+
+.ri-hint {
+    color: var(--muted);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+
+    line-height: 1.5;
+}
+
+.ri-textarea-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-top: 6px;
+}
+
+.ri-char-count {
+    flex: 0 0 auto;
+
+    color: var(--c-muted-2);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LOCATION TOOLBAR
+   ========================================================= */
+
+/* =========================================================
+   LOCATION SHARING NOTE
+   (shown only when the citizen has turned Location Sharing
+   off in Settings — informational only, does not affect the
+   map or the current-location button below it)
+   ========================================================= */
+
+.ri-location-privacy-note {
+
+    margin: 0;
+
+    padding: 9px 13px;
+
+    background: var(--orange-bg);
+
+    border: 1px solid rgba(181, 71, 8, 0.25);
+
+    border-radius: 8px;
+
+    color: var(--orange);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+    line-height: 1.5;
+}
+
+
+.ri-location-privacy-note a {
+
+    color: inherit;
+
+    font-weight: 700;
+
+    text-decoration: underline;
+}
+
+
+.ri-map-toolbar {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+.ri-location-btn {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    height: 37px;
+
+    padding: 0 14px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 7px;
+
+    color: var(--navy);
+
+    font-family: inherit;
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 680;
+
+    cursor: pointer;
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease,
+        box-shadow .18s ease;
+}
+
+.ri-location-btn:hover {
+
+    background: var(--c-surface-5);
+
+    border-color: var(--c-muted-2);
+}
+
+.ri-location-btn:active {
+
+    background: var(--soft-gray);
+}
+
+.ri-location-btn:disabled {
+
+    opacity: .55;
+
+    cursor: not-allowed;
+}
+
+.ri-map-status {
+
+    color: var(--muted);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+}
+
+.ri-map-status.ri-status-success {
+    color: var(--green);
+}
+
+.ri-map-status.ri-status-error {
+    color: var(--red-dark);
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.ri-map-container {
+
+    position: relative;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 1px 3px rgba(16, 24, 40, 0.05);
+}
+
+.ri-map {
+
+    width: 100%;
+
+    height: 420px;
+
+    background: var(--soft-gray);
+}
+
+.ri-map-load-error {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+
+    padding: 20px;
+
+    background: var(--light-red);
+
+    color: var(--red-dark);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   MAP SEARCH BOX
+   A real "Search Google Maps"-style pill, overlaid on top of
+   the map itself (top-left), matching the real Google Maps
+   product. Bound to the Google Places Autocomplete widget in
+   report-incident.js — selecting a result moves the marker,
+   centers the map, and runs it through the exact same Nepal
+   validation + reverse-geocoding pipeline as a manual map
+   click, so the address field still auto-fills.
+   ========================================================= */
+
+.ri-map-search-wrap {
+
+    position: absolute;
+
+    top: 14px;
+    left: 14px;
+
+    z-index: 5;
+
+    width: min(320px, calc(100% - 28px));
+}
+
+.ri-map-search-box {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+}
+
+.ri-map-search-icon {
+
+    position: absolute;
+
+    left: 14px;
+
+    color: var(--muted);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+
+    pointer-events: none;
+}
+
+.ri-map-search-input {
+
+    width: 100%;
+
+    height: 42px;
+
+    padding: 0 14px 0 38px;
+
+    background: var(--white);
+
+    border: none;
+
+    border-radius: 21px;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 500;
+
+    box-shadow:
+        0 1px 4px rgba(16, 24, 40, 0.18),
+        0 1px 2px rgba(16, 24, 40, 0.10);
+
+    outline: none;
+
+    transition: box-shadow .18s ease;
+}
+
+.ri-map-search-input::placeholder {
+    color: var(--muted);
+}
+
+.ri-map-search-input:focus {
+
+    box-shadow:
+        0 0 0 2px var(--navy),
+        0 1px 4px rgba(16, 24, 40, 0.18);
+}
+
+/* Google's own Places Autocomplete suggestion dropdown is
+   appended to <body>, outside this page's normal stacking
+   context — forced above the dashboard's sidebar/modal layers
+   (which reach z-index: 1100 elsewhere) so results are never
+   hidden behind them. */
+.pac-container {
+    z-index: 10000 !important;
+}
+
+
+/* =========================================================
+   MAP LAYER CONTROL (Standard / Satellite toggle)
+   Custom control replacing Google's default blue-highlighted
+   map type buttons, so the "active" state matches the NDMS
+   navy/red palette instead of Google's stock styling.
+   ========================================================= */
+
+.ri-layer-control {
+
+    display: flex;
+
+    gap: 3px;
+
+    padding: 4px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 9px;
+
+    box-shadow: var(--shadow-sm);
+
+    font-family: inherit;
+}
+
+.ri-layer-btn {
+
+    border: none;
+
+    background: transparent;
+
+    min-width: 78px;
+
+    height: 32px;
+
+    padding: 0 12px;
+
+    border-radius: 6px;
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    letter-spacing: .2px;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease,
+        box-shadow .18s ease,
+        transform .12s ease;
+}
+
+.ri-layer-btn:hover {
+    background: var(--soft-gray);
+}
+
+.ri-layer-btn:active {
+    transform: scale(0.96);
+}
+
+.ri-layer-btn.active {
+
+    background: var(--navy);
+
+    color: var(--white);
+
+    box-shadow: 0 2px 8px rgba(23, 32, 51, 0.35);
+}
+
+.ri-layer-btn.active:hover {
+    background: var(--navy-light);
+}
+
+
+/* =========================================================
+   COORDINATES
+   ========================================================= */
+
+.ri-coords-inline {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-top: 0;
+}
+
+.ri-coord-pill {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    height: 22px;
+
+    padding: 0 4px 0 8px;
+
+    background: var(--c-surface-5);
+
+    border: 1px solid var(--border);
+
+    border-radius: 13px;
+}
+
+.ri-coord-pill-label {
+
+    color: var(--c-muted-2);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+
+    letter-spacing: .3px;
+
+    text-transform: uppercase;
+}
+
+.ri-coord-pill-value {
+
+    width: 78px;
+
+    height: 17px;
+
+    padding: 0 8px;
+
+    background: var(--white);
+
+    border: none;
+
+    border-radius: 10px;
+
+    color: var(--c-text-2);
+
+    font-family: inherit;
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+
+    cursor: default;
+
+    outline: none;
+}
+
+.ri-coord-pill-value::placeholder {
+    color: var(--c-muted-2);
+}
+
+
+/* =========================================================
+   PHOTO UPLOAD AREA
+   ========================================================= */
+
+.ri-photo-dropzone {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 16px 18px;
+
+    background: var(--c-surface-4);
+
+    border: 1.5px dashed var(--c-border-5);
+
+    border-radius: 10px;
+
+    text-align: center;
+
+    transition: border-color .18s ease, background-color .18s ease;
+}
+
+.ri-photo-dropzone:hover {
+
+    border-color: var(--c-muted-2);
+
+    background: var(--c-surface-5);
+}
+
+.ri-photo-dropzone-hint {
+
+    margin: 0;
+
+    color: var(--c-muted-2);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+}
+
+.ri-photo-upload-area {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+}
+
+.ri-choose-photos-btn {
+    cursor: pointer;
+}
+
+.ri-photo-count {
+
+    color: var(--muted);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   PHOTO PREVIEW GRID
+   ========================================================= */
+
+.ri-photo-preview-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fill, minmax(120px, 1fr));
+
+    gap: 12px;
+}
+
+.ri-photo-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    aspect-ratio: 1 / 1;
+
+    background: var(--c-surface-5);
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+}
+
+.ri-photo-card img {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* The thumbnail itself opens the large preview/lightbox — kept
+   as a real <button> wrapping the image (separate from
+   .ri-photo-remove) so a click to view never risks removing
+   the photo. */
+.ri-photo-view {
+
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 0;
+
+    border: none;
+
+    background: none;
+
+    cursor: pointer;
+}
+
+.ri-photo-view:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: -2px;
+}
+
+.ri-photo-remove {
+
+    position: absolute;
+
+    top: 6px;
+    right: 6px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(23, 32, 51, .78);
+
+    color: var(--white);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        transform .18s ease;
+}
+
+.ri-photo-remove:hover {
+
+    background: var(--red);
+
+    transform: scale(1.04);
+}
+
+
+/* =========================================================
+   SUBMIT CARD
+   ========================================================= */
+
+.ri-submit-card {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    flex-wrap: wrap;
+
+    gap: 16px;
+
+    padding: 16px 20px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.ri-submit-card h3 {
+
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    font-weight: 730;
+}
+
+.ri-submit-card p {
+
+    margin-top: 3px;
+
+    color: var(--muted);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+    line-height: 1.5;
+}
+
+.ri-submit-actions {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   BUTTON SYSTEM — scoped to this page only
+   Matches the Admin Profile button language (~37px height,
+   7px radius, 10.5px text, 680 weight) while keeping the
+   existing NDMS colors (.primary-action/.secondary-action)
+   already used across the citizen portal. Only the box model
+   and hover treatment change here — the shared classes in
+   dashboard.css, and every other page that uses them, are
+   untouched.
+   ========================================================= */
+
+.report-incident-page .primary-action,
+.report-incident-page .secondary-action {
+
+    min-height: 37px;
+
+    padding: 0 14px;
+
+    border-radius: 7px;
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 680;
+
+    box-shadow: none;
+}
+
+.report-incident-page .primary-action:hover,
+.report-incident-page .secondary-action:hover {
+
+    transform: none;
+}
+
+.report-incident-page .primary-action:hover {
+
+    box-shadow: 0 2px 8px rgba(180, 35, 24, 0.16);
+}
+
+
+/* =========================================================
+   PHOTO LIGHTBOX
+   Lightweight large preview opened when a thumbnail is
+   clicked/tapped. Never submits the form, removes the photo,
+   or navigates away — see report-incident.js for the open/
+   close/keyboard logic. Motion is already neutralised globally
+   by html[data-motion="reduced"] (citizen-prefs.css), so no
+   extra reduced-motion overrides are needed here.
+   ========================================================= */
+
+.ri-lightbox {
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1200;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(16, 24, 40, .72);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+        opacity .16s ease,
+        visibility .16s ease;
+}
+
+.ri-lightbox.show {
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.ri-lightbox-stage {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    max-width: min(720px, 100%);
+    max-height: 100%;
+}
+
+.ri-lightbox-stage img {
+
+    display: block;
+
+    max-width: 100%;
+    max-height: 80vh;
+
+    object-fit: contain;
+
+    border-radius: 8px;
+
+    background: var(--soft-gray);
+
+    box-shadow: 0 20px 40px -12px rgba(16, 24, 40, .4);
+}
+
+.ri-lightbox-close {
+
+    position: absolute;
+
+    top: -14px;
+    right: -14px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: var(--white);
+
+    color: var(--navy);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 8px rgba(16, 24, 40, .25);
+
+    transition: background-color .15s ease;
+}
+
+.ri-lightbox-close:hover {
+
+    background: var(--soft-gray);
+}
+
+.ri-lightbox-close:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 2px;
+}
+
+.ri-lightbox-nav {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(23, 32, 51, .6);
+
+    color: var(--white);
+
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+
+    cursor: pointer;
+
+    transition: background-color .15s ease;
+}
+
+.ri-lightbox-nav:hover {
+
+    background: rgba(23, 32, 51, .85);
+}
+
+.ri-lightbox-nav:focus-visible {
+
+    outline: 2px solid var(--white);
+
+    outline-offset: 2px;
+}
+
+.ri-lightbox-prev {
+    left: -46px;
+}
+
+.ri-lightbox-next {
+    right: -46px;
+}
+
+.ri-lightbox-counter {
+
+    position: absolute;
+
+    bottom: -26px;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    color: var(--white);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+
+    .ri-lightbox-prev {
+        left: 4px;
+    }
+
+    .ri-lightbox-next {
+        right: 4px;
+    }
+
+    .ri-lightbox-close {
+        top: 4px;
+        right: 4px;
+    }
+
+    .ri-lightbox-counter {
+        bottom: -22px;
+    }
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.ri-location-btn:focus-visible,
+.ri-choose-photos-btn:focus-visible,
+.ri-layer-btn:focus-visible,
+.ri-photo-remove:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .ri-intro {
+        margin-bottom: 18px;
+    }
+
+    .ri-intro h2 {
+        font-size: calc(22px * var(--ndms-font-scale, 1));
+    }
+
+    .ri-progress {
+        margin-bottom: 18px;
+    }
+
+    .ri-card {
+        margin-bottom: 18px;
+    }
+
+    .ri-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .ri-progress-label {
+        display: none;
+    }
+
+    .ri-progress-line {
+        margin: 0 8px;
+    }
+
+    .ri-card-header {
+        padding: 14px;
+    }
+
+    .ri-card-body {
+        padding: 14px;
+    }
+
+    .ri-severity-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ri-map {
+        height: 320px;
+    }
+
+    /* MOBILE MAP SEARCH FIX
+       Below 700px the map is narrow enough that the absolutely-
+       positioned search pill (sized close to full map width) and
+       Google's own top-right "Standard / Satellite" toggle both
+       land in the same corner and overlap. Below this breakpoint
+       the search bar moves out of the map overlay and becomes a
+       normal full-width bar stacked above the map instead — the
+       layer toggle then has the map's top-right corner entirely
+       to itself, on every phone width, with no overlap. Desktop/
+       tablet (>700px) keeps the original floating overlay pill,
+       unchanged, since there's always room for both there. */
+    .ri-map-container {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: 10px;
+        overflow: visible;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    .ri-map-search-wrap {
+        position: static;
+        width: 100%;
+    }
+
+    .ri-map {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(16, 24, 40, 0.05);
+    }
+
+    .ri-submit-card {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        padding: 20px 18px;
+    }
+
+    .ri-submit-actions {
+
+        width: 100%;
+    }
+
+    .ri-submit-actions a,
+    .ri-submit-actions button {
+
+        flex: 1;
+
+        justify-content: center;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+    .ri-card-header {
+
+        gap: 11px;
+    }
+
+    .ri-step-number {
+
+        flex-basis: 26px;
+
+        width: 26px;
+        height: 26px;
+    }
+
+    .ri-card-header h3 {
+        font-size: calc(13px * var(--ndms-font-scale, 1));
+    }
+
+    .ri-card-header p {
+        font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    }
+
+    .ri-severity-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ri-photo-preview-grid {
+
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+
+    .ri-submit-actions {
+
+        flex-direction: column;
+
+        width: 100%;
+    }
+
+    .ri-submit-actions a,
+    .ri-submit-actions button {
+
+        width: 100%;
+    }
+}

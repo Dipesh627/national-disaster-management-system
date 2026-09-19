@@ -1,0 +1,1278 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Manage your NDMS preferences and account experience."
+    >
+
+    <title>
+        NDMS | Settings
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/navbar-avatar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/settings.css' %}"
+    >
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="dashboard-page settings-page">
+
+
+<!-- =====================================================
+     MOBILE OVERLAY
+     ===================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside
+    class="dashboard-sidebar"
+    id="dashboardSidebar"
+>
+
+
+    <!-- BRAND -->
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="dashboard-brand"
+    >
+
+        <div class="dashboard-logo">
+            ND
+        </div>
+
+        <div class="dashboard-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- SIDEBAR NAVIGATION -->
+
+        <nav
+        class="sidebar-navigation"
+        aria-label="Dashboard navigation"
+    >
+
+
+        <span class="sidebar-section-title">
+            OVERVIEW
+        </span>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            REPORTING
+        </span>
+
+
+        <!-- REPORT INCIDENT -->
+
+        <a
+            href="{% url 'create_disaster_report' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'create_disaster_report' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'create_disaster_report' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 10v4"></path><path d="M12 17.2v.1"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Report Incident
+            </span>
+
+        </a>
+
+
+        <!-- MY REPORTS -->
+
+        <a
+            href="{% url 'my_reports' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Reports
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            DISCOVER
+        </span>
+
+
+        <!-- DISASTERS — collapsible group -->
+
+        <div class="sidebar-group{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %} is-open is-active-group{% endif %}">
+
+            <button
+                type="button"
+                class="sidebar-link sidebar-group-toggle"
+                aria-expanded="{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %}true{% else %}false{% endif %}"
+                aria-controls="sidebarDisastersMenu"
+            >
+
+                <span class="sidebar-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 8v8l8 5 8-5V8z"></path><path d="m4 8 8 5 8-5"></path><path d="M12 13v8"></path></svg>
+                </span>
+
+                <span class="sidebar-link-text">
+                    Disasters
+                </span>
+
+                <svg class="sidebar-group-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+
+            </button>
+
+            <div
+                class="sidebar-submenu"
+                id="sidebarDisastersMenu"
+            >
+
+                <a
+                    href="{% url 'disaster_list' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %}aria-current="page"{% endif %}
+                >
+                    View Disasters
+                </a>
+
+                <a
+                    href="{% url 'home' %}#disasters"
+                    class="sidebar-sublink"
+                >
+                    Disaster Types
+                </a>
+
+                <a
+                    href="{% url 'disaster_guidelines' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_guidelines' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_guidelines' %}aria-current="page"{% endif %}
+                >
+                    Awareness &amp; Guidelines
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            SAFETY
+        </span>
+
+
+        <!-- ALERTS -->
+
+        <a
+            href="{% url 'alerts' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Alerts
+            </span>
+
+
+            {% if unread_count > 0 %}
+
+                <span class="sidebar-badge">
+                    {{ unread_count }}
+                </span>
+
+            {% endif %}
+
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            ACCOUNT
+        </span>
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{% url 'profile' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path><circle cx="12" cy="7" r="3.6"></circle></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Profile
+            </span>
+
+        </a>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="{% url 'settings' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'settings' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         SIDEBAR FOOTER -- "Back to Website"
+         Minimal variant: one arrow + label, no subtitle, no
+         boxed icon, no second arrow, with a subtle translateX
+         hover on the arrow (dashboard.css .sidebar-footer-link--
+         minimal / .sidebar-footer-icon--plain). Destination and
+         underlying .sidebar-footer-link base are unchanged; the
+         modifier classes keep this scoped to the Citizen
+         Dashboard so Alerts / My Reports / Profile / Report
+         Detail / Report Incident / Settings / Help & Support
+         keep their existing footer link as-is.
+         ================================================= -->
+
+    <div class="sidebar-footer">
+
+        <a
+            href="{% url 'home' %}"
+            class="sidebar-footer-link sidebar-footer-link--minimal"
+            aria-label="Back to Website"
+        >
+
+            <span class="sidebar-footer-icon--plain" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5"></path>
+                    <path d="m11 18-6-6 6-6"></path>
+                </svg>
+            </span>
+
+            <span class="sidebar-footer-title">Back to Website</span>
+
+        </a>
+
+    </div>
+
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN WRAPPER
+     ===================================================== -->
+
+<div class="dashboard-wrapper">
+
+
+    <!-- =================================================
+         TOPBAR
+         ================================================= -->
+
+    <header class="dashboard-topbar">
+
+
+        <div class="topbar-left">
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="mobile-sidebar-toggle"
+                id="mobileSidebarToggle"
+                aria-label="Open dashboard menu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <div class="page-identity">
+
+    <div class="page-breadcrumb" aria-label="Breadcrumb">
+        <span>NDMS</span>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span>Citizen</span>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span>Settings</span>
+    </div>
+
+
+    <div class="page-heading">
+
+        <h1>
+            Settings
+        </h1>
+
+    </div>
+
+</div>
+
+
+        </div>
+
+
+
+        <div class="topbar-right">
+
+
+            <!-- =================================================
+                 NOTIFICATION
+                 ================================================= -->
+
+            {% include 'reports/partials/notification_dropdown.html' %}
+
+
+
+            <!-- =================================================
+                 USER
+                 ================================================= -->
+
+            <div
+                class="topbar-user ndms-avatar-wrapper"
+                id="ndmsAvatarWrapper"
+            >
+
+                {% with display_name=user.full_name|default:user.username %}
+
+                <button
+                    type="button"
+                    class="ndms-avatar-btn"
+                    id="ndmsAvatarBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="ndmsAvatarMenu"
+                    aria-label="Open account menu"
+                >
+
+                    <span class="ndms-avatar-circle">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% else %}
+
+                            {{ display_name|first|upper }}
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="ndms-avatar-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="ndms-avatar-menu"
+                    id="ndmsAvatarMenu"
+                    role="menu"
+                >
+
+                    <div class="ndms-avatar-menu-header">
+
+                        <span class="ndms-avatar-menu-avatar">
+
+                            {% if user.avatar %}
+
+                                <img
+                                    src="{{ user.avatar.url }}"
+                                    alt=""
+                                >
+
+                            {% else %}
+
+                                {{ display_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                        <div class="ndms-avatar-menu-info">
+
+                            <strong class="ndms-avatar-menu-name">
+                                {{ display_name }}
+                            </strong>
+
+                            {% if user.email %}
+
+                                <span class="ndms-avatar-menu-email">
+                                    {{ user.email }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'profile' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3.6" stroke="currentColor" stroke-width="1.8"/></svg>
+                            Profile
+                        </a>
+
+                        <a
+                            href="{% url 'settings' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                            Settings
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#contact"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v10H9l-4 3.5v-3.5H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Contact Us
+                        </a>
+
+                        <a
+                            href="{% url 'help_support' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9.3a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .9-1 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                            Help &amp; Support
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#feedback-section-title"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7L12 4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Feedback
+                        </a>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="ndms-avatar-menu-item ndms-avatar-menu-logout"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4.5H6a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 6 19.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 8 20 12l-4.5 4M20 12H9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endwith %}
+
+            </div>
+
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+         ================================================= -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             DJANGO MESSAGES
+             ================================================= -->
+
+        {% if messages %}
+
+            <div class="django-messages">
+
+                {% for message in messages %}
+
+                    <div
+                        class="django-message django-message-{{ message.tags }}"
+                        role="alert"
+                    >
+
+                        <span class="message-icon">
+                            ✓
+                        </span>
+
+                        <span class="message-text">
+                            {{ message }}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="message-close"
+                            aria-label="Close message"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             PAGE HEADER
+             ================================================= -->
+
+        <header class="st-page-header">
+
+            <div class="st-page-header-copy">
+
+                <span class="st-kicker">
+                    PREFERENCES
+                </span>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Manage your NDMS preferences and account experience.
+                </p>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             SETTINGS FORM (General, Appearance, Accessibility, Reporting)
+             ================================================= -->
+
+        <form
+            method="POST"
+            action="{% url 'settings' %}"
+            id="settingsForm"
+            novalidate
+        >
+
+            {% csrf_token %}
+
+
+            <!-- =============================================
+                 A. GENERAL
+                 ============================================= -->
+
+            <section class="st-card">
+
+                <div class="st-card-header">
+
+                    <div>
+
+                        <span class="st-card-kicker">
+                            GENERAL
+                        </span>
+
+                        <h2>
+                            General Preferences
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="st-field-list">
+
+                    <div class="st-field">
+
+                        <label for="id_date_format">
+                            Date Format
+                        </label>
+
+                        {{ form.date_format }}
+
+                        <span class="st-hint">
+                            Choose how dates are displayed throughout NDMS.
+                        </span>
+
+                        {% if form.date_format.errors %}
+
+                            <span class="st-field-error">
+                                {{ form.date_format.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="st-field">
+
+                        <label for="id_time_zone">
+                            Time Zone
+                        </label>
+
+                        {{ form.time_zone }}
+
+                        <span class="st-hint">
+                            Choose the time zone used for displaying dates and times.
+                        </span>
+
+                        {% if form.time_zone.errors %}
+
+                            <span class="st-field-error">
+                                {{ form.time_zone.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 B. APPEARANCE
+                 ============================================= -->
+
+            <section class="st-card">
+
+                <div class="st-card-header">
+
+                    <div>
+
+                        <span class="st-card-kicker">
+                            APPEARANCE
+                        </span>
+
+                        <h2>
+                            Appearance
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="st-pill-field">
+
+                    <label>
+                        Theme
+                    </label>
+
+                    <div class="st-radio-pills">
+
+                        {% for radio in form.theme %}
+
+                            <label class="st-radio-pill">
+                                {{ radio.tag }}
+                                <span>{{ radio.choice_label }}</span>
+                            </label>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <span class="st-hint">
+                        Choose how NDMS looks on your device.
+                    </span>
+
+                    {% if form.theme.errors %}
+
+                        <span class="st-field-error">
+                            {{ form.theme.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="st-divider"></div>
+
+
+                <div class="st-pill-field">
+
+                    <label>
+                        Text Size
+                    </label>
+
+                    <div class="st-radio-pills">
+
+                        {% for radio in form.font_size %}
+
+                            <label class="st-radio-pill">
+                                {{ radio.tag }}
+                                <span>{{ radio.choice_label }}</span>
+                            </label>
+
+                        {% endfor %}
+
+                    </div>
+
+                    <span class="st-hint">
+                        Adjust text size across the citizen portal.
+                    </span>
+
+                    {% if form.font_size.errors %}
+
+                        <span class="st-field-error">
+                            {{ form.font_size.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 C. ACCESSIBILITY
+                 ============================================= -->
+
+            <section class="st-card">
+
+                <div class="st-card-header">
+
+                    <div>
+
+                        <span class="st-card-kicker">
+                            ACCESSIBILITY
+                        </span>
+
+                        <h2>
+                            Accessibility
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="st-toggle-list">
+
+                    <div class="st-toggle-row">
+
+                        <div class="st-toggle-text">
+
+                            <strong>
+                                Reduce Motion
+                            </strong>
+
+                            <span>
+                                Reduce unnecessary animations and transitions.
+                            </span>
+
+                        </div>
+
+                        <label class="st-toggle">
+                            {{ form.reduce_motion }}
+                            <span class="st-toggle-track"></span>
+                        </label>
+
+                    </div>
+
+
+                    <div class="st-toggle-row">
+
+                        <div class="st-toggle-text">
+
+                            <strong>
+                                High Contrast
+                            </strong>
+
+                            <span>
+                                Increase visual contrast for improved readability.
+                            </span>
+
+                        </div>
+
+                        <label class="st-toggle">
+                            {{ form.high_contrast }}
+                            <span class="st-toggle-track"></span>
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- =============================================
+                 D. REPORTING
+                 ============================================= -->
+
+            <section class="st-card">
+
+                <div class="st-card-header">
+
+                    <div>
+
+                        <span class="st-card-kicker">
+                            REPORTING
+                        </span>
+
+                        <h2>
+                            Reporting Preferences
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="st-field-list">
+
+                    <div class="st-field">
+
+                        <label for="id_default_disaster_type">
+                            Default Disaster Type
+                        </label>
+
+                        {{ form.default_disaster_type }}
+
+                        <span class="st-hint">
+                            Automatically preselect this type when reporting an incident. You can still change it before submitting.
+                        </span>
+
+                        {% if form.default_disaster_type.errors %}
+
+                            <span class="st-field-error">
+                                {{ form.default_disaster_type.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            {% if form.non_field_errors %}
+
+                <span class="st-field-error st-form-error">
+                    {{ form.non_field_errors.0 }}
+                </span>
+
+            {% endif %}
+
+
+            <!-- =============================================
+                 SAVE BAR
+                 ============================================= -->
+
+            <div class="st-save-bar" id="stSaveBar">
+
+                <span
+                    class="st-save-status"
+                    id="stSaveStatus"
+                    role="status"
+                    aria-live="polite"
+                >
+                    <span class="st-save-status-dot" aria-hidden="true"></span>
+                    <span id="stSaveStatusText">
+                        All preferences saved
+                    </span>
+                </span>
+
+                <div class="st-save-actions">
+
+                    <button
+                        type="button"
+                        class="st-secondary-button"
+                        id="stDiscardButton"
+                    >
+                        Discard
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="st-primary-button"
+                        id="stSaveButton"
+                    >
+                        Save Changes
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </form>
+
+
+
+        <!-- =================================================
+             E. SECURITY
+             ================================================= -->
+
+        <section class="st-card">
+
+            <div class="st-card-header">
+
+                <div>
+
+                    <span class="st-card-kicker">
+                        SECURITY
+                    </span>
+
+                    <h2>
+                        Account Security
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="st-action-list">
+
+                <div class="st-action-row">
+
+                    <div class="st-action-text">
+
+                        <strong>
+                            Change Password
+                        </strong>
+
+                        <span>
+                            Keep your account secure by updating your password regularly.
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="{% url 'password_change' %}"
+                        class="st-secondary-button"
+                    >
+                        Change Password
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             F. HELP & SUPPORT
+             ================================================= -->
+
+        <section class="st-card">
+
+            <div class="st-card-header">
+
+                <div>
+
+                    <span class="st-card-kicker">
+                        HELP &amp; SUPPORT
+                    </span>
+
+                    <h2>
+                        Help &amp; Support
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="st-action-list">
+
+                <div class="st-action-row">
+
+                    <div class="st-action-text">
+
+                        <strong>
+                            Help &amp; Support
+                        </strong>
+
+                        <span>
+                            Find answers to common questions and guidelines on using NDMS.
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="{% url 'help_support' %}"
+                        class="st-secondary-button"
+                    >
+                        Open Help &amp; Support
+                    </a>
+
+                </div>
+
+                <div class="st-action-row">
+
+                    <div class="st-action-text">
+
+                        <strong>
+                            Contact Us
+                        </strong>
+
+                        <span>
+                            Official NDMS emergency coordination contact channels.
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="{% url 'help_support' %}#hs-contact-ndms"
+                        class="st-secondary-button"
+                    >
+                        Contact Us
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             G. ABOUT NDMS
+             ================================================= -->
+
+        <section class="st-card">
+
+            <div class="st-card-header">
+
+                <div>
+
+                    <span class="st-card-kicker">
+                        ABOUT
+                    </span>
+
+                    <h2>
+                        About NDMS
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="st-about-row">
+
+                <div class="st-about-text">
+
+                    <strong>
+                        National Disaster Management System
+                    </strong>
+
+                    <span>
+                        NDMS provides citizen reporting, real-time alert dissemination, and coordinated disaster response across Nepal.
+                    </span>
+
+                </div>
+
+                <span class="st-version-badge">
+                    Version 1.0
+                </span>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="dashboard-footer">
+
+        <span>
+            © 2026 National Disaster Management System
+        </span>
+
+        <span>
+            NDMS
+        </span>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script
+    src="{% static 'reports/js/dashboard.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/settings.js' %}"
+    defer
+></script>
+
+
+</body>
+
+</html>

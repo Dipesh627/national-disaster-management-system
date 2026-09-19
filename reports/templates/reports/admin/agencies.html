@@ -1,0 +1,757 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Emergency Agencies | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-emergency-agencies.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Emergency Agencies</span>
+{% endblock %}
+
+{% block page_title %}
+Emergency Agencies
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard ea-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ea-page-header">
+
+        <div class="ea-page-header-copy">
+
+            <span class="ea-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>Emergency Agencies</h1>
+
+            <p>
+                Manage the organizations involved in disaster response and coordination.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'admin_agency_create' %}"
+            class="ea-primary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+            >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+
+            <span>Add Emergency Agency</span>
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         FILTER BAR
+         ===================================================== -->
+    <section
+        class="ea-filter-bar"
+        aria-label="Emergency agency filters"
+    >
+
+        <form
+            method="get"
+            class="ea-filter-form"
+        >
+
+            <label class="ea-search-field">
+
+                <span class="ea-visually-hidden">
+                    Search emergency agencies
+                </span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                </svg>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search agencies"
+                    autocomplete="off"
+                >
+
+            </label>
+
+
+            <button
+                type="submit"
+                class="ea-filter-button"
+            >
+                Apply
+            </button>
+
+
+            {% if search_query %}
+
+                <a
+                    href="{% url 'admin_agencies' %}"
+                    class="ea-reset-button"
+                >
+                    Reset
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         TABLE
+         ===================================================== -->
+    <section class="ea-table-panel">
+
+        <div class="ea-table-head">
+
+            <div class="ea-table-head-copy">
+
+                <div class="ea-table-heading-row">
+                    <h2>Emergency agencies</h2>
+
+                    {% if page_obj.paginator.count %}
+                        <span class="ea-result-count">
+                            {{ page_obj.paginator.count }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <p>
+                    {% if page_obj.paginator.count %}
+                        {% if search_query %}
+                            Matching agencies
+                        {% else %}
+                            Registered response agencies
+                        {% endif %}
+                    {% else %}
+                        No agencies available
+                    {% endif %}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if page_obj.object_list %}
+
+            <div class="ea-table-wrap">
+
+                <table class="ea-table">
+
+                    <thead>
+
+                        <tr>
+
+                            <th
+                                scope="col"
+                                class="ea-col-agency"
+                            >
+                                Agency
+                            </th>
+
+                            <th
+                                scope="col"
+                                class="ea-col-type"
+                            >
+                                Agency Type
+                            </th>
+
+                            <th
+                                scope="col"
+                                class="ea-col-contact"
+                            >
+                                Contact
+                            </th>
+
+                            <th
+                                scope="col"
+                                class="ea-col-usage"
+                            >
+                                Response Updates
+                            </th>
+
+                            <th
+                                scope="col"
+                                class="ea-col-actions"
+                            >
+                                <span class="ea-visually-hidden">
+                                    Actions
+                                </span>
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for agency in page_obj.object_list %}
+
+                            <tr class="ea-table-row">
+
+                                <!-- AGENCY -->
+                                <td class="ea-agency-cell">
+
+                                    <span class="ea-agency-name">
+                                        {{ agency.agency_name }}
+                                    </span>
+
+                                </td>
+
+
+                                <!-- AGENCY TYPE -->
+                                <td class="ea-type-cell">
+
+                                    {% if agency.agency_type %}
+
+                                        <span
+                                            class="ea-type-text"
+                                            title="{{ agency.agency_type }}"
+                                        >
+                                            {{ agency.agency_type }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="ea-type-empty">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- CONTACT -->
+                                <td class="ea-contact-cell">
+
+                                    {% if agency.contact_number %}
+
+                                        <span class="ea-contact-text">
+                                            {{ agency.contact_number }}
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="ea-contact-empty">
+                                            —
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+
+                                <!-- RESPONSE UPDATES -->
+                                <td class="ea-usage-cell">
+
+                                    <div class="ea-usage">
+
+                                        <span class="ea-usage-value">
+                                            {{ agency.response_count }}
+                                        </span>
+
+                                        <span class="ea-usage-label">
+                                            update{{ agency.response_count|pluralize }}
+                                        </span>
+
+                                    </div>
+
+                                </td>
+
+
+                                <!-- ACTIONS -->
+                                <td class="ea-actions-cell">
+
+                                    <div class="ea-actions">
+
+                                        <a
+                                            href="{% url 'admin_agency_edit' agency.id %}"
+                                            class="ea-action ea-action-edit"
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                aria-hidden="true"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path d="M12 20h9"></path>
+                                                <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
+                                            </svg>
+
+                                            <span>Edit</span>
+                                        </a>
+
+
+                                        <form
+                                            method="post"
+                                            action="{% url 'admin_agency_delete' agency.id %}"
+                                            class="ea-delete-form"
+                                            data-name="{{ agency.agency_name|escape }}"
+                                            data-updates="{{ agency.response_count }}"
+                                        >
+                                            {% csrf_token %}
+
+                                            <button
+                                                type="submit"
+                                                class="ea-action ea-action-delete"
+                                            >
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                >
+                                                    <path d="M3 6h18"></path>
+                                                    <path d="M8 6V4h8v2"></path>
+                                                    <path d="M19 6l-1 14H6L5 6"></path>
+                                                    <path d="M10 11v5"></path>
+                                                    <path d="M14 11v5"></path>
+                                                </svg>
+
+                                                <span>Delete</span>
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- =================================================
+                 PAGINATION
+                 ================================================= -->
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <div class="ea-pagination">
+
+                    <span class="ea-pagination-summary">
+                        Showing
+                        <strong>{{ page_obj.start_index }}</strong>
+                        –
+                        <strong>{{ page_obj.end_index }}</strong>
+                        of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                    </span>
+
+
+                    <nav
+                        class="ea-pagination-nav"
+                        aria-label="Emergency agencies pagination"
+                    >
+
+                        {% if page_obj.has_previous %}
+
+                            <a
+                                href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                                class="ea-pagination-button"
+                                aria-label="Previous page"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </a>
+
+                        {% else %}
+
+                            <span class="ea-pagination-button is-disabled">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </span>
+
+                        {% endif %}
+
+
+                        {% for number in page_obj.paginator.page_range %}
+
+                            {% if page_obj.number == number %}
+
+                                <span class="ea-pagination-number is-current">
+                                    {{ number }}
+                                </span>
+
+                            {% else %}
+
+                                <a
+                                    href="?page={{ number }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                                    class="ea-pagination-number"
+                                >
+                                    {{ number }}
+                                </a>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+
+                        {% if page_obj.has_next %}
+
+                            <a
+                                href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}"
+                                class="ea-pagination-button"
+                                aria-label="Next page"
+                            >
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+
+                        {% else %}
+
+                            <span class="ea-pagination-button is-disabled">
+                                <svg
+                                    viewBox="0 0 24 24"
+                                    aria-hidden="true"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.8"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                >
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+
+                        {% endif %}
+
+                    </nav>
+
+                </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <!-- =================================================
+                 EMPTY STATE
+                 ================================================= -->
+            <div class="ea-empty-state">
+
+                <div class="ea-empty-mark" aria-hidden="true">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M12 3 3.5 6.5v5.8c0 4.3 3.1 7.9 8.5 9.7 5.4-1.8 8.5-5.4 8.5-9.7V6.5Z"></path>
+                        <path d="M12 8v4.5"></path>
+                        <path d="M12 16.25h.01"></path>
+                    </svg>
+
+                </div>
+
+
+                {% if search_query %}
+
+                    <h3>No matching agencies</h3>
+
+                    <p>
+                        Try changing your search.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_agencies' %}"
+                        class="ea-secondary-button"
+                    >
+                        Reset filters
+                    </a>
+
+                {% else %}
+
+                    <h3>No emergency agencies yet</h3>
+
+                    <p>
+                        Add the first agency to start coordinating disaster response.
+                    </p>
+
+                    <a
+                        href="{% url 'admin_agency_create' %}"
+                        class="ea-secondary-button"
+                    >
+                        Add Emergency Agency
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+
+<!-- =========================================================
+     DELETE CONFIRMATION MODAL
+     ========================================================= -->
+<div
+    id="eaDeleteModal"
+    class="ea-modal"
+    hidden
+    aria-hidden="true"
+>
+    <div
+        class="ea-modal-backdrop"
+        data-modal-close
+    ></div>
+
+
+    <div
+        class="ea-modal-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="eaDeleteModalTitle"
+        aria-describedby="eaDeleteModalDescription"
+    >
+
+        <!-- HEADER -->
+        <div class="ea-modal-top">
+
+            <div
+                class="ea-modal-danger-icon"
+                aria-hidden="true"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M12 3 3.5 6.5v5.8c0 4.3 3.1 7.9 8.5 9.7 5.4-1.8 8.5-5.4 8.5-9.7V6.5Z"></path>
+                    <path d="M12 8v4.5"></path>
+                    <path d="M12 16.25h.01"></path>
+                </svg>
+            </div>
+
+
+            <button
+                type="button"
+                class="ea-modal-close"
+                data-modal-close
+                aria-label="Close delete confirmation"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <path d="M6 6l12 12"></path>
+                    <path d="M18 6 6 18"></path>
+                </svg>
+            </button>
+
+        </div>
+
+
+        <!-- CONTENT -->
+        <div class="ea-modal-content">
+
+            <h3 id="eaDeleteModalTitle">
+                Delete emergency agency?
+            </h3>
+
+
+            <p id="eaDeleteModalDescription">
+                This will permanently remove
+                <strong id="eaDeleteAgencyName">
+                    this emergency agency
+                </strong>
+                from the system.
+            </p>
+
+
+            <!-- USAGE WARNING -->
+            <div
+                id="eaDeleteUsageNote"
+                class="ea-delete-warning"
+                hidden
+            >
+
+                <span class="ea-delete-warning-mark">
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M12 3 2.8 19h18.4Z"></path>
+                        <path d="M12 9v4"></path>
+                        <path d="M12 16.5h.01"></path>
+                    </svg>
+
+                </span>
+
+
+                <div class="ea-delete-warning-copy">
+
+                    <strong>
+                        This agency is already in use
+                    </strong>
+
+                    <span>
+                        Response updates linked to this agency will prevent deletion.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- FINAL CONFIRMATION -->
+            <div class="ea-delete-final-note">
+
+                <span class="ea-delete-final-dot"></span>
+
+                <span>
+                    This action cannot be undone.
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTIONS -->
+        <div class="ea-modal-actions">
+
+            <button
+                type="button"
+                class="ea-modal-cancel"
+                data-modal-close
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                class="ea-confirm-delete-button"
+                id="eaConfirmDelete"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M3 6h18"></path>
+                    <path d="M8 6V4h8v2"></path>
+                    <path d="M19 6l-1 14H6L5 6"></path>
+                    <path d="M10 11v5"></path>
+                    <path d="M14 11v5"></path>
+                </svg>
+
+                <span>Delete agency</span>
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'reports/admin/admin-emergency-agencies.js' %}"></script>
+{% endblock %}

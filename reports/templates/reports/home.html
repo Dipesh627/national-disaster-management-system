@@ -1,0 +1,896 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="NDMS - National Disaster Management System. Report disaster incidents, stay informed, and connect with emergency authorities across Nepal."
+    >
+    <title>NDMS | Home</title>
+
+    <!-- Visual identity consistent with About page -->
+    <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/home.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+<body class="public-home-page">
+
+{% if messages %}
+<div class="django-messages" aria-live="polite">
+    {% for message in messages %}
+    <div
+        class="django-message django-message-{{ message.tags }}"
+        role="alert"
+    >
+        <span class="message-icon">
+            {% if message.tags == 'error' %}
+                !
+            {% else %}
+                ✓
+            {% endif %}
+        </span>
+
+        <span class="message-text">
+            {{ message }}
+        </span>
+
+        <button
+            type="button"
+            class="message-close"
+            aria-label="Close message"
+        >
+            ×
+        </button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<!-- =====================================================
+     1. PUBLIC NAVBAR (shared partial)
+     ===================================================== -->
+{% include 'reports/partials/navbar.html' %}
+
+
+<main class="public-main">
+
+<!-- =====================================================
+     2. CLEAN HERO SECTION
+     Balanced, compact two-column layout with controlled
+     typography, clear CTA actions, and status indicators.
+     ===================================================== -->
+<section class="ndms-hero" aria-labelledby="hero-title">
+    <div class="home-container">
+        <div class="hero-grid">
+
+            <div class="hero-content reveal">
+                <div class="hero-eyebrow">
+                    <span class="hero-eyebrow-dot"></span>
+                    <span>National Disaster Management System</span>
+                </div>
+
+                <h1 id="hero-title" class="hero-title">
+                    Stay Informed.<br>
+                    <span>Respond Faster.</span>
+                </h1>
+
+                <p class="hero-description">
+                    NDMS provides a unified, citizen-first platform to report disaster incidents, share verified location details, and stay connected with emergency authorities across Nepal.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{% url 'create_disaster_report' %}" class="btn btn-primary hero-btn">
+                        Report an Incident
+                        <span class="btn-arrow" aria-hidden="true">→</span>
+                    </a>
+
+                    <a href="#about" class="btn btn-secondary hero-btn">
+                        Learn More
+                        <span class="btn-arrow" aria-hidden="true">↓</span>
+                    </a>
+                </div>
+
+                <div class="hero-status-strip">
+                    <div class="status-pill">
+                        <span class="status-icon" aria-hidden="true">ϟ</span>
+                        <span class="status-label">Fast Reporting</span>
+                    </div>
+
+                    <div class="status-pill">
+                        <span class="status-icon" aria-hidden="true">✓</span>
+                        <span class="status-label">Verified Data</span>
+                    </div>
+
+                    <div class="status-pill">
+                        <span class="status-dot" aria-hidden="true"></span>
+                        <span class="status-label">24/7 Connected</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-media reveal">
+                <div class="hero-image-card">
+                    <img
+                        src="{% static 'reports/images/disaster-about.jpg' %}"
+                        alt="NDMS emergency personnel assisting community members"
+                        class="hero-image"
+                        loading="eager"
+                    >
+                    <div class="hero-image-overlay"></div>
+                    <div class="hero-image-badge">
+                        <span class="badge-icon">▲</span>
+                        <div class="badge-text">
+                            <strong>Nepal Emergency Network</strong>
+                            <span>Active Coordination</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =====================================================
+     3. ABOUT NDMS PREVIEW
+     Quick overview connecting directly with the About page.
+     ===================================================== -->
+<section
+    class="about-preview-section"
+    id="about"
+    aria-labelledby="about-preview-title"
+>
+    <div class="home-container">
+        <div class="about-preview-grid">
+
+            <div class="about-preview-copy reveal">
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span>About NDMS</span>
+                </div>
+
+                <h2 id="about-preview-title">
+                    A safer Nepal starts with faster reporting.
+                </h2>
+
+                <p class="about-preview-lead">
+                    NDMS gives citizens a clear way to report disaster incidents, share location information, and stay connected with updates from responsible authorities — built around Nepal's emergency needs.
+                </p>
+
+                <div class="about-highlights-list">
+                    <div class="about-highlight-item">
+                        <div class="highlight-number">01</div>
+                        <div class="highlight-body">
+                            <strong>Report Clearly</strong>
+                            <p>Simple, structured incident submission captures critical observations swiftly.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-highlight-item">
+                        <div class="highlight-number">02</div>
+                        <div class="highlight-body">
+                            <strong>Share Location</strong>
+                            <p>Precise map coordinates provide essential situational awareness for responders.</p>
+                        </div>
+                    </div>
+
+                    <div class="about-highlight-item">
+                        <div class="highlight-number">03</div>
+                        <div class="highlight-body">
+                            <strong>Support Response</strong>
+                            <p>Organized records empower emergency response agencies to coordinate action.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-preview-cta">
+                    <a href="{% url 'about' %}" class="btn btn-secondary">
+                        Learn More About NDMS
+                        <span class="btn-arrow" aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="about-preview-media reveal">
+                <div class="map-card">
+                    <img
+                        src="{% static 'reports/images/nepal-map.png' %}"
+                        alt="Geographic disaster response coverage across Nepal"
+                        class="map-image"
+                        loading="lazy"
+                    >
+                    <div class="map-badge">
+                        <span class="map-badge-icon">▲</span>
+                        <div>
+                            <strong>Nepal-focused</strong>
+                            <span>Citizen-first emergency management</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =====================================================
+     4. HOW NDMS WORKS
+     Clear 4-step workflow in clean, lightweight cards.
+     ===================================================== -->
+<section
+    class="workflow-section"
+    id="workflow"
+    aria-labelledby="workflow-title"
+>
+    <div class="home-container">
+        <div class="section-header text-center reveal">
+            <div class="eyebrow centered">
+                <span class="eyebrow-line"></span>
+                <span>How NDMS Works</span>
+                <span class="eyebrow-line"></span>
+            </div>
+
+            <h2 id="workflow-title">
+                From incident report to informed response.
+            </h2>
+
+            <p class="section-subtitle">
+                NDMS follows a structured four-step process that organizes disaster information from initial citizen reporting through validation and coordinated response.
+            </p>
+        </div>
+
+        <div class="workflow-grid reveal" id="workflowSteps">
+            <!-- Step 01 -->
+            <article class="workflow-card">
+                <div class="step-card-top">
+                    <span class="step-badge">01</span>
+                    <span class="step-icon">△</span>
+                </div>
+                <h3>Report</h3>
+                <p>Citizens submit an incident report with descriptions, photographs, and observed severity.</p>
+            </article>
+
+            <!-- Step 02 -->
+            <article class="workflow-card">
+                <div class="step-card-top">
+                    <span class="step-badge">02</span>
+                    <span class="step-icon">📍</span>
+                </div>
+                <h3>Locate</h3>
+                <p>Precise map positioning establishes exactly where the incident occurred in Nepal.</p>
+            </article>
+
+            <!-- Step 03 -->
+            <article class="workflow-card">
+                <div class="step-card-top">
+                    <span class="step-badge">03</span>
+                    <span class="step-icon">✓</span>
+                </div>
+                <h3>Verify</h3>
+                <p>Submitted incident data is reviewed, structured, and organized by NDMS coordinators.</p>
+            </article>
+
+            <!-- Step 04 -->
+            <article class="workflow-card">
+                <div class="step-card-top">
+                    <span class="step-badge">04</span>
+                    <span class="step-icon">⚡</span>
+                </div>
+                <h3>Respond</h3>
+                <p>Verified information supports informed response coordination and public safety updates.</p>
+            </article>
+        </div>
+
+        <div class="workflow-disclaimer reveal">
+            <span class="disclaimer-icon">ℹ</span>
+            <span>NDMS supports reporting, review, status tracking, and public awareness; emergency response dispatch remains coordinated with designated authorities.</span>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =====================================================
+     5. DISASTER TYPES
+     Consistent, clean safety cards with high readability.
+     ===================================================== -->
+<section
+    class="disaster-section"
+    id="disasters"
+    aria-labelledby="disaster-title"
+>
+    <div class="home-container">
+        <div class="section-header-row reveal">
+            <div>
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span>Disaster Types</span>
+                </div>
+
+                <h2 id="disaster-title">
+                    Be prepared. Stay informed.
+                </h2>
+
+                <p class="section-subtitle">
+                    Understand essential safety information for common disaster categories across Nepal.
+                </p>
+            </div>
+
+            <a href="{% url 'create_disaster_report' %}" class="btn btn-outline">
+                Report an Incident
+                <span class="btn-arrow" aria-hidden="true">→</span>
+            </a>
+        </div>
+
+        <div class="disaster-grid reveal">
+            {% for dt in disaster_types %}
+            <article class="disaster-card">
+                <div class="disaster-card-img-wrap">
+                    <img
+                        src="{% static dt.name|disaster_image %}"
+                        alt="{{ dt.name }} safety awareness and response"
+                        loading="lazy"
+                    >
+                    <span class="disaster-tag">{{ dt.name }}</span>
+                </div>
+
+                <div class="disaster-card-content">
+                    <h3>{{ dt.name }}</h3>
+                    <p>
+                        {% if dt.description %}
+                            {{ dt.description|truncatewords:20 }}
+                        {% else %}
+                            Report {{ dt.name|lower }} incidents quickly so responders can act with accurate, verified information.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'create_disaster_report' %}?disaster_type={{ dt.id }}" class="card-action-link">
+                        Report {{ dt.name }}
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </article>
+            {% empty %}
+            <p class="disaster-empty-note">
+                Disaster categories will appear here once they are added by NDMS administrators.
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =====================================================
+     6. SMALL EMERGENCY CTA
+     Compact, slim professional notification strip.
+     ===================================================== -->
+<section
+    class="emergency-strip-section"
+    aria-labelledby="emergency-strip-title"
+>
+    <div class="home-container">
+        <div class="emergency-strip-card reveal">
+            <div class="emergency-strip-left">
+                <span class="emergency-strip-badge">
+                    <span class="pulse-dot"></span>
+                    <span>Emergency Reporting</span>
+                </span>
+
+                <h2 id="emergency-strip-title" class="emergency-strip-title">
+                    Need to report an emergency?
+                </h2>
+
+                <p class="emergency-strip-text">
+                    Quickly submit an incident and help the response team act faster.
+                </p>
+            </div>
+
+            <div class="emergency-strip-right">
+                <a
+                    href="{% url 'create_disaster_report' %}"
+                    class="btn btn-primary emergency-btn"
+                >
+                    Report Incident
+                    <span class="btn-arrow" aria-hidden="true">→</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =====================================================
+     7. GET IN TOUCH + FEEDBACK
+     Clean 2-column layout:
+     Left: Get in touch (informational contact details)
+     Right: Help us improve NDMS (real feedback form)
+     ===================================================== -->
+<section
+    class="contact-section"
+    id="contact"
+    aria-labelledby="contact-section-title"
+>
+    <div class="home-container">
+        <div class="contact-grid">
+
+            <!-- LEFT: Get in touch -->
+            <div class="contact-info-col reveal">
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span>Contact NDMS</span>
+                </div>
+
+                <h2 id="contact-section-title" class="contact-title">
+                    Get in touch
+                </h2>
+
+                <p class="contact-intro">
+                    Need assistance or have questions about NDMS? Our support channels are available to help citizens use the system effectively.
+                </p>
+
+                <div class="contact-details-list">
+                    <div class="contact-item">
+                        <div class="contact-item-icon" aria-hidden="true">⌂</div>
+                        <div class="contact-item-text">
+                            <span class="contact-label">Location / Office</span>
+                            <strong>Dhangadhi, Nepal</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon" aria-hidden="true">☎</div>
+                        <div class="contact-item-text">
+                            <span class="contact-label">Phone / Emergency Helpline</span>
+                            <strong>1149 / +977-1-4200000</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon" aria-hidden="true">✉</div>
+                        <div class="contact-item-text">
+                            <span class="contact-label">Official Email</span>
+                            <strong>info@ndms.com.np</strong>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-item-icon" aria-hidden="true">⏱</div>
+                        <div class="contact-item-text">
+                            <span class="contact-label">Availability</span>
+                            <strong>24/7 Disaster Incident Reporting &amp; Monitoring</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-quick-links">
+                    <span class="quick-links-title">Quick Portals:</span>
+                    <div class="quick-links-row">
+                        <a href="{% url 'help_support' %}" class="quick-link-pill">
+                            <span>↗</span> Help &amp; Support Center
+                        </a>
+
+                        {% if user.is_authenticated %}
+                        <a href="{% url 'my_reports' %}" class="quick-link-pill">
+                            <span>≡</span> Track My Reports
+                        </a>
+                        {% else %}
+                        <a href="{% url 'login' %}" class="quick-link-pill">
+                            <span>🔒</span> Login to Track
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: Feedback (real, backend-connected) -->
+            <div class="feedback-col reveal">
+                <div class="feedback-card">
+
+                    <div class="feedback-header">
+                        <div class="eyebrow">
+                            <span class="eyebrow-line"></span>
+                            <span>Citizen Feedback</span>
+                        </div>
+
+                        <h2 id="feedback-section-title">
+                            Help us improve NDMS
+                        </h2>
+
+                        <p class="feedback-lead">
+                            Your feedback helps us make disaster reporting and response faster and clearer for communities across Nepal.
+                        </p>
+                    </div>
+
+                    {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+                    <form
+                        method="POST"
+                        action="{% url 'home' %}"
+                        class="feedback-form"
+                        id="feedbackForm"
+                    >
+                        {% csrf_token %}
+
+                        <div class="rating-block">
+                            <span class="rating-label">How would you rate your experience?</span>
+
+                            <div class="rating-stars-row">
+                                <div
+                                    class="rating-input"
+                                    id="ratingInput"
+                                    role="radiogroup"
+                                    aria-label="Rate your experience"
+                                >
+                                    <button
+                                        type="button"
+                                        class="rating-star"
+                                        data-rating="1"
+                                        aria-label="1 star"
+                                    >
+                                        ★
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="rating-star"
+                                        data-rating="2"
+                                        aria-label="2 stars"
+                                    >
+                                        ★
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="rating-star"
+                                        data-rating="3"
+                                        aria-label="3 stars"
+                                    >
+                                        ★
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="rating-star"
+                                        data-rating="4"
+                                        aria-label="4 stars"
+                                    >
+                                        ★
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="rating-star"
+                                        data-rating="5"
+                                        aria-label="5 stars"
+                                    >
+                                        ★
+                                    </button>
+                                </div>
+
+                                <span
+                                    id="ratingStatus"
+                                    class="rating-status-text"
+                                >
+                                    Select a rating
+                                </span>
+
+                                <input
+                                    type="hidden"
+                                    name="rating"
+                                    id="ratingValue"
+                                    value=""
+                                >
+                            </div>
+                        </div>
+
+                        <div class="feedback-textarea-block">
+                            <label for="feedbackMessage" class="feedback-label">Your Feedback / Suggestions</label>
+                            <textarea
+                                id="feedbackMessage"
+                                name="message"
+                                class="form-control"
+                                rows="4"
+                                maxlength="500"
+                                placeholder="Tell us what worked well or what we can improve in NDMS..."
+                                required
+                            ></textarea>
+
+                            <div class="feedback-char-count-wrap">
+                                <span
+                                    id="feedbackCharacterCount"
+                                    class="feedback-count"
+                                >
+                                    0 / 500
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="feedback-submit-wrap">
+                            <button
+                                type="submit"
+                                class="btn btn-primary feedback-submit-btn"
+                            >
+                                Submit Feedback
+                                <span class="btn-arrow" aria-hidden="true">→</span>
+                            </button>
+                        </div>
+                    </form>
+
+                    {% elif user.is_authenticated %}
+                    <div class="feedback-gate-box">
+                        <div class="gate-icon">🛡️</div>
+                        <div class="gate-content">
+                            <strong>Feedback is managed from the Admin Dashboard</strong>
+                            <p>Administrator accounts can review and manage citizen feedback directly in the administration portal.</p>
+                            <a href="{% url 'admin_feedback' %}" class="btn btn-secondary">
+                                View Feedback Portal →
+                            </a>
+                        </div>
+                    </div>
+
+                    {% else %}
+                    <div class="feedback-gate-box">
+                        <div class="gate-icon">💬</div>
+                        <div class="gate-content">
+                            <strong>Login to leave feedback</strong>
+                            <p>Sign in with your citizen account to rate the NDMS platform and share your experience.</p>
+                            <div class="gate-buttons">
+                                <a href="{% url 'login' %}" class="btn btn-primary">
+                                    Login to NDMS
+                                </a>
+                                <a href="{% url 'register' %}" class="btn btn-secondary">
+                                    Create Account
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- =====================================================
+     9. CITIZEN REVIEWS
+     Compact, easy-to-scan dynamic review cards.
+     ===================================================== -->
+<section
+    class="reviews-section"
+    id="reviews"
+    aria-labelledby="reviews-title"
+>
+    <div class="home-container">
+        <div class="section-header-row reveal">
+            <div>
+                <div class="eyebrow">
+                    <span class="eyebrow-line"></span>
+                    <span>What Our Citizens Say</span>
+                </div>
+
+                <h2 id="reviews-title">
+                    Real people. Real impact.
+                </h2>
+            </div>
+
+            {% if reviews %}
+            <div class="carousel-nav-buttons" aria-label="Reviews navigation">
+                <button
+                    type="button"
+                    class="carousel-arrow-btn"
+                    id="reviewPrev"
+                    aria-label="Previous reviews"
+                >
+                    ←
+                </button>
+
+                <button
+                    type="button"
+                    class="carousel-arrow-btn"
+                    id="reviewNext"
+                    aria-label="Next reviews"
+                >
+                    →
+                </button>
+            </div>
+            {% endif %}
+        </div>
+
+        {% if reviews %}
+        <div class="reviews-carousel-wrapper reveal">
+            <div
+                class="reviews-viewport"
+                id="reviewsViewport"
+            >
+                <div
+                    class="reviews-track"
+                    id="reviewsTrack"
+                >
+                    {% for review in reviews %}
+                    <article class="review-card">
+                        <div class="review-card-top">
+                            <div class="review-avatar">
+                                {% if review.user.avatar %}
+                                    <img
+                                        src="{{ review.user.avatar.url }}"
+                                        alt=""
+                                    >
+                                {% elif review.user.full_name %}
+                                    {{ review.user.full_name|first|upper }}
+                                {% elif review.user.username %}
+                                    {{ review.user.username|first|upper }}
+                                {% else %}
+                                    U
+                                {% endif %}
+                            </div>
+
+                            <div class="review-meta">
+                                <strong class="review-author">
+                                    {% if review.user.full_name %}
+                                        {{ review.user.full_name }}
+                                    {% elif review.user.username %}
+                                        {{ review.user.username }}
+                                    {% else %}
+                                        NDMS Citizen
+                                    {% endif %}
+                                </strong>
+
+                                <div
+                                    class="review-stars"
+                                    aria-label="{{ review.rating }} out of 5 stars"
+                                >
+                                    {% for star in "12345" %}
+                                    <span
+                                        class="{% if forloop.counter <= review.rating %}filled-star{% else %}empty-star{% endif %}"
+                                    >
+                                        ★
+                                    </span>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="review-text">
+                            “{{ review.message|truncatewords:30 }}”
+                        </p>
+
+                        <div class="review-card-footer">
+                            <span class="review-date">
+                                {{ review.created_at|citizen_date:citizen_date_format }}
+                            </span>
+                        </div>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="empty-reviews-card reveal">
+            <span class="empty-icon">💬</span>
+            <p>No citizen reviews yet. Feedback submitted through NDMS will appear here.</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+</main>
+
+
+
+<!-- =====================================================
+     10. FOOTER (matches About page visual language)
+     ===================================================== -->
+<footer class="about-footer">
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <a
+                href="{% url 'home' %}"
+                class="footer-brand-title"
+            >
+                <strong>NDMS</strong>
+                <span>National Disaster Management System</span>
+            </a>
+
+            <p>
+                Building a safer and better-informed community through connected disaster reporting across Nepal.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <div>
+                <strong>Navigation</strong>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'home' %}#contact">Contact</a>
+            </div>
+
+            <div>
+                <strong>Services</strong>
+                {% if not user.is_staff and not user.is_superuser %}
+                <a href="{% url 'create_disaster_report' %}">Report Incident</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                    {% else %}
+                    <a href="{% url 'my_reports' %}">My Reports</a>
+                    {% endif %}
+                {% else %}
+                <a href="{% url 'login' %}">My Reports</a>
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Account</strong>
+                {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}">Login</a>
+                <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="footer-social">
+            <strong class="footer-social-title">Follow NDMS</strong>
+            <div class="footer-social-icons">
+                <a href="https://www.facebook.com/dip.esh.641646" class="footer-social-icon" aria-label="Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H16V5.6c-.26-.04-1.16-.1-2.2-.1-2.18 0-3.68 1.33-3.68 3.78V11H7.8v3.2h2.32V22h3.2v-7.8h2.3l.37-3.2h-2.67V9.6c0-.92.25-1.1 1.18-1.1Z" fill="currentColor"/></svg>
+                </a>
+                <a href="https://www.instagram.com/_212.m6_?stkn=MXg1ZHdma3IwMWxtYg==" class="footer-social-icon" aria-label="Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.1" cy="6.9" r="1" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="X">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="YouTube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M10.5 10.2v3.6l3.3-1.8-3.3-1.8Z" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="8" cy="8.3" r="1.15" fill="currentColor"/><path d="M8 11v6.2M12 11v6.2M12 13.6c0-1.4 1-2.3 2.2-2.3 1.3 0 2.1.9 2.1 2.4v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 National Disaster Management System</span>
+        <span>NDMS</span>
+    </div>
+</footer>
+
+
+<script
+    src="{% static 'reports/js/public-nav.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/home.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+</body>
+</html>

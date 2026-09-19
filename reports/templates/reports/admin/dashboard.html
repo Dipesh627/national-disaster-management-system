@@ -1,0 +1,476 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Dashboard | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}<span>Dashboard</span>{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard">
+
+    <div class="dashboard-body">
+
+    <!-- =====================================================
+         DASHBOARD INTRO
+         ===================================================== -->
+    <header class="dashboard-intro">
+        <div class="dashboard-intro-copy">
+            <p class="dashboard-eyebrow">NDMS OPERATIONS</p>
+            <h1>Good day, Admin</h1>
+            <p class="dashboard-description">
+                A focused overview of reports, incidents and response activity across the system.
+            </p>
+        </div>
+
+        <div class="dashboard-intro-meta" aria-label="Dashboard update time">
+            <span>System overview</span>
+            <strong>{{ dashboard_generated_at|date:"M d, Y · h:i A" }}</strong>
+        </div>
+    </header>
+
+    <!-- =====================================================
+         KPI CARDS
+         ===================================================== -->
+    <section class="dashboard-kpis" aria-label="Key dashboard metrics">
+
+        <article class="kpi-card">
+            <div class="kpi-icon kpi-icon-red" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M6 3h9l4 4v14H6z"></path>
+                    <path d="M14 3v5h5"></path>
+                    <path d="M9 13h6"></path>
+                    <path d="M9 17h4"></path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Disaster Reports</span>
+                <strong class="kpi-value">{{ total_reports }}</strong>
+                <span class="kpi-meta">{{ verified_reports }} verified</span>
+            </div>
+        </article>
+
+        <article class="kpi-card kpi-card-attention">
+            <div class="kpi-icon kpi-icon-orange" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <circle cx="12" cy="12" r="8"></circle>
+                    <path d="M12 8v5l3 2"></path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Pending Review</span>
+                <strong class="kpi-value">{{ pending_reports }}</strong>
+                <span class="kpi-meta">Awaiting verification</span>
+            </div>
+        </article>
+
+        <article class="kpi-card">
+            <div class="kpi-icon kpi-icon-red" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <path d="M12 3 4 8v8l8 5 8-5V8z"></path>
+                    <path d="m4 8 8 5 8-5"></path>
+                    <path d="M12 13v8"></path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Active Disasters</span>
+                <strong class="kpi-value">{{ active_disasters_count }}</strong>
+                <div class="kpi-severity" aria-label="Active disaster severity">
+                    <span><i class="severity-dot severity-high"></i>{{ high_active_count|default:0 }} high</span>
+                    <span><i class="severity-dot severity-critical"></i>{{ critical_active_count|default:0 }} critical</span>
+                </div>
+            </div>
+        </article>
+
+        <article class="kpi-card">
+            <div class="kpi-icon kpi-icon-green" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false">
+                    <circle cx="12" cy="8" r="3"></circle>
+                    <path d="M5 20c.7-3.2 3.1-5 7-5s6.3 1.8 7 5"></path>
+                </svg>
+            </div>
+            <div class="kpi-content">
+                <span class="kpi-label">Registered Citizens</span>
+                <strong class="kpi-value">{{ total_citizens }}</strong>
+                <span class="kpi-meta">Active NDMS accounts</span>
+            </div>
+        </article>
+
+    </section>
+
+    <!-- =====================================================
+         CURRENT SITUATION
+         ===================================================== -->
+    <section class="situation-strip" aria-label="Current situation">
+        <div class="situation-heading">
+            <span class="dashboard-eyebrow">CURRENT SITUATION</span>
+            <strong>Operational snapshot</strong>
+        </div>
+
+        <div class="situation-stat">
+            <span>Active incidents</span>
+            <strong>{{ active_disasters_count }}</strong>
+        </div>
+
+        <div class="situation-stat situation-alert">
+            <span>Critical</span>
+            <strong>{{ critical_active_count|default:0 }}</strong>
+        </div>
+
+        <div class="situation-stat">
+            <span>Awaiting review</span>
+            <strong>{{ pending_reports }}</strong>
+        </div>
+
+        <div class="situation-stat">
+            <span>Response updates</span>
+            <strong>{{ recent_response_updates|length }}</strong>
+        </div>
+    </section>
+
+    <!-- =====================================================
+         PRIMARY PANELS
+         ===================================================== -->
+    <section class="dashboard-grid dashboard-grid-primary">
+
+        <article class="dashboard-panel status-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Report Status</h2>
+                    <p>Current distribution of submitted reports.</p>
+                </div>
+                <a href="{% url 'admin_reports' %}" class="panel-link">View reports <span aria-hidden="true">›</span></a>
+            </div>
+
+            <div class="status-content">
+                <div
+                    class="status-ring"
+                    data-total="{{ total_reports }}"
+                    role="img"
+                    aria-label="{{ verified_reports }} of {{ total_reports }} reports verified"
+                >
+                    <div>
+                        <strong>{{ total_reports }}</strong>
+                        <span>Reports</span>
+                    </div>
+                </div>
+
+                <div class="status-list">
+                    <div class="status-row">
+                        <div class="status-row-top">
+                            <span><i class="status-dot status-pending"></i>Pending</span>
+                            <strong>{{ pending_reports }}</strong>
+                        </div>
+                        <div class="status-track" aria-hidden="true">
+                            <span class="status-bar status-bar-pending" data-count="{{ pending_reports }}"></span>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="status-row-top">
+                            <span><i class="status-dot status-review"></i>Under Review</span>
+                            <strong>{{ under_review_reports }}</strong>
+                        </div>
+                        <div class="status-track" aria-hidden="true">
+                            <span class="status-bar status-bar-review" data-count="{{ under_review_reports }}"></span>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="status-row-top">
+                            <span><i class="status-dot status-verified"></i>Verified</span>
+                            <strong>{{ verified_reports }}</strong>
+                        </div>
+                        <div class="status-track" aria-hidden="true">
+                            <span class="status-bar status-bar-verified" data-count="{{ verified_reports }}"></span>
+                        </div>
+                    </div>
+
+                    <div class="status-row">
+                        <div class="status-row-top">
+                            <span><i class="status-dot status-rejected"></i>Rejected</span>
+                            <strong>{{ rejected_reports }}</strong>
+                        </div>
+                        <div class="status-track" aria-hidden="true">
+                            <span class="status-bar status-bar-rejected" data-count="{{ rejected_reports }}"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article class="dashboard-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Active Disasters</h2>
+                    <p>Incidents currently requiring operational attention.</p>
+                </div>
+                <a href="{% url 'admin_disasters' %}" class="panel-link">View all <span aria-hidden="true">›</span></a>
+            </div>
+
+            {% if active_disasters %}
+                <div class="disaster-list">
+                    {% for disaster in active_disasters %}
+                        <a href="{% url 'admin_disasters' %}" class="disaster-row">
+                            <div class="disaster-main">
+                                <span class="disaster-severity severity-{{ disaster.severity|lower }}">
+                                    {{ disaster.get_severity_display }}
+                                </span>
+                                <strong>{{ disaster.title }}</strong>
+                                <span>{{ disaster.disaster_type.name }}</span>
+                            </div>
+                            <div class="disaster-date">
+                                {{ disaster.start_date|date:"M d, Y" }}
+                                <span aria-hidden="true">›</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <span class="empty-state-icon" aria-hidden="true">✓</span>
+                    <strong>No active disasters</strong>
+                    <span>The current system has no active incidents.</span>
+                </div>
+            {% endif %}
+        </article>
+
+    </section>
+
+    <!-- =====================================================
+         ACTIVITY PANELS
+         ===================================================== -->
+    <section class="dashboard-grid dashboard-grid-secondary">
+
+        <article class="dashboard-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Recent Activity</h2>
+                    <p>Latest events recorded across NDMS.</p>
+                </div>
+            </div>
+
+            {% if recent_activity %}
+                <div class="activity-list">
+                    {% for activity in recent_activity %}
+                        <div class="activity-row">
+                            <span class="activity-marker activity-{{ activity.kind }}" aria-hidden="true"></span>
+                            <div class="activity-body">
+                                <p>{{ activity.text }}</p>
+                                <time datetime="{{ activity.timestamp|date:'c' }}">
+                                    {{ activity.timestamp|date:"M d, Y · h:i A" }}
+                                </time>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <span class="empty-state-icon" aria-hidden="true">•</span>
+                    <strong>No recent activity</strong>
+                    <span>New system activity will appear here.</span>
+                </div>
+            {% endif %}
+        </article>
+
+        <article class="dashboard-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Response Updates</h2>
+                    <p>Latest updates from response agencies.</p>
+                </div>
+                <a href="{% url 'admin_response_updates' %}" class="panel-link">View all <span aria-hidden="true">›</span></a>
+            </div>
+
+            {% if recent_response_updates %}
+                <div class="response-list">
+                    {% for update in recent_response_updates %}
+                        <div class="response-row">
+                            <div class="response-body">
+                                <strong>{{ update.disaster.title }}</strong>
+                                <span>{{ update.agency.agency_name }}</span>
+                            </div>
+                            <div class="response-side">
+                                <span class="response-status response-{{ update.response_status|lower }}">
+                                    {{ update.get_response_status_display }}
+                                </span>
+                                <time datetime="{{ update.update_date|date:'c' }}">
+                                    {{ update.update_date|date:"M d" }}
+                                </time>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <span class="empty-state-icon" aria-hidden="true">•</span>
+                    <strong>No response updates</strong>
+                    <span>Agency updates will appear here.</span>
+                </div>
+            {% endif %}
+        </article>
+
+    </section>
+
+    <!-- =====================================================
+         NEEDS ATTENTION
+         ===================================================== -->
+    <section class="attention-panel dashboard-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Needs Attention</h2>
+                <p>Items that may require an admin action.</p>
+            </div>
+        </div>
+
+        <div class="attention-grid">
+            <a href="{% url 'admin_reports' %}" class="attention-item">
+                <span class="attention-icon attention-icon-orange" aria-hidden="true">!</span>
+                <div>
+                    <strong>{{ pending_reports }} reports awaiting review</strong>
+                    <span>Open report management</span>
+                </div>
+                <b aria-hidden="true">›</b>
+            </a>
+
+            <a href="{% url 'admin_disasters' %}" class="attention-item">
+                <span class="attention-icon attention-icon-red" aria-hidden="true">!</span>
+                <div>
+                    <strong>{{ critical_active_count|default:0 }} critical incidents active</strong>
+                    <span>Review active disasters</span>
+                </div>
+                <b aria-hidden="true">›</b>
+            </a>
+
+            <a href="{% url 'admin_response_updates' %}" class="attention-item">
+                <span class="attention-icon attention-icon-gray" aria-hidden="true">↗</span>
+                <div>
+                    <strong>{{ recent_response_updates|length }} recent response updates</strong>
+                    <span>Monitor agency activity</span>
+                </div>
+                <b aria-hidden="true">›</b>
+            </a>
+        </div>
+    </section>
+
+    <!-- =====================================================
+         RECENT REPORTS
+         ===================================================== -->
+    <section class="dashboard-panel dashboard-panel-table">
+        <div class="panel-header">
+            <div>
+                <h2>Recent Disaster Reports</h2>
+                <p>Latest reports submitted by citizens.</p>
+            </div>
+            <a href="{% url 'admin_reports' %}" class="panel-link">View all reports <span aria-hidden="true">›</span></a>
+        </div>
+
+        {% if recent_reports %}
+            <div class="table-wrap">
+                <table class="dashboard-table">
+                    <caption class="sr-only">Recent disaster reports</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col">Report</th>
+                            <th scope="col">Citizen</th>
+                            <th scope="col">Disaster Type</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"><span class="sr-only">Action</span></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for report in recent_reports %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'admin_report_detail' report.id %}" class="report-id">
+                                        #{{ report.id }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="citizen-cell">
+                                        <span class="citizen-avatar">
+                                            {% if report.user.avatar %}
+
+                                                <img
+                                                    src="{{ report.user.avatar.url }}"
+                                                    alt=""
+                                                    loading="lazy"
+                                                >
+
+                                            {% else %}
+
+                                                <span class="citizen-avatar-fallback" aria-hidden="true">
+                                                    {{ report.user.full_name|default:report.user.username|first|upper }}
+                                                </span>
+
+                                            {% endif %}
+                                        </span>
+                                        <span class="table-primary" title="{{ report.user.full_name|default:report.user.username }}">
+                                            {{ report.user.full_name|default:report.user.username }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td>{{ report.disaster_type.name }}</td>
+                                <td>
+                                    <time
+                                        datetime="{{ report.report_date|date:'c' }}"
+                                        title="{{ report.report_date|date:'M d, Y · h:i A' }}"
+                                    >
+                                        {{ report.report_date|date:"M d, Y" }}
+                                    </time>
+                                </td>
+                                <td>
+                                    <span class="table-status table-status-{{ report.status|lower }}">
+                                        {{ report.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="table-action-cell">
+                                    <a href="{% url 'admin_report_detail' report.id %}" class="table-action">
+                                        View <span aria-hidden="true">›</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state table-empty">
+                <span class="empty-state-icon" aria-hidden="true">•</span>
+                <strong>No disaster reports yet</strong>
+                <span>Submitted reports will appear here.</span>
+            </div>
+        {% endif %}
+    </section>
+
+    </div>
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+    <footer class="dashboard-admin-footer">
+
+        <div class="dashboard-admin-footer-brand">
+            <div class="dashboard-admin-footer-brand-text">
+                <strong>NDMS Administration</strong>
+                <span>National Disaster Management System</span>
+            </div>
+        </div>
+
+        <div class="dashboard-admin-footer-meta">
+            <span>© {{ dashboard_generated_at|date:"Y" }} National Disaster Management System. All rights reserved.</span>
+        </div>
+
+    </footer>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'reports/admin/admin-dashboard.js' %}"></script>
+{% endblock %}

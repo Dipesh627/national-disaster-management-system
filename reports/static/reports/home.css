@@ -1,0 +1,1831 @@
+/* =========================================================
+   NDMS PUBLIC HOME PAGE
+   Professional UI/UX Redesign — "Clean + Visual Impact"
+   Seamlessly cohesive with the About page design language
+   ========================================================= */
+
+
+/* =========================================================
+   DESIGN TOKENS
+   Home-specific additions only. --red / --navy / --text /
+   --muted / --border / --white / --background / --soft-gray /
+   --light-red / --shadow-xs / --shadow-sm / --shadow-md are
+   already declared on :root by about.css, which this page
+   always loads immediately before this file — redeclaring the
+   same values here was pure duplicate CSS with no effect, so
+   only the two tokens unique to Home are kept below.
+   ========================================================= */
+
+:root {
+    --navy-2: #101828;
+    --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+
+/* =========================================================
+   BASE
+   The universal box-sizing/margin/padding reset already comes
+   from about.css (also always loaded on this page), so it is
+   not repeated here — only the Home-specific scroll offset
+   override is needed.
+   ========================================================= */
+
+html {
+    scroll-padding-top: 88px;
+}
+
+body.public-home-page {
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+    background: var(--background);
+    color: var(--text);
+    font-size: calc(15.5px * var(--ndms-font-scale, 1));
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+.home-container {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+}
+
+.public-main {
+    overflow: hidden;
+}
+
+/* =========================================================
+   SCROLL REVEAL ANIMATIONS
+   ========================================================= */
+
+.reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity .52s var(--ease),
+        transform .52s var(--ease);
+}
+
+.reveal.reveal-visible {
+    opacity: 1;
+    transform: none;
+}
+
+
+/* =========================================================
+   DJANGO MESSAGES TOASTS
+   ========================================================= */
+
+.django-messages {
+    position: fixed;
+    top: 86px;
+    right: 24px;
+    z-index: 1200;
+    display: grid;
+    gap: 10px;
+    width: min(410px, calc(100% - 32px));
+}
+
+.django-message {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--c-green-500);
+    border-radius: 10px;
+    padding: 12px 16px;
+    box-shadow: var(--shadow-md);
+}
+
+.django-message-error {
+    border-left-color: var(--red);
+}
+
+.message-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--green-bg);
+    color: var(--c-green-800);
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    flex-shrink: 0;
+}
+
+.django-message-error .message-icon {
+    background: var(--light-red);
+    color: var(--red);
+}
+
+.message-text {
+    flex: 1;
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    color: var(--text);
+    font-weight: 550;
+}
+
+.message-close {
+    border: 0;
+    background: transparent;
+    font-size: calc(20px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px;
+}
+
+.message-close:hover {
+    color: var(--navy);
+}
+
+
+/* =========================================================
+   SHARED TYPOGRAPHY & HEADINGS
+   ========================================================= */
+
+.eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    color: var(--red);
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    letter-spacing: 1.15px;
+    text-transform: uppercase;
+}
+
+.eyebrow.centered {
+    justify-content: center;
+}
+
+.eyebrow-line {
+    display: inline-block;
+    width: 16px;
+    height: 2px;
+    background: var(--red);
+    border-radius: 2px;
+}
+
+.section-header {
+    margin-bottom: 32px;
+}
+
+.section-header.text-center {
+    text-align: center;
+}
+
+.section-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.section-subtitle {
+    margin-top: 10px;
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 620px;
+}
+
+.section-header.text-center .section-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================================
+   BUTTONS (Aligned with About-page button styling)
+   ========================================================= */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    text-decoration: none;
+    cursor: pointer;
+    white-space: nowrap;
+    transition:
+        transform 200ms ease,
+        background 200ms ease,
+        color 200ms ease,
+        border-color 200ms ease,
+        box-shadow 200ms ease;
+}
+
+.btn-arrow {
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    line-height: 1;
+    transition: transform 200ms ease;
+}
+
+.btn:hover .btn-arrow {
+    transform: translateX(3px);
+}
+
+.btn-primary {
+    background: var(--red);
+    color: var(--white);
+    border: 1px solid var(--red);
+    box-shadow: 0 4px 12px rgba(180, 35, 24, .14);
+}
+
+.btn-primary:hover {
+    background: var(--red-dark);
+    border-color: var(--red-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(180, 35, 24, .20);
+}
+
+.btn-secondary {
+    background: var(--white);
+    color: var(--navy);
+    border: 1px solid var(--border);
+}
+
+.btn-secondary:hover {
+    background: var(--light-red);
+    border-color: var(--c-red-230);
+    color: var(--red);
+    transform: translateY(-1px);
+}
+
+.btn-outline {
+    background: var(--white);
+    color: var(--navy);
+    border: 1px solid var(--border);
+}
+
+.btn-outline:hover {
+    background: var(--light-red);
+    border-color: var(--c-red-230);
+    color: var(--red);
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   1. HERO SECTION
+   Balanced, compact split layout. Eliminates heavy dark
+   fullscreen overlays, maintaining high visual hierarchy.
+   ========================================================= */
+
+.ndms-hero {
+    width: 100%;
+    padding: 52px 0 56px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+}
+
+.hero-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    align-items: center;
+    gap: 48px;
+}
+
+.hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px 5px 8px;
+    border-radius: 999px;
+    background: var(--light-red);
+    border: 1px solid var(--c-red-200);
+    color: var(--red);
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    letter-spacing: .9px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+}
+
+.hero-eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+}
+
+.hero-title {
+    font-size: calc(44px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.14;
+    letter-spacing: -1.1px;
+}
+
+.hero-title span {
+    color: var(--red);
+}
+
+.hero-description {
+    margin: 18px 0 28px;
+    max-width: 530px;
+    color: var(--text);
+    font-size: calc(15.5px * var(--ndms-font-scale, 1));
+    line-height: 1.65;
+}
+
+.hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+}
+
+.hero-status-strip {
+    display: inline-flex;
+    align-items: center;
+    gap: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    color: var(--muted);
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+}
+
+.status-icon {
+    color: var(--red);
+    font-weight: 800;
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c-green-500);
+    box-shadow: 0 0 0 2px rgba(18, 183, 106, .2);
+}
+
+/* Hero Media Card */
+.hero-media {
+    position: relative;
+}
+
+.hero-image-card {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    aspect-ratio: 16 / 9;
+    background: var(--navy);
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .6s var(--ease);
+}
+
+.hero-image-card:hover .hero-image {
+    transform: scale(1.03);
+}
+
+.hero-image-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(23, 32, 51, 0) 55%,
+        rgba(23, 32, 51, 0.62) 100%
+    );
+}
+
+.hero-image-badge {
+    position: absolute;
+    bottom: 14px;
+    left: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    background: rgba(23, 32, 51, 0.82);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9px;
+    color: var(--white);
+}
+
+.badge-icon {
+    color: var(--red);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    background: rgba(180, 35, 24, .25);
+    width: 25px;
+    height: 25px;
+    display: grid;
+    place-items: center;
+    border-radius: 6px;
+}
+
+.badge-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.badge-text strong {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+}
+
+.badge-text span {
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    color: rgba(255, 255, 255, .7);
+}
+
+
+/* =========================================================
+   2. ABOUT NDMS PREVIEW
+   ========================================================= */
+
+.about-preview-section {
+    padding: 64px 0;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+}
+
+.about-preview-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 48px;
+    align-items: center;
+}
+
+.about-preview-copy h2 {
+    font-size: calc(32px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+    margin-bottom: 14px;
+}
+
+.about-preview-lead {
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 24px;
+}
+
+.about-highlights-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+    border-top: 1px solid var(--border);
+}
+
+.about-highlight-item {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 16px 2px;
+    border-bottom: 1px solid var(--border);
+    transition: gap 200ms ease;
+}
+
+.about-highlight-item:hover {
+    gap: 22px;
+}
+
+.highlight-number {
+    width: auto;
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+    border-radius: 0;
+    background: none;
+    border: none;
+    color: var(--red);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    letter-spacing: .5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.highlight-body strong {
+    display: block;
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--navy);
+    line-height: 1.3;
+}
+
+.highlight-body p {
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    margin-top: 3px;
+    line-height: 1.55;
+}
+
+.map-card {
+    position: relative;
+    border-radius: 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    padding: 22px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.map-image {
+    max-height: 320px;
+    width: auto;
+    object-fit: contain;
+}
+
+.map-badge {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    background: var(--light-red);
+    border: 1px solid var(--c-red-150);
+    border-radius: 999px;
+    color: var(--navy);
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+}
+
+.map-badge-icon {
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    color: var(--red);
+}
+
+.map-badge strong {
+    font-weight: 750;
+    color: var(--red);
+    margin-right: 4px;
+}
+
+.map-badge span {
+    color: var(--text);
+}
+
+
+/* =========================================================
+   3. HOW NDMS WORKS (4-Step Cards)
+   ========================================================= */
+
+.workflow-section {
+    padding: 64px 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+}
+
+.workflow-section h2 {
+    font-size: calc(32px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+}
+
+.workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    position: relative;
+}
+
+.workflow-card {
+    position: relative;
+    background: none;
+    border: none;
+    border-top: 2px solid var(--border);
+    border-radius: 0;
+    padding: 20px 16px 0 0;
+    box-shadow: none;
+    transition: border-color 220ms ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.workflow-card:hover {
+    border-top-color: var(--red);
+}
+
+/* Connecting arrow between steps on desktop — a lightweight
+   process indicator rather than another card element. */
+.workflow-card:not(:last-child)::after {
+    content: "→";
+    position: absolute;
+    top: -13px;
+    right: -12px;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    background: var(--white);
+}
+
+.step-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.step-badge {
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--red);
+    background: none;
+    border: none;
+    padding: 0;
+    letter-spacing: .5px;
+}
+
+.step-icon {
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+}
+
+.workflow-card h3 {
+    font-size: calc(16px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+
+.workflow-card p {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.workflow-disclaimer {
+    margin-top: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    text-align: center;
+    padding: 10px 18px;
+    background: var(--background);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    max-width: 820px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.disclaimer-icon {
+    color: var(--red);
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   4. DISASTER TYPES
+   ========================================================= */
+
+.disaster-section {
+    padding: 68px 0;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+}
+
+.disaster-section h2 {
+    font-size: calc(32px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+}
+
+.disaster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+}
+
+.disaster-empty-note {
+    grid-column: 1 / -1;
+    padding: 28px;
+    text-align: center;
+    color: var(--muted);
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.disaster-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    transition:
+        transform 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease;
+}
+
+.disaster-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--c-border-5);
+    box-shadow: var(--shadow-xs);
+}
+
+.disaster-card-img-wrap {
+    position: relative;
+    height: 128px;
+    overflow: hidden;
+    background: var(--navy);
+}
+
+.disaster-card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+}
+
+.disaster-card:hover .disaster-card-img-wrap img {
+    transform: scale(1.04);
+}
+
+.disaster-tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--white);
+    background: rgba(23, 32, 51, 0.85);
+    backdrop-filter: blur(4px);
+    padding: 3px 8px;
+    border-radius: 4px;
+}
+
+.disaster-card-content {
+    padding: 16px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.disaster-card-content h3 {
+    font-size: calc(15.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--navy);
+    margin-bottom: 5px;
+}
+
+.disaster-card-content p {
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    line-height: 1.55;
+    margin-bottom: 14px;
+    flex: 1;
+}
+
+.card-action-link {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--red);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 200ms ease;
+}
+
+.card-action-link:hover {
+    color: var(--red-dark);
+}
+
+.card-action-link span {
+    transition: transform 200ms ease;
+}
+
+.card-action-link:hover span {
+    transform: translateX(3px);
+}
+
+
+/* =========================================================
+   5. SMALL EMERGENCY CTA
+   Slim, compact alert-style strip card.
+   ========================================================= */
+
+.emergency-strip-section {
+    padding: 30px 0;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+}
+
+.emergency-strip-card {
+    background: var(--light-red);
+    border: 1px solid var(--c-red-200);
+    border-radius: 12px;
+    padding: 18px 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.emergency-strip-left {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.emergency-strip-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--red);
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    letter-spacing: .8px;
+    text-transform: uppercase;
+}
+
+.pulse-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red);
+    animation: ctaPulse 2s infinite ease-in-out;
+}
+
+@keyframes ctaPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(180, 35, 24, .45);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(180, 35, 24, 0);
+    }
+}
+
+.emergency-strip-title {
+    font-size: calc(18px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.25;
+}
+
+.emergency-strip-text {
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    color: var(--text);
+}
+
+.emergency-btn {
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   6. CONTACT SECTION (2-Column Layout)
+   ========================================================= */
+
+.contact-section {
+    padding: 64px 0;
+    background: var(--background);
+    border-bottom: 1px solid var(--border);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: 44px;
+    align-items: start;
+}
+
+.contact-title {
+    font-size: calc(32px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+    margin-bottom: 12px;
+}
+
+.contact-intro {
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    line-height: 1.65;
+    margin-bottom: 24px;
+}
+
+.contact-details-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 28px;
+    border-top: 1px solid var(--border);
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 13px 2px;
+    border-bottom: 1px solid var(--border);
+}
+
+.contact-item-icon {
+    font-size: calc(16px * var(--ndms-font-scale, 1));
+    color: var(--red);
+    line-height: 1.3;
+    flex-shrink: 0;
+}
+
+.contact-item-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+}
+
+.contact-label {
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.contact-item-text strong {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.contact-quick-links {
+    padding: 0;
+}
+
+.quick-links-title {
+    display: block;
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    margin-bottom: 8px;
+}
+
+.quick-links-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.quick-link-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    color: var(--navy);
+    transition: all 180ms ease;
+}
+
+.quick-link-pill:hover {
+    background: var(--light-red);
+    border-color: var(--c-red-230);
+    color: var(--red);
+}
+
+/* Shared control style — used by the real feedback textarea
+   below (report-incident-style inputs live in their own
+   stylesheet; this is only the Home page's copy). */
+.form-control {
+    width: 100%;
+    padding: 10px 14px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    color: var(--text);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 0 3px rgba(180, 35, 24, .12);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 96px;
+}
+
+
+/* =========================================================
+   7. FEEDBACK COLUMN
+   Compact, real feedback card — right-hand column of the
+   "Get in touch" two-column section above.
+   ========================================================= */
+
+.feedback-col {
+    display: flex;
+}
+
+.feedback-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px 30px;
+    box-shadow: none;
+}
+
+.feedback-header {
+    margin-bottom: 20px;
+}
+
+.feedback-header h2 {
+    font-size: calc(24px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+    margin: 10px 0 8px;
+}
+
+.feedback-lead {
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    line-height: 1.6;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.rating-block {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px 18px;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.rating-label {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.rating-stars-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.rating-input {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.rating-star {
+    border: none;
+    background: none;
+    padding: 0;
+    font-size: calc(28px * var(--ndms-font-scale, 1));
+    line-height: 1;
+    color: var(--c-border-5);
+    cursor: pointer;
+    transition: color 160ms ease, transform 160ms ease;
+}
+
+.rating-star:hover,
+.rating-star.selected {
+    color: var(--c-orange-500);
+}
+
+.rating-star:hover {
+    transform: scale(1.15);
+}
+
+.rating-status-text {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    color: var(--muted);
+}
+
+.feedback-textarea-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.feedback-label {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.feedback-char-count-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 4px;
+}
+
+.feedback-count {
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+}
+
+.feedback-submit-wrap {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Feedback Gate Box (Admin or Anonymous) */
+.feedback-gate-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+}
+
+.gate-icon {
+    font-size: calc(26px * var(--ndms-font-scale, 1));
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.gate-content strong {
+    display: block;
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--navy);
+    margin-bottom: 4px;
+}
+
+.gate-content p {
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.gate-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   8. CITIZEN REVIEWS CAROUSEL
+   ========================================================= */
+
+.reviews-section {
+    padding: 60px 0;
+    background: var(--background);
+}
+
+.reviews-section h2 {
+    font-size: calc(32px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--navy);
+    line-height: 1.2;
+    letter-spacing: -0.4px;
+}
+
+.carousel-nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.carousel-arrow-btn {
+    width: 38px;
+    height: 38px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--white);
+    border: 1px solid var(--border);
+    color: var(--navy);
+    font-size: calc(16px * var(--ndms-font-scale, 1));
+    cursor: pointer;
+    transition: all 180ms ease;
+}
+
+.carousel-arrow-btn:hover:not(:disabled) {
+    background: var(--light-red);
+    border-color: var(--c-red-230);
+    color: var(--red);
+    transform: scale(1.05);
+}
+
+.carousel-arrow-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.reviews-carousel-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.reviews-viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.reviews-track {
+    display: flex;
+    gap: 20px;
+    transition: transform .42s var(--ease);
+}
+
+.review-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: none;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    transition:
+        transform 200ms ease,
+        box-shadow 200ms ease;
+}
+
+.review-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xs);
+}
+
+.review-card-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.review-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--red);
+    color: var(--white);
+    display: grid;
+    place-items: center;
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.review-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.review-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.review-author {
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--navy);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.review-stars {
+    display: flex;
+    gap: 2px;
+}
+
+.filled-star {
+    color: var(--c-orange-500);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+}
+
+.empty-star {
+    color: var(--c-border-2);
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+}
+
+.review-text {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 14px;
+    flex: 1;
+    font-style: italic;
+}
+
+.review-card-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.review-date {
+    font-size: calc(11.5px * var(--ndms-font-scale, 1));
+    color: var(--muted);
+}
+
+.empty-reviews-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 20px;
+    text-align: center;
+    color: var(--muted);
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.empty-icon {
+    font-size: calc(28px * var(--ndms-font-scale, 1));
+}
+
+
+/* =========================================================
+   9. FOOTER (Cohesive with About Page Visual Language)
+   Full responsive styling for brand, links, social icons,
+   SVGs, and bottom copyright strip.
+   ========================================================= */
+
+.about-footer {
+    width: 100%;
+    background: var(--navy);
+    color: var(--white);
+    border-top: 2px solid var(--navy-2);
+    margin-top: 0;
+}
+
+.footer-inner {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 56px 0 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
+}
+
+.footer-brand {
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-brand-title {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    line-height: 1.2;
+}
+
+.footer-brand-title strong {
+    font-size: calc(22px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+    color: var(--white);
+    letter-spacing: .5px;
+}
+
+.footer-brand-title span {
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    color: var(--c-border-8);
+    margin-top: 4px;
+    letter-spacing: .3px;
+}
+
+.footer-brand p {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    color: var(--c-muted-5);
+    line-height: 1.7;
+}
+
+.footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(110px, 1fr));
+    gap: 40px;
+}
+
+.footer-links > div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.footer-links strong {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--white);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.footer-links a {
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    color: var(--c-muted-5);
+    text-decoration: none;
+    display: inline-block;
+    width: fit-content;
+    position: relative;
+}
+
+.footer-links a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 100%;
+    height: 1px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 250ms ease;
+}
+
+.footer-links a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Footer Social Icons */
+.footer-social {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 220px;
+}
+
+.footer-social-title {
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.footer-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.footer-social-icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: var(--c-border-8);
+    transition: all 200ms ease;
+}
+
+.footer-social-icon:hover {
+    background: var(--red);
+    border-color: var(--red);
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(180, 35, 24, .3);
+}
+
+.footer-social-icon svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+/* Footer Bottom */
+.footer-bottom {
+    width: min(1180px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    color: var(--c-muted-4);
+}
+
+
+/* =========================================================
+   RESPONSIVE BREAKPOINTS
+   ========================================================= */
+
+@media (max-width: 1024px) {
+
+    .hero-title {
+        font-size: calc(38px * var(--ndms-font-scale, 1));
+    }
+
+    .about-preview-copy h2,
+    .workflow-section h2,
+    .disaster-section h2,
+    .contact-title,
+    .reviews-section h2 {
+        font-size: calc(28px * var(--ndms-font-scale, 1));
+    }
+
+    .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .hero-media {
+        max-width: 600px;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .about-preview-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .workflow-grid {
+        grid-template-columns: repeat(2, 1fr);
+        row-gap: 32px;
+    }
+
+    .workflow-card:not(:last-child)::after {
+        content: none;
+    }
+
+    .disaster-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+    }
+
+    .footer-inner {
+        flex-wrap: wrap;
+        gap: 36px;
+    }
+
+    .footer-brand {
+        max-width: 100%;
+        flex-basis: 100%;
+    }
+}
+
+@media (max-width: 850px) {
+
+    .ndms-hero {
+        padding: 44px 0 48px;
+    }
+
+    .about-preview-section,
+    .workflow-section,
+    .disaster-section,
+    .contact-section,
+    .reviews-section {
+        padding: 48px 0;
+    }
+
+    .emergency-strip-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .emergency-btn {
+        width: 100%;
+    }
+
+    .feedback-card {
+        padding: 28px 20px;
+    }
+
+    .section-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .carousel-nav-buttons {
+        align-self: flex-end;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 28px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .home-container {
+        width: min(100% - 32px, 1180px);
+    }
+
+    .hero-title {
+        font-size: calc(32px * var(--ndms-font-scale, 1));
+    }
+
+    .about-preview-copy h2,
+    .workflow-section h2,
+    .disaster-section h2,
+    .contact-title,
+    .reviews-section h2 {
+        font-size: calc(25px * var(--ndms-font-scale, 1));
+    }
+
+    .ndms-hero {
+        padding: 40px 0 40px;
+    }
+
+    .about-preview-section,
+    .workflow-section,
+    .disaster-section,
+    .contact-section,
+    .reviews-section {
+        padding: 40px 0;
+    }
+
+    .workflow-grid {
+        grid-template-columns: 1fr;
+        row-gap: 28px;
+    }
+
+    .workflow-card {
+        padding-right: 0;
+    }
+
+    .workflow-card:not(:last-child)::before {
+        content: "↓";
+        position: absolute;
+        bottom: -22px;
+        left: 0;
+        font-size: calc(13px * var(--ndms-font-scale, 1));
+        color: var(--muted);
+    }
+
+    .disaster-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-btn {
+        width: 100%;
+    }
+
+    .hero-status-strip {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        width: 100%;
+    }
+
+    .feedback-card {
+        padding: 22px 18px;
+    }
+
+    .feedback-submit-wrap {
+        justify-content: stretch;
+    }
+
+    .feedback-submit-btn {
+        width: 100%;
+    }
+
+    .rating-stars-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .footer-inner {
+        padding: 40px 0 30px;
+    }
+
+    .footer-links {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .reveal,
+    .btn,
+    .btn-arrow,
+    .workflow-card,
+    .disaster-card,
+    .review-card,
+    .pulse-dot,
+    .footer-links a,
+    .footer-social-icon {
+        transition: none !important;
+        transform: none !important;
+        animation: none !important;
+    }
+}

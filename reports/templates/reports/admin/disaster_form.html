@@ -1,0 +1,595 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+    {% if is_edit %}Edit Disaster{% else %}Add Disaster{% endif %} | NDMS Administration
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-disaster-reports.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-disasters.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<a href="{% url 'admin_disasters' %}">Disasters</a>
+<span class="ds-breadcrumb-divider">/</span>
+<span>{% if is_edit %}Edit Disaster{% else %}Add Disaster{% endif %}</span>
+{% endblock %}
+
+{% block page_title %}
+{% if is_edit %}Edit Disaster{% else %}Add Disaster{% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ndms-dashboard ds-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ds-page-header ds-form-header">
+
+        <div class="ds-page-header-copy">
+
+            <span class="ds-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>{% if is_edit %}Edit Disaster{% else %}Add Disaster{% endif %}</h1>
+
+            <p>
+                {% if is_edit %}
+                    Update the details for "{{ disaster.title }}".
+                {% elif source_report %}
+                    Review and confirm the disaster details pulled from verified Report #{{ source_report.id }}.
+                {% else %}
+                    Record a new disaster event in NDMS.
+                {% endif %}
+            </p>
+
+        </div>
+
+        <div class="ds-form-header-actions">
+
+            {% if is_edit %}
+                <a href="{% url 'admin_disaster_detail' disaster.id %}" class="ds-secondary-button">
+                    <span>View Situation</span>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'admin_disasters' %}" class="ds-secondary-button">
+                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"></path>
+                    <path d="m12 19-7-7 7-7"></path>
+                </svg>
+                <span>Back</span>
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         FORM
+         ===================================================== -->
+    <form
+        method="post"
+        action="{% if source_report %}?from_report={{ source_report.id }}{% endif %}"
+        enctype="multipart/form-data"
+        id="disasterForm"
+        novalidate>
+        {% csrf_token %}
+
+
+        {% if source_report and not is_edit %}
+
+            <!-- =================================================
+                 SOURCE REPORT — lightweight, informational only.
+                 The report stays the prefill source; nothing here
+                 is editable — all editable fields live in the form
+                 below.
+                 ================================================= -->
+            <div class="ds-source-report-banner">
+
+                <div class="ds-source-report-banner-heading">
+                    Creating Disaster from Verified Report #{{ source_report.id }}
+                </div>
+
+                <div class="ds-source-report-banner-meta">
+
+                    <span>
+                        <strong>Citizen:</strong>
+                        {{ source_report.user.full_name|default:source_report.user.username }}
+                    </span>
+
+                    <span>
+                        <strong>Report Type:</strong>
+                        {{ source_report.disaster_type.name }}
+                    </span>
+
+                    <span>
+                        <strong>Reported At:</strong>
+                        {{ source_report.report_date|date:"d M Y, h:i A" }}
+                    </span>
+
+                </div>
+
+            </div>
+
+        {% elif source_report and is_edit %}
+
+            <!-- =================================================
+                 SOURCE REPORT — read-only traceability note on an
+                 already-created Disaster.
+                 ================================================= -->
+            <div class="ds-source-report-banner ds-source-report-banner-compact">
+
+                <div class="ds-source-report-banner-heading">
+                    Created from Report
+                    <a href="{% url 'admin_report_detail' source_report.id %}">#{{ source_report.id }}</a>
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <div class="ds-form-grid">
+
+
+            <!-- =================================================
+                 LEFT — DISASTER INFORMATION
+                 ================================================= -->
+            <section class="ds-form-shell">
+
+                <div class="ds-form-section">
+
+                    <div class="ds-form-section-heading">
+                        <span class="ds-section-kicker">DETAILS</span>
+                        <h2>Disaster Information</h2>
+                    </div>
+
+
+                    <div class="ds-field">
+                        <label for="{{ form.disaster_type.id_for_label }}" class="ds-field-label">
+                            Disaster Type
+                        </label>
+                        {{ form.disaster_type }}
+                        {% if form.disaster_type.errors %}
+                            <div class="ds-field-error" role="alert">
+                                {% for error in form.disaster_type.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="ds-field">
+                        <label for="{{ form.title.id_for_label }}" class="ds-field-label">
+                            Disaster Title
+                        </label>
+                        {{ form.title }}
+                        {% if form.title.errors %}
+                            <div class="ds-field-error" role="alert">
+                                {% for error in form.title.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+
+                    <div class="ds-field-row">
+
+                        <div class="ds-field">
+                            <label for="{{ form.severity.id_for_label }}" class="ds-field-label">
+                                Severity
+                            </label>
+                            {{ form.severity }}
+                            {% if form.severity.errors %}
+                                <div class="ds-field-error" role="alert">
+                                    {% for error in form.severity.errors %}<span>{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="ds-field">
+                            <label for="{{ form.status.id_for_label }}" class="ds-field-label">
+                                Status
+                            </label>
+                            {{ form.status }}
+                            {% if is_edit %}
+                                <span class="ds-field-hint">
+                                    Status changes go through the disaster's
+                                    lifecycle. <a href="{% url 'admin_disaster_detail' disaster.id %}">Manage status from the Disaster Detail page.</a>
+                                </span>
+                            {% endif %}
+                            {% if form.status.errors %}
+                                <div class="ds-field-error" role="alert">
+                                    {% for error in form.status.errors %}<span>{{ error }}</span>{% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+
+
+                    <div class="ds-field">
+
+                        <label for="{{ form.start_date.id_for_label }}" class="ds-field-label">
+                            Start Date &amp; Time
+                        </label>
+
+                        {{ form.start_date }}
+
+                        {% if is_edit %}
+                            <span class="ds-field-hint">Shown in Nepal time (Asia/Kathmandu).</span>
+                        {% elif source_report %}
+                            <span class="ds-field-hint">Prefilled from Report #{{ source_report.id }}'s incident start time — the citizen's own report submission time was different and is never used here. Edit if needed.</span>
+                        {% else %}
+                            <span class="ds-field-hint">Automatically set to the current Nepal date and time when saved.</span>
+                        {% endif %}
+
+                        {% if form.start_date.errors %}
+                            <div class="ds-field-error" role="alert">
+                                {% for error in form.start_date.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="ds-field">
+                        <label for="{{ form.description.id_for_label }}" class="ds-field-label">
+                            Description
+                        </label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <div class="ds-field-error" role="alert">
+                                {% for error in form.description.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+                {% if source_report_photos %}
+
+                    <!-- =========================================
+                         EVIDENCE PHOTOS FROM REPORT
+                         Report evidence never becomes public
+                         automatically — only photos checked here
+                         become official Disaster media.
+                         ========================================= -->
+                    <div class="ds-form-section ds-form-section-bordered">
+
+                        <div class="ds-form-section-heading">
+                            <span class="ds-section-kicker">MEDIA</span>
+                            <h2>Evidence Photos from Report #{{ source_report.id }}</h2>
+                        </div>
+
+                        <p class="ds-form-section-hint">
+                            Select which photos should become official, public Disaster
+                            photos. Unselected photos remain internal report evidence only.
+                        </p>
+
+                        <div class="ds-photo-select-grid">
+
+                            {% for photo in source_report_photos %}
+
+                                <label class="ds-photo-select-item">
+
+                                    <input
+                                        type="checkbox"
+                                        name="selected_photos"
+                                        value="{{ photo.id }}"
+                                        class="ds-photo-select-checkbox"
+                                        {% if photo.id in selected_photo_ids %}checked{% endif %}
+                                        aria-label="Include evidence photo {{ forloop.counter }} as official disaster media"
+                                    >
+
+                                    <span class="ds-photo-select-thumb">
+                                        <img
+                                            src="{{ photo.image.url }}"
+                                            alt="Evidence photo {{ forloop.counter }} from Report #{{ source_report.id }}"
+                                            loading="lazy"
+                                        >
+                                    </span>
+
+                                    <span class="ds-photo-select-check" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </span>
+
+                                </label>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+                {% if not is_edit and not source_report %}
+
+                    <!-- =====================================
+                         OFFICIAL DISASTER PHOTOS
+                         Manual "Add Disaster" only -- photos
+                         explicitly uploaded here are saved
+                         directly as official DisasterPhoto
+                         records when the disaster is created.
+                         Completely separate from the Report ->
+                         Disaster evidence-photo SELECTION grid
+                         above; this section never appears when
+                         editing an existing disaster or when
+                         creating one from a verified report.
+                         ===================================== -->
+                    <div class="ds-form-section ds-form-section-bordered">
+
+                        <div class="ds-form-section-heading">
+                            <span class="ds-section-kicker">MEDIA</span>
+                            <h2>Official Disaster Photos</h2>
+                        </div>
+
+                        <p class="ds-form-section-hint">
+                            Upload official photos for this disaster. They will
+                            be saved as public Disaster media once the disaster
+                            is created.
+                        </p>
+
+                        <div class="ds-photo-upload-dropzone">
+
+                            <label
+                                for="{{ form.official_photos.id_for_label }}"
+                                class="ds-photo-upload-button"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 16V4"></path>
+                                    <path d="m7 9 5-5 5 5"></path>
+                                    <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"></path>
+                                </svg>
+                                <span>Choose Photos</span>
+                            </label>
+
+                            {{ form.official_photos }}
+
+                            <span class="ds-photo-upload-hint">
+                                JPG, PNG or WEBP -- up to 8MB each,
+                                10 photos max.
+                            </span>
+
+                        </div>
+
+                        {% if form.official_photos.errors %}
+                            <div class="ds-field-error" role="alert">
+                                {% for error in form.official_photos.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <div
+                            class="ds-photo-upload-preview-grid"
+                            id="dsPhotoUploadPreviewGrid"
+                            aria-live="polite"
+                        ></div>
+
+                        <span
+                            class="ds-field-error"
+                            id="dsPhotoUploadError"
+                            role="alert"
+                            hidden
+                        ></span>
+
+                    </div>
+
+                {% endif %}
+
+            </section>
+
+
+            <!-- =================================================
+                 RIGHT — DISASTER LOCATION
+                 ================================================= -->
+            <section class="ds-form-shell">
+
+                <div class="ds-form-section">
+
+                    <div class="ds-form-section-heading">
+                        <span class="ds-section-kicker">LOCATION</span>
+                        <h2>Disaster Location</h2>
+                    </div>
+
+                    <p class="ds-form-section-hint">
+                        Click the map, drag the marker, or search to
+                        set the location.
+                    </p>
+
+
+                    <span
+                        class="ds-map-status"
+                        id="dsMapStatusMessage"
+                        role="status"
+                        aria-live="polite"
+                    ></span>
+
+
+                    <div class="ds-map-container">
+
+                        <div
+                            id="disasterLocationMap"
+                            class="ds-map"
+                            aria-label="Disaster location map"
+                        ></div>
+
+                        <div class="ds-map-search-wrap">
+                            <div class="ds-map-search-box">
+                                <svg class="ds-map-search-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                                    <circle cx="11" cy="11" r="6.5"></circle>
+                                    <path d="m16 16 4.5 4.5"></path>
+                                </svg>
+                                <input
+                                    type="text"
+                                    id="dsMapSearchInput"
+                                    class="ds-map-search-input"
+                                    placeholder="Search Google Maps"
+                                    autocomplete="off"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="ds-map-type-toggle" id="dsMapTypeToggle" role="group" aria-label="Map view">
+                            <button type="button" class="ds-map-type-btn is-active" data-map-type="roadmap">
+                                Map
+                            </button>
+                            <button type="button" class="ds-map-type-btn" data-map-type="hybrid">
+                                Satellite
+                            </button>
+                        </div>
+
+                    </div>
+
+
+                    {% if form.latitude.errors %}
+                        <div class="ds-field-error" role="alert">
+                            {% for error in form.latitude.errors %}<span>{{ error }}</span>{% endfor %}
+                        </div>
+                    {% elif form.longitude.errors %}
+                        <div class="ds-field-error" role="alert">
+                            {% for error in form.longitude.errors %}<span>{{ error }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+
+
+                    <div class="ds-field-row">
+
+                        <div class="ds-field">
+                            <label for="visibleLatitude" class="ds-field-label">Latitude</label>
+                            <input
+                                type="text"
+                                id="visibleLatitude"
+                                class="ds-form-control"
+                                placeholder="Automatically filled"
+                                value="{% if form.latitude.value %}{{ form.latitude.value }}{% endif %}"
+                                readonly
+                            >
+                        </div>
+
+                        <div class="ds-field">
+                            <label for="visibleLongitude" class="ds-field-label">Longitude</label>
+                            <input
+                                type="text"
+                                id="visibleLongitude"
+                                class="ds-form-control"
+                                placeholder="Automatically filled"
+                                value="{% if form.longitude.value %}{{ form.longitude.value }}{% endif %}"
+                                readonly
+                            >
+                        </div>
+
+                    </div>
+
+
+                    <div class="ds-field">
+                        <label for="{{ form.address.id_for_label }}" class="ds-field-label">Address</label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            <div class="ds-field-error" role="alert">
+                                {% for error in form.address.errors %}<span>{{ error }}</span>{% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    {{ form.latitude }}
+                    {{ form.longitude }}
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        {% if form.non_field_errors %}
+            <div class="ds-form-error" role="alert">
+                {% for error in form.non_field_errors %}<span>{{ error }}</span>{% endfor %}
+            </div>
+        {% endif %}
+
+
+        <div class="ds-form-actions">
+
+            <a href="{% url 'admin_disasters' %}" class="ds-form-cancel">
+                Cancel
+            </a>
+
+            <button type="submit" class="ds-primary-button ds-form-submit">
+                {% if is_edit %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 4h11l3 3v13H5z"></path>
+                        <path d="M8 4v6h8V4"></path>
+                        <path d="M8 20v-6h8v6"></path>
+                    </svg>
+                    <span>Save Changes</span>
+                {% else %}
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+                        <path d="M12 5v14"></path>
+                        <path d="M5 12h14"></path>
+                    </svg>
+                    <span>Create Disaster</span>
+                {% endif %}
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+{% if not is_edit and not source_report %}
+<script>
+    // Add Disaster (manual, no source report) only — visually show
+    // the current Nepal date/time in the (readonly, non-submitted)
+    // start date field. The server always stamps the real current
+    // time on save regardless of this display value (see
+    // admin_disaster_create).
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const startDateField = document.getElementById("{{ form.start_date.id_for_label }}");
+
+        if (!startDateField) {
+            return;
+        }
+
+        const now = new Date();
+        const pad = function (n) { return String(n).padStart(2, "0"); };
+
+        startDateField.value =
+            now.getFullYear() + "-" +
+            pad(now.getMonth() + 1) + "-" +
+            pad(now.getDate()) + "T" +
+            pad(now.getHours()) + ":" +
+            pad(now.getMinutes());
+
+    });
+</script>
+{% endif %}
+
+<script src="{% static 'reports/admin/admin-disaster-map.js' %}" defer></script>
+
+{% if not is_edit and not source_report %}
+<script src="{% static 'reports/admin/admin-disaster-photo-upload.js' %}" defer></script>
+{% endif %}
+
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initDisasterLocationMap&loading=async"
+    defer
+    onerror="window.ndmsDisasterMapsScriptError && window.ndmsDisasterMapsScriptError();"
+></script>
+
+{% endblock %}

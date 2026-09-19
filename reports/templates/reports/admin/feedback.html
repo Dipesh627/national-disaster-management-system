@@ -1,0 +1,336 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Feedback | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-feedback.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Feedback</span>
+{% endblock %}
+
+{% block page_title %}
+Feedback
+{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard feedback-page">
+
+    <header class="feedback-header">
+        <div class="fb-page-header-copy">
+            <span class="fb-kicker">FEEDBACK MANAGEMENT</span>
+            <h1>Feedback</h1>
+            <p>Review citizen feedback and service experience</p>
+        </div>
+    </header>
+
+    <section class="feedback-toolbar" aria-label="Feedback filters">
+        <form method="get" class="fb-filter-form">
+
+            <label class="fb-search-field">
+                <span class="fb-visually-hidden">
+                    Search feedback
+                </span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                </svg>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search feedback..."
+                    autocomplete="off"
+                >
+            </label>
+
+            <label class="fb-select-field">
+                <span class="fb-visually-hidden">
+                    Filter by rating
+                </span>
+
+                <select name="rating" class="fb-select">
+                    <option value="ALL" {% if rating_filter == 'ALL' %}selected{% endif %}>All</option>
+                    <option value="5" {% if rating_filter == '5' %}selected{% endif %}>5 Stars</option>
+                    <option value="4" {% if rating_filter == '4' %}selected{% endif %}>4 Stars</option>
+                    <option value="3" {% if rating_filter == '3' %}selected{% endif %}>3 Stars</option>
+                    <option value="2" {% if rating_filter == '2' %}selected{% endif %}>2 Stars</option>
+                    <option value="1" {% if rating_filter == '1' %}selected{% endif %}>1 Star</option>
+                </select>
+            </label>
+
+            <button type="submit" class="fb-filter-button">
+                Apply
+            </button>
+
+            {% if search_query or rating_filter != 'ALL' %}
+                <a href="{% url 'admin_feedback' %}" class="fb-reset-button">
+                    Reset
+                </a>
+            {% endif %}
+
+        </form>
+    </section>
+
+    <section class="feedback-table">
+
+        <div class="fb-table-head">
+            <div class="fb-table-head-copy">
+
+                <div class="fb-table-heading-row">
+                    <h2>Citizen feedback</h2>
+
+                    {% if page_obj.paginator.count %}
+                        <span class="fb-result-count">
+                            {{ page_obj.paginator.count }}
+                        </span>
+                    {% endif %}
+                </div>
+
+                <p>
+                    {% if page_obj.paginator.count %}
+                        {% if search_query or rating_filter != 'ALL' %}
+                            Matching feedback
+                        {% else %}
+                            Citizen experience and service ratings
+                        {% endif %}
+                    {% else %}
+                        No feedback available
+                    {% endif %}
+                </p>
+
+            </div>
+        </div>
+
+        {% if page_obj.object_list %}
+
+            <div class="fb-table-wrap">
+                <table class="fb-table-inner">
+
+                    <thead>
+                        <tr>
+                            <th class="fb-col-citizen">Citizen</th>
+                            <th class="fb-col-email">Email</th>
+                            <th class="fb-col-rating">Rating</th>
+                            <th class="fb-col-message">Feedback</th>
+                            <th class="fb-col-date">Date</th>
+                            <th class="fb-col-actions">
+                                <span class="fb-visually-hidden">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for feedback_item in page_obj.object_list %}
+
+                            <tr class="fb-table-row">
+
+                                <td>
+                                    <div class="citizen-cell">
+
+                                        <span class="citizen-avatar">
+                                            {% if feedback_item.user.avatar %}
+                                                <img src="{{ feedback_item.user.avatar.url }}" alt="" loading="lazy">
+                                            {% else %}
+                                                <span class="citizen-avatar-fallback">
+                                                    {{ feedback_item.user.full_name|default:feedback_item.user.username|first|upper }}
+                                                </span>
+                                            {% endif %}
+                                        </span>
+
+                                        <div class="fb-name-cell">
+                                            <span
+                                                class="fb-name-text"
+                                                title="{{ feedback_item.user.full_name|default:feedback_item.user.username }}"
+                                            >
+                                                {{ feedback_item.user.full_name|default:feedback_item.user.username }}
+                                            </span>
+
+                                            <span class="fb-username-text">
+                                                @{{ feedback_item.user.username }}
+                                            </span>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="fb-email-text" title="{{ feedback_item.email }}">
+                                        {{ feedback_item.email }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span
+                                        class="fb-stars"
+                                        aria-label="{{ feedback_item.rating }} out of 5 stars"
+                                    >
+                                        {% for star in "12345" %}
+                                            <svg
+                                                viewBox="0 0 20 20"
+                                                aria-hidden="true"
+                                                class="fb-star {% if forloop.counter <= feedback_item.rating %}is-filled{% endif %}"
+                                            >
+                                                <path d="M10 1.6l2.47 5.24 5.72.66-4.27 3.9 1.15 5.68L10 14.9l-5.07 2.18 1.15-5.68-4.27-3.9 5.72-.66L10 1.6z"></path>
+                                            </svg>
+                                        {% endfor %}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span
+                                        class="fb-message-text"
+                                        title="{{ feedback_item.message }}"
+                                    >
+                                        {{ feedback_item.message|truncatechars:70 }}
+                                    </span>
+                                </td>
+
+                                <td class="fb-date-cell">
+                                    <time datetime="{{ feedback_item.created_at|date:'c' }}">
+                                        {{ feedback_item.created_at|date:"M d, Y" }}
+                                    </time>
+                                </td>
+
+                                <td class="fb-actions-cell">
+                                    <a
+                                        href="{% url 'admin_feedback_detail' feedback_item.id %}"
+                                        class="fb-action fb-action-view"
+                                    >
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            aria-hidden="true"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                        >
+                                            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                        <span>View</span>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+            </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <div class="fb-pagination">
+
+                    <span class="fb-pagination-summary">
+                        Showing
+                        <strong>{{ page_obj.start_index }}</strong>
+                        &ndash;
+                        <strong>{{ page_obj.end_index }}</strong>
+                        of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                    </span>
+
+                    <nav class="fb-pagination-nav" aria-label="Feedback pagination">
+
+                        {% if page_obj.has_previous %}
+                            <a
+                                href="?rating={{ rating_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.previous_page_number }}"
+                                class="fb-pagination-button"
+                                aria-label="Previous page"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </a>
+                        {% else %}
+                            <span class="fb-pagination-button is-disabled">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </span>
+                        {% endif %}
+
+                        {% for number in page_obj.paginator.page_range %}
+                            {% if page_obj.number == number %}
+                                <span class="fb-pagination-number is-current">{{ number }}</span>
+                            {% else %}
+                                <a
+                                    href="?rating={{ rating_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ number }}"
+                                    class="fb-pagination-number"
+                                >
+                                    {{ number }}
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <a
+                                href="?rating={{ rating_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.next_page_number }}"
+                                class="fb-pagination-button"
+                                aria-label="Next page"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+                        {% else %}
+                            <span class="fb-pagination-button is-disabled">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+                        {% endif %}
+
+                    </nav>
+                </div>
+
+            {% endif %}
+
+        {% else %}
+
+            <div class="fb-empty-state">
+
+                <div class="fb-empty-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 3H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h3v4l4-4h9a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1Z"></path>
+                    </svg>
+                </div>
+
+                <h3>No feedback found</h3>
+
+                <p>
+                    There is no feedback matching your current search or filter.
+                </p>
+
+                {% if search_query or rating_filter != 'ALL' %}
+                    <a href="{% url 'admin_feedback' %}" class="fb-secondary-button">
+                        Reset filters
+                    </a>
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+{% endblock %}

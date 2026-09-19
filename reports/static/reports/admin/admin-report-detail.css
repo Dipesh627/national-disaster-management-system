@@ -1,0 +1,869 @@
+/* =========================================================
+   NDMS ADMIN — REPORT DETAIL
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.rd-admin-page {
+    min-width: 0;
+}
+
+.rd-admin-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+
+    margin-bottom: 18px;
+}
+
+.rd-admin-header-copy {
+    min-width: 0;
+}
+
+.rd-admin-eyebrow {
+    margin: 0 0 6px;
+
+    color: var(--ndms-red);
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .1em;
+}
+
+.rd-admin-header h1 {
+    margin: 0;
+
+    color: var(--ndms-navy);
+
+    font-size: 25px;
+    line-height: 1.2;
+    font-weight: 750;
+
+    letter-spacing: -.025em;
+}
+
+.rd-admin-header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rd-admin-header-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 8px 0 0;
+    color: var(--ndms-muted);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.rd-header-type {
+    font-weight: 750;
+    color: var(--ndms-navy);
+}
+
+.rd-header-sep {
+    color: var(--ndms-light-muted);
+}
+
+.rd-header-time-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.rd-header-time-label {
+    color: var(--ndms-muted);
+    font-weight: 500;
+}
+
+.rd-header-time-item strong {
+    color: var(--ndms-navy);
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TWO COLUMN DETAIL LAYOUT
+   ========================================================= */
+
+.rd-admin-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.55fr)
+        minmax(300px, .75fr);
+
+    align-items: start;
+
+    gap: 12px;
+}
+
+.rd-admin-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   DETAIL CARD
+   ========================================================= */
+
+.rd-admin-card {
+    min-width: 0;
+    overflow: hidden;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 10px;
+
+    background: #fff;
+}
+
+.rd-admin-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+
+    padding: 14px 16px 12px;
+
+    border-bottom: 1px solid var(--ndms-border);
+}
+
+.rd-admin-card-header h2 {
+    margin: 0;
+
+    color: var(--ndms-navy);
+
+    font-size: 12px;
+    line-height: 1.35;
+    font-weight: 750;
+}
+
+.rd-admin-card-header p {
+    margin: 3px 0 0;
+
+    color: var(--ndms-muted);
+
+    font-size: 9px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   INFORMATION ROWS
+   ========================================================= */
+
+.rd-admin-info {
+    padding: 2px 16px;
+}
+
+.rd-admin-info-row {
+    display: grid;
+
+    grid-template-columns: 105px minmax(0, 1fr);
+
+    gap: 16px;
+
+    padding: 11px 0;
+
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.rd-admin-info-row:last-child {
+    border-bottom: 0;
+}
+
+.rd-admin-info-label {
+    color: var(--ndms-muted);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+    letter-spacing: .035em;
+}
+
+.rd-admin-info-value {
+    min-width: 0;
+
+    color: var(--ndms-text);
+
+    font-size: 10px;
+    line-height: 1.55;
+
+    overflow-wrap: anywhere;
+}
+
+.rd-admin-description {
+    white-space: pre-line;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.rd-admin-status-wrap {
+    padding: 15px 16px;
+}
+
+.rd-admin-status-current {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 14px;
+}
+
+.rd-admin-status-label {
+    color: var(--ndms-muted);
+
+    font-size: 9px;
+    font-weight: 750;
+
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+
+/* Same semantic colours as dashboard table */
+
+.rd-admin-status {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 8px;
+
+    border-radius: 5px;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    line-height: 1.2;
+}
+
+.rd-admin-status-pending {
+    color: var(--ndms-orange);
+    background: #fffaeb;
+}
+
+.rd-admin-status-review {
+    color: #344054;
+    background: #f2f4f7;
+}
+
+.rd-admin-status-verified {
+    color: var(--ndms-green);
+    background: #ecfdf3;
+}
+
+.rd-admin-status-rejected {
+    color: var(--ndms-red);
+    background: #fef3f2;
+}
+
+
+/* =========================================================
+   STAGED STATUS ACTIONS & RESOLVED STATES
+   ========================================================= */
+
+.rd-status-staged-box {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.rd-status-staged-desc {
+    margin: 0;
+    color: var(--ndms-muted);
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.rd-admin-staged-form {
+    width: 100%;
+    min-width: 0;
+}
+
+.rd-under-review-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.rd-action-flex-1 {
+    flex: 1;
+    min-width: 120px;
+}
+
+.rd-btn-start-review {
+    min-height: 38px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.rd-btn-verify {
+    background: var(--ndms-green);
+    border-color: var(--ndms-green);
+    color: #fff;
+    min-height: 38px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.rd-btn-verify:hover {
+    background: #12633d;
+    border-color: #12633d;
+    color: #fff;
+}
+
+.rd-btn-reject {
+    min-height: 38px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+/* Resolved status boxes */
+.rd-admin-status-resolved {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+.rd-status-box-verified {
+    background: #ecfdf3;
+    border-color: #a6f4c5;
+}
+
+.rd-status-box-verified .rd-status-resolved-icon {
+    color: var(--ndms-green);
+    background: #d1fadf;
+}
+
+.rd-status-box-verified strong {
+    color: var(--ndms-green);
+}
+
+.rd-status-box-rejected {
+    background: #fef3f2;
+    border-color: #fecdca;
+}
+
+.rd-status-box-rejected .rd-status-resolved-icon {
+    color: var(--ndms-red);
+    background: #fee4e2;
+}
+
+.rd-status-box-rejected strong {
+    color: var(--ndms-red);
+}
+
+.rd-status-resolved-icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rd-status-resolved-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.rd-status-resolved-content {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+}
+
+.rd-status-resolved-content strong {
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.25;
+}
+
+.rd-status-resolved-content span {
+    color: var(--ndms-muted);
+    font-size: 10px;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   REJECT CONFIRMATION MODAL
+   Consistent with NDMS modal standards (.ea-modal / .ru-modal)
+   ========================================================= */
+
+.rd-confirm-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 3100;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.rd-confirm-modal.show {
+    display: flex;
+}
+
+.rd-confirm-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 24, 40, .6);
+    backdrop-filter: blur(2px);
+}
+
+.rd-confirm-modal-dialog {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid var(--ndms-border);
+    box-shadow: 0 20px 48px rgba(16, 24, 40, .18);
+    padding: 22px 24px 20px;
+}
+
+.rd-confirm-modal-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.rd-confirm-modal-danger-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #fee4e2;
+    color: var(--ndms-red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rd-confirm-modal-danger-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.rd-confirm-modal-close {
+    background: transparent;
+    border: 0;
+    color: var(--ndms-muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    line-height: 1;
+}
+
+.rd-confirm-modal-close:hover {
+    color: var(--ndms-navy);
+    background: var(--ndms-soft);
+}
+
+.rd-confirm-modal-content h3 {
+    margin: 0 0 6px;
+    font-size: 15px;
+    font-weight: 750;
+    color: var(--ndms-navy);
+}
+
+.rd-confirm-modal-content p {
+    margin: 0;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--ndms-muted);
+}
+
+.rd-confirm-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--ndms-border);
+}
+
+
+/* =========================================================
+   CITIZEN / REPORTER CARD
+   ========================================================= */
+
+.rd-admin-citizen {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+
+    padding: 15px 16px;
+}
+
+.rd-admin-avatar {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--ndms-soft);
+}
+
+.rd-admin-avatar img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+.rd-admin-avatar-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    color: #fff;
+    background: var(--ndms-red);
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.rd-admin-citizen-copy {
+    min-width: 0;
+    flex: 1;
+}
+
+.rd-admin-citizen-name {
+    display: block;
+
+    overflow: hidden;
+
+    color: var(--ndms-navy);
+
+    font-size: 11px;
+    font-weight: 750;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.rd-admin-citizen-username {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--ndms-muted);
+
+    font-size: 9px;
+}
+
+.rd-admin-citizen-count {
+    flex: 0 0 auto;
+
+    text-align: right;
+}
+
+.rd-admin-citizen-count strong {
+    display: block;
+
+    color: var(--ndms-navy);
+
+    font-size: 18px;
+    line-height: 1;
+
+    font-weight: 750;
+}
+
+.rd-admin-citizen-count span {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--ndms-light-muted);
+
+    font-size: 8px;
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.rd-admin-map-wrap {
+    position: relative;
+
+    padding: 12px 16px 16px;
+}
+
+.rd-admin-map {
+    width: 100%;
+    height: 300px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 8px;
+
+    background: var(--ndms-soft);
+}
+
+.rd-map-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 160px;
+    padding: 20px;
+
+    color: var(--ndms-muted);
+
+    font-size: 10px;
+    text-align: center;
+}
+
+
+/* Existing report-detail.js creates these controls */
+
+.rd-layer-control {
+    display: flex;
+    gap: 4px;
+
+    padding: 4px;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 7px;
+
+    background: rgba(255,255,255,.96);
+
+    box-shadow: 0 2px 8px rgba(16,24,40,.08);
+}
+
+.rd-layer-btn {
+    min-height: 28px;
+
+    padding: 0 8px;
+
+    border: 0;
+    border-radius: 5px;
+
+    background: transparent;
+    color: var(--ndms-muted);
+
+    font-family: inherit;
+    font-size: 8px;
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.rd-layer-btn:hover {
+    background: var(--ndms-soft);
+    color: var(--ndms-navy);
+}
+
+.rd-layer-btn.active {
+    background: var(--ndms-navy);
+    color: #fff;
+}
+
+
+/* =========================================================
+   EVIDENCE
+   ========================================================= */
+
+.rd-admin-gallery {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 7px;
+
+    padding: 12px 16px 16px;
+}
+
+.rd-admin-photo {
+    position: relative;
+
+    display: block;
+
+    aspect-ratio: 4 / 3;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border: 1px solid var(--ndms-border);
+    border-radius: 8px;
+
+    background: var(--ndms-soft);
+
+    cursor: pointer;
+}
+
+.rd-admin-photo img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: transform .2s ease;
+}
+
+.rd-admin-photo:hover img {
+    transform: scale(1.035);
+}
+
+.rd-admin-no-photo {
+    padding: 20px 16px;
+
+    color: var(--ndms-muted);
+
+    font-size: 10px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   PHOTO MODAL
+   ========================================================= */
+
+.rd-photo-modal {
+    position: fixed;
+
+    inset: 0;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(16,24,40,.76);
+
+    z-index: 3000;
+}
+
+.rd-photo-modal.show {
+    display: flex;
+}
+
+.rd-photo-modal-content {
+    position: relative;
+
+    max-width: min(1000px, 94vw);
+    max-height: 90vh;
+}
+
+.rd-photo-modal-content img {
+    display: block;
+
+    max-width: 100%;
+    max-height: 86vh;
+
+    border-radius: 8px;
+
+    background: #fff;
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.25);
+}
+
+.rd-photo-modal-close {
+    position: absolute;
+
+    top: -38px;
+    right: 0;
+
+    width: 30px;
+    height: 30px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 7px;
+
+    background: rgba(255,255,255,.12);
+    color: #fff;
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .rd-admin-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .rd-admin-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .rd-admin-info-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .rd-admin-gallery {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 420px) {
+
+    .rd-admin-status-actions {
+        grid-template-columns: 1fr;
+    }
+
+}

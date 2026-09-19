@@ -1,0 +1,2314 @@
+:root {
+    --red: #b42318;
+    --red-dark: #8f1d16;
+
+    --navy: #172033;
+    --navy-light: #202b40;
+    --navy-soft: #2b364b;
+
+    --text: #344054;
+    --muted: #667085;
+
+    --border: #e4e7ec;
+
+    --light-red: #fff7f6;
+
+    --white: #ffffff;
+
+    --background: #f8f9fb;
+    --soft-gray: #f2f4f7;
+
+    --green: #16794a;
+    --green-bg: #ecfdf3;
+
+    --orange: #b54708;
+    --orange-bg: #fffaeb;
+
+    --sidebar-width: 252px;
+    --topbar-height: 76px;
+
+    --ease: .18s ease;
+    --ease-smooth: cubic-bezier(.22,.61,.36,1);
+
+    /* Matches the citizen dashboard's --shadow-md (navbar-avatar.css /
+       home.css) so the admin account dropdown uses the exact same
+       shadow as the citizen avatar dropdown it's styled to match. */
+    --shadow-md: 0 10px 30px rgba(23, 32, 51, .075);
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    /* overflow-x: clip -- NOT overflow-x: hidden.
+       Root cause of the mobile Disaster Types scroll bug: per the CSS
+       Overflow spec, when overflow-x and overflow-y compute to
+       different values and neither is `visible`/`clip`, the browser
+       forces the `visible` one to become `auto` as well. `hidden`
+       here with no overflow-y set (default `visible`) triggered
+       exactly that -- overflow-y silently computed to `auto` on both
+       html and body. That makes `body` register as a scroll
+       container in its own right (even though it never actually
+       scrolls -- its box always matches its content height), which
+       sits *between* `.admin-topbar` and the real scrolling element
+       (html/the viewport). `position: sticky` computes "stuck"
+       relative to the nearest such scroll-container ancestor, so the
+       topbar was sticking to `body` -- which never scrolls -- i.e.
+       not sticking at all; it scrolled away with the page exactly
+       like a statically positioned element. That's the "topbar
+       doesn't stay positioned" / content-feels-detached bug.
+       `overflow-x: clip` clips the same horizontal overflow but is
+       explicitly exempt from this auto-pairing rule, so overflow-y
+       stays `visible` and html remains the sole real scroll
+       container, restoring correct `position: sticky` / `fixed`
+       behavior everywhere in the shell. (Supported Chrome/Edge 90+,
+       Firefox 81+, Safari 16+ -- safe baseline for this project.) */
+    overflow-x: clip;
+
+    /* No scroll-behavior: smooth here. Nothing in this codebase
+       triggers a programmatic/anchor scroll that would use it (no
+       `href="#..."` links, and admin-shell.js deliberately avoids
+       scrollIntoView for exactly this reason -- see its comment).
+       Left enabled it has no upside and was a likely contributor to
+       the erratic, seemingly "runaway" scroll motion during mobile
+       touch drags, since some browsers' synthetic/momentum touch
+       scrolling can interact with a global smooth-scroll hint in
+       unpredictable ways. */
+}
+
+body {
+    margin: 0;
+
+    overflow-x: clip;
+
+    background: var(--background);
+    color: var(--text);
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    border: 0;
+}
+
+svg {
+    display: block;
+}
+
+
+/* =========================================================
+   SHELL
+   ========================================================= */
+
+.admin-shell {
+    /* No forced min-height here on purpose: the page should end
+       exactly where its content ends, not be padded out to fill
+       a full viewport. The sidebar doesn't need this -- it's
+       position: fixed with top:0/bottom:0, so it's always full
+       viewport height on its own regardless of this wrapper's
+       height. See .admin-main / .admin-content below, which
+       previously duplicated this same min-height and are the
+       reason short pages (e.g. Disaster Types with few rows)
+       had a large empty gap after the real content. */
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.admin-sidebar {
+
+    position: fixed;
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    width: var(--sidebar-width);
+
+    /* Intentionally no explicit height here. With top:0 AND bottom:0
+       already set on a position:fixed element, the box is fully
+       anchored between those two edges on its own -- the same
+       inset:0 approach .sidebar-overlay below uses. Explicitly also
+       setting height:100vh/100dvh here is over-constrained (per the
+       CSS spec, top+height+bottom together makes the browser use the
+       explicit height and disregard bottom), and if that vh/dvh
+       value is ever computed against a stale/short viewport (device
+       toolbar scaling, zoom, dynamic browser chrome), the sidebar
+       freezes short of the real bottom edge with no way to correct
+       -- which is exactly the "sidebar doesn't reach the bottom of
+       the screen when opened on mobile" bug. Dropping height and
+       relying purely on top/bottom keeps this correct on every
+       resize/orientation change with zero unit ambiguity. */
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 0;
+    overflow: hidden;
+
+    background: var(--navy-light);
+    border-right: 1px solid rgba(255,255,255,.045);
+
+    color: var(--white);
+
+    z-index: 1000;
+
+    transition:
+        transform var(--ease),
+        box-shadow var(--ease);
+}
+
+
+/* =========================================================
+   BRAND — MATCH PUBLIC NAVBAR
+   ========================================================= */
+
+.sidebar-brand {
+
+    height: 76px;
+
+    /* .admin-sidebar is display:flex; flex-direction:column, so
+       without this, .sidebar-brand is a flex item with the
+       browser's default flex-shrink:1 -- meaning on a short
+       viewport (where brand + nav + footer together are taller
+       than the screen) the browser silently SHRINKS this box
+       below its 76px height to make everything fit, instead of
+       letting .sidebar-navigation scroll on its own as intended.
+       That shrinking is exactly what pulled this box's bottom
+       border up above the topbar's border in the screenshot.
+       flex: 0 0 76px locks it at exactly 76px no matter what,
+       matching .sidebar-footer's flex: 0 0 auto treatment below. */
+    flex: 0 0 76px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,.07);
+}
+
+
+.admin-brand {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    min-width: 0;
+
+    color: var(--white);
+}
+
+
+.admin-brand-mark {
+
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    font-size: 14px;
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    transition:
+        transform .2s ease,
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+
+/* EXACT PUBLIC NAVBAR HOVER FEEL */
+
+.admin-brand:hover .admin-brand-mark {
+
+    background: var(--red-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 5px 13px
+        rgba(180, 35, 24, .22);
+}
+
+
+.admin-brand-text {
+
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.15;
+
+    min-width: 0;
+}
+
+
+.admin-brand-text strong {
+
+    color: var(--white);
+
+    font-size: 19px;
+
+    font-weight: 800;
+
+    letter-spacing: .2px;
+}
+
+
+.admin-brand-text small {
+
+    margin-top: 4px;
+
+    color: rgba(255,255,255,.52);
+
+    font-size: 9px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.sidebar-navigation {
+
+    flex: 1 1 auto;
+    min-height: 0;
+    width: 100%;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    padding: 18px 12px 14px;
+
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sidebar-navigation::-webkit-scrollbar {
+    width: 4px;
+}
+
+.sidebar-navigation::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.12);
+    border-radius: 10px;
+}
+
+
+.nav-section {
+    margin-bottom: 22px;
+}
+
+
+.nav-section-label {
+
+    padding:
+        0 10px 7px;
+
+    color:
+        rgba(255,255,255,.44);
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: .11em;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SIDEBAR ITEMS
+   ========================================================= */
+
+.sidebar-link {
+
+    position: relative;
+
+    min-height: 42px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 0 11px;
+
+    margin: 2px 0;
+
+    border-radius: 8px;
+
+    color:
+        rgba(255,255,255,.72);
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    transition:
+        background var(--ease),
+        color var(--ease),
+        transform var(--ease),
+        box-shadow var(--ease);
+}
+
+
+.sidebar-link:hover {
+
+    background:
+        rgba(255,255,255,.065);
+
+    color:
+        var(--white);
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.035);
+}
+
+
+.sidebar-link.is-active {
+
+    background:
+        linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.045);
+
+    color:
+        var(--white);
+
+    font-weight: 600;
+}
+
+
+.sidebar-link.is-active::before {
+
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+
+    top: 8px;
+    bottom: 8px;
+
+    width: 3px;
+
+    border-radius:
+        0 3px 3px 0;
+
+    background:
+        var(--red);
+}
+
+
+.sidebar-icon {
+
+    width: 19px;
+    height: 19px;
+
+    flex: 0 0 19px;
+
+    display: grid;
+    place-items: center;
+}
+
+
+.sidebar-icon svg {
+
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+
+    transition:
+        transform var(--ease);
+}
+
+
+.sidebar-link:hover
+.sidebar-icon svg {
+
+    transform:
+        scale(1.04);
+}
+
+
+.sidebar-link-text {
+    white-space: nowrap;
+}
+
+
+.sidebar-count {
+
+    margin-left: auto;
+
+    min-width: 21px;
+    height: 20px;
+
+    padding: 0 6px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   BACK TO WEBSITE
+   Minimal sidebar utility link -- single left arrow + label,
+   no boxed icon, no subtitle, no second arrow. Mirrors the
+   Citizen Dashboard's minimal footer treatment (dashboard.css
+   .sidebar-footer-link--minimal / .sidebar-footer-icon--plain)
+   so "leave the app" reads the same way across the whole site.
+   ========================================================= */
+
+.sidebar-footer {
+
+    flex: 0 0 auto;
+
+    padding: 22px 13px 14px;
+
+    border-top:
+        1px solid rgba(255,255,255,.09);
+}
+
+
+.sidebar-footer-link {
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    width: 100%;
+    padding: 9px 10px;
+
+    border-radius: 8px;
+
+    color: rgba(255,255,255,.68);
+
+    text-decoration: none;
+
+    transition:
+        background var(--ease),
+        color var(--ease);
+}
+
+
+.sidebar-footer-link:hover,
+.sidebar-footer-link:focus-visible {
+
+    background:
+        rgba(255,255,255,.075);
+
+    color: var(--white);
+}
+
+
+.sidebar-footer-icon--plain {
+
+    width: 16px;
+    height: 16px;
+
+    flex: 0 0 16px;
+
+    display: grid;
+    place-items: center;
+
+    color: rgba(255,255,255,.55);
+
+    transition:
+        color var(--ease),
+        transform var(--ease);
+}
+
+
+.sidebar-footer-icon--plain svg {
+
+    width: 16px;
+    height: 16px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.sidebar-footer-link:hover .sidebar-footer-icon--plain,
+.sidebar-footer-link:focus-visible .sidebar-footer-icon--plain {
+
+    color: var(--white);
+    transform: translateX(-3px);
+}
+
+
+.sidebar-footer-title {
+
+    flex: 1;
+    min-width: 0;
+
+    color: rgba(255,255,255,.93);
+
+    font-size: 11.5px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.sidebar-footer-link:hover .sidebar-footer-title,
+.sidebar-footer-link:focus-visible .sidebar-footer-title {
+    color: var(--white);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.admin-main {
+
+    /* No forced min-height -- see .admin-shell's comment above.
+       Height comes naturally from the topbar + .admin-content. */
+
+    margin-left:
+        var(--sidebar-width);
+
+    min-width: 0;
+}
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.admin-topbar {
+
+    position: sticky;
+
+    top: 0;
+
+    height:
+        var(--topbar-height);
+
+    display: flex;
+    align-items: center;
+
+    padding:
+        0 26px;
+
+    background:
+        rgba(255,255,255,.96);
+
+    border-bottom:
+        1px solid var(--border);
+
+    box-shadow:
+        0 1px 0 rgba(16,24,40,.02);
+
+    backdrop-filter: blur(10px);
+
+    z-index: 900;
+}
+
+
+.topbar-left {
+
+    min-width: 0;
+    flex: 1 1 auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   HAMBURGER
+   DESKTOP = HIDDEN
+   ========================================================= */
+
+.sidebar-toggle {
+
+    display: none;
+
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    place-items: center;
+
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    transition:
+        background var(--ease),
+        color var(--ease);
+}
+
+
+.sidebar-toggle:hover {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+}
+
+
+.sidebar-toggle svg {
+
+    width: 20px;
+    height: 20px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+}
+
+
+/* =========================================================
+   CURRENT PAGE
+   ========================================================= */
+
+.page-identity {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+
+.page-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    min-width: 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+    line-height: 1.2;
+    font-weight: 500;
+
+    letter-spacing: .01em;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.page-breadcrumb span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+.page-breadcrumb span:first-child {
+    color: var(--navy);
+    font-weight: 650;
+}
+
+
+.page-breadcrumb .breadcrumb-separator {
+    flex: 0 0 auto;
+    color: #98a2b3;
+    font-weight: 400;
+}
+
+
+.page-title {
+
+    margin: 0;
+
+    color:
+        var(--navy);
+
+    font-size: 19px;
+
+    line-height: 1.2;
+
+    font-weight: 700;
+
+    letter-spacing: -.015em;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.topbar-search {
+
+    position: relative;
+
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+
+/* Search icon only */
+
+.search-trigger {
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background: transparent;
+
+    color:
+        var(--muted);
+
+    cursor: pointer;
+
+    transition:
+        background var(--ease),
+        color var(--ease),
+        transform var(--ease);
+}
+
+
+.search-trigger:hover {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+
+    transform:
+        translateY(-1px);
+}
+
+
+.search-trigger svg {
+
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+}
+
+
+/* Open search */
+
+.search-form {
+
+    position: absolute;
+
+    top: 50%;
+    right: 0;
+
+    width: 300px;
+    height: 42px;
+
+    transform:
+        translateY(-50%);
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        0 8px 0 12px;
+
+    background:
+        var(--white);
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 12px 30px
+        rgba(16,24,40,.09);
+
+    animation:
+        searchOpen .16s ease;
+}
+
+
+.search-form[hidden] {
+    display: none;
+}
+
+
+@keyframes searchOpen {
+
+    from {
+        opacity: 0;
+        transform:
+            translateY(-50%) scale(.97);
+    }
+
+    to {
+        opacity: 1;
+        transform:
+            translateY(-50%) scale(1);
+    }
+
+}
+
+
+.search-form-icon {
+
+    width: 16px;
+    height: 16px;
+
+    flex: 0 0 16px;
+
+    fill: none;
+
+    stroke:
+        var(--muted);
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+}
+
+
+.search-form input {
+
+    width: 100%;
+    min-width: 0;
+
+    padding: 0;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color:
+        var(--text);
+
+    font-size: 12px;
+}
+
+
+.search-form input::placeholder {
+    color: #98a2b3;
+}
+
+
+.search-clear {
+
+    width: 27px;
+    height: 27px;
+
+    flex: 0 0 27px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color:
+        var(--muted);
+
+    cursor: pointer;
+
+    transition:
+        background var(--ease),
+        color var(--ease);
+}
+
+
+.search-clear:hover {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+}
+
+
+.search-clear svg {
+
+    width: 14px;
+    height: 14px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+}
+
+
+/* =========================================================
+   TOPBAR RIGHT
+   ========================================================= */
+
+.topbar-right {
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    margin-left: 14px;
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   NOTIFICATION
+   ========================================================= */
+
+.topbar-icon-button {
+
+    position: relative;
+
+    width: 38px;
+    height: 38px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    color:
+        var(--muted);
+
+    transition:
+        background var(--ease),
+        color var(--ease);
+}
+
+
+.topbar-icon-button:hover {
+
+    background:
+        var(--soft-gray);
+
+    color:
+        var(--navy);
+}
+
+
+.topbar-icon-button svg {
+
+    width: 18px;
+    height: 18px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* =========================================================
+   NOTIFICATION / AVATAR DIVIDER
+   ========================================================= */
+
+.topbar-divider {
+
+    width: 1px;
+    height: 27px;
+
+    margin:
+        0 2px;
+
+    background:
+        var(--border);
+}
+
+
+/* =========================================================
+   NOTIFICATION BADGE
+   ========================================================= */
+
+.notification-dot {
+
+    position: absolute;
+
+    top: 2px;
+    right: 1px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding:
+        0 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background:
+        var(--red);
+
+    color:
+        var(--white);
+
+    border:
+        2px solid var(--white);
+
+    font-size: 8px;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   ADMIN ALERTS DROPDOWN
+   ========================================================= */
+
+.admin-alerts {
+    position: relative;
+}
+
+
+.admin-alert-dropdown {
+
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 345px;
+
+    max-width: calc(100vw - 24px);
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 18px 44px
+        rgba(16,24,40,.12),
+        0 3px 8px
+        rgba(16,24,40,.035);
+
+    overflow: hidden;
+
+    z-index: 1200;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px);
+
+    transition:
+        opacity 200ms ease,
+        transform 200ms ease,
+        visibility 200ms ease;
+}
+
+
+.admin-alerts.open .admin-alert-dropdown {
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+
+.admin-alert-header {
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 13px 15px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--navy);
+
+    font-size: 12px;
+    font-weight: 720;
+
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+
+.admin-alert-header a {
+
+    color: var(--red);
+
+    font-size: 11px;
+    font-weight: 650;
+
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+
+.admin-alert-header a:hover {
+    color: var(--red-dark);
+}
+
+
+.admin-alert-list {
+
+    max-height: 320px;
+
+    overflow-y: auto;
+}
+
+
+.admin-alert-item {
+
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    padding: 12px 15px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text);
+
+    transition:
+        background var(--ease);
+}
+
+
+.admin-alert-item:last-child {
+    border-bottom: none;
+}
+
+
+.admin-alert-item:hover {
+    background: var(--soft-gray);
+}
+
+
+.admin-alert-dot {
+
+    flex: 0 0 auto;
+
+    width: 8px;
+    height: 8px;
+
+    margin-top: 5px;
+
+    border-radius: 50%;
+
+    background: var(--red);
+}
+
+
+.admin-alert-body {
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.admin-alert-body strong {
+
+    color: var(--navy);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.admin-alert-meta {
+
+    overflow: hidden;
+
+    color: var(--text);
+
+    font-size: 11px;
+    font-weight: 500;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+.admin-alert-time {
+
+    color: var(--muted);
+
+    font-size: 10px;
+    font-weight: 500;
+}
+
+
+.admin-alert-arrow {
+
+    flex: 0 0 auto;
+
+    width: 14px;
+    height: 14px;
+
+    margin-top: 4px;
+
+    fill: none;
+
+    stroke: var(--muted);
+
+    stroke-width: 2;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.admin-alert-footer {
+
+    padding: 10px 15px;
+
+    text-align: center;
+
+    background: var(--soft-gray);
+}
+
+
+.admin-alert-footer a {
+
+    color: var(--navy);
+
+    font-size: 11px;
+    font-weight: 650;
+}
+
+
+.admin-alert-footer a:hover {
+    color: var(--red);
+}
+
+
+.admin-alert-empty {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 26px 20px;
+
+    text-align: center;
+}
+
+
+.admin-alert-empty-icon {
+
+    width: 30px;
+    height: 30px;
+
+    margin-bottom: 3px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: 50%;
+
+    background: var(--green-bg);
+
+    color: var(--green);
+
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.admin-alert-empty strong {
+
+    color: var(--navy);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+
+.admin-alert-empty p {
+
+    max-width: 240px;
+
+    color: var(--muted);
+
+    font-size: 11px;
+    font-weight: 500;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   ADMIN PROFILE / AVATAR
+   ========================================================= */
+
+.admin-profile {
+    position: relative;
+}
+
+
+.admin-profile-button {
+
+    display: flex;
+    align-items: center;
+
+    gap: 9px;
+
+    min-height: 46px;
+
+    padding: 3px 7px 3px 4px;
+
+    border: 1px solid transparent;
+
+    border-radius: 999px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        background var(--ease),
+        border-color var(--ease),
+        box-shadow var(--ease);
+}
+
+
+.admin-profile-button:hover,
+.admin-profile-button[aria-expanded="true"] {
+
+    background: var(--white);
+
+    border-color: var(--border);
+
+    box-shadow:
+        0 3px 12px
+        rgba(16,24,40,.055);
+}
+
+
+.admin-avatar {
+
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    border: 2px solid #ffffff;
+
+    box-shadow:
+        0 0 0 2px rgba(180,35,24,.14);
+
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+
+    object-fit: cover;
+
+    transition:
+        background var(--ease),
+        box-shadow var(--ease);
+}
+
+
+.admin-profile-button:hover .admin-avatar,
+.admin-profile-button[aria-expanded="true"] .admin-avatar {
+
+    background: var(--red-dark);
+
+    box-shadow:
+        0 0 0 2px rgba(180,35,24,.18),
+        0 5px 12px rgba(180,35,24,.12);
+}
+
+
+.admin-avatar-fallback {
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--white) !important;
+    background: var(--red);
+
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+
+.admin-profile-info {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    line-height: 1.15;
+}
+
+
+.admin-profile-info strong {
+
+    display: block;
+
+    max-width: 145px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--navy);
+
+    font-size: 11.5px;
+    font-weight: 720;
+    letter-spacing: -.005em;
+}
+
+
+.admin-profile-info small {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-top: 4px;
+
+    color: var(--muted);
+
+    font-size: 9.5px;
+    font-weight: 520;
+}
+
+
+.admin-profile-status-dot,
+.profile-menu-status-dot {
+
+    display: inline-block;
+
+    width: 6px;
+    height: 6px;
+
+    flex: 0 0 6px;
+
+    border-radius: 50%;
+
+    background: var(--green);
+
+    box-shadow: 0 0 0 2px rgba(22,121,74,.09);
+}
+
+
+.admin-profile-status-dot.is-inactive,
+.profile-menu-status-dot.is-inactive {
+    background: var(--light-muted, #98a2b3);
+    box-shadow: 0 0 0 2px rgba(152,162,179,.12);
+}
+
+
+.profile-chevron {
+
+    width: 14px;
+    height: 14px;
+
+    flex: 0 0 14px;
+
+    color: var(--muted);
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+
+    transition: transform var(--ease), color var(--ease);
+}
+
+
+.admin-profile-button:hover .profile-chevron,
+.admin-profile-button[aria-expanded="true"] .profile-chevron {
+    color: var(--navy);
+}
+
+
+.admin-profile-button[aria-expanded="true"] .profile-chevron {
+    transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   PROFILE MENU
+   ========================================================= */
+
+.admin-profile-menu {
+
+    /* Styled to match the citizen dashboard's avatar dropdown
+       (.ndms-avatar-menu in navbar-avatar.css) — same width,
+       padding, radius, shadow and open/close motion. */
+
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 280px;
+
+    padding: 8px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    box-shadow: var(--shadow-md);
+
+    z-index: 1200;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-6px);
+
+    transition:
+        opacity 200ms ease,
+        transform 200ms ease,
+        visibility 200ms ease;
+}
+
+
+.admin-profile.open .admin-profile-menu {
+
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+
+.profile-menu-header {
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 10px 10px 12px;
+}
+
+
+.profile-menu-avatar {
+
+    width: 40px;
+    height: 40px;
+
+    flex: 0 0 40px;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--red);
+
+    color: var(--white) !important;
+
+    object-fit: cover;
+
+    display: grid;
+    place-items: center;
+
+    font-size: 13px;
+    font-weight: 750;
+}
+
+
+.profile-menu-avatar-fallback {
+    color: var(--white) !important;
+    background: var(--red);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+
+.profile-menu-identity {
+
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+
+.profile-menu-header strong {
+
+    display: block;
+
+    max-width: 195px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--navy);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+
+.profile-menu-email {
+
+    display: block;
+
+    max-width: 195px;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.profile-menu-role {
+
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+
+    margin-top: 3px;
+
+    color: var(--text);
+
+    font-size: 9px;
+    font-weight: 600;
+}
+
+
+.profile-menu-divider {
+
+    height: 1px;
+
+    margin: 6px 4px;
+
+    background: var(--border);
+}
+
+
+.profile-menu-item {
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 9px 12px;
+
+    border-radius: 8px;
+
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        background 220ms ease,
+        color 220ms ease,
+        transform 220ms ease;
+}
+
+
+.profile-menu-icon {
+
+    width: 17px;
+    height: 17px;
+
+    flex: 0 0 17px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--muted);
+}
+
+
+.profile-menu-item:hover .profile-menu-icon {
+    color: var(--red);
+}
+
+
+.profile-menu-icon svg {
+
+    width: 15px;
+    height: 15px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.7;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.profile-menu-item:hover {
+
+    background: var(--soft-gray);
+    color: var(--navy);
+    transform: translateX(3px);
+}
+
+
+.profile-menu-danger {
+    color: var(--red);
+}
+
+
+.profile-menu-danger .profile-menu-icon {
+    color: inherit;
+}
+
+
+.profile-menu-danger:hover {
+    background: var(--light-red);
+    color: var(--red-dark);
+}
+
+
+.profile-menu-danger:hover .profile-menu-icon {
+    color: var(--red-dark);
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.admin-content {
+
+    /* No forced min-height -- see .admin-shell's comment above.
+       This used to pad every page out to one full viewport tall
+       even when its real content was much shorter, which is
+       what caused the large empty gap below the table on the
+       mobile Disaster Types page. */
+
+    padding: 28px 30px;
+
+    min-width: 0;
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.admin-messages {
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 8px;
+
+    margin-bottom: 20px;
+}
+
+
+.admin-message {
+
+    padding:
+        11px 14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 6px;
+
+    background:
+        var(--white);
+
+    color:
+        var(--text);
+
+    font-size: 12px;
+}
+
+
+.admin-message.success {
+
+    background:
+        var(--green-bg);
+
+    border-color:
+        #abefc6;
+
+    color:
+        var(--green);
+}
+
+
+.admin-message.error {
+
+    background:
+        var(--light-red);
+
+    border-color:
+        #fecdca;
+
+    color:
+        var(--red-dark);
+}
+
+
+/* =========================================================
+   MOBILE OVERLAY
+   ========================================================= */
+
+.sidebar-overlay {
+
+    display: none;
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(16,24,40,.38);
+
+    z-index: 950;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    :root {
+        --sidebar-width: 230px;
+    }
+
+
+    .admin-topbar {
+        padding: 0 20px;
+    }
+
+
+    .admin-content {
+        padding: 24px;
+    }
+
+
+    .admin-profile-info {
+        display: none;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 820px) {
+
+    .admin-sidebar {
+        /* No explicit height here either -- see the base .admin-sidebar
+           rule above for why; top:0/bottom:0 already anchor it. */
+        min-height: 0;
+        max-width: calc(100vw - 48px);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .sidebar-navigation {
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-x: hidden;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-footer {
+        flex: 0 0 auto;
+        position: relative;
+        z-index: 20;
+        padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+        background: var(--navy-light);
+        box-shadow: 0 -7px 18px rgba(16,24,40,.13);
+    }
+
+    /* Hamburger ONLY here */
+
+    .sidebar-toggle {
+        display: grid;
+    }
+
+
+    .admin-sidebar {
+
+        transform:
+            translateX(-100%);
+
+        box-shadow:
+            12px 0 30px
+            rgba(16,24,40,.14);
+    }
+
+
+    .admin-shell.sidebar-open
+    .admin-sidebar {
+
+        transform:
+            translateX(0);
+    }
+
+
+    .admin-shell.sidebar-open
+    .sidebar-overlay {
+
+        display: block;
+    }
+
+
+    .admin-main {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+
+    .admin-topbar {
+
+        min-height: 76px;
+
+        padding:
+            10px 15px;
+    }
+
+
+    .page-title {
+        font-size: 18px;
+    }
+
+
+    .search-form {
+
+        position: fixed;
+
+        top:
+            76px;
+
+        left: 15px;
+        right: 15px;
+
+        width: auto;
+        height: 46px;
+
+        transform: none;
+
+        z-index: 960;
+
+        animation:
+            searchOpenMobile .16s ease;
+    }
+
+
+    @keyframes searchOpenMobile {
+
+        from {
+            opacity: 0;
+            transform:
+                translateY(-6px);
+        }
+
+        to {
+            opacity: 1;
+            transform:
+                translateY(0);
+        }
+
+    }
+
+
+    .admin-content {
+
+        padding:
+            20px 15px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+    .sidebar-brand {
+        height: 72px;
+        flex: 0 0 72px;
+    }
+
+
+    .topbar-right {
+        gap: 3px;
+    }
+
+
+    .topbar-divider {
+        height: 24px;
+        margin: 0 1px;
+    }
+
+
+    .admin-avatar {
+
+        width: 38px;
+        height: 38px;
+
+        flex-basis: 38px;
+    }
+
+
+    .profile-chevron {
+        display: none;
+    }
+
+
+    .page-title {
+        font-size: 17px;
+    }
+
+
+    .admin-profile-menu {
+
+        position: fixed;
+
+        top: 70px;
+        right: 12px;
+
+        width:
+            min(245px, calc(100vw - 24px));
+    }
+
+
+    .admin-alert-dropdown {
+
+        position: fixed;
+
+        top: 70px;
+        right: 12px;
+
+        width:
+            min(330px, calc(100vw - 24px));
+
+        max-width:
+            calc(100vw - 24px);
+    }
+
+}
+
+/* =========================================================
+   ACCESSIBILITY + REFINEMENT
+   ========================================================= */
+
+.sidebar-link:focus-visible,
+.sidebar-footer-link:focus-visible,
+.sidebar-toggle:focus-visible,
+.search-trigger:focus-visible,
+.search-clear:focus-visible,
+.topbar-icon-button:focus-visible,
+.admin-profile-button:focus-visible,
+.profile-menu-item:focus-visible {
+    outline: 2px solid rgba(180,35,24,.55);
+    outline-offset: 2px;
+}
+
+.search-form input:focus-visible {
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+@media (max-width: 820px) {
+    .admin-sidebar {
+        box-shadow: 18px 0 45px rgba(16,24,40,.18);
+    }
+
+    .sidebar-overlay {
+        backdrop-filter: blur(2px);
+    }
+}
+
+@media (max-width: 820px) {
+
+    /* Mobile sidebar open: pin body to its current scroll position
+       (top is set dynamically by admin-shell.js) instead of relying
+       on `overflow: hidden` alone, which iOS/Safari does not honor
+       for background touch scrolling. This is what actually stops
+       the page behind the sidebar from scrolling while it's open —
+       previously that background scroll was what made the (correctly
+       fixed) sidebar look like it was moving with the page. */
+    body.admin-sidebar-lock {
+        position: fixed;
+        left: 0;
+        right: 0;
+        width: 100%;
+        overflow: hidden;
+        overscroll-behavior: none;
+    }
+
+}

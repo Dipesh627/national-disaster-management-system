@@ -1,0 +1,622 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Disaster Reports | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-disaster-reports.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Disaster Reports</span>
+{% endblock %}
+
+{% block page_title %}
+Disaster Reports
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ndms-dashboard">
+
+    <div class="dashboard-body">
+
+
+        <!-- =================================================
+             PAGE INTRO
+             ================================================= -->
+
+        <header class="dr-page-intro">
+
+            <div class="dr-page-intro-copy">
+
+                <p class="dr-page-eyebrow">
+                    DISASTER REPORTS
+                </p>
+
+                <h1>
+                    Disaster Reports
+                </h1>
+
+                <p class="dr-page-description">
+                    Review and manage disaster reports submitted
+                    by citizens across the system.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             SUMMARY
+             ================================================= -->
+
+        <section
+            class="dr-summary-grid"
+            aria-label="Report summary">
+
+            <article class="dr-summary-card dr-summary-total">
+
+                <span class="dr-summary-label">
+                    Total reports
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ total_reports }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    All submitted reports
+                </span>
+
+            </article>
+
+
+            <article class="dr-summary-card dr-summary-pending">
+
+                <span class="dr-summary-label">
+                    Pending
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ pending_count }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    Awaiting review
+                </span>
+
+            </article>
+
+
+            <article class="dr-summary-card dr-summary-review">
+
+                <span class="dr-summary-label">
+                    Under review
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ under_review_count }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    Currently being assessed
+                </span>
+
+            </article>
+
+
+            <article class="dr-summary-card dr-summary-verified">
+
+                <span class="dr-summary-label">
+                    Verified
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ verified_count }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    Confirmed reports
+                </span>
+
+            </article>
+
+
+            <article class="dr-summary-card dr-summary-rejected">
+
+                <span class="dr-summary-label">
+                    Rejected
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ rejected_count }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    Not accepted
+                </span>
+
+            </article>
+
+        </section>
+
+
+        <!-- =================================================
+             FILTER TOOLBAR
+             ================================================= -->
+
+        <section
+            class="dr-filter-bar"
+            aria-label="Report filters">
+
+            <form
+                method="get"
+                action=""
+                class="dr-filter-form">
+
+                <label class="dr-search-field">
+
+                    <span class="dr-visually-hidden">
+                        Search reports
+                    </span>
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        aria-hidden="true">
+
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="m16 16 4.5 4.5"></path>
+
+                    </svg>
+
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ search_query }}"
+                        placeholder="Search ID, citizen, email, disaster, location..."
+                        autocomplete="off">
+
+                </label>
+
+
+                <label class="dr-select-field">
+
+                    <span class="dr-visually-hidden">
+                        Filter by status
+                    </span>
+
+                    <select name="status" onchange="this.form.submit()">
+
+                        <option
+                            value="ALL"
+                            {% if status_filter == 'ALL' %}selected{% endif %}>
+                            All
+                        </option>
+
+                        {% for value, label in status_choices %}
+
+                            <option
+                                value="{{ value }}"
+                                {% if status_filter == value %}selected{% endif %}>
+
+                                {{ label }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="m7 10 5 5 5-5"></path>
+
+                    </svg>
+
+                </label>
+
+
+                <label class="dr-select-field">
+
+                    <span class="dr-visually-hidden">
+                        Filter by disaster type
+                    </span>
+
+                    <select name="type" onchange="this.form.submit()">
+
+                        <option
+                            value="ALL"
+                            {% if type_filter == 'ALL' %}selected{% endif %}>
+                            All Types
+                        </option>
+
+                        {% for disaster_type in disaster_types %}
+
+                            <option
+                                value="{{ disaster_type.id }}"
+                                {% if type_filter == disaster_type.id|stringformat:'s' %}selected{% endif %}>
+
+                                {{ disaster_type.name }}
+
+                            </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2.2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="m7 10 5 5 5-5"></path>
+
+                    </svg>
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="dr-filter-button">
+
+                    Apply filters
+
+                </button>
+
+
+                {% if search_query or status_filter != 'ALL' or type_filter != 'ALL' %}
+
+                    <a
+                        href="{% url 'admin_reports' %}"
+                        class="dr-reset-button">
+
+                        Clear
+
+                    </a>
+
+                {% endif %}
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             REPORT TABLE
+             ================================================= -->
+
+        <section class="dashboard-panel dashboard-panel-table">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        All Reports
+                    </h2>
+
+                    <p>
+                        {{ page_obj.paginator.count }}
+                        report{{ page_obj.paginator.count|pluralize }}
+                        matching the current filters.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if page_obj.object_list %}
+
+                <div class="table-wrap">
+
+                    <table class="dashboard-table dr-reports-table">
+
+                        <caption class="sr-only">
+                            Disaster reports
+                        </caption>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Report ID</th>
+                                <th>Citizen</th>
+                                <th>Disaster Type</th>
+                                <th>Severity</th>
+                                <th>Incident Start Date & Time</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                                <th class="table-action-header">
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for report in page_obj.object_list %}
+
+                                <tr>
+
+
+                                    <!-- REPORT ID -->
+
+                                    <td>
+
+                                        <a
+                                            href="{% url 'admin_report_detail' report.id %}"
+                                            class="report-id">
+
+                                            #{{ report.id }}
+
+                                        </a>
+
+                                    </td>
+
+
+                                    <!-- CITIZEN -->
+
+                                    <td>
+
+                                        <div class="citizen-cell">
+
+                                            <span class="citizen-avatar">
+
+                                                {% if report.user.avatar %}
+
+                                                    <img
+                                                        src="{{ report.user.avatar.url }}"
+                                                        alt=""
+                                                        loading="lazy">
+
+                                                {% else %}
+
+                                                    <span class="citizen-avatar-fallback">
+
+                                                        {{ report.user.full_name|default:report.user.username|first|upper }}
+
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </span>
+
+
+                                            <a
+                                                href="{% url 'admin_user_detail' report.user.id %}"
+                                                class="table-primary-link"
+                                                title="{{ report.user.full_name|default:report.user.username }}">
+
+                                                {{ report.user.full_name|default:report.user.username }}
+
+                                            </a>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- TYPE -->
+
+                                    <td>
+
+                                        <span class="dr-table-type">
+
+                                            {{ report.disaster_type.name }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- SEVERITY -->
+
+                                    <td>
+
+                                        <span
+                                            class="dr-severity dr-severity-{{ report.reported_severity|lower }}">
+
+                                            {{ report.get_reported_severity_display }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- INCIDENT START DATE & TIME -->
+
+                                    <td>
+
+                                        {% if report.incident_start_date %}
+                                            <time
+                                                class="dr-datetime-cell"
+                                                datetime="{{ report.incident_start_date|date:'c' }}">
+
+                                                {{ report.incident_start_date|date:"d M Y, h:i A" }}
+
+                                            </time>
+                                        {% else %}
+                                            <span class="dr-text-muted">
+                                                Not recorded
+                                            </span>
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- LOCATION -->
+
+                                    <td>
+
+                                        <span
+                                            class="dr-location-cell"
+                                            title="{{ report.address }}">
+
+                                            {% if report.address %}
+                                                {{ report.address }}
+                                            {% else %}
+                                                Not provided
+                                            {% endif %}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        <span
+                                            class="table-status table-status-{{ report.status|lower }}">
+
+                                            {{ report.get_status_display }}
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td class="table-action-cell">
+
+                                        <a
+                                            href="{% url 'admin_report_detail' report.id %}"
+                                            class="table-action">
+
+                                            View Report
+
+                                            <span aria-hidden="true">
+                                                ›
+                                            </span>
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- PAGINATION -->
+
+                {% if page_obj.paginator.num_pages > 1 %}
+
+                    <nav
+                        class="dr-pagination"
+                        aria-label="Reports pagination">
+
+                        {% if page_obj.has_previous %}
+
+                            <a
+                                class="dr-page-link"
+                                href="?status={{ status_filter }}&type={{ type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.previous_page_number }}">
+
+                                ‹ Previous
+
+                            </a>
+
+                        {% endif %}
+
+
+                        {% for page_number in page_obj.paginator.page_range %}
+
+                            <a
+                                class="dr-page-link {% if page_number == page_obj.number %}active{% endif %}"
+                                href="?status={{ status_filter }}&type={{ type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_number }}">
+
+                                {{ page_number }}
+
+                            </a>
+
+                        {% endfor %}
+
+
+                        {% if page_obj.has_next %}
+
+                            <a
+                                class="dr-page-link"
+                                href="?status={{ status_filter }}&type={{ type_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.next_page_number }}">
+
+                                Next ›
+
+                            </a>
+
+                        {% endif %}
+
+                    </nav>
+
+                {% endif %}
+
+
+            {% else %}
+
+                <div class="empty-state table-empty">
+
+                    <span
+                        class="empty-state-icon"
+                        aria-hidden="true">
+                        •
+                    </span>
+
+                    <strong>
+                        No disaster reports found
+                    </strong>
+
+                    <span>
+
+                        {% if search_query or status_filter != 'ALL' or type_filter != 'ALL' %}
+
+                            Try adjusting your search or filters.
+
+                        {% else %}
+
+                            Submitted reports will appear here.
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

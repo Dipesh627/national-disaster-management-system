@@ -1,0 +1,653 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="About NDMS - National Disaster Management System. Learn what NDMS is, why it exists, and how disaster information moves from report to response across Nepal."
+    >
+
+    <title>NDMS | About</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/about.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/navbar-avatar.css' %}"
+    >
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="about-page">
+
+
+<!-- =====================================================
+     NAVBAR (shared partial — see partials/navbar.html)
+     ===================================================== -->
+
+{% include 'reports/partials/navbar.html' %}
+
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
+<main class="about-main">
+
+
+    <!-- =================================================
+         01. ABOUT HERO
+         ================================================= -->
+
+    <section class="about-hero" aria-labelledby="about-hero-title">
+
+        <div class="about-hero-content reveal">
+
+            <span class="about-label">ABOUT NDMS</span>
+
+            <h1 id="about-hero-title">
+                Understanding the system
+                <br>
+                behind a more <span>connected</span>
+                <br>
+                approach to disaster information.
+            </h1>
+
+            <p>
+                NDMS is designed to make disaster information easier to
+                report, organize, understand and follow — creating a more
+                connected digital approach to disaster management.
+            </p>
+
+            <div class="about-hero-actions">
+
+                <a href="{% url 'create_disaster_report' %}" class="about-primary-btn">
+                    Report an Incident
+                    <span aria-hidden="true">→</span>
+                </a>
+
+                <a href="#what-is-ndms" class="about-secondary-btn">
+                    Explore the System
+                    <span aria-hidden="true">↓</span>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="ndms-visual-area-wrap reveal">
+            <div class="ndms-visual" aria-hidden="true">
+                <div class="ndms-visual-core">
+                    <div class="ndms-visual-ring">
+                        <span>NDMS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         02. WHAT IS NDMS?
+         ================================================= -->
+
+    <section class="about-section no-border" id="what-is-ndms" aria-labelledby="what-is-title">
+
+        <div class="section-heading reveal">
+            <div class="section-eyebrow">
+                <span class="section-eyebrow-line"></span>
+                <span>WHAT IS NDMS?</span>
+            </div>
+
+            <h2 id="what-is-title">
+                Built to connect information when it matters most.
+            </h2>
+        </div>
+
+        <div class="what-layout">
+
+            <div class="what-copy reveal">
+                <p>
+                    The National Disaster Management System (NDMS) is a
+                    digital platform designed to make disaster information
+                    easier to report, organize, understand and follow.
+                    It gives citizens a structured way to share what they
+                    see, and gives NDMS administrators a clear process for
+                    reviewing and acting on that information.
+                </p>
+            </div>
+
+            <div class="mini-flow reveal" aria-label="NDMS information flow: report, locate, verify, then track and inform">
+                <div class="mini-flow-row">
+                    <div class="mini-flow-node">REPORT</div>
+                    <span class="mini-flow-arrow" aria-hidden="true">→</span>
+                    <div class="mini-flow-node">LOCATE</div>
+                    <span class="mini-flow-arrow" aria-hidden="true">→</span>
+                    <div class="mini-flow-node">VERIFY</div>
+                </div>
+
+                <span class="mini-flow-down" aria-hidden="true">↓</span>
+
+                <div class="mini-flow-row">
+                    <div class="mini-flow-node mini-flow-node--result">TRACK &amp; INFORM</div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         03. WHY NDMS?
+         ================================================= -->
+
+    <section class="about-section" id="why-ndms" aria-labelledby="why-ndms-title">
+
+        <div class="section-heading reveal">
+            <div class="section-eyebrow">
+                <span class="section-eyebrow-line"></span>
+                <span>WHY NDMS?</span>
+            </div>
+
+            <h2 id="why-ndms-title">
+                Making disaster information more useful.
+            </h2>
+        </div>
+
+        <div class="why-list reveal">
+
+            <div class="why-item">
+                <div class="why-number">01</div>
+                <div class="why-body">
+                    <h3>Simpler Reporting</h3>
+                    <p>
+                        Make it easier for people to communicate what
+                        happened and provide relevant incident details.
+                    </p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-number">02</div>
+                <div class="why-body">
+                    <h3>Better Information</h3>
+                    <p>
+                        Bring important incident details such as
+                        descriptions, locations, images and other
+                        available information together in a structured
+                        report.
+                    </p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-number">03</div>
+                <div class="why-body">
+                    <h3>Connected Awareness</h3>
+                    <p>
+                        Help communities stay informed through organized
+                        reports, updates and relevant disaster information.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         04. HOW NDMS WORKS
+         ================================================= -->
+
+    <section class="about-section" id="how-it-works" aria-labelledby="how-it-works-title">
+
+        <div class="section-heading reveal">
+            <div class="section-eyebrow">
+                <span class="section-eyebrow-line"></span>
+                <span>HOW NDMS WORKS</span>
+            </div>
+
+            <h2 id="how-it-works-title">
+                From incident report to informed response.
+            </h2>
+
+            <p>
+                NDMS follows a simple flow that helps organize disaster
+                information from initial reporting through review and
+                communication.
+            </p>
+        </div>
+
+        <div class="process-timeline reveal">
+
+            <article class="process-step">
+                <span class="process-number">01</span>
+                <h3>Report</h3>
+                <p>Share incident details, descriptions and photos.</p>
+            </article>
+
+            <article class="process-step">
+                <span class="process-number">02</span>
+                <h3>Locate</h3>
+                <p>Add location information using the map.</p>
+            </article>
+
+            <article class="process-step">
+                <span class="process-number">03</span>
+                <h3>Verify</h3>
+                <p>Submitted information is reviewed and its status updated.</p>
+            </article>
+
+            <article class="process-step">
+                <span class="process-number">04</span>
+                <h3>Respond</h3>
+                <p>Verified information supports the response process.</p>
+            </article>
+
+            <article class="process-step">
+                <span class="process-number">05</span>
+                <h3>Inform</h3>
+                <p>Users stay informed through updates and alerts.</p>
+            </article>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         05. WHAT NDMS CONNECTS
+         ================================================= -->
+
+    <section class="about-section" id="what-ndms-connects" aria-labelledby="connects-title">
+
+        <div class="section-heading reveal">
+            <div class="section-eyebrow">
+                <span class="section-eyebrow-line"></span>
+                <span>WHAT NDMS CONNECTS</span>
+            </div>
+
+            <h2 id="connects-title">
+                One connected view of disaster information.
+            </h2>
+        </div>
+
+        <div class="connects-grid reveal">
+
+            <div class="connects-item">
+                <span class="connects-mark" aria-hidden="true">+</span>
+                <div>
+                    <h3>Incident Reporting</h3>
+                    <p>Submit useful incident information.</p>
+                </div>
+            </div>
+
+            <div class="connects-item">
+                <span class="connects-mark" aria-hidden="true">◎</span>
+                <div>
+                    <h3>Location-Based Reporting</h3>
+                    <p>Add location context to reports.</p>
+                </div>
+            </div>
+
+            <div class="connects-item">
+                <span class="connects-mark" aria-hidden="true">→</span>
+                <div>
+                    <h3>Report Tracking</h3>
+                    <p>Follow submitted reports through the system.</p>
+                </div>
+            </div>
+
+            <div class="connects-item">
+                <span class="connects-mark" aria-hidden="true">✓</span>
+                <div>
+                    <h3>Report Verification</h3>
+                    <p>Support reliable and reviewed report information.</p>
+                </div>
+            </div>
+
+            <div class="connects-item">
+                <span class="connects-mark" aria-hidden="true">!</span>
+                <div>
+                    <h3>Disaster Updates</h3>
+                    <p>Stay aware of relevant disaster information.</p>
+                </div>
+            </div>
+
+            <div class="connects-item">
+                <span class="connects-mark" aria-hidden="true">◇</span>
+                <div>
+                    <h3>Emergency Coordination</h3>
+                    <p>Support a more connected information flow.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         06. WHO IS NDMS FOR?
+         ================================================= -->
+
+    <section class="about-section" id="who-is-ndms-for" aria-labelledby="who-for-title">
+
+        <div class="audience-layout">
+
+            <div class="audience-copy reveal">
+                <div class="section-eyebrow">
+                    <span class="section-eyebrow-line"></span>
+                    <span>WHO IS NDMS FOR?</span>
+                </div>
+
+                <h2 id="who-for-title">
+                    For communities that need to stay informed.
+                </h2>
+
+                <p>
+                    NDMS gives citizens a structured way to contribute
+                    useful information about disaster incidents and stay
+                    connected with the system.
+                </p>
+            </div>
+
+            <div class="audience-card reveal">
+                <span class="audience-tag">CITIZENS</span>
+
+                <ul class="audience-list">
+                    <li><span aria-hidden="true">✓</span> Report incidents</li>
+                    <li><span aria-hidden="true">✓</span> Share descriptions and photos</li>
+                    <li><span aria-hidden="true">✓</span> Provide location information</li>
+                    <li><span aria-hidden="true">✓</span> Follow submitted reports</li>
+                    <li><span aria-hidden="true">✓</span> Stay informed about updates</li>
+                </ul>
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         07. COMMUNITY PARTICIPATION CTA
+         ================================================= -->
+
+    <section class="about-cta" aria-labelledby="about-cta-title">
+
+        <div class="about-cta-inner reveal">
+
+            <div class="about-cta-copy">
+                <h2 id="about-cta-title">
+                    A safer community starts with better information.
+                </h2>
+
+                <p>
+                    Every useful report contributes to a clearer
+                    understanding of what is happening around us.
+                </p>
+            </div>
+
+            <a href="{% url 'create_disaster_report' %}" class="about-cta-btn">
+                Report an Incident
+                <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+     ===================================================== -->
+
+<footer class="about-footer">
+
+    <div class="footer-inner">
+
+
+        <!-- BRAND -->
+
+        <div class="footer-brand">
+
+            <a
+                href="{% url 'home' %}"
+                class="footer-brand-title"
+            >
+
+                <strong>
+                    NDMS
+                </strong>
+
+                <span>
+                    National Disaster Management System
+                </span>
+
+            </a>
+
+
+            <p>
+                Building a safer and better-informed
+                community through connected disaster reporting
+                across Nepal.
+            </p>
+
+        </div>
+
+
+        <!-- FOOTER LINKS -->
+
+        <div class="footer-links">
+
+
+            <!-- NAVIGATION -->
+
+            <div>
+
+                <strong>
+                    Navigation
+                </strong>
+
+                <a href="{% url 'home' %}">
+                    Home
+                </a>
+
+                <a href="{% url 'about' %}">
+                    About
+                </a>
+
+
+                <a href="{% url 'home' %}#contact">
+                    Contact
+                </a>
+
+            </div>
+
+
+            <!-- SERVICES -->
+
+            <div>
+
+                <strong>
+                    Services
+                </strong>
+
+                {% if not user.is_staff and not user.is_superuser %}
+
+                    <a href="{% url 'create_disaster_report' %}">
+                        Report Incident
+                    </a>
+
+                {% endif %}
+
+
+                {% if user.is_authenticated %}
+
+                    {% if user.is_staff or user.is_superuser %}
+
+                        <a href="{% url 'admin_dashboard' %}">
+                            Admin Dashboard
+                        </a>
+
+                    {% else %}
+
+                        <a href="{% url 'my_reports' %}">
+                            My Reports
+                        </a>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <a href="{% url 'login' %}">
+                        My Reports
+                    </a>
+
+                {% endif %}
+
+
+
+            </div>
+
+
+            <!-- ACCOUNT -->
+
+            <div>
+
+                <strong>
+                    Account
+                </strong>
+
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'logout' %}">
+                        Logout
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}">
+                        Login
+                    </a>
+
+                    <a href="{% url 'register' %}">
+                        Register
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- SOCIAL -->
+
+        <div class="footer-social">
+
+            <strong class="footer-social-title">
+                Follow NDMS
+            </strong>
+
+            <div class="footer-social-icons">
+
+                <a href="https://www.facebook.com/dip.esh.641646" class="footer-social-icon" aria-label="Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H16V5.6c-.26-.04-1.16-.1-2.2-.1-2.18 0-3.68 1.33-3.68 3.78V11H7.8v3.2h2.32V22h3.2v-7.8h2.3l.37-3.2h-2.67V9.6c0-.92.25-1.1 1.18-1.1Z" fill="currentColor"/></svg>
+                </a>
+
+                <a href="https://www.instagram.com/_212.m6_?stkn=MXg1ZHdma3IwMWxtYg==" class="footer-social-icon" aria-label="Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.1" cy="6.9" r="1" fill="currentColor"/></svg>
+                </a>
+
+                <a href="#" class="footer-social-icon" aria-label="X">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </a>
+
+                <a href="#" class="footer-social-icon" aria-label="YouTube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M10.5 10.2v3.6l3.3-1.8-3.3-1.8Z" fill="currentColor"/></svg>
+                </a>
+
+                <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="8" cy="8.3" r="1.15" fill="currentColor"/><path d="M8 11v6.2M12 11v6.2M12 13.6c0-1.4 1-2.3 2.2-2.3 1.3 0 2.1.9 2.1 2.4v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOOTER BOTTOM -->
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 National Disaster Management System
+        </span>
+
+        <span>
+            NDMS
+        </span>
+
+    </div>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script
+    src="{% static 'reports/js/public-nav.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/about.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+
+</body>
+</html>

@@ -1,0 +1,271 @@
+/* =========================================================
+   NDMS ADMIN — CITIZENS LIST
+
+   Scoped styling for the Citizens List page only.
+
+   This intentionally does NOT redefine the shared primitives
+   (page intro, summary card shell, toolbar, table, pagination,
+   citizen avatar cell) that already live in:
+
+       admin-dashboard.css
+       admin-disaster-reports.css
+
+   Those are loaded alongside this file and reused as-is so the
+   Citizens List matches the rest of the admin system. This file
+   only adds the handful of things Citizens needs on top of them.
+   ========================================================= */
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+.citizens-visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+
+/* =========================================================
+   SEARCH + STATUS FILTER
+   Matches the Disaster Types filter bar (.dt-filter-bar /
+   .dt-search-field / .dt-select-field) — same pill-shaped
+   compact fields, same palette, own scoped class names.
+   ========================================================= */
+
+.citizens-filter-bar {
+    margin-bottom: 14px;
+}
+
+.citizens-filter-form {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.citizens-search-field,
+.citizens-select-field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 37px;
+    background: #ffffff;
+    border: 1px solid var(--ndms-border);
+    border-radius: 7px;
+}
+
+.citizens-search-field {
+    width: min(350px, 100%);
+}
+
+.citizens-select-field {
+    width: 154px;
+}
+
+.citizens-search-field:focus-within,
+.citizens-select-field:focus-within {
+    border-color: #b4bbc6;
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+}
+
+.citizens-search-field svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 11px;
+    flex: 0 0 auto;
+    color: var(--ndms-light-muted);
+}
+
+.citizens-search-field input,
+.citizens-select-field select {
+    width: 100%;
+    min-width: 0;
+    height: 35px;
+    border: 0;
+    outline: 0;
+    color: var(--ndms-text);
+    background: transparent;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 500;
+}
+
+.citizens-search-field input {
+    padding: 0 10px 0 8px;
+}
+
+.citizens-search-field input::placeholder {
+    color: var(--ndms-light-muted);
+}
+
+.citizens-select-field select {
+    appearance: none;
+    padding: 0 31px 0 10px;
+    cursor: pointer;
+}
+
+.citizens-select-field > svg {
+    position: absolute;
+    right: 9px;
+    width: 12px;
+    height: 12px;
+    color: var(--ndms-muted);
+    pointer-events: none;
+}
+
+.citizens-filter-button,
+.citizens-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.citizens-filter-button {
+    padding: 0 13px;
+    color: #ffffff;
+    background: var(--ndms-navy);
+    border: 1px solid var(--ndms-navy);
+}
+
+.citizens-filter-button:hover {
+    background: var(--ndms-navy-light);
+}
+
+.citizens-reset-button {
+    padding: 0 9px;
+    color: var(--ndms-muted);
+    background: transparent;
+    border: 1px solid transparent;
+}
+
+.citizens-reset-button:hover {
+    color: var(--ndms-navy);
+    background: #ffffff;
+    border-color: var(--ndms-border);
+}
+
+
+/* =========================================================
+   SUMMARY — 3 COMPACT STATISTICS
+   ========================================================= */
+
+.citizens-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* .dr-summary-card's left accent bar defaults to navy, which
+   already suits the "Total citizens" card. Active/Inactive get
+   their own accent color on top of the same card shell. */
+
+.citizens-summary-active::before {
+    background: var(--ndms-green);
+}
+
+.citizens-summary-inactive::before {
+    background: var(--ndms-red);
+}
+
+
+/* =========================================================
+   CITIZEN CELL — name stacked above @username
+   ========================================================= */
+
+.citizens-name-cell {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: 1px;
+}
+
+.citizens-name-cell .table-primary-link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.citizens-username {
+    display: block;
+    overflow: hidden;
+    color: var(--ndms-muted);
+    font-size: 9px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   ACCOUNT STATUS BADGES
+   ========================================================= */
+
+.citizens-status-active {
+    color: var(--ndms-green);
+    background: #ecfdf3;
+}
+
+.citizens-status-inactive {
+    color: var(--ndms-red);
+    background: #fef3f2;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+    .citizens-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .citizens-summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .citizens-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .citizens-search-field,
+    .citizens-select-field,
+    .citizens-filter-button,
+    .citizens-reset-button {
+        width: 100%;
+    }
+
+    .citizens-filter-button {
+        order: 2;
+    }
+
+}

@@ -1,0 +1,316 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ form_title }} | NDMS Administration
+{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disaster-types.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Disaster Types</span>
+<span class="dt-breadcrumb-divider">/</span>
+<span>{{ form_mode|title }}</span>
+{% endblock %}
+
+{% block page_title %}
+{{ form_title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard dt-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="dt-page-header dt-form-header">
+
+        <div class="dt-page-header-copy">
+
+            <span class="dt-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>{{ form_title }}</h1>
+
+            <p>
+                {% if form_mode == 'edit' %}
+                    Update the disaster type information and status.
+                {% else %}
+                    Add a new disaster type to NDMS.
+                {% endif %}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'admin_disaster_types' %}"
+            class="dt-secondary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+
+            <span>Back</span>
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         COMPACT FORM
+         ===================================================== -->
+    <section class="dt-form-shell">
+
+        <form
+            method="post"
+            class="dt-form"
+            novalidate
+        >
+
+            {% csrf_token %}
+
+
+            <!-- CATEGORY -->
+            <div class="dt-form-section">
+
+                <div class="dt-form-section-heading">
+
+                    <span class="dt-section-kicker">
+                        CATEGORY
+                    </span>
+
+                    <h2>
+                        Basic information
+                    </h2>
+
+                </div>
+
+
+                <!-- NAME -->
+                <div class="dt-field">
+
+                    <label
+                        for="{{ form.name.id_for_label }}"
+                        class="dt-field-label"
+                    >
+                        Name
+                    </label>
+
+                    {{ form.name }}
+
+                    {% if form.name.errors %}
+
+                        <div
+                            class="dt-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.name.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- DESCRIPTION -->
+                <div class="dt-field dt-field-description">
+
+                    <label
+                        for="{{ form.description.id_for_label }}"
+                        class="dt-field-label"
+                    >
+                        Description
+                    </label>
+
+                    {{ form.description }}
+
+                    <div class="dt-description-meta">
+                        <span id="dtDescriptionCount">
+                            0 characters
+                        </span>
+                    </div>
+
+                    {% if form.description.errors %}
+
+                        <div
+                            class="dt-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.description.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="dt-form-section dt-active-section">
+
+                <div class="dt-form-section-heading">
+
+                    <span class="dt-section-kicker">
+                        STATUS
+                    </span>
+
+                    <h2>
+                        Availability
+                    </h2>
+
+                </div>
+
+
+                <label
+                    for="{{ form.is_active.id_for_label }}"
+                    class="dt-checkbox-row"
+                >
+
+                    {{ form.is_active }}
+
+                    <span class="dt-checkbox-box">
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2.4"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="m5 12.5 4.2 4L19 7"></path>
+                        </svg>
+                    </span>
+
+                    <span class="dt-checkbox-label">
+                        Is active
+                    </span>
+
+                </label>
+
+
+                {% if form.is_active.errors %}
+
+                    <div
+                        class="dt-field-error"
+                        role="alert"
+                    >
+                        {% for error in form.is_active.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- FORM ERRORS -->
+            {% if form.non_field_errors %}
+
+                <div
+                    class="dt-form-error"
+                    role="alert"
+                >
+                    {% for error in form.non_field_errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+
+            <!-- ACTION FOOTER -->
+            <div class="dt-form-actions">
+
+                <a
+                    href="{% url 'admin_disaster_types' %}"
+                    class="dt-form-cancel"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="dt-primary-button dt-form-submit"
+                >
+
+                    {% if form_mode == 'edit' %}
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M5 4h11l3 3v13H5z"></path>
+                            <path d="M8 4v6h8V4"></path>
+                            <path d="M8 20v-6h8v6"></path>
+                        </svg>
+
+                        <span>Save changes</span>
+
+                    {% else %}
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        >
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+                        </svg>
+
+                        <span>Create disaster type</span>
+
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="{% static 'reports/admin/admin-disaster-types.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,1572 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Manage your NDMS citizen account details, security and activity."
+    >
+
+    <title>
+        NDMS | My Profile
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/navbar-avatar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/profile.css' %}"
+    >
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="dashboard-page profile-page">
+
+
+<!-- =====================================================
+     MOBILE OVERLAY
+     ===================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside
+    class="dashboard-sidebar"
+    id="dashboardSidebar"
+>
+
+
+    <!-- BRAND -->
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="dashboard-brand"
+    >
+
+        <div class="dashboard-logo">
+            ND
+        </div>
+
+        <div class="dashboard-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- SIDEBAR NAVIGATION -->
+
+        <nav
+        class="sidebar-navigation"
+        aria-label="Dashboard navigation"
+    >
+
+
+        <span class="sidebar-section-title">
+            OVERVIEW
+        </span>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            REPORTING
+        </span>
+
+
+        <!-- REPORT INCIDENT -->
+
+        <a
+            href="{% url 'create_disaster_report' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'create_disaster_report' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'create_disaster_report' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 10v4"></path><path d="M12 17.2v.1"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Report Incident
+            </span>
+
+        </a>
+
+
+        <!-- MY REPORTS -->
+
+        <a
+            href="{% url 'my_reports' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Reports
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            DISCOVER
+        </span>
+
+
+        <!-- DISASTERS — collapsible group -->
+
+        <div class="sidebar-group{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %} is-open is-active-group{% endif %}">
+
+            <button
+                type="button"
+                class="sidebar-link sidebar-group-toggle"
+                aria-expanded="{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %}true{% else %}false{% endif %}"
+                aria-controls="sidebarDisastersMenu"
+            >
+
+                <span class="sidebar-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 8v8l8 5 8-5V8z"></path><path d="m4 8 8 5 8-5"></path><path d="M12 13v8"></path></svg>
+                </span>
+
+                <span class="sidebar-link-text">
+                    Disasters
+                </span>
+
+                <svg class="sidebar-group-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+
+            </button>
+
+            <div
+                class="sidebar-submenu"
+                id="sidebarDisastersMenu"
+            >
+
+                <a
+                    href="{% url 'disaster_list' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %}aria-current="page"{% endif %}
+                >
+                    View Disasters
+                </a>
+
+                <a
+                    href="{% url 'home' %}#disasters"
+                    class="sidebar-sublink"
+                >
+                    Disaster Types
+                </a>
+
+                <a
+                    href="{% url 'disaster_guidelines' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_guidelines' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_guidelines' %}aria-current="page"{% endif %}
+                >
+                    Awareness &amp; Guidelines
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            SAFETY
+        </span>
+
+
+        <!-- ALERTS -->
+
+        <a
+            href="{% url 'alerts' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Alerts
+            </span>
+
+
+            {% if unread_count > 0 %}
+
+                <span class="sidebar-badge">
+                    {{ unread_count }}
+                </span>
+
+            {% endif %}
+
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            ACCOUNT
+        </span>
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{% url 'profile' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path><circle cx="12" cy="7" r="3.6"></circle></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Profile
+            </span>
+
+        </a>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="{% url 'settings' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'settings' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         SIDEBAR FOOTER -- "Back to Website"
+         Minimal variant: one arrow + label, no subtitle, no
+         boxed icon, no second arrow, with a subtle translateX
+         hover on the arrow (dashboard.css .sidebar-footer-link--
+         minimal / .sidebar-footer-icon--plain). Destination and
+         underlying .sidebar-footer-link base are unchanged; the
+         modifier classes keep this scoped to the Citizen
+         Dashboard so Alerts / My Reports / Profile / Report
+         Detail / Report Incident / Settings / Help & Support
+         keep their existing footer link as-is.
+         ================================================= -->
+
+    <div class="sidebar-footer">
+
+        <a
+            href="{% url 'home' %}"
+            class="sidebar-footer-link sidebar-footer-link--minimal"
+            aria-label="Back to Website"
+        >
+
+            <span class="sidebar-footer-icon--plain" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5"></path>
+                    <path d="m11 18-6-6 6-6"></path>
+                </svg>
+            </span>
+
+            <span class="sidebar-footer-title">Back to Website</span>
+
+        </a>
+
+    </div>
+
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN WRAPPER
+     ===================================================== -->
+
+<div class="dashboard-wrapper">
+
+
+    <!-- =================================================
+         TOPBAR
+         ================================================= -->
+
+    <header class="dashboard-topbar">
+
+
+        <div class="topbar-left">
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="mobile-sidebar-toggle"
+                id="mobileSidebarToggle"
+                aria-label="Open dashboard menu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <div class="page-identity">
+
+    <div class="page-breadcrumb" aria-label="Breadcrumb">
+        <span>NDMS</span>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span>Citizen</span>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span>My Profile</span>
+    </div>
+
+
+    <div class="page-heading">
+
+        <h1>
+            My Profile
+        </h1>
+
+    </div>
+
+</div>
+
+
+        </div>
+
+
+
+        <div class="topbar-right">
+
+
+            <!-- =================================================
+                 NOTIFICATION
+                 ================================================= -->
+
+            {% include 'reports/partials/notification_dropdown.html' %}
+
+
+
+            <!-- =================================================
+                 USER
+                 ================================================= -->
+
+            <div
+                class="topbar-user ndms-avatar-wrapper"
+                id="ndmsAvatarWrapper"
+            >
+
+                {% with display_name=user.full_name|default:user.username %}
+
+                <button
+                    type="button"
+                    class="ndms-avatar-btn"
+                    id="ndmsAvatarBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="ndmsAvatarMenu"
+                    aria-label="Open account menu"
+                >
+
+                    <span class="ndms-avatar-circle">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% else %}
+
+                            {{ display_name|first|upper }}
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="ndms-avatar-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="ndms-avatar-menu"
+                    id="ndmsAvatarMenu"
+                    role="menu"
+                >
+
+                    <div class="ndms-avatar-menu-header">
+
+                        <span class="ndms-avatar-menu-avatar">
+
+                            {% if user.avatar %}
+
+                                <img
+                                    src="{{ user.avatar.url }}"
+                                    alt=""
+                                >
+
+                            {% else %}
+
+                                {{ display_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                        <div class="ndms-avatar-menu-info">
+
+                            <strong class="ndms-avatar-menu-name">
+                                {{ display_name }}
+                            </strong>
+
+                            {% if user.email %}
+
+                                <span class="ndms-avatar-menu-email">
+                                    {{ user.email }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'profile' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3.6" stroke="currentColor" stroke-width="1.8"/></svg>
+                            Profile
+                        </a>
+
+                        <a
+                            href="{% url 'settings' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                            Settings
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#contact"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v10H9l-4 3.5v-3.5H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Contact Us
+                        </a>
+
+                        <a
+                            href="{% url 'help_support' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9.3a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .9-1 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                            Help &amp; Support
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#feedback-section-title"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7L12 4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Feedback
+                        </a>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="ndms-avatar-menu-item ndms-avatar-menu-logout"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4.5H6a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 6 19.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 8 20 12l-4.5 4M20 12H9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endwith %}
+
+            </div>
+
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+         ================================================= -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             DJANGO MESSAGES
+             ================================================= -->
+
+        {% if messages %}
+
+            <div class="django-messages">
+
+                {% for message in messages %}
+
+                    <div
+                        class="django-message django-message-{{ message.tags }}"
+                        role="alert"
+                    >
+
+                        <span class="message-icon">
+                            ✓
+                        </span>
+
+                        <span class="message-text">
+                            {{ message }}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="message-close"
+                            aria-label="Close message"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+
+        <!-- =================================================
+             PROFILE HEADER
+             ================================================= -->
+
+        <section class="pf-header-card">
+
+            <div class="pf-header-avatar-block">
+
+                <div
+                    class="pf-avatar-edit-wrapper"
+                    id="pfAvatarEditWrapper"
+                >
+
+                    <div class="pf-header-avatar">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% elif user.full_name %}
+
+                            {{ user.full_name|first|upper }}
+
+                        {% else %}
+
+                            {{ user.username|first|upper }}
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="pf-avatar-edit-badge"
+                        id="pfAvatarEditBadge"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        aria-controls="pfAvatarPopover"
+                        aria-label="Change profile photo"
+                    >
+                        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.1l.9-1.5a1.5 1.5 0 0 1 1.28-.72h4.44a1.5 1.5 0 0 1 1.28.72l.9 1.5h2.1A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.1" stroke="currentColor" stroke-width="1.7"/></svg>
+                    </button>
+
+
+                    <div
+                        class="pf-avatar-popover"
+                        id="pfAvatarPopover"
+                        role="menu"
+                    >
+
+                        {% if user.avatar %}
+
+                            <button
+                                type="button"
+                                class="pf-avatar-popover-item"
+                                id="pfViewPhotoBtn"
+                                role="menuitem"
+                            >
+                                <svg class="pf-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/></svg>
+                                View Photo
+                            </button>
+
+                            <div class="pf-avatar-popover-divider"></div>
+
+                        {% endif %}
+
+                        <button
+                            type="button"
+                            class="pf-avatar-popover-item"
+                            id="pfTakePhotoBtn"
+                            role="menuitem"
+                        >
+                            <svg class="pf-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.1l.9-1.5a1.5 1.5 0 0 1 1.28-.72h4.44a1.5 1.5 0 0 1 1.28.72l.9 1.5h2.1A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.1" stroke="currentColor" stroke-width="1.7"/></svg>
+                            Take Photo
+                        </button>
+
+                        <button
+                            type="button"
+                            class="pf-avatar-popover-item"
+                            id="pfChooseGalleryBtn"
+                            role="menuitem"
+                        >
+                            <svg class="pf-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4.5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1.6" stroke="currentColor" stroke-width="1.7"/><path d="m5.5 16.5 4.2-4.3a1.6 1.6 0 0 1 2.2-.06L15 15.2l1-1a1.6 1.6 0 0 1 2.2 0l1.3 1.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Choose from Gallery
+                        </button>
+
+                        {% if user.avatar %}
+
+                            <div class="pf-avatar-popover-divider"></div>
+
+                            <button
+                                type="button"
+                                class="pf-avatar-popover-item pf-avatar-popover-item-danger"
+                                id="pfRemovePhotoBtn"
+                                role="menuitem"
+                            >
+                                <svg class="pf-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9.5 7V5.2A1.2 1.2 0 0 1 10.7 4h2.6a1.2 1.2 0 0 1 1.2 1.2V7M7.5 7l.7 11a1.5 1.5 0 0 0 1.5 1.4h4.6a1.5 1.5 0 0 0 1.5-1.4l.7-11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                Remove Photo
+                            </button>
+
+                        {% endif %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="pf-header-info">
+
+                <h2>
+
+                    {% if user.full_name %}
+
+                        {{ user.full_name }}
+
+                    {% else %}
+
+                        {{ user.username }}
+
+                    {% endif %}
+
+                </h2>
+
+                <span class="pf-header-username">
+                    @{{ user.username }}
+                </span>
+
+                <span class="pf-identity-meta">
+
+                    <span
+                        class="pf-status-dot"
+                        aria-hidden="true"
+                    ></span>
+
+                    {% if user.role %}
+
+                        {{ user.role|title }}
+
+                    {% else %}
+
+                        Citizen
+
+                    {% endif %}
+
+                    <span class="pf-identity-meta-divider">&middot;</span>
+
+                    Active
+
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                class="secondary-action pf-identity-edit-button"
+                id="pfEditButton"
+                aria-expanded="false"
+                aria-controls="pfEditForm"
+            >
+
+                Edit Profile
+
+            </button>
+
+        </section>
+
+
+
+        <!-- =================================================
+             PERSONAL INFORMATION
+             ================================================= -->
+
+        <section
+            class="pf-card"
+            id="personalInformationCard"
+        >
+
+            <div class="section-title-row">
+
+                <div>
+
+                    <span>
+                        YOUR DETAILS
+                    </span>
+
+                    <h2>
+                        Personal Information
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- =============================================
+                 VIEW MODE
+                 ============================================= -->
+
+            <div
+                class="pf-view-grid"
+                id="pfViewMode"
+            >
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Full Name
+                    </span>
+
+                    <span class="pf-view-value">
+
+                        {% if user.full_name %}
+
+                            {{ user.full_name }}
+
+                        {% else %}
+
+                            Not provided
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Username
+                    </span>
+
+                    <span class="pf-view-value">
+                        {{ user.username }}
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Email Address
+                    </span>
+
+                    <span class="pf-view-value">
+                        {{ user.email }}
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Phone Number
+                    </span>
+
+                    <span class="pf-view-value">
+
+                        {% if user.phone %}
+
+                            {{ user.phone }}
+
+                        {% else %}
+
+                            Not provided
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =============================================
+                 EDIT MODE
+                 ============================================= -->
+
+            <form
+                method="POST"
+                action="{% url 'profile' %}"
+                class="pf-edit-form"
+                id="pfEditForm"
+            >
+
+                {% csrf_token %}
+
+
+                <div class="pf-edit-grid">
+
+
+                    <div class="pf-form-group">
+
+                        <label for="id_full_name">
+                            Full Name
+                            <span class="pf-required">*</span>
+                        </label>
+
+                        {{ form.full_name }}
+
+                        {% if form.full_name.errors %}
+
+                            <span class="pf-field-error">
+                                {{ form.full_name.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="pf-form-group">
+
+                        <label for="pfUsernameReadonly">
+                            Username
+                        </label>
+
+                        <input
+                            type="text"
+                            id="pfUsernameReadonly"
+                            value="{{ user.username }}"
+                            class="pf-readonly-input"
+                            disabled
+                        >
+
+                        <span class="pf-hint">
+                            Username cannot be changed.
+                        </span>
+
+                    </div>
+
+
+                    <div class="pf-form-group">
+
+                        <label for="id_email">
+                            Email Address
+                            <span class="pf-required">*</span>
+                        </label>
+
+                        {{ form.email }}
+
+                        {% if form.email.errors %}
+
+                            <span class="pf-field-error">
+                                {{ form.email.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="pf-form-group">
+
+                        <label for="id_phone">
+                            Phone Number
+                        </label>
+
+                        {{ form.phone }}
+
+                        {% if form.phone.errors %}
+
+                            <span class="pf-field-error">
+                                {{ form.phone.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                </div>
+
+
+                {% if form.non_field_errors %}
+
+                    <span class="pf-field-error">
+                        {{ form.non_field_errors.0 }}
+                    </span>
+
+                {% endif %}
+
+
+                <div class="pf-edit-actions">
+
+                    <button
+                        type="submit"
+                        class="primary-action"
+                    >
+                        Save Changes
+                    </button>
+
+                    <button
+                        type="button"
+                        class="secondary-action"
+                        id="pfCancelButton"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+
+            </form>
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACCOUNT INFORMATION
+             ================================================= -->
+
+        <section class="pf-card">
+
+            <div class="section-title-row">
+
+                <div>
+
+                    <span>
+                        ACCOUNT
+                    </span>
+
+                    <h2>
+                        Account Information
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="pf-view-grid">
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Username
+                    </span>
+
+                    <span class="pf-view-value">
+                        @{{ user.username }}
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Role
+                    </span>
+
+                    <span class="pf-view-value">
+
+                        {% if user.role %}
+
+                            {{ user.role|title }}
+
+                        {% else %}
+
+                            Citizen
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Account Status
+                    </span>
+
+                    <span class="pf-view-value">
+                        <span class="pf-status-pill pf-status-pill-active">
+                            Active
+                        </span>
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Member Since
+                    </span>
+
+                    <span class="pf-view-value">
+                        {{ user.date_joined|citizen_date:citizen_date_format }}
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Last Login
+                    </span>
+
+                    <span class="pf-view-value">
+
+                        {% if user.last_login %}
+
+                            {{ user.last_login|citizen_datetime:citizen_date_format }}
+
+                        {% else %}
+
+                            Not available
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             SECURITY
+             ================================================= -->
+
+        <section class="pf-card">
+
+            <div class="section-title-row">
+
+                <div>
+
+                    <span>
+                        ACCOUNT SAFETY
+                    </span>
+
+                    <h2>
+                        Security
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="pf-security-row">
+
+                <p class="pf-security-text">
+                    Keep your account secure by using a strong
+                    password and updating it regularly.
+                </p>
+
+                <a
+                    href="{% url 'password_change' %}"
+                    class="secondary-action"
+                >
+                    Change Password
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CHANGE PHOTO MODAL
+             ================================================= -->
+
+        <div
+            class="pf-photo-modal"
+            id="pfChangePhotoModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pfChangePhotoTitle"
+        >
+
+            <div class="pf-photo-modal-content">
+
+                <div class="pf-photo-modal-header">
+
+                    <h2 id="pfChangePhotoTitle">
+                        Change Profile Photo
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="pf-photo-modal-close"
+                        id="pfChangePhotoClose"
+                        aria-label="Close"
+                    >
+                        ✕
+                    </button>
+
+                </div>
+
+
+                <div class="pf-photo-modal-preview">
+
+                    <div
+                        class="pf-photo-modal-avatar"
+                        id="pfPhotoPreviewAvatar"
+                    >
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                                id="pfPhotoPreviewImage"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src=""
+                                alt=""
+                                id="pfPhotoPreviewImage"
+                                hidden
+                            >
+
+                            <span id="pfPhotoPreviewInitials">
+
+                                {% if user.full_name %}
+
+                                    {{ user.full_name|first|upper }}
+
+                                {% else %}
+
+                                    {{ user.username|first|upper }}
+
+                                {% endif %}
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- CROP + ZOOM — shown once a new photo is
+                         picked, so the citizen can position and
+                         zoom it before it's saved as their avatar
+                         (same admin-style crop stage used on the
+                         Admin Profile page) -->
+                    <div
+                        class="pf-crop-shell"
+                        id="pfCropShell"
+                        hidden
+                    >
+
+                        <div
+                            class="pf-crop-stage"
+                            id="pfCropStage"
+                        >
+                            <img
+                                src=""
+                                alt=""
+                                id="pfCropImage"
+                                draggable="false"
+                            >
+                        </div>
+
+                        <div class="pf-crop-zoom-row">
+
+                            <svg class="pf-crop-zoom-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.7"/><path d="m19 19-3.8-3.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+
+                            <input
+                                type="range"
+                                class="pf-crop-zoom-slider"
+                                id="pfCropZoom"
+                                min="0"
+                                max="100"
+                                step="1"
+                                value="0"
+                                aria-label="Zoom photo"
+                            >
+
+                            <svg class="pf-crop-zoom-icon pf-crop-zoom-icon-lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.7"/><path d="M8 10.5h5M10.5 8v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m19 19-3.8-3.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+
+                        </div>
+
+                        <div class="pf-crop-actions-row">
+
+                            <span class="pf-crop-hint">
+                                Drag to reposition
+                            </span>
+
+                            <button
+                                type="button"
+                                class="pf-crop-reset"
+                                id="pfCropReset"
+                            >
+                                Reset
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    method="POST"
+                    action="{% url 'change_photo' %}"
+                    enctype="multipart/form-data"
+                    id="pfChangePhotoForm"
+                >
+
+                    {% csrf_token %}
+
+                    <p class="pf-photo-modal-hint">
+                        Upload a new profile photo
+                        <br>
+                        JPG, PNG &bull; Maximum 5MB
+                    </p>
+
+
+                    <label
+                        for="{{ avatar_form.avatar.id_for_label }}"
+                        class="pf-choose-photo-btn"
+                        id="pfChoosePhotoLabel"
+                        hidden
+                    >
+                        Choose a different photo
+                    </label>
+
+                    {{ avatar_form.avatar }}
+
+                    <span
+                        class="pf-photo-modal-filename"
+                        id="pfPhotoFileName"
+                    ></span>
+
+                    {% if avatar_form.avatar.errors %}
+
+                        <span class="pf-field-error">
+                            {{ avatar_form.avatar.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+
+                    <div class="pf-photo-modal-actions">
+
+                        <button
+                            type="submit"
+                            class="primary-action"
+                            id="pfSavePhotoBtn"
+                            disabled
+                        >
+                            Save Photo
+                        </button>
+
+                        <button
+                            type="button"
+                            class="secondary-action"
+                            id="pfCancelPhotoBtn"
+                        >
+                            Cancel
+                        </button>
+
+                    </div>
+
+                </form>
+
+
+                <!-- Offscreen canvas used only to render the final
+                     cropped square before it's attached to the file
+                     input and uploaded — never shown to the citizen -->
+                <canvas
+                    id="pfCropOutputCanvas"
+                    hidden
+                ></canvas>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             VIEW PHOTO
+             Lightweight lightbox — only ever opened from the
+             avatar popover's "View Photo" option, which is
+             only rendered when the citizen has an avatar, so
+             this modal is only ever populated with a real photo.
+             ================================================= -->
+
+        {% if user.avatar %}
+
+            <div
+                class="pf-photo-view-modal"
+                id="pfViewPhotoModal"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="pfViewPhotoTitle"
+            >
+
+                <div class="pf-photo-view-content">
+
+                    <div class="pf-photo-view-header">
+
+                        <h2 id="pfViewPhotoTitle">
+                            Profile Photo
+                        </h2>
+
+                        <button
+                            type="button"
+                            class="pf-photo-modal-close"
+                            id="pfViewPhotoClose"
+                            aria-label="Close"
+                        >
+                            ✕
+                        </button>
+
+                    </div>
+
+                    <div class="pf-photo-view-body">
+
+                        <img
+                            src="{{ user.avatar.url }}"
+                            alt="Your profile photo"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             REMOVE PHOTO
+             (submitted from the avatar popover's "Remove
+             Photo" option after a confirm() prompt)
+             ================================================= -->
+
+        <form
+            method="POST"
+            action="{% url 'remove_photo' %}"
+            id="pfRemovePhotoForm"
+            hidden
+        >
+            {% csrf_token %}
+        </form>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="dashboard-footer">
+
+        <span>
+            © 2026 National Disaster Management System
+        </span>
+
+        <span>
+            NDMS
+        </span>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script
+    src="{% static 'reports/js/dashboard.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/profile.js' %}"
+    defer
+></script>
+
+
+</body>
+
+</html>

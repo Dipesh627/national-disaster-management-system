@@ -1,0 +1,2941 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Official NDMS public disaster safety and awareness center for Nepal. Learn what disasters are, preparation steps, before/during/after instructions, emergency kits, and safe incident reporting."
+    >
+    <title>Disaster Awareness & Guidelines | NDMS</title>
+
+    <!-- Core NDMS Stylesheets -->
+    <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/disaster-guidelines.css' %}">
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+<body class="guidelines-page" data-lang="en">
+
+{% if messages %}
+<div class="django-messages" aria-live="polite">
+    {% for message in messages %}
+    <div
+        class="django-message django-message-{{ message.tags }}"
+        role="alert"
+    >
+        <span class="message-icon">
+            {% if message.tags == 'error' %}!{% else %}✓{% endif %}
+        </span>
+        <span class="message-text">{{ message }}</span>
+        <button
+            type="button"
+            class="message-close"
+            aria-label="Close message"
+        >×</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- =====================================================
+     1. SHARED PUBLIC NAVBAR
+     ===================================================== -->
+{% include 'reports/partials/navbar.html' %}
+
+<!-- =====================================================
+     2. MAIN CONTENT
+     ===================================================== -->
+<main class="guidelines-main" id="mainContent">
+
+    <!-- =====================================================
+         HERO SECTION (BILINGUAL)
+         ===================================================== -->
+    <header class="guidelines-hero" id="hero">
+        <div class="guidelines-container">
+            <div class="guidelines-hero-content">
+
+                <div class="guidelines-eyebrow">
+                    <span class="guidelines-eyebrow-dot" aria-hidden="true"></span>
+                    <span class="lang-en">OFFICIAL SAFETY GUIDANCE</span>
+                    <span class="lang-ne">आधिकारिक सुरक्षा मार्गदर्शन</span>
+                </div>
+
+                <h1 class="guidelines-hero-title">
+                    <span class="lang-en">Disaster Awareness &amp; Guidelines</span>
+                    <span class="lang-ne">विपद् सचेतना तथा मार्गदर्शन</span>
+                </h1>
+
+                <p class="guidelines-hero-tagline">
+                    <span class="lang-en">Prepare early. Respond safely. Recover responsibly.</span>
+                    <span class="lang-ne">समयमै तयारी गरौँ। सुरक्षित रूपमा प्रतिक्रिया दिऔँ। जिम्मेवार रूपमा पुनःस्थापना गरौँ।</span>
+                </p>
+
+                <p class="guidelines-hero-desc">
+                    <span class="lang-en">
+                        Learn how to prepare for common disasters in Nepal, respond safely during emergencies, protect children, elderly people, and neighbors needing assistance, and take appropriate recovery actions after an incident.
+                    </span>
+                    <span class="lang-ne">
+                        नेपालका प्रमुख विपद्हरूको पूर्वतयारी कसरी गर्ने, आपत्कालीन समयमा कसरी सुरक्षित रहने, बालबालिका, ज्येष्ठ नागरिक र विशेष आवश्यकता भएका व्यक्तिहरूको सुरक्षा कसरी गर्ने र विपद्पछि के-कस्ता सावधानी अपनाउने भन्ने आधिकारिक जानकारी प्राप्त गर्नुहोस्।
+                    </span>
+                </p>
+
+                <div class="guidelines-hero-actions">
+                    <a href="#guidelines-content" class="guidelines-btn-hero-primary">
+                        <span class="lang-en">Explore Guidelines</span>
+                        <span class="lang-ne">मार्गदर्शन हेर्नुहोस्</span>
+                        <span aria-hidden="true">↓</span>
+                    </a>
+
+                    {% if not user.is_staff and not user.is_superuser %}
+                    <a href="{% url 'create_disaster_report' %}" class="guidelines-btn-hero-secondary">
+                        <span class="lang-en">Report an Incident</span>
+                        <span class="lang-ne">घटना दर्ता गर्नुहोस्</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+
+    <!-- =====================================================
+         STICKY TOOLBAR: BILINGUAL SWITCHER & QUICK JUMP
+         ===================================================== -->
+    <nav class="guidelines-sticky-toolbar" aria-label="Language and Section Navigation">
+        <div class="guidelines-container">
+            <div class="guidelines-toolbar-inner">
+
+                <!-- Language Selector -->
+                <div class="guidelines-lang-switch-wrap">
+                    <span class="guidelines-lang-label">
+                        <span class="lang-en">Language:</span>
+                        <span class="lang-ne">भाषा:</span>
+                    </span>
+
+                    <div class="guidelines-lang-segmented" role="tablist" aria-label="Language selection">
+                        <button
+                            type="button"
+                            class="guidelines-lang-btn is-active"
+                            data-lang-btn="en"
+                            role="tab"
+                            aria-selected="true"
+                        >
+                            English
+                        </button>
+
+                        <button
+                            type="button"
+                            class="guidelines-lang-btn"
+                            data-lang-btn="ne"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            नेपाली
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Quick Navigation Chips -->
+                <div class="guidelines-quick-nav">
+                    <a href="#pillars" class="guidelines-nav-chip">
+                        <span class="lang-en">Quick Preparedness</span>
+                        <span class="lang-ne">द्रुत पूर्वतयारी</span>
+                    </a>
+                    <a href="#about-disasters" class="guidelines-nav-chip">
+                        <span class="lang-en">What is a Disaster?</span>
+                        <span class="lang-ne">विपद् के हो?</span>
+                    </a>
+                    <a href="#risk-types" class="guidelines-nav-chip">
+                        <span class="lang-en">Disaster Risks</span>
+                        <span class="lang-ne">विपद् जोखिम</span>
+                    </a>
+                    <a href="#guidelines-content" class="guidelines-nav-chip">
+                        <span class="lang-en">Disaster Guidelines</span>
+                        <span class="lang-ne">विस्तृत मार्गदर्शन</span>
+                    </a>
+                    <a href="#emergency-kit" class="guidelines-nav-chip">
+                        <span class="lang-en">Emergency Kit</span>
+                        <span class="lang-ne">आपत्कालीन झोला</span>
+                    </a>
+                    <a href="#family-plan" class="guidelines-nav-chip">
+                        <span class="lang-en">Family Plan</span>
+                        <span class="lang-ne">पारिवारिक योजना</span>
+                    </a>
+                    <a href="#dodont" class="guidelines-nav-chip">
+                        <span class="lang-en">Do / Don't</span>
+                        <span class="lang-ne">गर्नुपर्ने / नहुने</span>
+                    </a>
+                    <a href="#stay-informed" class="guidelines-nav-chip">
+                        <span class="lang-en">Stay Informed</span>
+                        <span class="lang-ne">सचेत रहनुहोस्</span>
+                    </a>
+                    <a href="#when-to-report" class="guidelines-nav-chip">
+                        <span class="lang-en">When to Report</span>
+                        <span class="lang-ne">रिपोर्टिङ</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- =====================================================
+         3. QUICK PREPAREDNESS — THREE PILLARS (BEFORE / DURING / AFTER)
+         ===================================================== -->
+    <section class="guidelines-section" id="pillars" aria-labelledby="pillars-title">
+        <div class="guidelines-container">
+
+            <div class="guidelines-section-header text-center">
+                <span class="guidelines-section-eyebrow">
+                    <span class="lang-en">Action Framework</span>
+                    <span class="lang-ne">कार्यगत ढाँचा</span>
+                </span>
+                <h2 class="guidelines-section-title" id="pillars-title">
+                    <span class="lang-en">Three Pillars of Disaster Safety</span>
+                    <span class="lang-ne">विपद् सुरक्षाका तीन आधारभूत चरणहरू</span>
+                </h2>
+                <p class="guidelines-section-subtitle">
+                    <span class="lang-en">Effective disaster survival relies on actions taken before, during, and after an event.</span>
+                    <span class="lang-ne">विपद्बाट सुरक्षित रहन घटना अघि, घटनाको समयमा र घटनापछि गरिने सही निर्णयहरू नै जीवन रक्षाका मुख्य आधार हुन्।</span>
+                </p>
+            </div>
+
+            <div class="pillars-grid">
+
+                <!-- Pillar 1: BEFORE -->
+                <article class="pillar-card pillar-before">
+                    <div class="pillar-badge-row">
+                        <span class="pillar-tag">
+                            <span class="lang-en">Phase 1: Prepare</span>
+                            <span class="lang-ne">चरण १: पूर्वतयारी</span>
+                        </span>
+                        <div class="pillar-icon-wrap" aria-hidden="true">🛡️</div>
+                    </div>
+
+                    <h3 class="pillar-title">
+                        <span class="lang-en">BEFORE A DISASTER</span>
+                        <span class="lang-ne">विपद् अघि — पूर्वतयारी</span>
+                    </h3>
+
+                    <div class="pillar-action">
+                        <span class="lang-en">Plan early, equip your household &amp; stay aware.</span>
+                        <span class="lang-ne">समयमै योजना बनाउनुहोस्, सामग्री जुटाउनुहोस् र सचेत रहनुहोस्।</span>
+                    </div>
+
+                    <p class="pillar-desc">
+                        <span class="lang-en">
+                            Identify your local hazard risks (flood plains, steep slopes, earthquake fault zones). Assemble an emergency kit, agree on family meeting spots, and safeguard vital documents.
+                        </span>
+                        <span class="lang-ne">
+                            आफ्नो बसोबास क्षेत्रको जोखिम (बाढी क्षेत्र, कमजोर भिरालो जमिन, भूकम्पीय जोखिम) पहिचान गर्नुहोस्। आपत्कालीन झोला तयार पार्नुहोस्, पारिवारिक सम्पर्क योजना बनाउनुहोस् र आवश्यक कागजात सुरक्षित राख्नुहोस्।
+                        </span>
+                    </p>
+
+                    <ul class="pillar-checklist">
+                        <li>
+                            <span style="color: #0284c7;">✓</span>
+                            <span class="lang-en">Pack a 3-day emergency Go-Bag for each family member</span>
+                            <span class="lang-ne">परिवारका प्रत्येक सदस्यका लागि ३ दिन पुग्ने आपत्कालीन झोला तयार राख्नुहोस्</span>
+                        </li>
+                        <li>
+                            <span style="color: #0284c7;">✓</span>
+                            <span class="lang-en">Designate two safe family assembly points (near home &amp; open ground)</span>
+                            <span class="lang-ne">पारिवारिक भेटघाटका लागि दुईवटा सुरक्षित स्थान तोक्नुहोस्</span>
+                        </li>
+                        <li>
+                            <span style="color: #0284c7;">✓</span>
+                            <span class="lang-en">Store emergency service numbers on paper &amp; mobile phones</span>
+                            <span class="lang-ne">आपत्कालीन सम्पर्क नम्बरहरू मोबाइल र डायरीमा टिपेर राख्नुहोस्</span>
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Pillar 2: DURING -->
+                <article class="pillar-card pillar-during">
+                    <div class="pillar-badge-row">
+                        <span class="pillar-tag">
+                            <span class="lang-en">Phase 2: Protect</span>
+                            <span class="lang-ne">चरण २: सुरक्षा</span>
+                        </span>
+                        <div class="pillar-icon-wrap" aria-hidden="true">⚡</div>
+                    </div>
+
+                    <h3 class="pillar-title">
+                        <span class="lang-en">DURING A DISASTER</span>
+                        <span class="lang-ne">विपद्को समयमा — तत्काल सुरक्षा</span>
+                    </h3>
+
+                    <div class="pillar-action">
+                        <span class="lang-en">Stay calm, protect lives &amp; follow official instructions.</span>
+                        <span class="lang-ne">शान्त रहनुहोस्, जीवन रक्षा गर्नुहोस् र आधिकारिक निर्देशन मान्नुहोस्।</span>
+                    </div>
+
+                    <p class="pillar-desc">
+                        <span class="lang-en">
+                            Avoid panic. Take immediate protective cover during ground shaking, evacuate without delay when flood or landslide alerts sound, and prioritize human life over property.
+                        </span>
+                        <span class="lang-ne">
+                            आतङ्कित नहुनुहोस्। भूकम्पको समयमा सुरक्षित ओत लिनुहोस्, बाढी वा पहिरोको चेतावनी आउनासाथ ढिलाइ नगरी सुरक्षित स्थानमा जानुहोस् र सम्पत्तिभन्दा जीवन रक्षालाई पहिलो प्राथमिकता दिनुहोस्।
+                        </span>
+                    </p>
+
+                    <ul class="pillar-checklist">
+                        <li>
+                            <span style="color: var(--red);">✓</span>
+                            <span class="lang-en">Drop, Cover, and Hold On during earthquakes</span>
+                            <span class="lang-ne">भूकम्पको समयमा घुँडा टेक्नुहोस्, टाउको छोप्नुहोस् र ओत समात्नुहोस्</span>
+                        </li>
+                        <li>
+                            <span style="color: var(--red);">✓</span>
+                            <span class="lang-en">Never walk or drive into moving floodwaters or slide paths</span>
+                            <span class="lang-ne">बगिरहेको बाढी वा पहिरोको बाटोमा हिँड्ने वा गाडी चलाउने नगर्नुहोस्</span>
+                        </li>
+                        <li>
+                            <span style="color: var(--red);">✓</span>
+                            <span class="lang-en">Assist children, seniors, and persons with mobility needs calmly</span>
+                            <span class="lang-ne">बालबालिका, वृद्धवृद्धा र अशक्त व्यक्तिहरूलाई धैर्यपूर्वक सहयोग गर्नुहोस्</span>
+                        </li>
+                    </ul>
+                </article>
+
+                <!-- Pillar 3: AFTER -->
+                <article class="pillar-card pillar-after">
+                    <div class="pillar-badge-row">
+                        <span class="pillar-tag">
+                            <span class="lang-en">Phase 3: Recover</span>
+                            <span class="lang-ne">चरण ३: पुनःस्थापना</span>
+                        </span>
+                        <div class="pillar-icon-wrap" aria-hidden="true">🌱</div>
+                    </div>
+
+                    <h3 class="pillar-title">
+                        <span class="lang-en">AFTER A DISASTER</span>
+                        <span class="lang-ne">विपद् पछि — सजगता र पुनःस्थापना</span>
+                    </h3>
+
+                    <div class="pillar-action">
+                        <span class="lang-en">Check injuries, avoid secondary hazards &amp; rebuild safely.</span>
+                        <span class="lang-ne">घाइतेहरूको हेरचाह गर्नुहोस्, थप जोखिमबाट बच्नुहोस् र सहयोग पुर्‍याउनुहोस्।</span>
+                    </div>
+
+                    <p class="pillar-desc">
+                        <span class="lang-en">
+                            Check yourself and others for injuries. Beware of secondary hazards such as aftershocks, secondary landslides, contaminated drinking water, and live exposed electrical cables.
+                        </span>
+                        <span class="lang-ne">
+                            आफ्नो र परिवारको चोटपटक जाँच गर्नुहोस्। पराकम्पन, थप पहिरो, दूषित पानी र भुइँमा झरेका बिजुलीका नाङ्गा तारहरू जस्ता दोस्रो चरणका जोखिमहरूबाट पूर्ण सचेत रहनुहोस्।
+                        </span>
+                    </p>
+
+                    <ul class="pillar-checklist">
+                        <li>
+                            <span style="color: #059669;">✓</span>
+                            <span class="lang-en">Administer immediate first-aid and call emergency services if safe</span>
+                            <span class="lang-ne">आवश्यक परे प्राथमिक उपचार गर्नुहोस् र आपत्कालीन सेवाहरूलाई खबर गर्नुहोस्</span>
+                        </li>
+                        <li>
+                            <span style="color: #059669;">✓</span>
+                            <span class="lang-en">Do not enter damaged or cracked structures until certified safe</span>
+                            <span class="lang-ne">चर्किएका वा क्षतिग्रस्त घरभित्र प्राविधिक प्रमाणीकरण बिना नपस्नुहोस्</span>
+                        </li>
+                        <li>
+                            <span style="color: #059669;">✓</span>
+                            <span class="lang-en">Report observed community hazards safely through NDMS</span>
+                            <span class="lang-ne">आफू सुरक्षित स्थानमा पुगेपछि मात्र एनडीएमएस मार्फत जोखिमको जानकारी दिनुहोस्</span>
+                        </li>
+                    </ul>
+                </article>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         4. WHAT IS A DISASTER?
+         ===================================================== -->
+    <section class="guidelines-section" id="about-disasters" aria-labelledby="about-disaster-title">
+        <div class="guidelines-container">
+
+            <div class="edu-card">
+                <div class="guidelines-section-header">
+                    <span class="guidelines-section-eyebrow">
+                        <span class="lang-en">Public Education</span>
+                        <span class="lang-ne">नागरिक सचेतना</span>
+                    </span>
+                    <h2 class="guidelines-section-title" id="about-disaster-title">
+                        <span class="lang-en">What is a Disaster?</span>
+                        <span class="lang-ne">विपद् भनेको के हो?</span>
+                    </h2>
+                </div>
+
+                <p class="edu-lead-text">
+                    <span class="lang-en">
+                        A <strong>disaster</strong> is a serious disruption occurring over a relatively short or prolonged period, causing widespread human, material, economic, or environmental loss that exceeds the ability of the affected community or society to cope using its own resources. In Nepal, rugged topography, seasonal monsoon weather, and active tectonic plates make informed disaster awareness an essential civic responsibility.
+                    </span>
+                    <span class="lang-ne">
+                        <strong>विपद्</strong> भन्नाले प्राकृतिक वा मानव-सिर्जित कारणबाट अप्रत्याशित रूपमा घट्ने त्यस्तो गम्भीर घटना हो, जसले ठूलो मात्रामा मानव जीवन, भौतिक संरचना, जीविकोपार्जन र वातावरणमा गम्भीर क्षति पुर्‍याउँछ र जसको सामना गर्न समुदायको आफ्नै स्रोतसाधन अपुग हुन्छ। नेपालको जटिल भूबनोट, मनसुनी वर्षा र सक्रिय भूकम्पीय क्षेत्र भएका कारण विपद् सचेतना प्रत्येक नागरिकका लागि अनिवार्य छ।
+                    </span>
+                </p>
+
+                <div class="edu-grid">
+                    <div class="edu-item">
+                        <h4>
+                            <span class="lang-en">Natural Hazards</span>
+                            <span class="lang-ne">प्राकृतिक विपद्हरू</span>
+                        </h4>
+                        <p>
+                            <span class="lang-en">Phenomena originating from climatic, hydrological, and seismic forces such as earthquakes, floods, landslides, avalanches, and severe windstorms.</span>
+                            <span class="lang-ne">जलवायु, नदी प्रणाली तथा भूकम्पीय हलचलका कारण उत्पन्न हुने घटनाहरू; जस्तै बाढी, भूकम्प, पहिरो, हिमपहिरो र चट्याङ।</span>
+                        </p>
+                    </div>
+
+                    <div class="edu-item">
+                        <h4>
+                            <span class="lang-en">Human-Induced &amp; Accidental</span>
+                            <span class="lang-ne">मानव-सिर्जित तथा दुर्घटनाहरू</span>
+                        </h4>
+                        <p>
+                            <span class="lang-en">Incidents triggered by human activities, negligence, or mechanical failures; including urban fires, wildfires, highway collisions, and transport incidents.</span>
+                            <span class="lang-ne">मानवीय लापरवाही, प्राविधिक त्रुटि वा संरचनागत कमजोरीका कारण घट्ने घटनाहरू; जस्तै आगलागी, वन डढेलो, सडक दुर्घटना र हवाई दुर्घटना।</span>
+                        </p>
+                    </div>
+
+                    <div class="edu-item">
+                        <h4>
+                            <span class="lang-en">Preparedness Saves Lives</span>
+                            <span class="lang-ne">पूर्वतयारीले जीवन जोगाउँछ</span>
+                        </h4>
+                        <p>
+                            <span class="lang-en">While many natural hazards cannot be prevented, their destructive impact can be drastically reduced through early alerts, safety knowledge, and organized response.</span>
+                            <span class="lang-ne">प्राकृतिक प्रकोपलाई रोक्न नसकिए पनि समयमै गरिएको पूर्वतयारी, सतर्कता र संगठित प्रतिकार्यबाट जनधनको क्षतिलाई धेरै हदसम्म घटाउन सकिन्छ।</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         5. KNOW YOUR RISKS — DISASTER OVERVIEW GRID
+         ===================================================== -->
+    <section class="guidelines-section" id="risk-types" aria-labelledby="risk-types-title">
+        <div class="guidelines-container">
+
+            <div class="guidelines-section-header text-center">
+                <span class="guidelines-section-eyebrow">
+                    <span class="lang-en">Risk Categories</span>
+                    <span class="lang-ne">जोखिमका क्षेत्रहरू</span>
+                </span>
+                <h2 class="guidelines-section-title" id="risk-types-title">
+                    <span class="lang-en">Know Your Disaster Risks in Nepal</span>
+                    <span class="lang-ne">नेपालका मुख्य विपद् जोखिमहरू पहिचान गर्नुहोस्</span>
+                </h2>
+                <p class="guidelines-section-subtitle">
+                    <span class="lang-en">Click on any disaster category below to jump directly to its complete safety guidance.</span>
+                    <span class="lang-ne">विस्तृत सुरक्षा निर्देशन हेर्न तल दिइएका कुनै पनि विपद् शीर्षकमा क्लिक गर्नुहोस्।</span>
+                </p>
+            </div>
+
+            <div class="risk-types-grid">
+
+                <!-- 1. Flood -->
+                <button type="button" class="risk-type-card" data-target-id="guide-flood">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">🌊</div>
+                        <span class="risk-type-tag">High Risk</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Flood</span>
+                        <span class="lang-ne">बाढी</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Monsoon river surges &amp; flash floods</span>
+                        <span class="lang-ne">मनसुनी नदीको बहाव तथा आकस्मिक बाढी</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 2. Earthquake -->
+                <button type="button" class="risk-type-card" data-target-id="guide-earthquake">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">🏛️</div>
+                        <span class="risk-type-tag">Seismic</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Earthquake</span>
+                        <span class="lang-ne">भूकम्प</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Sudden crustal ground shaking</span>
+                        <span class="lang-ne">अप्रत्याशित भूकम्पीय धक्का र पराकम्पन</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 3. Landslide -->
+                <button type="button" class="risk-type-card" data-target-id="guide-landslide">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">⛰️</div>
+                        <span class="risk-type-tag">Hilly Terrain</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Landslide</span>
+                        <span class="lang-ne">पहिरो</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Slope instability &amp; debris flows</span>
+                        <span class="lang-ne">कमजोर भिरालो जमिन र गेग्रान बहाव</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 4. Fire -->
+                <button type="button" class="risk-type-card" data-target-id="guide-fire">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">🔥</div>
+                        <span class="risk-type-tag">Urban &amp; Forest</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Fire &amp; Wildfire</span>
+                        <span class="lang-ne">आगलागी तथा वन डढेलो</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Electrical, LPG &amp; dry-season fires</span>
+                        <span class="lang-ne">विद्युतीय सर्ट, ग्यास लिक तथा सुख्खा डढेलो</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 5. Avalanche -->
+                <button type="button" class="risk-type-card" data-target-id="guide-avalanche">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">❄️</div>
+                        <span class="risk-type-tag">High Altitude</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Avalanche</span>
+                        <span class="lang-ne">हिमपहिरो</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Rapid snowpack slides in Himalayas</span>
+                        <span class="lang-ne">हिमाली भेगमा हिउँको तीव्र पहिरो</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 6. Road Accident -->
+                <button type="button" class="risk-type-card" data-target-id="guide-road">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">🚗</div>
+                        <span class="risk-type-tag">Transit</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Road Accident</span>
+                        <span class="lang-ne">सडक दुर्घटना</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Highway collisions &amp; vehicle distress</span>
+                        <span class="lang-ne">सडक तथा राजमार्गमा हुने सवारी दुर्घटना</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 7. Aircraft Accident -->
+                <button type="button" class="risk-type-card" data-target-id="guide-aircraft">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">✈️</div>
+                        <span class="risk-type-tag">Aviation</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Aircraft Accident</span>
+                        <span class="lang-ne">हवाई दुर्घटना</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Flight distress &amp; passenger safety</span>
+                        <span class="lang-ne">हवाई आपत्काल तथा यात्रु सुरक्षा</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+                <!-- 8. Other Hazards -->
+                <button type="button" class="risk-type-card" data-target-id="guide-other">
+                    <div class="risk-card-top">
+                        <div class="risk-type-icon" aria-hidden="true">⚡</div>
+                        <span class="risk-type-tag">Weather</span>
+                    </div>
+                    <h3 class="risk-type-title">
+                        <span class="lang-en">Other Hazards</span>
+                        <span class="lang-ne">अन्य मौसमी जोखिमहरू</span>
+                    </h3>
+                    <p class="risk-type-sub">
+                        <span class="lang-en">Lightning, cold waves, heat waves</span>
+                        <span class="lang-ne">चट्याङ, आँधीहुरी, शीतलहर तथा लू</span>
+                    </p>
+                    <span class="risk-card-arrow" aria-hidden="true">View Guide ↓</span>
+                </button>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         6. COMPREHENSIVE DISASTER-SPECIFIC GUIDELINES (ACCORDIONS)
+         ===================================================== -->
+    <section class="guidelines-section" id="guidelines-content" aria-labelledby="guidelines-title">
+        <div class="guidelines-container">
+
+            <div class="guidelines-section-header">
+                <span class="guidelines-section-eyebrow">
+                    <span class="lang-en">Comprehensive Guidance</span>
+                    <span class="lang-ne">विस्तृत सुरक्षा निर्देशिका</span>
+                </span>
+                <h2 class="guidelines-section-title" id="guidelines-title">
+                    <span class="lang-en">Disaster-Specific Safety Guidelines</span>
+                    <span class="lang-ne">विपद् अनुसारको विस्तृत सुरक्षा मार्गदर्शन</span>
+                </h2>
+                <p class="guidelines-section-subtitle">
+                    <span class="lang-en">Detailed, actionable procedures answering: What is it? Why does it happen? How do I prepare? What should I do during and after?</span>
+                    <span class="lang-ne">प्रत्येक विपद्को परिचय, कारण, पूर्व-संकेत, विपद् अघि, समयमा र पछि गर्नुपर्ने तथा गर्न नहुने कामहरूको पूर्ण विवरण।</span>
+                </p>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="guidelines-filter-controls" role="group" aria-label="Filter disaster guidelines">
+                <button type="button" class="guideline-filter-btn is-active" data-filter="all">All Guidelines</button>
+                <button type="button" class="guideline-filter-btn" data-filter="flood">Flood (बाढी)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="earthquake">Earthquake (भूकम्प)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="landslide">Landslide (पहिरो)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="fire">Fire (आगलागी)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="avalanche">Avalanche (हिमपहिरो)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="road">Road (सडक)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="aircraft">Aircraft (हवाई)</button>
+                <button type="button" class="guideline-filter-btn" data-filter="other">Other (अन्य)</button>
+            </div>
+
+            <div class="accordion-list">
+
+                <!-- ---------------------------------------------
+                     ACCORDION 1: FLOOD
+                     --------------------------------------------- -->
+                <div class="accordion-item is-expanded" id="guide-flood" data-disaster-category="flood">
+                    <button type="button" class="accordion-header" aria-expanded="true">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">🌊</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Flood Guidelines</span>
+                                    <span class="lang-ne">बाढी सम्बन्धी सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Monsoon overflows, flash floods &amp; river surges</span>
+                                    <span class="lang-ne">मनसुनी बाढी, आकस्मिक बहाव तथा नदी कटान</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Hydrological</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is a Flood &amp; Why It Happens</span>
+                                    <span class="lang-ne">बाढी भनेको के हो र किन आउँछ?</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        A flood occurs when water overflows normal riverbanks or drainage channels, submerging land that is usually dry. In Nepal, floods are primarily caused by intense monsoon precipitation, rapid snowmelt, glacial lake outburst floods (GLOF), and inadequate drainage or encroachment along natural riverbeds.
+                                    </span>
+                                    <span class="lang-ne">
+                                        सामान्यतया सुख्खा रहने जमिनमा नदी, खोला वा ढलको पानी ओभरफ्लो भएर बस्ती तथा खेतबारी डुबानमा पर्नुलाई बाढी भनिन्छ। नेपालमा विशेषगरी मनसुनको भारी वर्षा, उच्च हिमाली भेगमा हिम ताल फुट्ने जोखिम (GLOF), र नदी किनारको अव्यवस्थित बस्ती तथा कमजोर निकासका कारण बाढी आउने गर्दछ।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="guide-warning-box">
+                                <div class="guide-warning-header">
+                                    <span aria-hidden="true">⚠️</span>
+                                    <span class="lang-en">Warning Signs to Watch For</span>
+                                    <span class="lang-ne">सम्भावित पूर्व-संकेतहरू</span>
+                                </div>
+                                <ul class="guide-warning-list">
+                                    <li>
+                                        <span class="lang-en">Prolonged, heavy rainfall upstream or in nearby catchments</span>
+                                        <span class="lang-ne">माथिल्लो तटीय क्षेत्र वा आसपासमा लगातार ठूलो पानी पर्नु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Rapidly rising water levels in rivers, streams, and irrigation canals</span>
+                                        <span class="lang-ne">खोलानाला तथा नहरमा पानीको सतह तीव्र गतिमा बढ्नु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Water changing color to dark, muddy silt accompanied by heavy floating debris</span>
+                                        <span class="lang-ne">नदीको पानी धमिलो हुनु र काठ-दाउरा बगाएर ल्याउनु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Official SMS alerts or river siren warnings from the Department of Hydrology &amp; Meteorology (DHM)</span>
+                                        <span class="lang-ne">जल तथा मौसम विज्ञान विभागको बाढी चेतावनी साइरन वा मोबाइल एसएमएस सूचना</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE (Prepare)</span>
+                                        <span class="lang-ne">विपद् अघि (तयारी)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Identify whether your neighborhood is in a flood-prone zone.</span>
+                                            <span class="lang-ne">आफ्नो घर बाढी प्रभावित क्षेत्रमा पर्छ कि पर्दैन थाहा पाउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Locate nearby elevated shelters and safe evacuation routes.</span>
+                                            <span class="lang-ne">उचाइमा रहेका सुरक्षित स्थान र जाने बाटो पहिचान गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Seal vital citizenship, land, and insurance papers in waterproof bags.</span>
+                                            <span class="lang-ne">नागरिकता, लालपुर्जा लगायतका कागजात वाटरप्रूफ झोलामा राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Move cattle, livestock, and grain stocks to higher structures early.</span>
+                                            <span class="lang-ne">चौपाया र खाद्यान्न समयमै सुरक्षित अग्लो स्थानमा सार्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">DURING (Protect)</span>
+                                        <span class="lang-ne">विपद्को समयमा (सुरक्षा)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Evacuate immediately upon official warning; do not delay.</span>
+                                            <span class="lang-ne">चेतावनी जारी हुनासाथ ढिलाइ नगरी तुरुन्त सुरक्षित स्थानमा जानुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Never attempt to walk, swim, or drive through moving floodwaters.</span>
+                                            <span class="lang-ne">बगिरहेको बाढीमा हिँड्ने, पौडी खेल्ने वा गाडी चलाउने दुस्साहस नगर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Keep children away from swollen stream banks and drainage culverts.</span>
+                                            <span class="lang-ne">बालबालिकालाई भेल बगिरहेको ढल, खोल्सा वा नदी किनारबाट टाढा राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Turn off the main electrical breaker before water enters the premises.</span>
+                                            <span class="lang-ne">घरमा पानी पस्नु अगावै मुख्य बिजुलीको मेनस्विच बन्द गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER (Recover)</span>
+                                        <span class="lang-ne">विपद् पछि (पुनःस्थापना)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Avoid touching wet electrical appliances or submerged wiring.</span>
+                                            <span class="lang-ne">भिजेका बिजुलीका उपकरण वा तारलाई नछुनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Drink only boiled or chemically purified water to prevent cholera/diarrhea.</span>
+                                            <span class="lang-ne">हैजा तथा झाडापखालाबाट बच्न उमालेको वा शुद्धीकरण गरेको पानी मात्र पिउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Inspect foundations and walls for structural cracking before re-entry.</span>
+                                            <span class="lang-ne">घरभित्र पस्नुअघि पर्खाल वा जग चर्किएको छ कि जाँच गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Safely clear stagnant water to discourage mosquito breeding.</span>
+                                            <span class="lang-ne">लामखुट्टेको प्रकोप रोक्न जमेको पानीको उचित निकास गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Keep a battery-powered radio or charged phone for DHM flood advisories.</span>
+                                            <span class="lang-ne">बाढी सम्बन्धी समाचार सुन्न रेडियो वा मोबाइल चार्ज गरेर राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Assist elderly neighbors and persons with disabilities to high ground early.</span>
+                                            <span class="lang-ne">वृद्धवृद्धा र अशक्त छिमेकीहरूलाई समयमै सुरक्षित स्थानमा पुर्‍याउन सहयोग गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Remember the safety rule: <em>Turn Around, Don't Drown</em>.</span>
+                                            <span class="lang-ne">सुरक्षा नियम मनन गर्नुहोस्: भेल बगेको सडकबाट पछि हट्नुहोस्, ज्यान जोगाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not drive into water of unknown depth; just 30 cm can float a vehicle.</span>
+                                            <span class="lang-ne">गहिराइ थाहा नभएको पानीमा गाडी नहाल्नुहोस्; सामान्य भेलले पनि गाडी बगाउन सक्छ।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not consume flood-contaminated vegetables, grains, or uncovered foods.</span>
+                                            <span class="lang-ne">बाढीको पानीले भिजेको खानेकुरा वा तरकारी प्रयोग नगर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not sleep in ground-floor rooms if a river is rising rapidly overnight.</span>
+                                            <span class="lang-ne">रातको समयमा नदी बढिरहेको बेला तल्लो तलामा नसुत्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> If you observe broken river dykes, blocked culverts threatening houses, or people stranded by rising waters, report it once you are in a safe location.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> तटबन्ध भत्किएको, ढल थुनिएर बस्ती डुबानमा परेको वा मानिसहरू फसेको देखेमा आफू सुरक्षित भएपछि एनडीएमएस मार्फत जानकारी दिनुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Flood Incident →</span>
+                                    <span class="lang-ne">बाढीको घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 2: EARTHQUAKE
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-earthquake" data-disaster-category="earthquake">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">🏛️</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Earthquake Guidelines</span>
+                                    <span class="lang-ne">भूकम्प सम्बन्धी सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Ground shaking, structural safety &amp; aftershock protocol</span>
+                                    <span class="lang-ne">भूकम्पीय धक्का, भौतिक सुरक्षा तथा पराकम्पनबाट बच्ने उपाय</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Seismic</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is an Earthquake &amp; Why It Happens</span>
+                                    <span class="lang-ne">भूकम्प भनेको के हो र किन जान्छ?</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        An earthquake is sudden, violent shaking of the Earth's surface caused by tectonic plates grinding and slipping deep within the crust. Nepal lies directly along the active collision boundary between the Indian and Eurasian plates, placing all 7 provinces under significant seismic hazard.
+                                    </span>
+                                    <span class="lang-ne">
+                                        पृथ्वीको भूगर्भभित्र रहेका टेक्टोनिक प्लेटहरू आपसमा जुध्दा वा सर्दा उत्पन्न हुने कम्पनलाई भूकम्प भनिन्छ। नेपाल भारतीय र यूरेशियन प्लेटको मिलनबिन्दुमा अवस्थित भएकाले यहाँ जुनसुकै बेला भूकम्प जाने उच्च जोखिम रहन्छ।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="guide-warning-box">
+                                <div class="guide-warning-header">
+                                    <span aria-hidden="true">⚠️</span>
+                                    <span class="lang-en">Warning Signs</span>
+                                    <span class="lang-ne">संकेत तथा अवस्था</span>
+                                </div>
+                                <ul class="guide-warning-list">
+                                    <li>
+                                        <span class="lang-en">Earthquakes strike with zero advance warning; initial shaking may begin with deep underground rumbling.</span>
+                                        <span class="lang-ne">भूकम्प बिना कुनै पूर्व-सूचना एक्कासि आउँछ; सुरुमा गहिरो गर्जन वा भुइँ थरथराउन सक्छ।</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Hanging lights, ceiling fans, and pictures begin swinging violently.</span>
+                                        <span class="lang-ne">झ्यालका सिसा, सिलिङ फ्यान र भित्ताका सामानहरू तीव्र गतिमा हल्लिनु।</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE (Prepare)</span>
+                                        <span class="lang-ne">विपद् अघि (तयारी)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Anchor heavy wardrobes, bookshelves, and overhead water tanks securely.</span>
+                                            <span class="lang-ne">दराज, पुस्तकको र्‍याक र छतको पानी ट्याङ्कीलाई भित्तामा राम्रोसँग कस्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Identify safe interior spots: beneath sturdy wooden tables, desks, or load-bearing beams.</span>
+                                            <span class="lang-ne">कोठाभित्र सुरक्षित ठाउँ (बलियो टेबल वा खाटमुनि) पहिचान गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Keep shoes and a torch beside your bed at all times.</span>
+                                            <span class="lang-ne">ओछ्यान नजिकै जुत्ता र टर्चलाइट सधैं तयारी अवस्थामा राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Conduct regular family Drop-Cover-Hold On drills.</span>
+                                            <span class="lang-ne">परिवारसँग मिलेर घुँडा टेक्ने, टाउको छोप्ने अभ्यास गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">DURING (Protect)</span>
+                                        <span class="lang-ne">विपद्को समयमा (सुरक्षा)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en"><strong>DROP, COVER, HOLD ON:</strong> Drop to hands and knees, cover head/neck under a sturdy table, hold on until shaking stops.</span>
+                                            <span class="lang-ne"><strong>घुँडा टेक्नुहोस्, टाउको छोप्नुहोस् र समात्नुहोस्:</strong> बलियो टेबलमुनि बसेर टाउको र घाँटी जोगाउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Stay indoors during the shaking; do not rush out onto crowded stairs.</span>
+                                            <span class="lang-ne">हल्लिइरहेको बेला हतारिएर बाहिर नभाग्नुहोस्; भर्‍याङमा भीडभाड नगर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">If outdoors, move immediately to open areas away from buildings, brick walls, and electric poles.</span>
+                                            <span class="lang-ne">यदि बाहिर हुनुहुन्छ भने भवन, बिजुलीका पोल र अग्ला पर्खालबाट टाढा खुला ठाउँमा जानुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">If driving, pull over safely away from overpasses, bridges, and unstable slopes.</span>
+                                            <span class="lang-ne">सवारी साधनमा हुनुहुन्छ भने पुल वा कमजोर भिरालो सडकबाट पर सुरक्षित रोक्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER (Recover)</span>
+                                        <span class="lang-ne">विपद् पछि (पुनःस्थापना)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Expect aftershocks; each aftershock can collapse already weakened structures.</span>
+                                            <span class="lang-ne">पराकम्पनको सम्भावना रहन्छ; कमजोर भएका संरचना थप भत्किन सक्छन्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Evacuate calmly using stairs; <strong>never use elevators</strong>.</span>
+                                            <span class="lang-ne">भर्‍याङको प्रयोग गरी शान्तपूर्वक बाहिर निस्कनुहोस्; <strong>लिफ्टको प्रयोग कहिल्यै नगर्नुहोस्</strong>।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Check for gas leaks and damaged electrical wiring before lighting candles or stoves.</span>
+                                            <span class="lang-ne">सलाई वा ग्यास बाल्नुअघि ग्यास लिक भएको छ कि छैन जाँच गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Put on sturdy shoes before walking across broken glass or rubble.</span>
+                                            <span class="lang-ne">फुटेका सिसा वा भग्नावशेषमा हिँड्नुअघि बाक्लो जुत्ता लगाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Protect your head with your arms, a pillow, or a bag if no table is reachable.</span>
+                                            <span class="lang-ne">टेबल नभएमा सिरानी वा हातले टाउको छोपेर सुरक्षित बस्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Listen to official battery-powered radio for casualty updates and assembly instructions.</span>
+                                            <span class="lang-ne">आधिकारिक रेडियो वा सूचना सुन्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Help injured neighbors only when the physical perimeter is safe from falling bricks.</span>
+                                            <span class="lang-ne">माथिबाट इँटा खस्ने खतरा नभएको बेला मात्र घाइतेहरूको उद्धारमा सघाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not run out into narrow streets while tiles, air conditioners, and glass are falling.</span>
+                                            <span class="lang-ne">माथिबाट झ्यालका सिसा वा इँटा खसिरहेको बेला साँघुरो गल्लीमा नभाग्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not stand in doorways; modern doorways are no stronger than the rest of the wall.</span>
+                                            <span class="lang-ne">ढोकाको खापामा नउभिनुहोस्; त्यहाँ अडिनु सुरक्षित मानिँदैन।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not enter visibly tilted, cracked, or retrofitted masonry buildings.</span>
+                                            <span class="lang-ne">चर्किएका वा ढल्किएका भवनहरूभित्र पस्दै नपस्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Report collapsed structures, blocked arterial rescue roads, or trapped citizens after verifying your own immediate safety.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> घर भत्किएको, सडक अवरुद्ध भएको वा मानिसहरू पुरिएको जानकारी आफू पूर्ण सुरक्षित भएपछि एनडीएमएसमा दर्ता गर्नुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Earthquake Incident →</span>
+                                    <span class="lang-ne">भूकम्पको घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 3: LANDSLIDE
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-landslide" data-disaster-category="landslide">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">⛰️</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Landslide Guidelines</span>
+                                    <span class="lang-ne">पहिरो सम्बन्धी सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Slope failure, debris torrents &amp; hillside evacuation</span>
+                                    <span class="lang-ne">भिरालो जमिन भासिने, लेदो बग्ने तथा सुरक्षित स्थान्तरण</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Geological</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is a Landslide &amp; Common Causes</span>
+                                    <span class="lang-ne">पहिरो भनेको के हो र किन जान्छ?</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        A landslide is the downward and outward movement of slope-forming materials including rock, soil, and debris under the influence of gravity. Major triggers in Nepal include prolonged monsoon rainfall soaking steep hillsides, slope destabilization from unplanned rural road excavation, deforestation, and earthquake aftershocks.
+                                    </span>
+                                    <span class="lang-ne">
+                                        गुरुत्वाकर्षणका कारण भिरालो जमिनको माटो, ढुङ्गा र गेग्रान तल खस्नु वा बग्नुलाई पहिरो भनिन्छ। नेपालका पहाडी भेगमा लगातारको वर्षाले माटो गल्नु, डोजर लगाएर अवैज्ञानिक रूपमा खनिएका सडक, वनविनास र भूकम्पका कारण पहिरोको प्रकोप अत्यधिक हुने गर्दछ।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="guide-warning-box">
+                                <div class="guide-warning-header">
+                                    <span aria-hidden="true">⚠️</span>
+                                    <span class="lang-en">Key Warning Signs</span>
+                                    <span class="lang-ne">मुख्य पूर्व-संकेतहरू</span>
+                                </div>
+                                <ul class="guide-warning-list">
+                                    <li>
+                                        <span class="lang-en">New cracks appearing on ground surfaces, road pavements, or building foundation floors</span>
+                                        <span class="lang-ne">आँगन, खेतबारी वा सडकको भुइँमा नयाँ चिरा वा धाँजा देखिनु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Trees, electricity poles, and boundary fences tilting downhill</span>
+                                        <span class="lang-ne">रुख, बिजुलीका पोल वा पर्खालहरू तलतिर ढल्कनु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Natural spring water turning suddenly muddy, or new seepage outlets breaking through dry banks</span>
+                                        <span class="lang-ne">सधैं सफा बग्ने पानीका मुहानहरू एक्कासि धमिलो हुनु वा नयाँ ठाउँबाट पानी फुट्नु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Faint rumbling or popping sounds of breaking tree roots from hillsides above</span>
+                                        <span class="lang-ne">पहाडको भित्ताबाट ढुङ्गा खसेको वा रुखका जरा चुँडिएको आवाज आउनु</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE (Prepare)</span>
+                                        <span class="lang-ne">विपद् अघि (तयारी)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Inspect slopes above and below your house before the monsoon begins.</span>
+                                            <span class="lang-ne">मनसुन सुरु हुनुअगावै घर माथि र तलको भिरालो जमिनको अवस्था हेर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Plant deep-rooted native grasses (bamboo, amriso) to anchor topsoil.</span>
+                                            <span class="lang-ne">माटोलाई बाँधेर राख्न अम्रिसो, बाँस जस्ता गहिरो जरा हुने बिरुवा रोप्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Arrange an uphill evacuation pathway to solid bedrock terrain.</span>
+                                            <span class="lang-ne">पहिरो आउँदा सुरक्षित उचाइमा पुग्ने बाटो पहिले नै तय गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">DURING (Protect)</span>
+                                        <span class="lang-ne">विपद्को समयमा (सुरक्षा)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Evacuate immediately away from the debris flow path; move lateral (sideways) or uphill.</span>
+                                            <span class="lang-ne">पहिरो खसेको देखेमा छेउतिर वा सुरक्षित उकालोतर्फ तुरुन्त भाग्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Never run downhill or into the path of the gully.</span>
+                                            <span class="lang-ne">भिरालो खोल्सा वा पहिरोको सोझो बाटोमा तलतिर नभाग्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Stay alert for sudden river damming; dam breaches cause devastating flash floods downstream.</span>
+                                            <span class="lang-ne">पहिरोले खोला थुनिएमा तत्काल माथिल्लो भेगमा खबर गर्नुहोस् र नदी किनारबाट टाढा रहनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER (Recover)</span>
+                                        <span class="lang-ne">विपद् पछि (पुनःस्थापना)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Stay clear of the slide perimeter; secondary slides often occur shortly after.</span>
+                                            <span class="lang-ne">पहिरो खसेको ठाउँमा तुरुन्त नजानुहोस्; थप पहिरो खस्ने जोखिम रहन्छ।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Check for damaged drinking water pipes, buried roads, and downed electrical lines.</span>
+                                            <span class="lang-ne">खानेपानीको पाइप, सडक र बिजुलीका तारमा पुगेको क्षति जाँच गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Report fresh fissures to local ward authorities and NDMS.</span>
+                                            <span class="lang-ne">जमिनमा देखिएका नयाँ चिराहरूको जानकारी वडा कार्यालय र एनडीएमएसलाई दिनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Maintain proper storm drainage ditches so water does not seep into slope soil.</span>
+                                            <span class="lang-ne">पानीको उचित निकास बनाउनुहोस् ताकि भित्तामा पानी जम्न नपाओस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Sleep in rooms on the uphill side of the house during heavy prolonged storms.</span>
+                                            <span class="lang-ne">भारी वर्षा भएको रात भित्तातर्फका जोखिमयुक्त कोठामा नसुत्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not build homes on unstable slopes or directly under steep cut banks.</span>
+                                            <span class="lang-ne">कमजोर भिरालो वा भित्ता काटिएको ठाउँमुनि घर नबनाउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not cross fresh mudslides on highways on foot or on motorbikes.</span>
+                                            <span class="lang-ne">राजमार्गमा खसिरहेको लेदो वा पहिरोमा जबरजस्ती गाडी वा मोटरसाइकल नगुडाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Blocked highways, widening hillside fissures, or dammed rivers must be reported once you are in a safe location.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> सडक थुनिएको, जमिनमा ठूला चिरा परेको वा नदी थुनिएको देखेमा सुरक्षित भएपछि एनडीएमएसमा विवरण पठाउनुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Landslide Incident →</span>
+                                    <span class="lang-ne">पहिरोको घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 4: FIRE & WILDFIRE
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-fire" data-disaster-category="fire">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">🔥</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Fire &amp; Wildfire Guidelines</span>
+                                    <span class="lang-ne">आगलागी तथा वन डढेलो सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Residential fires, electrical safety, gas leaks &amp; wildfires</span>
+                                    <span class="lang-ne">घरायसी आगलागी, ग्यास चुहावट तथा वन डढेलो रोकथाम</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Thermal</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is a Fire &amp; Common Causes</span>
+                                    <span class="lang-ne">आगलागीको परिचय र मुख्य कारणहरू</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        A fire is rapid, uncontrolled combustion generating intense heat and toxic smoke that damages property and endangers life. Common causes in Nepal include electrical short circuits from overloaded extension cords, unattended LPG gas stoves, unsafe candle or diya usage, poorly disposed cigarette butts, and seasonal forest wildfires during dry pre-monsoon months (Chaitra to Jestha).
+                                    </span>
+                                    <span class="lang-ne">
+                                        नियन्त्रण बाहिर गएर फैलिने आगोलाई आगलागी भनिन्छ जसले क्षणभरमै ठूलो जनधन नष्ट गर्न सक्छ। नेपालमा विद्युतीय सर्ट, ग्यास सिलिन्डर लिक हुनु, दियो वा मैनबत्तीको असावधानी, र सुख्खा मौसममा लाग्ने वन डढेलोका कारण आगलागीका घटना बढी हुने गर्दछन्।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="guide-warning-box">
+                                <div class="guide-warning-header">
+                                    <span aria-hidden="true">⚠️</span>
+                                    <span class="lang-en">Early Warning Signs</span>
+                                    <span class="lang-ne">सुरुवाती संकेतहरू</span>
+                                </div>
+                                <ul class="guide-warning-list">
+                                    <li>
+                                        <span class="lang-en">Smell of burning plastic or ozone near electrical switchboards</span>
+                                        <span class="lang-ne">बिजुलीको बोर्ड वा तारबाट प्लास्टिक वा रबर डढेको गन्ध आउनु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Flickering lights, repeated circuit breaker trips, or discolored wall sockets</span>
+                                        <span class="lang-ne">बत्ती झिमझिम हुनु, बारम्बार एमसीबी ट्रिप हुनु वा सकेट कालो हुनु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Distinct sulfur/rotten cabbage smell indicating an LPG cylinder gas leak</span>
+                                        <span class="lang-ne">एलपीजी ग्यास चुहावट भएको दुर्गन्ध आउनु</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE (Prepare)</span>
+                                        <span class="lang-ne">विपद् अघि (तयारी)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Inspect kitchen gas pipes and regulators; replace worn rubber hoses.</span>
+                                            <span class="lang-ne">भान्साको ग्यास पाइप र रेगुलेटर नियमित जाँच गर्नुहोस्; पुरानो पाइप फेर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Keep a bucket of sand or water, or an ABC dry chemical extinguisher accessible.</span>
+                                            <span class="lang-ne">घरमा बालुवाको बाल्टी वा अग्निनियन्त्रक यन्त्र तयारी अवस्थामा राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Ensure corridors, doorways, and stairwells are free of storage boxes.</span>
+                                            <span class="lang-ne">बाहिर निस्कने ढोका र भर्‍याङमा कुनै पनि सामान थुपारेर नराख्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">DURING (Protect)</span>
+                                        <span class="lang-ne">विपद्को समयमा (सुरक्षा)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Raise the alarm immediately by shouting <em>"आगो लाग्यो / Fire!"</em></span>
+                                            <span class="lang-ne">ठूलो स्वरले कराएर तुरुन्त सबैलाई सचेत गराउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en"><strong>Crawl low beneath smoke:</strong> Clean breathable air is closest to the floor.</span>
+                                            <span class="lang-ne"><strong>धुवाँबाट बच्न निहुरिएर घस्रिनुहोस्:</strong> भुइँ नजिक सफा हावा हुन्छ।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Check door handles with the back of your hand before opening; if hot, find another exit.</span>
+                                            <span class="lang-ne">ढोका खोल्नुअघि पछाडिको भागले छाम्नुहोस्; तातो भए अर्को बाटो रोज्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">If clothes catch fire: <strong>Stop, Drop, and Roll</strong> until flames are smothered.</span>
+                                            <span class="lang-ne">कपडामा आगो लागेमा: नभाग्नुहोस्, भुइँमा पल्टिएर घुम्नुहोस् (Stop, Drop &amp; Roll)।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER (Recover)</span>
+                                        <span class="lang-ne">विपद् पछि (पुनःस्थापना)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Do not re-enter the building until emergency services certify it safe.</span>
+                                            <span class="lang-ne">दमकल वा उद्धारकर्मीले अनुमति नदिएसम्म घरभित्र नपस्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Watch for hidden embers inside walls, ceilings, and roof beams.</span>
+                                            <span class="lang-ne">भित्ता वा सिलिङमा लुकेको आगो वा कोइला पुनः सल्किन सक्ने भएकाले चनाखो रहनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Cool minor burns with clean running water; do not apply butter or oil.</span>
+                                            <span class="lang-ne">पोलेको ठाउँमा सफा बग्ने चिसो पानी हाल्नुहोस्; घिउ वा तेल दल्ने नगर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Shut the regulator valve when cooking is finished and before bedtime.</span>
+                                            <span class="lang-ne">खाना पकाइकेपछि र सुत्नुअघि ग्यास रेगुलेटर बन्द गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Close doors behind you as you evacuate to slow the spread of oxygen to the fire.</span>
+                                            <span class="lang-ne">बाहिर निस्कँदा ढोका बन्द गर्नुहोस् ताकि आगो चाँडो नफैलियोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not throw water on cooking oil/grease fires or electrical equipment fires.</span>
+                                            <span class="lang-ne">तेल वा बिजुलीबाट लागेको आगोमा पानी नहाल्नुहोस् (यसले आगो झन् भड्काउँछ)।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not re-enter a burning house to retrieve phones, money, or possessions.</span>
+                                            <span class="lang-ne">सामान वा पैसा झिक्न फेरि आगो लागेको घरभित्र कहिल्यै नपस्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Report spreading wildfires, structural fires, or dangerous gas leaks after evacuating to an open safe space.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> वन डढेलो, घरमा लागेको आगो वा ग्यास लिकको जानकारी सुरक्षित ठाउँमा पुगेपछि एनडीएमएसमा पठाउनुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Fire Incident →</span>
+                                    <span class="lang-ne">आगलागीको घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 5: AVALANCHE
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-avalanche" data-disaster-category="avalanche">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">❄️</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Avalanche Guidelines</span>
+                                    <span class="lang-ne">हिमपहिरो सम्बन्धी सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Mountain snow safety, burial prevention &amp; high-altitude precautions</span>
+                                    <span class="lang-ne">हिमाली हिमपहिरो, हिउँमा पुरिनबाट बच्ने उपाय तथा पदयात्रा सुरक्षा</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Cryospheric</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is an Avalanche &amp; Primary Risks</span>
+                                    <span class="lang-ne">हिमपहिरो भनेको के हो र मुख्य जोखिमहरू के हुन्?</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        An avalanche is a rapid, high-speed descent of a huge mass of snow, ice, and rock down a mountain slope. The primary survival threats include traumatic impact with rocks/trees, burial causing asphyxiation (suffocation), and extreme hypothermia. Slopes between 30° and 45° present the highest avalanche frequency.
+                                    </span>
+                                    <span class="lang-ne">
+                                        पहाड वा हिमालको भिरालो भागबाट तीव्र गतिमा हिउँको ठूलो ढिक्का, बरफ र ढुङ्गा तल खस्नुलाई हिमपहिरो भनिन्छ। यसले मानिसलाई हिउँमुनि पुर्ने (सास फेर्न नसकिने), ढुङ्गाले लागेर गम्भीर चोट लाग्ने र अत्यधिक चिसोले ज्यान जाने मुख्य जोखिम रहन्छ।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <div class="guide-warning-box">
+                                <div class="guide-warning-header">
+                                    <span aria-hidden="true">⚠️</span>
+                                    <span class="lang-en">Warning Signs in the Mountains</span>
+                                    <span class="lang-ne">हिमाली भेगका चेतावनी संकेतहरू</span>
+                                </div>
+                                <ul class="guide-warning-list">
+                                    <li>
+                                        <span class="lang-en">Heavy snowfall exceeding 30 cm within a 24-hour period, accompanied by strong winds</span>
+                                        <span class="lang-ne">२४ घण्टाभित्र ३० सेन्टिमिटरभन्दा बढी भारी हिमपात र तेज हावा चल्नु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Sudden rapid temperature rise causing heavy, wet snow settlement</span>
+                                        <span class="lang-ne">तापक्रम एक्कासि बढेर हिउँ पग्लिन थाल्नु वा गल्नु</span>
+                                    </li>
+                                    <li>
+                                        <span class="lang-en">Hollow "whumpf" sounds or shooting surface cracks across snow slopes</span>
+                                        <span class="lang-ne">हिउँमा हिँड्दा भुइँ धस्सिएको आवाज आउनु वा हिउँको सतहमा चिरा देखिनु</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE (Prepare)</span>
+                                        <span class="lang-ne">विपद् अघि (तयारी)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Check official Himalayan weather and trekking advisories before departure.</span>
+                                            <span class="lang-ne">पदयात्रामा निस्कनुअघि हिमाली मौसम र पदमार्गको आधिकारिक अवस्था बुझ्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Carry essential avalanche gear: transceiver (beacon), collapsible probe, and shovel.</span>
+                                            <span class="lang-ne">ट्रान्सिभर (Beacon), स्नो-प्रोब र बेल्चा जस्ता आवश्यक सुरक्षा सामग्री साथमा राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Never trek alone; share your itinerary with local checkpoints and trekking agencies.</span>
+                                            <span class="lang-ne">एक्लै पदयात्रा नगर्नुहोस् र आफ्नो यात्रा विवरण स्थानीय चेकपोष्टमा टिपाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">DURING (Protect)</span>
+                                        <span class="lang-ne">विपद्को समयमा (सुरक्षा)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Try to escape to the side of the slide path rather than running straight down.</span>
+                                            <span class="lang-ne">हिमपहिरोको सोझो बाटोमा नभई छेउतिर भाग्ने प्रयास गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Discard heavy trekking poles and bulky skis that can drag you under.</span>
+                                            <span class="lang-ne">तपाईंलाई तल तान्न सक्ने गह्रौँ सामग्री तुरुन्त फुकाल्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Use strong swimming motions to fight your way toward the snow surface.</span>
+                                            <span class="lang-ne">हिउँको सतहमा रहन पौडी खेले झैँ हातगोडा चलाउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en"><strong>As movement slows:</strong> Cup hands over your mouth to create an essential air pocket before snow freezes solid.</span>
+                                            <span class="lang-ne"><strong>हिउँ रोकिन लाग्दा:</strong> सास फेर्नका लागि मुख अगाडि हातले हावाको थैलो (Air Pocket) बनाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER (Recover)</span>
+                                        <span class="lang-ne">विपद् पछि (पुनःस्थापना)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">If buried: Remain calm, conserve oxygen, and shout only when hearing rescuers above.</span>
+                                            <span class="lang-ne">यदि पुरिनुभएमा: नआत्तिनुहोस्, अक्सिजन जोगाउनुहोस् र उद्धारकर्ता नजिक आएको सुनेपछि मात्र कराउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">If unhurt: Immediately switch transceivers to receive mode and search for companions.</span>
+                                            <span class="lang-ne">यदि तपाईं सुरक्षित हुनुहुन्छ भने तुरुन्त ट्रान्सिभर अन गरी साथीहरूको खोजी सुरु गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Call Himalayan rescue services without entering dangerous secondary slide zones.</span>
+                                            <span class="lang-ne">थप हिमपहिरोको जोखिम हेरेर स्थानीय उद्धार टोलीलाई खबर गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Cross avalanche paths one person at a time while others watch from a safe spot.</span>
+                                            <span class="lang-ne">जोखिमयुक्त बाटो पार गर्दा एक-एक जना गरेर सुरक्षित दूरीमा हिँड्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Wear warm layered windproof clothing to protect against rapid hypothermia.</span>
+                                            <span class="lang-ne">अत्यधिक चिसोबाट बच्न हावा नछिर्ने न्यानो कपडा लगाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not travel on steep leeward slopes directly after heavy mountain storms.</span>
+                                            <span class="lang-ne">भारी हिमपातलगत्तै भिरालो र हिउँ जमेको क्षेत्रमा नजानुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not ignore local sherpa guidance or warnings from national park posts.</span>
+                                            <span class="lang-ne">स्थानीय गाइड वा निकुञ्ज पोष्टको चेतावनीलाई बेवास्ता नगर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Report stranded mountaineers, blocked high-altitude passes, or witnessed avalanches to aid coordinated rescue.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> पदमार्गमा फसेका पर्यटक, हिमपहिरो वा अवरुद्ध भञ्ज्याङको सूचना सुरक्षित स्थानबाट एनडीएमएसमा दिनुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Avalanche Incident →</span>
+                                    <span class="lang-ne">हिमपहिरोको घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 6: ROAD ACCIDENT
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-road" data-disaster-category="road">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">🚗</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Road Accident Guidelines</span>
+                                    <span class="lang-ne">सडक दुर्घटना सम्बन्धी सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Highway collisions, scene management &amp; safe citizen assistance</span>
+                                    <span class="lang-ne">सवारी दुर्घटना रोकथाम, घटनास्थल सुरक्षा तथा प्राथमिक सहयोग</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Transit</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is a Road Accident &amp; Common Causes</span>
+                                    <span class="lang-ne">सडक दुर्घटनाको परिचय र मुख्य कारणहरू</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        A road accident is a collision involving motor vehicles, pedestrians, or animals on public thoroughfares resulting in bodily injury or property damage. Common causes in Nepal include excessive speeding, driving under the influence of alcohol, driver fatigue on long-distance routes, poor mountain road geometry, mechanical failures, and driving during dense fog or heavy monsoon rain.
+                                    </span>
+                                    <span class="lang-ne">
+                                        सडकमा सवारी साधनहरू आपसमा जुध्नु वा सडकबाट तल खसेर जनधनको क्षति हुनुलाई सडक दुर्घटना भनिन्छ। नेपालमा अत्यधिक गति, मापसे गरी गाडी चलाउनु, चालकको थकान, साँघुरा तथा घुम्ती सडक, सवारी साधनको मर्मत अभाव र हुस्सु तथा वर्षाका कारण दुर्घटना हुने गर्दछ।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE (Prevention)</span>
+                                        <span class="lang-ne">सवारी चलाउँदा (रोकथाम)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Always wear seatbelts in four-wheelers and certified helmets for two-wheelers.</span>
+                                            <span class="lang-ne">सधैं सिटबेल्ट लगाउनुहोस् र दुईपाङ्ग्रे सवारीमा गुणस्तरीय हेलमेट प्रयोग गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Never use mobile phones or browse screens while driving.</span>
+                                            <span class="lang-ne">गाडी चलाउँदा मोबाइल फोन प्रयोग गर्ने वा ध्यान अन्यत्र मोड्ने नगर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Maintain safe following distances, especially on winding mountain highways.</span>
+                                            <span class="lang-ne">पहाडी घुम्तीमा अगाडिको गाडीसँग सुरक्षित दूरी कायम राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Service brakes, tires, and lights regularly before long journeys.</span>
+                                            <span class="lang-ne">लामो यात्रामा निस्कनुअघि ब्रेक, टायर र बत्तीहरूको परीक्षण गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">DURING / AT SCENE</span>
+                                        <span class="lang-ne">घटनास्थलमा (तत्काल)</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Turn on hazard warning lights and park safely off the roadway.</span>
+                                            <span class="lang-ne">इमर्जेन्सी लाइट (हजार्ड लाइट) बाल्नुहोस् र आफ्नो सवारी सुरक्षित ठाउँमा रोक्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Protect the scene: place warning triangles or branches 50m behind the vehicle.</span>
+                                            <span class="lang-ne">थप दुर्घटना रोक्न गाडीभन्दा ५० मिटर पछाडि चेतावनी संकेत राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Immediately call Nepal Police (100) and medical emergency ambulance.</span>
+                                            <span class="lang-ne">तुरुन्त नेपाल प्रहरी (१००) वा स्थानीय एम्बुलेन्स सेवालाई फोन गर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Check for breathing and severe bleeding without moving casualties.</span>
+                                            <span class="lang-ne">घाइतेको श्वासप्रश्वास र रक्तस्राव जाँच गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER (Care &amp; Report)</span>
+                                        <span class="lang-ne">दुर्घटना पश्चात</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en"><strong>Do not move unconscious victims</strong> unless immediate fire or explosion hazard exists (prevents spinal paralysis).</span>
+                                            <span class="lang-ne"><strong>बेहोस घाइतेलाई जथाभावी नहल्लाउनुहोस्</strong> (आगो लाग्ने खतरा भए बाहेक); यसले मेरुदण्डमा गम्भीर असर पुग्न सक्छ।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Apply clean cloth pressure to control major arterial bleeding.</span>
+                                            <span class="lang-ne">रक्तस्राव रोक्न सफा कपडाले घाउमा थिचेर राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Provide calm reassurance to victims until trained paramedics arrive.</span>
+                                            <span class="lang-ne">एम्बुलेन्स नआएसम्म घाइतेलाई ढाडस दिनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Keep a certified first-aid kit inside your vehicle at all times.</span>
+                                            <span class="lang-ne">सवारी साधनभित्र सधैं प्राथमिक उपचार किट राख्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Clear lanes for oncoming emergency ambulances and police responders.</span>
+                                            <span class="lang-ne">एम्बुलेन्स र प्रहरीका गाडीहरूलाई सहजै आउन बाटो खाली गरिदिनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not crowd around the accident scene or block road shoulders.</span>
+                                            <span class="lang-ne">घटनास्थल वरिपरि अनावश्यक भीडभाड गरेर सडक जाम नगर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not give water or food to unconscious or severely traumatized patients.</span>
+                                            <span class="lang-ne">बेहोस वा गम्भीर घाइतेलाई पानी वा खानेकुरा नखुवाउनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Major highway collisions, overturned passenger buses, or highway blockages can be reported via NDMS to assist crisis coordination.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> राजमार्गमा ठूलो सवारी दुर्घटना, बस पल्टिएको वा सडक पूर्ण अवरुद्ध भएको देखेमा एनडीएमएसमा रिपोर्ट गर्नुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Road Accident →</span>
+                                    <span class="lang-ne">सडक दुर्घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 7: AIRCRAFT ACCIDENT
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-aircraft" data-disaster-category="aircraft">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">✈️</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Aircraft Accident Guidelines</span>
+                                    <span class="lang-ne">हवाई दुर्घटना सम्बन्धी सुरक्षा निर्देशिका</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Aviation emergencies, passenger brace protocol &amp; site perimeter safety</span>
+                                    <span class="lang-ne">हवाई आपत्काल, यात्रु सुरक्षा तथा दुर्घटनास्थलमा नागरिक सावधानी</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Aviation</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="guide-definition-box">
+                                <h4>
+                                    <span class="lang-en">What is an Aircraft Accident</span>
+                                    <span class="lang-ne">हवाई दुर्घटनाको परिचय</span>
+                                </h4>
+                                <p>
+                                    <span class="lang-en">
+                                        An aircraft accident is an occurrence associated with the operation of an aircraft between boarding and disembarking, where persons suffer serious injury or the aircraft incurs structural damage. Nepal's mountainous geography, short-takeoff-and-landing (STOL) airfields, and unpredictable mountain weather create unique operating challenges.
+                                    </span>
+                                    <span class="lang-ne">
+                                        विमान वा हेलिकप्टर उडान भर्ने, अवतरण गर्ने वा उडिरहेको अवस्थामा हुने दुर्घटनालाई हवाई दुर्घटना भनिन्छ। नेपालको विकट हिमाली तथा पहाडी भूबनोट र छिनछिनमा परिवर्तन हुने मौसमका कारण हवाई उडानमा विशेष सावधानी आवश्यक हुन्छ।
+                                    </span>
+                                </p>
+                            </div>
+
+                            <!-- 3 Phases -->
+                            <div class="guide-phases-grid">
+                                <div class="guide-phase-box phase-before">
+                                    <h5>
+                                        <span class="lang-en">BEFORE FLIGHT</span>
+                                        <span class="lang-ne">उडान अघि</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Pay complete attention to the pre-flight safety demonstration.</span>
+                                            <span class="lang-ne">उडान सुरु हुनुअघि चालक दलले देखाउने सुरक्षा निर्देशन ध्यानपूर्वक हेर्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Count the seat rows to the nearest front and rear emergency exits.</span>
+                                            <span class="lang-ne">आफ्नो सिटबाट अगाडि र पछाडिका आपत्कालीन ढोका कति सिट टाढा छन् गन्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Keep seatbelts snugly fastened throughout the flight.</span>
+                                            <span class="lang-ne">सिटबेल्ट सधैं राम्ररी बाँधेर बस्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-during">
+                                    <h5>
+                                        <span class="lang-en">IN EMERGENCY</span>
+                                        <span class="lang-ne">आपत्कालीन अवस्थामा</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en"><strong>Brace Position:</strong> Bend forward, rest head against the forward seat or knees, clasp hands behind head.</span>
+                                            <span class="lang-ne"><strong>ब्रेस पोजिसन (Brace Position):</strong> अगाडि निहुरिएर टाउको घुँडा वा अघिल्लो सिटमा अड्याउनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Follow crew instructions without hesitation; leave all baggage behind.</span>
+                                            <span class="lang-ne">चालक दलको निर्देशन पालना गर्नुहोस्; कुनै पनि झोला वा सामान टिप्न नलाग्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not inflate life jackets inside the aircraft cabin (inflate only at the door).</span>
+                                            <span class="lang-ne">विमानको कोठाभित्रै लाइफ ज्याकेट नफुलाउनुहोस् (ढोकामा पुगेपछि मात्र फुलाउनुहोस्)।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-phase-box phase-after">
+                                    <h5>
+                                        <span class="lang-en">AFTER EVACUATION</span>
+                                        <span class="lang-ne">बाहिर निस्केपछि</span>
+                                    </h5>
+                                    <ul>
+                                        <li>
+                                            <span class="lang-en">Move upwind and at least 150 meters away from the wreckage.</span>
+                                            <span class="lang-ne">विमानको भग्नावशेषबाट हावा बहेको विपरित दिशा (Upwind) तर्फ कम्तीमा १५० मिटर पर जानुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Avoid aviation fuel spills, toxic burning plastics, and sharp metal debris.</span>
+                                            <span class="lang-ne">चुहिएको हवाई इन्धन, विषाक्त धुवाँ र धारिला टुक्राहरूबाट टाढा रहनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Clear access routes immediately for incoming search and rescue helicopters.</span>
+                                            <span class="lang-ne">उद्धार टोली र हेलिकप्टर अवतरणका लागि ठाउँ खाली गरिदिनुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <!-- Do / Don't -->
+                            <div class="guide-dodont-row">
+                                <div class="guide-do-box">
+                                    <h5>
+                                        <span aria-hidden="true">✓</span>
+                                        <span class="lang-en">DO</span>
+                                        <span class="lang-ne">गर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Keep shoes on during takeoff and landing in case rapid evacuation is required.</span>
+                                            <span class="lang-ne">उडान भर्दा र अवतरण गर्दा जुत्ता फुकालेर नबस्नुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Citizens at crash sites: alert local security forces immediately and secure the area.</span>
+                                            <span class="lang-ne">घटनास्थल देख्ने नागरिकहरूले तुरुन्त सुरक्षा निकायलाई खबर गरी ठाउँ सुरक्षित गर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="guide-dont-box">
+                                    <h5>
+                                        <span aria-hidden="true">✕</span>
+                                        <span class="lang-en">DO NOT</span>
+                                        <span class="lang-ne">नगर्नुहोस्</span>
+                                    </h5>
+                                    <ul class="guide-dodont-list">
+                                        <li>
+                                            <span class="lang-en">Do not touch, tamper with, or remove aircraft wreckage parts or flight recorders.</span>
+                                            <span class="lang-ne">विमानका पाटपुर्जा, ब्ल्याकबक्स वा कुनै पनि सामग्रीलाई नछुनुहोस्।</span>
+                                        </li>
+                                        <li>
+                                            <span class="lang-en">Do not post unverified casualty rumors or graphic crash photos on social media.</span>
+                                            <span class="lang-ne">सामाजिक सञ्जालमा अपुष्ट हल्ला वा संवेदनशील तस्बिरहरू पोस्ट नगर्नुहोस्।</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Report sighted aircraft distress or remote wreckage coordinates once you are in a safe communication area.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> विमान दुर्घटना भएको देखेमा वा स्थान थाहा भएमा सुरक्षित ठाउँबाट एनडीएमएस वा सुरक्षा निकायलाई खबर गर्नुहोस्।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Aircraft Incident →</span>
+                                    <span class="lang-ne">हवाई दुर्घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ---------------------------------------------
+                     ACCORDION 8: OTHER HAZARDS
+                     --------------------------------------------- -->
+                <div class="accordion-item" id="guide-other" data-disaster-category="other">
+                    <button type="button" class="accordion-header" aria-expanded="false">
+                        <div class="accordion-header-left">
+                            <div class="accordion-icon" aria-hidden="true">⚡</div>
+                            <div class="accordion-title-group">
+                                <h3>
+                                    <span class="lang-en">Other Weather &amp; Seasonal Hazards</span>
+                                    <span class="lang-ne">अन्य मौसमी तथा वातावरणीय जोखिमहरू</span>
+                                </h3>
+                                <p>
+                                    <span class="lang-en">Lightning, windstorms, cold waves &amp; heat waves</span>
+                                    <span class="lang-ne">चट्याङ, हावाहुरी, शीतलहर तथा अत्यधिक गर्मी (लू)</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="accordion-header-right">
+                            <span class="accordion-badge">Meteorological</span>
+                            <span class="accordion-chevron" aria-hidden="true">▾</span>
+                        </div>
+                    </button>
+
+                    <div class="accordion-body">
+                        <div class="guide-section-block">
+
+                            <div class="edu-grid">
+                                <div class="edu-item">
+                                    <h4>
+                                        <span class="lang-en">Lightning / चट्याङ</span>
+                                        <span class="lang-ne">चट्याङबाट बच्ने उपाय</span>
+                                    </h4>
+                                    <p>
+                                        <span class="lang-en">
+                                            Stay inside a permanent concrete building or fully enclosed metal vehicle. Avoid open fields, tall isolated trees, wire fences, and plumbing fixtures during thunderstorms. <em>When thunder roars, go indoors.</em>
+                                        </span>
+                                        <span class="lang-ne">
+                                            चट्याङ पर्दा पक्की घरभित्र वा गाडीभित्र बस्नुहोस्। खुला चौर, अग्ला रुख, तारबार र पानीका धाराबाट टाढा रहनुहोस्। बिजुली चम्किएको बेला विद्युतीय उपकरण चलाउने वा मोबाइल चार्ज गर्ने नगर्नुहोस्।
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="edu-item">
+                                    <h4>
+                                        <span class="lang-en">Windstorms / हावाहुरी</span>
+                                        <span class="lang-ne">हावाहुरी तथा असिना</span>
+                                    </h4>
+                                    <p>
+                                        <span class="lang-en">
+                                            Fasten corrugated tin roofs securely. Stay away from glass windows and large hoardings/billboards. Avoid parking vehicles underneath aging trees or rotting branches.
+                                        </span>
+                                        <span class="lang-ne">
+                                            घरको जस्तापाता राम्रोसँग बाँध्नुहोस्। हावाहुरी चल्दा झ्यालको सिसा नजिक नबस्नुहोस्। होर्डिङ बोर्ड र कमजोर रुखमुनि गाडी नरोक्नुहोस्।
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <div class="edu-item">
+                                    <h4>
+                                        <span class="lang-en">Cold Waves (Terai) / शीतलहर</span>
+                                        <span class="lang-ne">शीतलहर तथा बाक्लो हुस्सु</span>
+                                    </h4>
+                                    <p>
+                                        <span class="lang-en">
+                                            Wear multiple warm layers. Protect newborn infants and elderly family members from hypothermia. <strong>Crucial:</strong> Never burn charcoal, firewood, or gas heaters in closed bedrooms with zero ventilation (lethal carbon monoxide hazard).
+                                        </span>
+                                        <span class="lang-ne">
+                                            न्यानो लुगा लगाउनुहोस् र बालबालिका तथा ज्येष्ठ नागरिकको विशेष हेरचाह गर्नुहोस्। <strong>महत्त्वपूर्ण:</strong> बन्द कोठाभित्र कोइला, हिटर वा दाउरा बालेर कहिल्यै नसुत्नुहोस्; यसले अक्सिजन अभाव भई निसास्सिएर ज्यान जान सक्छ।
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="guide-report-notice" style="margin-top: 20px;">
+                                <p>
+                                    <span class="lang-en">
+                                        <strong>When to Report:</strong> Severe lightning casualties, roof damage to schools/shelters, or extreme cold distress can be documented through NDMS.
+                                    </span>
+                                    <span class="lang-ne">
+                                        <strong>कहिले रिपोर्ट गर्ने:</strong> चट्याङबाट भएको क्षति, हावाहुरीले उडाएको छाना वा शीतलहरबाट प्रभावित समुदायको जानकारी एनडीएमएसमा दर्ता गर्न सकिन्छ।
+                                    </span>
+                                </p>
+                                {% if not user.is_staff and not user.is_superuser %}
+                                <a href="{% url 'create_disaster_report' %}">
+                                    <span class="lang-en">Report Other Hazard →</span>
+                                    <span class="lang-ne">अन्य घटना रिपोर्ट गर्नुहोस् →</span>
+                                </a>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         7. EMERGENCY PREPAREDNESS — KIT & FAMILY PLAN
+         ===================================================== -->
+    <section class="guidelines-section" id="emergency-kit" aria-labelledby="kit-section-title">
+        <div class="guidelines-container">
+
+            <div class="guidelines-section-header text-center">
+                <span class="guidelines-section-eyebrow">
+                    <span class="lang-en">Practical Preparedness</span>
+                    <span class="lang-ne">व्यावहारिक पूर्वतयारी</span>
+                </span>
+                <h2 class="guidelines-section-title" id="kit-section-title">
+                    <span class="lang-en">Emergency Kit &amp; Family Plan</span>
+                    <span class="lang-ne">आपत्कालीन झोला तथा पारिवारिक योजना</span>
+                </h2>
+                <p class="guidelines-section-subtitle">
+                    <span class="lang-en">Equip your household before an emergency strikes. Being self-sufficient for 72 hours saves lives.</span>
+                    <span class="lang-ne">विपद् आइपर्नु अगावै आफ्नो परिवारलाई तयार राख्नुहोस्। कम्तीमा ७२ घण्टा पुग्ने सामग्री हुनु जीवन रक्षाका लागि अनिवार्य छ।</span>
+                </p>
+            </div>
+
+            <div class="prep-twocol-grid">
+
+                <!-- Emergency Kit Card -->
+                <div class="prep-card">
+                    <div class="prep-card-header">
+                        <div class="prep-card-icon" aria-hidden="true">🎒</div>
+                        <h3 class="prep-card-title">
+                            <span class="lang-en">Build an Emergency Kit (Go-Bag)</span>
+                            <span class="lang-ne">आपत्कालीन झोला (Go-Bag) तयारी</span>
+                        </h3>
+                    </div>
+
+                    <p class="prep-card-lead">
+                        <span class="lang-en">
+                            Keep a portable backpack in an easily accessible location near the main exit, ready to grab at a moment's notice.
+                        </span>
+                        <span class="lang-ne">
+                            आपत्कालीन अवस्थामा तुरुन्त लिएर निस्कन मिल्ने गरी घरको मूल ढोका नजिकै एउटा झोला सधैं तयार राख्नुहोस्।
+                        </span>
+                    </p>
+
+                    <div class="kit-items-grid">
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Drinking Water:</strong>
+                                <strong class="lang-ne">पिउने पानी:</strong>
+                                <span class="lang-en">At least 3-day supply (3L/person/day)</span>
+                                <span class="lang-ne">कम्तीमा ३ दिन पुग्ने (प्रतिव्यक्ति ३ लिटर)</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Dry Food:</strong>
+                                <strong class="lang-ne">सुख्खा खाना:</strong>
+                                <span class="lang-en">Chiura, dry fruits, biscuits, noodles</span>
+                                <span class="lang-ne">चिउरा, बिस्कुट, ड्राइफ्रुट्स, चाउचाउ</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">First-Aid Supplies:</strong>
+                                <strong class="lang-ne">प्राथमिक उपचार:</strong>
+                                <span class="lang-en">Bandages, antiseptic, burn cream, ORS</span>
+                                <span class="lang-ne">ब्यान्डेज, डेटोल, सिटामोल, जीवनजल</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Flashlight / Torch:</strong>
+                                <strong class="lang-ne">टर्चलाइट:</strong>
+                                <span class="lang-en">LED torch with spare fresh batteries</span>
+                                <span class="lang-ne">टर्चलाइट र थप ब्याट्रीहरू</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Power Bank:</strong>
+                                <strong class="lang-ne">पावर बैंक:</strong>
+                                <span class="lang-en">Charged phone power bank &amp; cables</span>
+                                <span class="lang-ne">चार्ज गरिएको पावर बैंक र केबल</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Whistle:</strong>
+                                <strong class="lang-ne">सिट्ठी:</strong>
+                                <span class="lang-en">To signal for help if trapped in debris</span>
+                                <span class="lang-ne">पुरिएको अवस्थामा उद्धारकर्ता बोलाउन सिट्ठी</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Vital Documents:</strong>
+                                <strong class="lang-ne">महत्त्वपूर्ण कागजात:</strong>
+                                <span class="lang-en">Citizenship, land papers in waterproof pouch</span>
+                                <span class="lang-ne">वाटरप्रूफ झोलामा नागरिकता, लालपुर्जा आदि</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Prescription Medicines:</strong>
+                                <strong class="lang-ne">नियमित औषधि:</strong>
+                                <span class="lang-en">7-day supply of daily chronic meds</span>
+                                <span class="lang-ne">कम्तीमा ७ दिन पुग्ने नियमित औषधि</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Hygiene Essentials:</strong>
+                                <strong class="lang-ne">सरसफाइ सामग्री:</strong>
+                                <span class="lang-en">Soap, sanitizer, sanitary pads, masks</span>
+                                <span class="lang-ne">साबुन, स्यानिटाइजर, सेनेटरी प्याड, मास्क</span>
+                            </span>
+                        </div>
+
+                        <div class="kit-item">
+                            <span class="kit-item-icon">✓</span>
+                            <span>
+                                <strong class="lang-en">Warm Clothing:</strong>
+                                <strong class="lang-ne">न्यानो कपडा:</strong>
+                                <span class="lang-en">Windbreaker, thermal blanket, sturdy shoes</span>
+                                <span class="lang-ne">रेनकोट, हल्का कम्बल र बाक्लो जुत्ता</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="kit-note">
+                        <span class="lang-en">
+                            <strong>Tip:</strong> Check your Go-Bag every 6 months to replace expired food, medicines, and discharged batteries.
+                        </span>
+                        <span class="lang-ne">
+                            <strong>सुझाव:</strong> प्रत्येक ६ महिनामा आपत्कालीन झोला खोलेर म्याद नाघेको खानेकुरा र औषधि फेर्नुहोस्।
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Family Emergency Plan Card -->
+                <div class="prep-card" id="family-plan">
+                    <div class="prep-card-header">
+                        <div class="prep-card-icon" aria-hidden="true">📋</div>
+                        <h3 class="prep-card-title">
+                            <span class="lang-en">Make a Family Emergency Plan</span>
+                            <span class="lang-ne">पारिवारिक आपत्कालीन कार्ययोजना</span>
+                        </h3>
+                    </div>
+
+                    <p class="prep-card-lead">
+                        <span class="lang-en">
+                            When disasters strike, family members may be at school, work, or traveling. A simple agreed plan prevents confusion and panic.
+                        </span>
+                        <span class="lang-ne">
+                            विपद् आउँदा परिवारका सदस्यहरू काममा वा विद्यालयमा हुन सक्छन्। पहिले नै सल्लाह गरी बनाइएको योजनाले भय र अन्योल हटाउँछ।
+                        </span>
+                    </p>
+
+                    <div class="plan-steps-list">
+                        <div class="plan-step-item">
+                            <div class="plan-step-num">1</div>
+                            <div class="plan-step-body">
+                                <h5>
+                                    <span class="lang-en">Choose Two Safe Meeting Places</span>
+                                    <span class="lang-ne">भेटघाटका लागि दुई ठाउँ तोक्नुहोस्</span>
+                                </h5>
+                                <p>
+                                    <span class="lang-en">One safe spot right outside your home (e.g. courtyard tree), and one public open space outside your neighborhood if your area is evacuated.</span>
+                                    <span class="lang-ne">एउटा घर बाहिरको नजिकैको सुरक्षित ठाउँ र अर्को टोलभन्दा बाहिरको खुला चौर वा सार्वजनिक स्थल।</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="plan-step-item">
+                            <div class="plan-step-num">2</div>
+                            <div class="plan-step-body">
+                                <h5>
+                                    <span class="lang-en">Designate an Out-of-Area Contact</span>
+                                    <span class="lang-ne">टोल बाहिरको सम्पर्क व्यक्ति तय गर्नुहोस्</span>
+                                </h5>
+                                <p>
+                                    <span class="lang-en">During local cell overload, long-distance SMS often works better. Agree on an out-of-district relative that all family members text.</span>
+                                    <span class="lang-ne">स्थानीय नेटवर्क व्यस्त हुँदा टाढाको फोनमा एसएमएस चल्न सक्छ; जिल्ला बाहिरको एक आफन्तलाई सबैले खबर गर्ने सहमति गर्नुहोस्।</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="plan-step-item">
+                            <div class="plan-step-num">3</div>
+                            <div class="plan-step-body">
+                                <h5>
+                                    <span class="lang-en">Identify Two Exit Routes from Every Room</span>
+                                    <span class="lang-ne">प्रत्येक कोठाबाट निस्कने २ वटा बाटो</span>
+                                </h5>
+                                <p>
+                                    <span class="lang-en">Ensure windows and alternate doors can be opened easily without searching for lost keys in the dark.</span>
+                                    <span class="lang-ne">झ्याल तथा ढोकाहरू सजिलै खुल्ने अवस्थामा राख्नुहोस् ताकि अँध्यारोमा साँचो खोजिरहनु नपरोस्।</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="plan-step-item">
+                            <div class="plan-step-num">4</div>
+                            <div class="plan-step-body">
+                                <h5>
+                                    <span class="lang-en">Assign Clear Responsibilities</span>
+                                    <span class="lang-ne">जिम्मेवारी बाँडफाँड गर्नुहोस्</span>
+                                </h5>
+                                <p>
+                                    <span class="lang-en">Agree in advance who grabs the Go-Bag, who turns off the main gas/power switch, and who assists elderly relatives or infants.</span>
+                                    <span class="lang-ne">आपत्कालीन झोला कसले बोक्ने, मेनस्विच कसले बन्द गर्ने र वृद्धवृद्धालाई कसले सघाउने भन्ने जिम्मेवारी पहिले नै तोक्नुहोस्।</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kit-note" style="margin-top: 18px;">
+                        <span class="lang-en">
+                            <strong>Practice:</strong> Walk through your evacuation route together as a family twice a year.
+                        </span>
+                        <span class="lang-ne">
+                            <strong>अभ्यास:</strong> वर्षमा कम्तीमा दुई पटक परिवारसँग मिलेर आपत्कालीन बाटोको अवलोकन गर्नुहोस्।
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         8. PROTECTING VULNERABLE POPULATIONS
+         ===================================================== -->
+    <section class="guidelines-section" id="vulnerable-support" aria-labelledby="vulnerable-title">
+        <div class="guidelines-container">
+
+            <div class="guidelines-section-header text-center">
+                <span class="guidelines-section-eyebrow">
+                    <span class="lang-en">Inclusive Safety</span>
+                    <span class="lang-ne">समावेशी विपद् सुरक्षा</span>
+                </span>
+                <h2 class="guidelines-section-title" id="vulnerable-title">
+                    <span class="lang-en">Protecting People Who Need Additional Support</span>
+                    <span class="lang-ne">बालबालिका, ज्येष्ठ नागरिक र विशेष आवश्यकता भएका व्यक्तिहरूको सुरक्षा</span>
+                </h2>
+                <p class="guidelines-section-subtitle">
+                    <span class="lang-en">Community resilience is measured by how safely we protect our most vulnerable members.</span>
+                    <span class="lang-ne">विपद्को घडीमा समाजका सबैभन्दा संवेदनशील वर्गको सुरक्षा गर्नु हाम्रो पहिलो दायित्व हो।</span>
+                </p>
+            </div>
+
+            <div class="vulnerable-grid">
+
+                <div class="vulnerable-card">
+                    <div class="vulnerable-header">
+                        <div class="vulnerable-icon" aria-hidden="true">👶</div>
+                        <h4>
+                            <span class="lang-en">Children</span>
+                            <span class="lang-ne">बालबालिकाको सुरक्षा</span>
+                        </h4>
+                    </div>
+                    <ul>
+                        <li>
+                            <span class="lang-en">Place an emergency ID card in their pocket with parents' phone numbers and home address.</span>
+                            <span class="lang-ne">बालबालिकाको खल्तीमा अभिभावकको फोन नम्बर र ठेगाना लेखेको परिचय-पत्र राखिदिनुहोस्।</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Reassure them calmly; explain disaster drills in gentle, age-appropriate words.</span>
+                            <span class="lang-ne">उनीहरूलाई नतर्साई शान्तपूर्वक विपद् सम्बन्धी सुरक्षा कुराहरू सिकाउनुहोस्।</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Include familiar comfort items (favorite book, small toy) in their Go-Bag.</span>
+                            <span class="lang-ne">आपत्कालीन झोलामा उनीहरूको मनपर्ने सानो खेलौना वा किताब राखिदिनुहोस्।</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="vulnerable-card">
+                    <div class="vulnerable-header">
+                        <div class="vulnerable-icon" aria-hidden="true">👵</div>
+                        <h4>
+                            <span class="lang-en">Elderly People</span>
+                            <span class="lang-ne">ज्येष्ठ नागरिकको सुरक्षा</span>
+                        </h4>
+                    </div>
+                    <ul>
+                        <li>
+                            <span class="lang-en">Keep essential daily medications (BP, diabetes) and written prescription copies accessible.</span>
+                            <span class="lang-ne">नियमित खाने औषधि (मुटु, मधुमेह, प्रेसर) र डाक्टरको प्रेस्क्रिप्सन साथमै राख्नुहोस्।</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Ensure walking sticks, eyeglasses, and hearing aids are kept beside their bed every night.</span>
+                            <span class="lang-ne">लठ्ठी, चश्मा वा कानको मेसिन ओछ्यान नजिकै हातले भेट्टाउने ठाउँमा राख्नुहोस्।</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Plan ground-floor sleeping quarters to prevent dangerous stair evacuation during tremors.</span>
+                            <span class="lang-ne">भूकम्पको बेला भर्‍याङबाट ओर्लन गाह्रो हुने भएकाले तल्लो तलामा सुत्ने व्यवस्था मिलाउनुहोस्।</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="vulnerable-card">
+                    <div class="vulnerable-header">
+                        <div class="vulnerable-icon" aria-hidden="true">♿</div>
+                        <h4>
+                            <span class="lang-en">Persons with Disabilities</span>
+                            <span class="lang-ne">अपाङ्गता भएका व्यक्तिहरू</span>
+                        </h4>
+                    </div>
+                    <ul>
+                        <li>
+                            <span class="lang-en">Plan accessible step-free evacuation pathways avoiding steep stairs.</span>
+                            <span class="lang-ne">भर्‍याङ बिना सजिलै निस्कन सकिने ह्वीलचेयरमैत्री निकास बाटो पहिचान गर्नुहोस्।</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Establish a buddy system with trusted neighbors who check in immediately during sirens.</span>
+                            <span class="lang-ne">चेतावनी बज्दा तुरुन्त सहयोग गर्न छिमेकीसँग समन्वय (Buddy System) मिलाउनुहोस्।</span>
+                        </li>
+                        <li>
+                            <span class="lang-en">Keep backup power supplies for essential medical assistive devices.</span>
+                            <span class="lang-ne">विद्युतीय उपकरण आवश्यक पर्ने व्यक्तिका लागि ब्याकअप ब्याट्रीको व्यवस्था गर्नुहोस्।</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         9. MASTER DO / DON'T SECTION
+         ===================================================== -->
+    <section class="guidelines-section" id="dodont" aria-labelledby="dodont-master-title">
+        <div class="guidelines-container">
+
+            <div class="guidelines-section-header text-center">
+                <span class="guidelines-section-eyebrow">
+                    <span class="lang-en">Quick Reference</span>
+                    <span class="lang-ne">द्रुत मार्गदर्शन</span>
+                </span>
+                <h2 class="guidelines-section-title" id="dodont-master-title">
+                    <span class="lang-en">General Emergency Rules: Do &amp; Don't</span>
+                    <span class="lang-ne">विपद्का समयमा गर्नुपर्ने र गर्न नहुने मुख्य कुराहरू</span>
+                </h2>
+                <p class="guidelines-section-subtitle">
+                    <span class="lang-en">Golden safety principles that apply across all disaster situations.</span>
+                    <span class="lang-ne">कुनै पनि विपद्को घडीमा सदैव पालना गर्नुपर्ने आधारभूत नियमहरू।</span>
+                </p>
+            </div>
+
+            <div class="dodont-master-grid">
+
+                <!-- MASTER DO -->
+                <div class="dodont-master-card is-do">
+                    <div class="dodont-header-row">
+                        <div class="dodont-icon-circle" aria-hidden="true">✓</div>
+                        <h3>
+                            <span class="lang-en">DO (Always Practice)</span>
+                            <span class="lang-ne">गर्नुहोस् (सधैं पालना गर्नुपर्ने)</span>
+                        </h3>
+                    </div>
+
+                    <ul class="dodont-items-list">
+                        <li>
+                            <span class="dodont-check-glyph">✓</span>
+                            <span>
+                                <strong class="lang-en">Stay calm and think clearly:</strong>
+                                <strong class="lang-ne">धैर्य र शान्त रहनुहोस्:</strong>
+                                <span class="lang-en">Panic causes rushed, dangerous decisions. Breathe and assess your surroundings.</span>
+                                <span class="lang-ne">आतङ्कित हुँदा गलत निर्णय हुन्छ। शान्त भएर परिस्थितिको मूल्याङ्कन गर्नुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✓</span>
+                            <span>
+                                <strong class="lang-en">Follow official instructions:</strong>
+                                <strong class="lang-ne">आधिकारिक निर्देशन मान्नुहोस्:</strong>
+                                <span class="lang-en">Obey evacuation orders issued by municipal ward authorities and emergency personnel.</span>
+                                <span class="lang-ne">सुरक्षा निकाय तथा स्थानीय तहले दिएका आधिकारिक निर्देशन पालना गर्नुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✓</span>
+                            <span>
+                                <strong class="lang-en">Keep emergency supplies ready:</strong>
+                                <strong class="lang-ne">आपत्कालीन झोला तयारी अवस्थामा राख्नुहोस्:</strong>
+                                <span class="lang-en">Store water, first-aid, power banks, and non-perishables in an accessible pack.</span>
+                                <span class="lang-ne">पानी, औषधि, पावर बैंक र सुख्खा खानेकुरा भएको झोला ढोका नजिक राख्नुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✓</span>
+                            <span>
+                                <strong class="lang-en">Move away from immediate danger:</strong>
+                                <strong class="lang-ne">खतराबाट तुरुन्त टाढा जानुहोस्:</strong>
+                                <span class="lang-en">Move to higher ground during flooding, or open areas during seismic tremors.</span>
+                                <span class="lang-ne">बाढी आउँदा उचाइमा र भूकम्प जाँदा खुला ठाउँतर्फ जानुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✓</span>
+                            <span>
+                                <strong class="lang-en">Help others when safe to do so:</strong>
+                                <strong class="lang-ne">सुरक्षित भएपछि अरूलाई सघाउनुहोस्:</strong>
+                                <span class="lang-en">Check on elderly neighbors, children, and disabled individuals without risking your life.</span>
+                                <span class="lang-ne">आफ्नो सुरक्षा सुनिश्चित गरी बालबालिका तथा वृद्धवृद्धाको उद्धारमा सघाउनुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✓</span>
+                            <span>
+                                <strong class="lang-en">Report hazards accurately:</strong>
+                                <strong class="lang-ne">सही सूचना प्रवाह गर्नुहोस्:</strong>
+                                <span class="lang-en">Share verified coordinates and photos through NDMS only from a secure location.</span>
+                                <span class="lang-ne">सुरक्षित स्थानमा पुगेपछि मात्र एनडीएमएस मार्फत सत्यतथ्य विवरण पठाउनुहोस्।</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- MASTER DON'T -->
+                <div class="dodont-master-card is-dont">
+                    <div class="dodont-header-row">
+                        <div class="dodont-icon-circle" aria-hidden="true">✕</div>
+                        <h3>
+                            <span class="lang-en">DON'T (Never Do)</span>
+                            <span class="lang-ne">नगर्नुहोस् (कहिल्यै गर्न नहुने)</span>
+                        </h3>
+                    </div>
+
+                    <ul class="dodont-items-list">
+                        <li>
+                            <span class="dodont-check-glyph">✕</span>
+                            <span>
+                                <strong class="lang-en">Do not spread unverified rumors:</strong>
+                                <strong class="lang-ne">अपुष्ट हल्ला वा अफवाह नफैलाउनुहोस्:</strong>
+                                <span class="lang-en">Avoid forwarding panic-inducing WhatsApp or Facebook posts without official confirmation.</span>
+                                <span class="lang-ne">सामाजिक सञ्जालमा आधारहीन सूचना सेयर गरेर समाजमा त्रास नजन्माउनुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✕</span>
+                            <span>
+                                <strong class="lang-en">Do not enter unsafe or cracked buildings:</strong>
+                                <strong class="lang-ne">चर्किएका घरभित्र नपस्नुहोस्:</strong>
+                                <span class="lang-en">Never re-enter flood-weakened or seismically damaged structures to retrieve property.</span>
+                                <span class="lang-ne">सम्पत्ति झिक्नका लागि भत्किन लागेका कमजोर संरचनाभित्र पस्दै नपस्नुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✕</span>
+                            <span>
+                                <strong class="lang-en">Do not touch downed electrical lines:</strong>
+                                <strong class="lang-ne">भुइँमा झरेका बिजुलीका तार नछुनुहोस्:</strong>
+                                <span class="lang-en">Treat all dangling or submerged electrical cables as live and potentially fatal.</span>
+                                <span class="lang-ne">बाढीमा डुबेका वा भुइँमा खसेका तारहरूमा करेन्ट प्रवाह भइरहेको हुन सक्छ।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✕</span>
+                            <span>
+                                <strong class="lang-en">Do not cross moving floodwaters:</strong>
+                                <strong class="lang-ne">बगिरहेको बाढी तर्ने प्रयास नगर्नुहोस्:</strong>
+                                <span class="lang-en">Flowing water can easily sweep away both pedestrians and four-wheel vehicles.</span>
+                                <span class="lang-ne">तीव्र गतिमा बगेको भेलले मानिस र गाडी दुवैलाई सजिलै बगाउन सक्छ।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✕</span>
+                            <span>
+                                <strong class="lang-en">Do not crowd rescue zones:</strong>
+                                <strong class="lang-ne">उद्धार कार्यमा भीडभाड नगर्नुहोस्:</strong>
+                                <span class="lang-en">Do not obstruct fire engines, ambulances, or emergency response vehicles.</span>
+                                <span class="lang-ne">एम्बुलेन्स वा दमकलको बाटो छेकेर रमिते नबन्नुहोस्।</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dodont-check-glyph">✕</span>
+                            <span>
+                                <strong class="lang-en">Do not endanger yourself for photos:</strong>
+                                <strong class="lang-ne">तस्बिर वा भिडियो खिच्न जोखिम नमोल्नुहोस्:</strong>
+                                <span class="lang-en">Never step closer to a riverbank, fire, or crumbling slope just to record video footage.</span>
+                                <span class="lang-ne">सामाजिक सञ्जालमा भिडियो बनाउन भन्दै आफ्नो ज्यान जोखिममा नपार्नुहोस्।</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         10. STAY INFORMED & OFFICIAL INFORMATION
+         ===================================================== -->
+    <section class="guidelines-section" id="stay-informed" aria-labelledby="stay-informed-title">
+        <div class="guidelines-container">
+
+            <div class="info-sources-card">
+                <div class="guidelines-section-header">
+                    <span class="guidelines-section-eyebrow">
+                        <span class="lang-en">Verified Channels</span>
+                        <span class="lang-ne">विश्वसनीय स्रोतहरू</span>
+                    </span>
+                    <h2 class="guidelines-section-title" id="stay-informed-title">
+                        <span class="lang-en">Stay Informed Through Official Sources</span>
+                        <span class="lang-ne">आधिकारिक तथा भरपर्दो सूचना प्रणाली</span>
+                    </h2>
+                    <p class="guidelines-section-subtitle">
+                        <span class="lang-en">During emergency situations, relying on verified institutional channels saves lives and prevents public panic.</span>
+                        <span class="lang-ne">आपत्कालीन अवस्थामा आधिकारिक निकायहरूबाट प्रसारित सूचना मात्र सुन्नुहोस् र भ्रमबाट बच्नुहोस्।</span>
+                    </p>
+                </div>
+
+                <div class="sources-grid">
+                    <div class="source-item">
+                        <h5>
+                            <span class="lang-en">DHM Nepal</span>
+                            <span class="lang-ne">जल तथा मौसम विज्ञान विभाग</span>
+                        </h5>
+                        <p>
+                            <span class="lang-en">Official weather forecasts, monsoon rain advisories, river water level alerts, and early flood warnings across river basins.</span>
+                            <span class="lang-ne">दैनिक मौसम पूर्वानुमान, वर्षाको अवस्था र नदीहरूमा बाढीको पूर्व-चेतावनी जारी गर्ने आधिकारिक निकाय।</span>
+                        </p>
+                    </div>
+
+                    <div class="source-item">
+                        <h5>
+                            <span class="lang-en">NDRRMA &amp; MoHA</span>
+                            <span class="lang-ne">विपद् व्यवस्थापन प्राधिकरण र गृह मन्त्रालय</span>
+                        </h5>
+                        <p>
+                            <span class="lang-en">National Disaster Risk Reduction &amp; Management Authority disaster bulletins, emergency directives, and evacuation advisories.</span>
+                            <span class="lang-ne">राष्ट्रिय विपद् व्यवस्थापन सम्बन्धी निर्देशन, स्थिति प्रतिवेदन तथा राहत समन्वय।</span>
+                        </p>
+                    </div>
+
+                    <div class="source-item">
+                        <h5>
+                            <span class="lang-en">Local Municipalities &amp; Wards</span>
+                            <span class="lang-ne">स्थानीय तह तथा वडा कार्यालय</span>
+                        </h5>
+                        <p>
+                            <span class="lang-en">Ward disaster committees provide direct community-level shelter locations, local emergency transport, and relief points.</span>
+                            <span class="lang-ne">वडास्तरीय आपत्कालीन आश्रयस्थल, उद्धार टोली र स्थानीय सहयोग केन्द्रहरूको प्रत्यक्ष जानकारी।</span>
+                        </p>
+                    </div>
+
+                    <div class="source-item">
+                        <h5>
+                            <span class="lang-en">NDMS Public Alerts</span>
+                            <span class="lang-ne">एनडीएमएस नागरिक अलर्ट</span>
+                        </h5>
+                        <p>
+                            <span class="lang-en">Verified disaster records and response updates published through NDMS for citizens across Nepal.</span>
+                            <span class="lang-ne">एनडीएमएस पोर्टलमा प्रमाणित गरिएका विपद्का घटनाहरू र उद्धार प्रगतिको आधिकारिक जानकारी।</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="misinfo-warning">
+                    <div class="misinfo-warning-icon" aria-hidden="true">⚠️</div>
+                    <div class="misinfo-warning-body">
+                        <h5>
+                            <span class="lang-en">Combating Disinformation During Emergencies</span>
+                            <span class="lang-ne">विपद्को समयमा भ्रामक सूचनाबाट जोगिनुहोस्</span>
+                        </h5>
+                        <p>
+                            <span class="lang-en">
+                                Misinformation can lead to dangerous evacuations or delay vital assistance. Never forward social media claims regarding earthquake predictions (earthquakes cannot be scientifically predicted) or unverified casualty numbers. Rely only on recognized governmental broadcasts.
+                            </span>
+                            <span class="lang-ne">
+                                भ्रामक सूचनाले अनावश्यक भागदौड मच्चाउन सक्छ। भूकम्पको मिति वा समय पहिल्यै तोकिएका दाबीहरू (भूकम्पको वैज्ञानिक भविष्यवाणी सम्भव छैन) वा अपुष्ट मृत्युका समाचारहरू विश्वास नगर्नुहोस् र आधिकारिक समाचार मात्र पछ्याउनुहोस्।
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         11. WHEN & HOW TO REPORT AN INCIDENT THROUGH NDMS
+         ===================================================== -->
+    <section class="guidelines-section" id="when-to-report" aria-labelledby="when-to-report-title">
+        <div class="guidelines-container">
+
+            <div class="report-guidance-card">
+                <div class="guidelines-section-header">
+                    <span class="guidelines-section-eyebrow">
+                        <span class="lang-en">Citizen Reporting</span>
+                        <span class="lang-ne">नागरिक रिपोर्टिङ</span>
+                    </span>
+                    <h2 class="guidelines-section-title" id="when-to-report-title">
+                        <span class="lang-en">When and How to Report an Incident via NDMS</span>
+                        <span class="lang-ne">एनडीएमएस मार्फत घटना कहिले र कसरी दर्ता गर्ने?</span>
+                    </h2>
+                </div>
+
+                <!-- CRITICAL SAFETY ALERT BANNER -->
+                <div class="critical-safety-alert" role="alert">
+                    <div class="critical-alert-icon" aria-hidden="true">🛑</div>
+                    <div class="critical-alert-body">
+                        <h4>
+                            <span class="lang-en">CRITICAL SAFETY RULE: DO NOT PUT YOURSELF AT RISK</span>
+                            <span class="lang-ne">विशेष सुरक्षा नियम: कहिल्यै पनि आफ्नो ज्यान जोखिममा नपार्नुहोस्</span>
+                        </h4>
+                        <p>
+                            <span class="lang-en">
+                                <strong>Never enter dangerous areas or delay evacuation just to take photos, record videos, or gather evidence.</strong> Move to safety first. Submit an incident report only after you and your companions are in a secure location.
+                            </span>
+                            <span class="lang-ne">
+                                <strong>तस्बिर लिन, भिडियो खिच्न वा प्रमाण जुटाउन भन्दै कहिल्यै पनि खतरा भएको ठाउँमा नजानुहोस्।</strong> सबैभन्दा पहिले आफू सुरक्षित स्थानमा पुग्नुहोस्। आफू र परिवार पूर्ण रूपमा सुरक्षित भएपछि मात्र रिपोर्ट दर्ता गर्नुहोस्।
+                            </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="reporting-twocol">
+                    <div class="reporting-box">
+                        <h4>
+                            <span class="lang-en">When to Report an Incident</span>
+                            <span class="lang-ne">कस्तो अवस्थामा रिपोर्ट गर्ने?</span>
+                        </h4>
+                        <ul>
+                            <li>
+                                <span class="lang-en">A natural or human-induced disaster is occurring or has caused damage in your area.</span>
+                                <span class="lang-ne">तपाईंको वरपर बाढी, पहिरो, आगलागी वा अन्य विपद् घटिरहेको वा क्षति पुर्‍याएको देखेमा।</span>
+                            </li>
+                            <li>
+                                <span class="lang-en">Critical community infrastructure is blocked or damaged (bridges, highways, power lines).</span>
+                                <span class="lang-ne">पुल, सडक, खानेपानी वा बिजुलीका पोलहरू क्षतिग्रस्त भई समुदाय प्रभावित भएको भएमा।</span>
+                            </li>
+                            <li>
+                                <span class="lang-en">Dangerous hazard conditions exist that threaten nearby settlements (e.g. cracked slopes).</span>
+                                <span class="lang-ne">बस्तीलाई जोखिममा पार्ने नयाँ खतराहरू (जस्तै भिरालो जमिन फाटेको) देखिएमा।</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="reporting-box">
+                        <h4>
+                            <span class="lang-en">How Reporting Works on NDMS</span>
+                            <span class="lang-ne">एनडीएमएसमा रिपोर्ट गर्ने प्रक्रिया</span>
+                        </h4>
+                        <ul>
+                            <li>
+                                <span class="lang-en"><strong>Step 1:</strong> Log in as a registered citizen on NDMS.</span>
+                                <span class="lang-ne"><strong>चरण १:</strong> एनडीएमएसमा नागरिक खाताबाट लगइन गर्नुहोस्।</span>
+                            </li>
+                            <li>
+                                <span class="lang-en"><strong>Step 2:</strong> Click <em>Report Incident</em> and select the disaster category.</span>
+                                <span class="lang-ne"><strong>चरण २:</strong> <em>Report Incident</em> मा क्लिक गरी विपद्को प्रकार छान्नुहोस्।</span>
+                            </li>
+                            <li>
+                                <span class="lang-en"><strong>Step 3:</strong> Pin your incident location on the interactive Nepal map.</span>
+                                <span class="lang-ne"><strong>चरण ३:</strong> नक्सामा घटना घटेको सही स्थान (Pin) तोक्नुहोस्।</span>
+                            </li>
+                            <li>
+                                <span class="lang-en"><strong>Step 4:</strong> Provide clear descriptions, observed severity, and photos if safely taken.</span>
+                                <span class="lang-ne"><strong>चरण ४:</strong> विवरण लेख्नुहोस् र सुरक्षित तवरले खिचिएका तस्बिर संलग्न गरी पेश गर्नुहोस्।</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Verified Emergency Numbers from Project -->
+                <div class="emergency-agencies-box">
+                    <div class="agencies-header">
+                        <span class="lang-en">Verified National Emergency Contacts:</span>
+                        <span class="lang-ne">प्रमाणित राष्ट्रिय आपत्कालीन सम्पर्क नम्बरहरू:</span>
+                    </div>
+
+                    <div class="agencies-pills-row">
+                        {% for agency in agencies %}
+                        <div class="agency-pill">
+                            <span>{{ agency.agency_name }}:</span>
+                            <span class="agency-pill-num">{{ agency.contact_number }}</span>
+                        </div>
+                        {% empty %}
+                        <div class="agency-pill">
+                            <span>Nepal Police:</span>
+                            <span class="agency-pill-num">100</span>
+                        </div>
+                        <div class="agency-pill">
+                            <span>Nepal Army Emergency Response:</span>
+                            <span class="agency-pill-num">+977-1-5970000</span>
+                        </div>
+                        {% endfor %}
+                        <div class="agency-pill">
+                            <span class="lang-en">Local Fire &amp; Ambulance:</span>
+                            <span class="lang-ne">स्थानीय दमकल र एम्बुलेन्स:</span>
+                            <span class="agency-pill-num">Use local municipal emergency numbers</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =====================================================
+         12. HIGH-IMPACT BOTTOM CTA BANNER
+         ===================================================== -->
+    <section class="guidelines-container">
+        <aside class="guidelines-cta-banner" aria-label="Incident Reporting Call to Action">
+            <div class="cta-banner-content">
+                <h2 class="cta-banner-title">
+                    <span class="lang-en">Be Prepared. Protect Your Community.</span>
+                    <span class="lang-ne">सचेत बनौँ। आफ्नो समुदायलाई सुरक्षित राखौँ।</span>
+                </h2>
+
+                <p class="cta-banner-subtitle">
+                    <span class="lang-en">
+                        Accurate citizen observations empower responders to coordinate rapid crisis relief across Nepal.
+                    </span>
+                    <span class="lang-ne">
+                        नागरिकहरूले दिएको सही र भरपर्दो सूचनाले विपद् व्यवस्थापन र उद्धार कार्यलाई प्रभावकारी बनाउँछ।
+                    </span>
+                </p>
+
+                <div class="cta-banner-btns">
+                    {% if not user.is_staff and not user.is_superuser %}
+                    <a href="{% url 'create_disaster_report' %}" class="btn-cta-white">
+                        <span class="lang-en">Report an Incident</span>
+                        <span class="lang-ne">घटना दर्ता गर्नुहोस्</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                    {% endif %}
+
+                    <a href="{% url 'disaster_list' %}" class="btn-cta-trans">
+                        <span class="lang-en">View Active Disasters</span>
+                        <span class="lang-ne">हालका विपद्हरू हेर्नुहोस्</span>
+                        <span aria-hidden="true">→</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+</main>
+
+
+<!-- =====================================================
+     13. SHARED PUBLIC FOOTER
+     ===================================================== -->
+<footer class="about-footer">
+    <div class="footer-inner">
+
+        <!-- BRAND -->
+        <div class="footer-brand">
+            <a href="{% url 'home' %}" class="footer-brand-title">
+                <strong>NDMS</strong>
+                <span>National Disaster Management System</span>
+            </a>
+            <p>
+                Building a safer and better-informed community through connected disaster reporting across Nepal.
+            </p>
+        </div>
+
+        <!-- FOOTER LINKS -->
+        <div class="footer-links">
+            <div>
+                <strong>Navigation</strong>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'about' %}">About</a>
+                <a href="{% url 'disaster_list' %}">Disasters</a>
+                <a href="{% url 'disaster_guidelines' %}">Awareness &amp; Guidelines</a>
+                <a href="{% url 'home' %}#contact">Contact</a>
+            </div>
+
+            <div>
+                <strong>Services</strong>
+                {% if not user.is_staff and not user.is_superuser %}
+                <a href="{% url 'create_disaster_report' %}">Report Incident</a>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    {% if user.is_staff or user.is_superuser %}
+                        <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+                    {% else %}
+                        <a href="{% url 'my_reports' %}">My Reports</a>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'login' %}">My Reports</a>
+                {% endif %}
+            </div>
+
+            <div>
+                <strong>Account</strong>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Logout</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                    <a href="{% url 'register' %}">Register</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="footer-social">
+            <strong class="footer-social-title">Follow NDMS</strong>
+            <div class="footer-social-icons">
+                <a href="https://www.facebook.com/dip.esh.641646" class="footer-social-icon" aria-label="Facebook">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14.5 8.5H16V5.6c-.26-.04-1.16-.1-2.2-.1-2.18 0-3.68 1.33-3.68 3.78V11H7.8v3.2h2.32V22h3.2v-7.8h2.3l.37-3.2h-2.67V9.6c0-.92.25-1.1 1.18-1.1Z" fill="currentColor"/></svg>
+                </a>
+                <a href="https://www.instagram.com/_212.m6_?stkn=MXg1ZHdma3IwMWxtYg==" class="footer-social-icon" aria-label="Instagram">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="4.5" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/><circle cx="17.1" cy="6.9" r="1" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="X">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 5l14 14M19 5 5 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="YouTube">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6.5" width="18" height="11" rx="3" stroke="currentColor" stroke-width="1.7"/><path d="M10.5 10.2v3.6l3.3-1.8-3.3-1.8Z" fill="currentColor"/></svg>
+                </a>
+                <a href="#" class="footer-social-icon" aria-label="LinkedIn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="3" stroke="currentColor" stroke-width="1.7"/><circle cx="8" cy="8.3" r="1.15" fill="currentColor"/><path d="M8 11v6.2M12 11v6.2M12 13.6c0-1.4 1-2.3 2.2-2.3 1.3 0 2.1.9 2.1 2.4v3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- FOOTER BOTTOM -->
+    <div class="footer-bottom">
+        <span>© 2026 National Disaster Management System</span>
+        <span>NDMS</span>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src="{% static 'reports/js/public-nav.js' %}" defer></script>
+<script src="{% static 'reports/js/navbar-avatar.js' %}" defer></script>
+<script src="{% static 'reports/js/disaster-guidelines.js' %}" defer></script>
+
+</body>
+</html>

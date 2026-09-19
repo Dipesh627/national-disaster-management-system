@@ -1,0 +1,873 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+{{ disaster.title }} | NDMS Administration
+{% endblock %}
+
+
+{% block extra_css %}
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disaster-reports.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-report-detail.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disasters.css' %}"
+>
+
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disaster-detail.css' %}"
+>
+
+{% endblock %}
+
+
+{% block breadcrumb %}
+<a href="{% url 'admin_disasters' %}">Disasters</a>
+<span class="ds-breadcrumb-divider">/</span>
+<span>{{ disaster.title }}</span>
+{% endblock %}
+
+
+{% block page_title %}
+{{ disaster.title }}
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ndms-dashboard ds-page">
+
+    <div class="dashboard-body rd-admin-page">
+
+
+        <!-- =================================================
+             HEADER
+             ================================================= -->
+
+        <header class="rd-admin-header">
+
+            <div class="rd-admin-header-copy">
+
+                <p class="rd-admin-eyebrow">
+                    DISASTER SITUATION
+                </p>
+
+                <div class="rd-admin-header-title-row dd-header-title-row">
+
+                    <h1>{{ disaster.title }}</h1>
+
+                    <span class="dd-header-badges">
+
+                        <span class="ds-severity ds-severity-{{ disaster.severity|lower }}">
+                            <i aria-hidden="true"></i>
+                            {{ disaster.get_severity_display }}
+                        </span>
+
+                        <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                            <i aria-hidden="true"></i>
+                            {{ disaster.get_status_display }}
+                        </span>
+
+                    </span>
+
+                </div>
+
+
+                <p class="rd-admin-header-meta">
+
+                    <span class="rd-header-type">
+                        {{ disaster.disaster_type.name }}
+                    </span>
+
+                    <span class="rd-header-sep" aria-hidden="true">•</span>
+
+                    <span class="rd-header-time-item">
+                        <span class="rd-header-time-label">Started</span>
+                        <strong>
+                            <time datetime="{{ disaster.start_date|date:'c' }}">
+                                {{ disaster.start_date|date:"M d, Y H:i" }}
+                            </time>
+                        </strong>
+                    </span>
+
+                    <span class="rd-header-sep" aria-hidden="true">•</span>
+
+                    <span class="rd-header-time-item">
+                        <span class="rd-header-time-label">Updates</span>
+                        <strong>{{ updates|length }}</strong>
+                    </span>
+
+                </p>
+
+            </div>
+
+
+            <div class="dd-header-actions">
+
+                {% if disaster.status != 'CLOSED' %}
+
+                    <a
+                        href="{% url 'admin_response_update_create' %}?disaster={{ disaster.id }}&next={{ request.path|urlencode }}"
+                        class="ds-primary-button"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+                        </svg>
+                        <span>Add Response Update</span>
+                    </a>
+
+
+                    <a
+                        href="{% url 'admin_disaster_edit' disaster.id %}"
+                        class="ds-secondary-button"
+                    >
+                        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 20h9"></path>
+                            <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
+                        </svg>
+                        <span>Edit</span>
+                    </a>
+
+                {% endif %}
+
+
+                <a href="{% url 'admin_disasters' %}" class="ds-secondary-button">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5"></path>
+                        <path d="m12 19-7-7 7-7"></path>
+                    </svg>
+                    <span>Back</span>
+                </a>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             TWO COLUMN LAYOUT
+             ================================================= -->
+
+        <div class="rd-admin-grid">
+
+
+            <!-- =============================================
+                 LEFT COLUMN
+                 ============================================= -->
+
+            <div class="rd-admin-column">
+
+
+                <!-- LATEST SITUATION -->
+                <section class="rd-admin-card" aria-labelledby="ddSituationHeading">
+
+                    <div class="rd-admin-card-header">
+                        <div>
+                            <h2 id="ddSituationHeading">Latest Situation</h2>
+                            <p>The current official position for this disaster.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="dd-situation-card">
+
+                        <div class="dd-situation-row">
+
+                            <div class="dd-situation-status-block">
+
+                                <span class="dd-situation-label">
+                                    Current Status
+                                </span>
+
+                                <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                                    <i aria-hidden="true"></i>
+                                    {{ disaster.get_status_display }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="dd-situation-status-block">
+
+                                <span class="dd-situation-label">
+                                    Severity
+                                </span>
+
+                                <span class="ds-severity ds-severity-{{ disaster.severity|lower }}">
+                                    <i aria-hidden="true"></i>
+                                    {{ disaster.get_severity_display }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="dd-situation-status-block">
+
+                                <span class="dd-situation-label">
+                                    Linked Reports
+                                </span>
+
+                                <span class="ds-status ds-status-closed">
+                                    <i aria-hidden="true"></i>
+                                    {{ linked_reports|length }}
+                                    report{{ linked_reports|length|pluralize }}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="dd-situation-latest">
+
+                            <span class="dd-situation-label">
+                                Latest Response
+                            </span>
+
+                            {% if latest_update %}
+
+                                <div class="dd-situation-latest-row" style="margin-top: 8px;">
+
+                                    <div class="dd-situation-latest-copy">
+
+                                        <strong>
+                                            {{ latest_update.agency.agency_name }}
+                                            —
+                                            <span class="response-status response-{{ latest_update.response_status|lower }}">
+                                                {{ latest_update.get_response_status_display }}
+                                            </span>
+                                        </strong>
+
+                                        <p>{{ latest_update.update_details }}</p>
+
+                                    </div>
+
+                                    <span class="dd-situation-latest-time">
+                                        <time datetime="{{ latest_update.update_date|date:'c' }}">
+                                            {{ latest_update.update_date|date:"M d, Y H:i" }}
+                                        </time>
+                                    </span>
+
+                                </div>
+
+                            {% else %}
+
+                                <p class="dd-situation-latest-empty" style="margin-top: 8px;">
+                                    No response updates have been recorded yet.
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- DISASTER OVERVIEW -->
+                <section class="rd-admin-card" aria-labelledby="ddOverviewHeading">
+
+                    <div class="rd-admin-card-header">
+                        <div>
+                            <h2 id="ddOverviewHeading">Disaster Overview</h2>
+                            <p>Official record details.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="rd-admin-info">
+
+                        <div class="rd-admin-info-row">
+                            <span class="rd-admin-info-label">Type</span>
+                            <span class="rd-admin-info-value">
+                                {{ disaster.disaster_type.name }}
+                            </span>
+                        </div>
+
+                        <div class="rd-admin-info-row">
+                            <span class="rd-admin-info-label">Started</span>
+                            <span class="rd-admin-info-value">
+                                <time datetime="{{ disaster.start_date|date:'c' }}">
+                                    {{ disaster.start_date|date:"F d, Y — H:i" }}
+                                </time>
+                            </span>
+                        </div>
+
+                        {% if disaster.resolved_date %}
+                        <div class="rd-admin-info-row">
+                            <span class="rd-admin-info-label">Resolved</span>
+                            <span class="rd-admin-info-value">
+                                <time datetime="{{ disaster.resolved_date|date:'c' }}">
+                                    {{ disaster.resolved_date|date:"F d, Y — H:i" }}
+                                </time>
+                            </span>
+                        </div>
+                        {% endif %}
+
+                        <div class="rd-admin-info-row">
+                            <span class="rd-admin-info-label">Location</span>
+                            <span class="rd-admin-info-value">
+                                {{ disaster.address|default:"Not recorded" }}
+                            </span>
+                        </div>
+
+                        {% if disaster.latitude and disaster.longitude %}
+                            <div class="rd-admin-info-row">
+                                <span class="rd-admin-info-label">Coordinates</span>
+                                <span class="rd-admin-info-value">
+                                    {{ disaster.latitude }}, {{ disaster.longitude }}
+                                </span>
+                            </div>
+                        {% endif %}
+
+                        {% if source_report %}
+                            <div class="rd-admin-info-row">
+                                <span class="rd-admin-info-label">Source</span>
+                                <span class="rd-admin-info-value">
+                                    <a href="{% url 'admin_report_detail' source_report.id %}">
+                                        Created from Report #{{ source_report.id }}
+                                    </a>
+                                </span>
+                            </div>
+                        {% endif %}
+
+                        <div class="rd-admin-info-row">
+                            <span class="rd-admin-info-label">Description</span>
+                            <span class="rd-admin-info-value rd-admin-description">{{ disaster.description }}</span>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- RESPONSE UPDATE TIMELINE -->
+                <section class="rd-admin-card" aria-labelledby="ddTimelineHeading">
+
+                    <div class="rd-admin-card-header">
+                        <div>
+                            <h2 id="ddTimelineHeading">Response Updates</h2>
+                            <p>Most recent activity first.</p>
+                        </div>
+
+                        {% if disaster.status != 'CLOSED' %}
+                            <a
+                                href="{% url 'admin_response_update_create' %}?disaster={{ disaster.id }}&next={{ request.path|urlencode }}"
+                                class="dd-timeline-link"
+                            >
+                                Add update
+                            </a>
+                        {% endif %}
+                    </div>
+
+
+                    {% if updates %}
+
+                        <ol class="dd-timeline">
+
+                            {% for update in updates %}
+
+                                <li class="dd-timeline-item">
+
+                                    <span class="dd-timeline-node" aria-hidden="true"></span>
+
+                                    <div class="dd-timeline-content">
+
+                                        <div class="dd-timeline-top">
+
+                                            <span class="dd-timeline-heading">
+
+                                                <span class="dd-timeline-agency">
+                                                    {{ update.agency.agency_name }}
+                                                </span>
+
+                                                <span class="response-status response-{{ update.response_status|lower }}">
+                                                    {{ update.get_response_status_display }}
+                                                </span>
+
+                                            </span>
+
+                                            <span class="dd-timeline-date">
+                                                <time datetime="{{ update.update_date|date:'c' }}">
+                                                    {{ update.update_date|date:"M d, Y H:i" }}
+                                                </time>
+                                            </span>
+
+                                        </div>
+
+
+                                        <p class="dd-timeline-details">{{ update.update_details }}</p>
+
+
+                                        <span class="dd-timeline-meta">
+                                            Updated by
+                                            {% if update.updated_by %}
+                                                {{ update.updated_by.get_full_name|default:update.updated_by.username }}
+                                            {% else %}
+                                                System
+                                            {% endif %}
+                                        </span>
+
+
+                                        {% if disaster.status != 'CLOSED' %}
+
+                                            <span class="dd-timeline-actions">
+
+                                                <a
+                                                    href="{% url 'admin_response_update_edit' update.id %}?next={{ request.path|urlencode }}"
+                                                    class="dd-timeline-link"
+                                                >
+                                                    Edit
+                                                </a>
+
+                                                <form
+                                                    method="post"
+                                                    action="{% url 'admin_response_update_delete' update.id %}"
+                                                    onsubmit="return confirm('Delete this response update? This cannot be undone.');"
+                                                >
+                                                    {% csrf_token %}
+
+                                                    <input
+                                                        type="hidden"
+                                                        name="next"
+                                                        value="{{ request.path }}"
+                                                    >
+
+                                                    <button
+                                                        type="submit"
+                                                        class="dd-timeline-link dd-timeline-link-danger"
+                                                    >
+                                                        Delete
+                                                    </button>
+
+                                                </form>
+
+                                            </span>
+
+                                        {% endif %}
+
+                                    </div>
+
+                                </li>
+
+                            {% endfor %}
+
+                        </ol>
+
+                    {% else %}
+
+                        <p class="dd-empty-note" style="padding-left: 16px; padding-right: 16px;">
+                            No response updates have been recorded yet.
+                        </p>
+
+                    {% endif %}
+
+                </section>
+
+
+                <!-- LOCATION MAP -->
+                {% if disaster.latitude and disaster.longitude %}
+
+                    <section class="rd-admin-card" aria-labelledby="ddMapHeading">
+
+                        <div class="rd-admin-card-header">
+                            <div>
+                                <h2 id="ddMapHeading">Location</h2>
+                                <p>{{ disaster.address|default:"Recorded coordinates" }}</p>
+                            </div>
+                        </div>
+
+                        <div class="rd-admin-map-wrap">
+
+                            <div
+                                class="rd-admin-map"
+                                id="reportDetailMap"
+                                data-latitude="{{ disaster.latitude|stringformat:'s' }}"
+                                data-longitude="{{ disaster.longitude|stringformat:'s' }}"
+                                data-address="{{ disaster.address|default:'' }}"
+                                role="img"
+                                aria-label="Map showing the disaster location"
+                            ></div>
+
+                        </div>
+
+                    </section>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- =============================================
+                 RIGHT COLUMN
+                 ============================================= -->
+
+            <div class="rd-admin-column">
+
+
+                <!-- DISASTER LIFECYCLE -->
+                <section class="rd-admin-card" aria-labelledby="ddLifecycleHeading">
+
+                    <div class="rd-admin-card-header">
+                        <div>
+                            <h2 id="ddLifecycleHeading">Disaster Lifecycle</h2>
+                            <p>Status moves forward one stage at a time.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="dd-lifecycle-wrap">
+
+                        <div class="dd-lifecycle-current">
+
+                            <span class="dd-situation-label">
+                                Current Status
+                            </span>
+
+                            <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                                <i aria-hidden="true"></i>
+                                {{ disaster.get_status_display }}
+                            </span>
+
+                        </div>
+
+
+                        <ol class="dd-lifecycle-steps" aria-label="Disaster lifecycle stages">
+
+                            {% for value, label in disaster.STATUS_CHOICES %}
+
+                                <li
+                                    class="dd-lifecycle-step{% if value == disaster.status %} is-current{% endif %}"
+                                    {% if value == disaster.status %}aria-current="step"{% endif %}
+                                >
+                                    {{ label }}
+                                </li>
+
+                                {% if not forloop.last %}
+                                    <span class="dd-lifecycle-arrow" aria-hidden="true">›</span>
+                                {% endif %}
+
+                            {% endfor %}
+
+                        </ol>
+
+
+                        {% if next_status %}
+
+                            <p class="dd-lifecycle-action-desc">
+                                The next stage for this disaster is
+                                <strong>{{ next_status_display }}</strong>.
+                            </p>
+
+
+                            <form
+                                method="post"
+                                action="{% url 'admin_disaster_update_status' disaster.id %}"
+                                class="ds-close-form"
+                                data-title="{{ disaster.title }}"
+                                data-confirm-title="Mark as {{ next_status_display }}?"
+                                data-confirm-body="Change the status of “{{ disaster.title }}” to {{ next_status_display }}? {% if next_status == 'CLOSED' %}Closing finalizes this disaster: its status and response updates can no longer be changed.{% else %}This moves the disaster to the next stage of its lifecycle.{% endif %}"
+                                data-confirm-label="Mark as {{ next_status_display }}"
+                            >
+                                {% csrf_token %}
+
+                                <input
+                                    type="hidden"
+                                    name="status"
+                                    value="{{ next_status }}"
+                                >
+
+                                <button
+                                    type="submit"
+                                    class="ds-primary-button"
+                                    style="width: 100%;"
+                                >
+                                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5 12h14"></path>
+                                        <path d="m13 6 6 6-6 6"></path>
+                                    </svg>
+                                    <span>Mark as {{ next_status_display }}</span>
+                                </button>
+
+                            </form>
+
+                        {% else %}
+
+                            <div class="dd-lifecycle-finalized">
+
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4.5" y="10.5" width="15" height="10" rx="2"></rect>
+                                    <path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"></path>
+                                </svg>
+
+                                <p>
+                                    This disaster is closed and finalized. Its
+                                    status and response updates can no longer
+                                    be changed, but the full record remains
+                                    available for reference.
+                                </p>
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+                </section>
+
+
+                <!-- OFFICIAL PHOTOS -->
+                <section class="rd-admin-card" aria-labelledby="ddPhotosHeading">
+
+                    <div class="rd-admin-card-header">
+                        <div>
+                            <h2 id="ddPhotosHeading">Official Photos</h2>
+                            <p>
+                                {{ photos|length }} official
+                                photo{{ photos|length|pluralize }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if photos %}
+
+                        <div class="rd-admin-gallery">
+
+                            {% for photo in photos %}
+
+                                <button
+                                    type="button"
+                                    class="rd-admin-photo rd-photo-thumb"
+                                    data-full="{{ photo.image.url }}"
+                                    aria-label="Open official photo {{ forloop.counter }} full size"
+                                >
+                                    <img
+                                        src="{{ photo.image.url }}"
+                                        alt="{{ photo.caption|default:'Official disaster photo' }}"
+                                        loading="lazy"
+                                    >
+                                </button>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <p class="rd-admin-no-photo">
+                            No official photos have been added.
+                        </p>
+
+                    {% endif %}
+
+                </section>
+
+
+                <!-- LINKED CITIZEN REPORTS -->
+                <section class="rd-admin-card" aria-labelledby="ddReportsHeading">
+
+                    <div class="rd-admin-card-header">
+                        <div>
+                            <h2 id="ddReportsHeading">Linked Reports</h2>
+                            <p>
+                                {{ linked_reports|length }} citizen
+                                report{{ linked_reports|length|pluralize }}
+                                linked to this disaster
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if linked_reports %}
+
+                        <div class="dd-report-list">
+
+                            {% for report in linked_reports %}
+
+                                <a
+                                    href="{% url 'admin_report_detail' report.id %}"
+                                    class="dd-report-row"
+                                >
+
+                                    <span class="dd-report-copy">
+
+                                        <span class="dd-report-id">
+                                            Report #{{ report.id }}
+                                        </span>
+
+                                        <span class="dd-report-reporter">
+                                            {{ report.report_date|date:"M d, Y H:i" }}
+                                        </span>
+
+                                    </span>
+
+                                    <span class="table-status table-status-{{ report.status|lower }}">
+                                        {{ report.get_status_display }}
+                                    </span>
+
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% else %}
+
+                        <p class="rd-admin-no-photo">
+                            No citizen reports are linked to this disaster.
+                        </p>
+
+                    {% endif %}
+
+                </section>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STATUS CHANGE CONFIRMATION MODAL
+         Kept inside .ds-page so the --ds-* palette variables
+         resolve. Driven by admin-disasters.js.
+         ===================================================== -->
+    <div
+        id="dsCloseModal"
+        class="ds-modal"
+        hidden
+        aria-hidden="true"
+    >
+        <div class="ds-modal-backdrop" data-modal-close></div>
+
+        <div
+            class="ds-modal-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dsCloseModalTitle"
+            aria-describedby="dsCloseModalBody"
+        >
+
+            <div class="ds-modal-top">
+
+                <div class="ds-modal-danger-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3 3.5 6.5v5.8c0 4.3 3.1 7.9 8.5 9.7 5.4-1.8 8.5-5.4 8.5-9.7V6.5Z"></path>
+                        <path d="M12 8v4.5"></path>
+                        <path d="M12 16.25h.01"></path>
+                    </svg>
+                </div>
+
+                <button type="button" class="ds-modal-close" data-modal-close aria-label="Close confirmation">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                        <path d="M6 6l12 12"></path>
+                        <path d="M18 6 6 18"></path>
+                    </svg>
+                </button>
+
+            </div>
+
+
+            <div class="ds-modal-content">
+
+                <h3 id="dsCloseModalTitle">
+                    Change Disaster Status?
+                </h3>
+
+                <p id="dsCloseModalBody">
+                    Are you sure you want to update
+                    “<strong id="dsCloseDisasterTitle">this disaster</strong>”?
+                </p>
+
+            </div>
+
+
+            <div class="ds-modal-actions">
+
+                <button type="button" class="ds-modal-cancel" data-modal-close>
+                    Cancel
+                </button>
+
+                <button type="button" class="ds-confirm-close-button" id="dsConfirmClose">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M5 12h14"></path>
+                        <path d="m13 6 6 6-6 6"></path>
+                    </svg>
+                    <span id="dsConfirmCloseLabel">Confirm</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PHOTO LIGHTBOX
+         IDs intentionally preserved for report-detail.js
+         ===================================================== -->
+
+    <div class="rd-photo-modal" id="rdPhotoModal">
+
+        <div class="rd-photo-modal-content">
+
+            <button
+                type="button"
+                class="rd-photo-modal-close"
+                id="rdPhotoModalClose"
+                aria-label="Close photo preview"
+            >
+                ✕
+            </button>
+
+            <img
+                id="rdPhotoModalImage"
+                src=""
+                alt="Full size official disaster photo"
+            >
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script src="{% static 'reports/admin/admin-disasters.js' %}"></script>
+
+<script
+    src="{% static 'reports/js/report-detail.js' %}"
+    defer>
+</script>
+
+{% if disaster.latitude and disaster.longitude %}
+<script
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initReportDetailMap&loading=async"
+    defer
+    onerror="window.ndmsMapsScriptError && window.ndmsMapsScriptError();">
+</script>
+{% endif %}
+
+{% endblock %}

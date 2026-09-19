@@ -1,0 +1,657 @@
+/* =========================================================
+   NDMS REGISTER
+   ========================================================= */
+
+:root {
+
+    --red: #b42318;
+    --red-dark: #8f1d16;
+
+    --navy: #172033;
+
+    --text: #344054;
+    --muted: #667085;
+
+    --border: #e4e7ec;
+
+    --light-red: #fff7f6;
+
+    --white: #ffffff;
+
+    --background: #f8f9fb;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+html {
+
+    min-height: 100%;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: var(--background);
+
+    color: var(--text);
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+button,
+input {
+
+    font-family: inherit;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.register-wrapper {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding: 42px 20px 25px;
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.register-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    text-decoration: none;
+
+    margin-bottom: 28px;
+
+    transition:
+        transform .2s ease;
+}
+
+
+.register-brand:hover {
+
+    transform: translateY(-1px);
+}
+
+
+.register-logo {
+
+    width: 43px;
+    height: 43px;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    border-radius: 9px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+
+    font-weight: 800;
+
+    letter-spacing: .5px;
+
+    transition:
+        background .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.register-brand:hover .register-logo {
+
+    background: var(--red-dark);
+
+    box-shadow:
+        0 5px 13px rgba(180, 35, 24, .20);
+}
+
+
+.register-brand-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    line-height: 1.15;
+}
+
+
+.register-brand-text strong {
+
+    color: var(--navy);
+
+    font-size: calc(19px * var(--ndms-font-scale, 1));
+
+    font-weight: 750;
+
+    letter-spacing: .3px;
+}
+
+
+.register-brand-text span {
+
+    color: var(--muted);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+
+    margin-top: 4px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.register-card {
+
+    width: 100%;
+
+    max-width: 540px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    padding: 32px 34px;
+
+    box-shadow:
+        0 5px 20px rgba(23, 32, 51, .05);
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.register-heading {
+
+    margin-bottom: 25px;
+}
+
+
+.register-label {
+
+    display: block;
+
+    color: var(--red);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+    margin-bottom: 7px;
+}
+
+
+.register-heading h1 {
+
+    color: var(--navy);
+
+    font-size: calc(27px * var(--ndms-font-scale, 1));
+
+    line-height: 1.25;
+
+    font-weight: 750;
+
+    margin-bottom: 7px;
+}
+
+
+.register-heading p {
+
+    color: var(--muted);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+   ========================================================= */
+
+.register-message {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    background: var(--light-red);
+
+    border: 1px solid var(--c-red-160);
+
+    border-left: 4px solid var(--red);
+
+    border-radius: 8px;
+
+    padding: 10px 12px;
+
+    margin-bottom: 18px;
+
+    color: var(--red);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+
+    font-weight: 600;
+}
+
+
+.message-icon {
+
+    width: 20px;
+    height: 20px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.register-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 17px;
+}
+
+
+.form-group {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.form-row {
+
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.form-group label {
+
+    color: var(--text);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.form-group input {
+
+    width: 100%;
+
+    height: 43px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 7px;
+
+    background: var(--white);
+
+    color: var(--text);
+
+    outline: none;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.form-group input::placeholder {
+
+    color: var(--c-muted-2);
+}
+
+
+.form-group input:focus {
+
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, .08);
+}
+
+
+/* =========================================================
+   PASSWORD
+   ========================================================= */
+
+.password-input-wrapper {
+
+    position: relative;
+
+    width: 100%;
+}
+
+
+.password-input-wrapper input {
+
+    padding-right: 43px;
+}
+
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 4px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 35px;
+    height: 35px;
+
+    border: none;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transition:
+        background .2s ease,
+        color .2s ease;
+}
+
+
+.password-toggle:hover {
+
+    background: var(--light-red);
+
+    color: var(--red);
+}
+
+
+.password-toggle span {
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+}
+
+
+/* =========================================================
+   REGISTER BUTTON
+   ========================================================= */
+
+.register-button {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    margin-top: 2px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: var(--red);
+
+    color: var(--white);
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 9px;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+
+    font-weight: 700;
+
+    box-shadow:
+        0 5px 14px rgba(180, 35, 24, .14);
+
+    transition:
+        background .2s ease,
+        transform .2s ease,
+        box-shadow .2s ease;
+}
+
+
+.register-button:hover {
+
+    background: var(--red-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 7px 17px rgba(180, 35, 24, .20);
+}
+
+
+.register-button:active {
+
+    transform: translateY(0);
+}
+
+
+.register-arrow {
+
+    font-size: calc(17px * var(--ndms-font-scale, 1));
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   LOGIN LINK
+   ========================================================= */
+
+.already-account {
+
+    margin-top: 22px;
+
+    padding-top: 19px;
+
+    border-top: 1px solid var(--border);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 5px;
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+}
+
+
+.already-account span {
+
+    color: var(--muted);
+}
+
+
+.already-account a {
+
+    color: var(--red);
+
+    text-decoration: none;
+
+    font-weight: 700;
+}
+
+
+.already-account a:hover {
+
+    color: var(--red-dark);
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.register-footer {
+
+    margin-top: 24px;
+
+    color: var(--c-muted-2);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .register-wrapper {
+
+        padding: 28px 15px 20px;
+    }
+
+
+    .register-brand-text span {
+
+        display: none;
+    }
+
+
+    .register-card {
+
+        padding: 27px 22px;
+
+        border-radius: 12px;
+    }
+
+
+    .register-heading h1 {
+
+        font-size: calc(24px * var(--ndms-font-scale, 1));
+    }
+
+
+    .form-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 17px;
+    }
+
+}
+
+
+/* =========================================================
+   HIDE BROWSER NATIVE PASSWORD REVEAL
+   Keep only NDMS custom password toggle
+   ========================================================= */
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+
+    display: none;
+}

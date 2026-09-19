@@ -1,0 +1,791 @@
+/* =========================================================
+   NDMS — CITIZEN PREFERENCE LAYER
+   =========================================================
+
+   ONE stylesheet that makes the saved Citizen Settings
+   preferences real across the whole citizen/public side:
+
+       Theme        ->  html[data-theme="light" | "dark"]
+       Text Size    ->  html[data-text-size="standard" | "large"]
+       Reduce Motion->  html[data-motion="reduced"]
+       High Contrast->  html[data-contrast="high"]
+
+   Those attributes are written onto <html> server-side by
+   {% citizen_html_attrs %} (reports/templatetags/citizen_extras.py),
+   so the correct appearance is present in the first byte of
+   HTML and there is no flash of the wrong theme.
+
+   HOW THEMING WORKS
+   -----------------
+   Every citizen page already styles itself through the shared
+   NDMS design tokens (--white, --text, --border, --navy,
+   --red, ...). This file only redefines those same tokens per
+   theme; it does not restyle components, introduce new colours
+   or duplicate any page's CSS. Because html[data-theme="dark"]
+   is more specific than the per-page :root blocks, it wins
+   regardless of stylesheet order.
+
+   Dark mode is therefore a dark rendering of the EXISTING NDMS
+   colour language, not a redesign.
+
+   SCOPE
+   -----
+   This file is loaded ONLY by citizen/public templates. No
+   Administration template links it, and the Administration side
+   keeps its own independent appearance mechanism (Admin
+   Settings), which is untouched.
+   ========================================================= */
+
+
+/* =========================================================
+   1. TOKEN BASELINE  (light — identical to today's values)
+   =========================================================
+   Declared here so that pages whose own CSS only defines a
+   subset of the palette still resolve every token. Values are
+   byte-identical to the existing per-page :root blocks, so this
+   changes nothing in light mode.
+   ========================================================= */
+
+:root {
+
+    --white:           #ffffff;
+    --background:      #f8f9fb;
+    --soft-gray:       #f2f4f7;
+    --border:          #e4e7ec;
+    --text:            #344054;
+    --muted:           #667085;
+    --navy:            #172033;
+    --navy-2:          #101828;
+    --navy-light:      #202b40;
+    --navy-soft:       #2b364b;
+    --red:             #b42318;
+    --red-dark:        #8f1d16;
+    --light-red:       #fff7f6;
+    --green:           #16794a;
+    --green-bg:        #ecfdf3;
+    --green-dark:      #027a48;
+    --green-border:    #a6f4c5;
+    --orange:          #b54708;
+    --orange-bg:       #fffaeb;
+    --amber-dark:      #b54708;
+    --amber-bg:        #fffaeb;
+    --amber-border:    #fedf89;
+    --blue-dark:       #026aa2;
+    --blue-bg:         #f0f9ff;
+    --blue-border:     #b9e6fe;
+    --c-ink-2:         #1d2939;
+    --c-text-2:        #475467;
+    --c-muted-2:       #98a2b3;
+    --c-muted-3:       #9ca5b2;
+    --c-muted-4:       #8c97aa;
+    --c-muted-5:       #aeb7c7;
+    --c-border-2:      #eaecf0;
+    --c-border-3:      #e2e8f0;
+    --c-border-4:      #d4d8df;
+    --c-border-5:      #d0d5dd;
+    --c-border-6:      #cbd5e1;
+    --c-border-7:      #c9ced6;
+    --c-border-8:      #c8ced9;
+    --c-border-9:      #c5cbd4;
+    --c-border-10:     #bfc6d0;
+    --c-surface-1:     #fafafa;
+    --c-surface-2:     #fbfcfd;
+    --c-surface-3:     #fbfbfc;
+    --c-surface-4:     #fafbfc;
+    --c-surface-5:     #f8fafc;
+    --c-surface-6:     #f5f6f8;
+    --c-surface-7:     #f4f6fa;
+    --c-surface-8:     #f0f1f3;
+    --c-red-10:        #fffdfd;
+    --c-red-20:        #fffafa;
+    --c-red-25:        #fff8f7;
+    --c-red-30:        #fff5f3;
+    --c-red-50:        #fef3f2;
+    --c-red-150:       #fedcd7;
+    --c-red-160:       #f0d4d0;
+    --c-red-170:       #efd7d3;
+    --c-red-200:       #fecdca;
+    --c-red-210:       #efcbc6;
+    --c-red-220:       #edc2bd;
+    --c-red-230:       #e8bdb8;
+    --c-red-240:       #e4c1bc;
+    --c-red-300:       #f3a49d;
+    --c-red-900:       #7a1610;
+    --c-green-400:     #34d399;
+    --c-green-500:     #12b76a;
+    --c-green-600:     #059669;
+    --c-green-800:     #067647;
+    --c-green-900:     #025432;
+    --c-orange-500:    #f79009;
+    --c-orange-600:    #b93815;
+    --c-orange-700:    #7a2e0e;
+    --c-orange-bg-2:   #fff4ed;
+    --c-blue-500:      #0284c7;
+
+    --shadow-xs:       0 2px 8px rgba(23, 32, 51, .035);
+    --shadow-sm:       0 4px 14px rgba(23, 32, 51, .055);
+    --shadow-md:       0 10px 30px rgba(23, 32, 51, .075);
+    --shadow-lg:       0 14px 40px rgba(23, 32, 51, .10);
+
+    /* Typography scale — the single knob the Text Size setting
+       turns. Every font-size in the citizen CSS is written as
+       calc(<original>px * var(--ndms-font-scale, 1)), so layout,
+       spacing, radii and breakpoints are untouched and only type
+       scales. */
+    --ndms-font-scale: 1;
+
+    /* Motion duration multiplier, used by the Reduce Motion layer. */
+    --ndms-motion-scale: 1;
+
+}
+
+
+/* =========================================================
+   2. THEME — DARK
+   ========================================================= */
+
+html[data-theme="dark"] {
+
+    --white:           #161c27;
+    --background:      #0e131c;
+    --soft-gray:       #1c2431;
+    --border:          #2a3344;
+    --text:            #dce2ea;
+    --muted:           #97a2b3;
+    --navy:            #121926;
+    --navy-2:          #0b1017;
+    --navy-light:      #1a2332;
+    --navy-soft:       #242f42;
+    --red:             #cf4436;
+    --red-dark:        #b03a2e;
+    --light-red:       #221a1a;
+    --green:           #3cc98a;
+    --green-bg:        #10261c;
+    --green-dark:      #3cc98a;
+    --green-border:    #1f5a3f;
+    --orange:          #e8964a;
+    --orange-bg:       #2a2113;
+    --amber-dark:      #e8964a;
+    --amber-bg:        #2a2113;
+    --amber-border:    #5c4418;
+    --blue-dark:       #5bb8e8;
+    --blue-bg:         #0f2230;
+    --blue-border:     #1e4a63;
+    --c-ink-2:         #e7ebf1;
+    --c-text-2:        #c3cbd6;
+    --c-muted-2:       #8892a3;
+    --c-muted-3:       #8892a3;
+    --c-muted-4:       #7e8899;
+    --c-muted-5:       #7e8899;
+    --c-border-2:      #2a3344;
+    --c-border-3:      #2f3a4c;
+    --c-border-4:      #334052;
+    --c-border-5:      #334052;
+    --c-border-6:      #384556;
+    --c-border-7:      #384556;
+    --c-border-8:      #3d4a5c;
+    --c-border-9:      #3d4a5c;
+    --c-border-10:     #435062;
+    --c-surface-1:     #12171f;
+    --c-surface-2:     #141a24;
+    --c-surface-3:     #141a24;
+    --c-surface-4:     #161c27;
+    --c-surface-5:     #18202b;
+    --c-surface-6:     #1a212d;
+    --c-surface-7:     #1c2431;
+    --c-surface-8:     #1e2734;
+    --c-red-10:        #1c1516;
+    --c-red-20:        #1f1617;
+    --c-red-25:        #221819;
+    --c-red-30:        #241a1a;
+    --c-red-50:        #2a1b1a;
+    --c-red-150:       #4a2723;
+    --c-red-160:       #4a2723;
+    --c-red-170:       #4a2723;
+    --c-red-200:       #5c2f29;
+    --c-red-210:       #5c2f29;
+    --c-red-220:       #63332c;
+    --c-red-230:       #63332c;
+    --c-red-240:       #63332c;
+    --c-red-300:       #8a4238;
+    --c-red-900:       #e08579;
+    --c-green-400:     #34d399;
+    --c-green-500:     #2fbe7f;
+    --c-green-600:     #35c98a;
+    --c-green-800:     #3cc98a;
+    --c-green-900:     #7ee3b4;
+    --c-orange-500:    #f0a85a;
+    --c-orange-600:    #e8804f;
+    --c-orange-700:    #eda87c;
+    --c-orange-bg-2:   #2a1d14;
+    --c-blue-500:      #4aa8e0;
+
+    --shadow-xs:       0 2px 8px rgba(0, 0, 0, .40);
+    --shadow-sm:       0 4px 14px rgba(0, 0, 0, .50);
+    --shadow-md:       0 10px 30px rgba(0, 0, 0, .58);
+    --shadow-lg:       0 14px 40px rgba(0, 0, 0, .65);
+
+    color-scheme: dark;
+
+}
+
+
+html[data-theme="light"] {
+    color-scheme: light;
+}
+
+
+/* ---------------------------------------------------------
+   Form controls & scrollbars follow the theme.
+   `color-scheme` above already handles native widgets in
+   modern browsers; these keep custom-styled inputs readable
+   in dark mode without restyling them in light mode.
+   --------------------------------------------------------- */
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+    background-color: var(--white);
+    color: var(--text);
+    border-color: var(--border);
+}
+
+html[data-theme="dark"] option {
+    background-color: var(--white);
+    color: var(--text);
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+    color: var(--muted);
+}
+
+/* Dark mode should not leave a blazing white page behind a
+   translucent/short page body. */
+html[data-theme="dark"],
+html[data-theme="dark"] body {
+    background-color: var(--background);
+}
+
+/* Images and map tiles are real content — never invert them.
+   Only decorative separators are softened. */
+html[data-theme="dark"] hr {
+    border-color: var(--border);
+}
+
+
+/* =========================================================
+   3. TEXT SIZE
+   =========================================================
+   "Large" is a deliberately restrained 1.12x. It is large
+   enough to be a genuine accessibility improvement while
+   keeping the interface professional, and because only
+   font-size scales (not padding, gaps or breakpoints) the
+   existing layout, alignment and responsive behaviour are
+   preserved at every width.
+   ========================================================= */
+
+html[data-text-size="standard"] {
+    --ndms-font-scale: 1;
+}
+
+html[data-text-size="large"] {
+    --ndms-font-scale: 1.12;
+}
+
+/* Narrow phones get a slightly gentler bump so that long
+   labels, badges, table cells and nav items cannot overflow
+   horizontally at 375-440px. */
+@media (max-width: 480px) {
+    html[data-text-size="large"] {
+        --ndms-font-scale: 1.08;
+    }
+}
+
+/* Safety net for Large text: the two things that actually
+   cause horizontal overflow when type grows are (a) long
+   unbroken strings — emails, URLs, place names, file names —
+   and (b) wide data tables.
+
+   Note: deliberately NOT `overflow-x: hidden` on <body>. That
+   would make <body> a scroll container and silently break the
+   project's two `position: sticky` elements (the Disaster
+   Guidelines toolbar and the Settings action bar), as well as
+   hiding any genuine overflow instead of revealing it. */
+
+html[data-text-size="large"] body {
+    overflow-wrap: break-word;
+}
+
+/* Long strings inside constrained UI must wrap, not push. */
+html[data-text-size="large"] td,
+html[data-text-size="large"] th,
+html[data-text-size="large"] a,
+html[data-text-size="large"] p,
+html[data-text-size="large"] li,
+html[data-text-size="large"] label,
+html[data-text-size="large"] input,
+html[data-text-size="large"] select,
+html[data-text-size="large"] textarea,
+html[data-text-size="large"] [class*="-value"],
+html[data-text-size="large"] [class*="-title"],
+html[data-text-size="large"] [class*="-name"],
+html[data-text-size="large"] [class*="-email"] {
+    min-width: 0;
+    overflow-wrap: break-word;
+}
+
+/* Media and embeds never exceed their column. */
+html[data-text-size="large"] img,
+html[data-text-size="large"] iframe,
+html[data-text-size="large"] canvas,
+html[data-text-size="large"] video {
+    max-width: 100%;
+}
+
+/* Wide tables scroll inside their own wrapper rather than
+   widening the page. */
+html[data-text-size="large"] [class*="table-wrap"],
+html[data-text-size="large"] [class*="table-container"],
+html[data-text-size="large"] [class*="table-scroll"] {
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+/* Flex/grid children default to min-width:auto, which is the
+   usual cause of a row refusing to shrink once its text grows. */
+html[data-text-size="large"] [class*="-card"],
+html[data-text-size="large"] [class*="-row"],
+html[data-text-size="large"] [class*="-item"],
+html[data-text-size="large"] [class*="-cell"],
+html[data-text-size="large"] [class*="-body"],
+html[data-text-size="large"] [class*="-content"],
+html[data-text-size="large"] [class*="-info"],
+html[data-text-size="large"] [class*="-meta"] {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   4. REDUCE MOTION
+   =========================================================
+   Non-essential animation and transition is removed; nothing
+   functional is. Elements still appear, dropdowns still open,
+   modals still show, focus and hover feedback (colour, border,
+   shadow) all remain — only the movement is dropped.
+
+   The project's transition system itself is untouched: it is
+   simply neutralised for this one user, on this one side of
+   the app, while the attribute is present.
+   ========================================================= */
+
+html[data-motion="reduced"] *,
+html[data-motion="reduced"] *::before,
+html[data-motion="reduced"] *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    transition-delay: 0ms !important;
+}
+
+html[data-motion="reduced"] {
+    scroll-behavior: auto !important;
+    --ndms-motion-scale: 0;
+}
+
+html[data-motion="reduced"] body {
+    scroll-behavior: auto !important;
+}
+
+/* Decorative hover/press movement (card lifts, button nudges,
+   arrow slides, image zooms). Listed explicitly rather than
+   blanket-disabling transform, so transforms that are part of
+   LAYOUT — centring, arrow rotation on open, sliders — keep
+   working exactly as before. */
+html[data-motion="reduced"] .about-cta-btn:hover,
+html[data-motion="reduced"] .about-cta-btn:hover span,
+html[data-motion="reduced"] .about-primary-btn:hover,
+html[data-motion="reduced"] .about-primary-btn:hover span,
+html[data-motion="reduced"] .about-secondary-btn:hover,
+html[data-motion="reduced"] .about-secondary-btn:hover span,
+html[data-motion="reduced"] .active-disaster-card:hover,
+html[data-motion="reduced"] .alert-card:hover,
+html[data-motion="reduced"] .alert-item-unread:hover,
+html[data-motion="reduced"] .btn-cta-trans:hover,
+html[data-motion="reduced"] .btn-cta-white:hover,
+html[data-motion="reduced"] .btn-outline:hover,
+html[data-motion="reduced"] .btn-primary:hover,
+html[data-motion="reduced"] .btn-secondary:hover,
+html[data-motion="reduced"] .btn:hover .btn-arrow,
+html[data-motion="reduced"] .card-action-link:hover span,
+html[data-motion="reduced"] .carousel-arrow-btn:hover:not(:disabled),
+html[data-motion="reduced"] .dashboard-brand:hover .dashboard-logo,
+html[data-motion="reduced"] .dashboard-main .primary-action:hover,
+html[data-motion="reduced"] .disaster-card:hover,
+html[data-motion="reduced"] .disaster-card:hover .disaster-card-img-wrap img,
+html[data-motion="reduced"] .disaster-detail-back:hover,
+html[data-motion="reduced"] .disaster-photo-item:hover,
+html[data-motion="reduced"] .disaster-view-btn:hover,
+html[data-motion="reduced"] .disaster-view-btn:hover .disaster-view-arrow,
+html[data-motion="reduced"] .footer-links a:hover::after,
+html[data-motion="reduced"] .footer-social-icon:hover,
+html[data-motion="reduced"] .guidelines-btn-hero-primary:hover,
+html[data-motion="reduced"] .guidelines-btn-hero-secondary:hover,
+html[data-motion="reduced"] .hero-image-card:hover .hero-image,
+html[data-motion="reduced"] .hs-helpful-btn:hover,
+html[data-motion="reduced"] .hs-quick-help-card:hover,
+html[data-motion="reduced"] .login-brand:hover,
+html[data-motion="reduced"] .login-button:active,
+html[data-motion="reduced"] .login-button:hover,
+html[data-motion="reduced"] .ndms-avatar-btn:hover .ndms-avatar-circle,
+html[data-motion="reduced"] .ndms-avatar-menu-item:focus-visible,
+html[data-motion="reduced"] .ndms-avatar-menu-item:hover,
+html[data-motion="reduced"] .ndms-avatar-menu-logout:focus-visible,
+html[data-motion="reduced"] .ndms-avatar-menu-logout:hover,
+html[data-motion="reduced"] .ndms-avatar-wrapper.open .ndms-avatar-circle,
+html[data-motion="reduced"] .notification-button:hover,
+html[data-motion="reduced"] .pf-avatar-edit-badge:hover,
+html[data-motion="reduced"] .pf-crop-zoom-slider:focus-visible::-moz-range-thumb,
+html[data-motion="reduced"] .pf-crop-zoom-slider:focus-visible::-webkit-slider-thumb,
+html[data-motion="reduced"] .pf-crop-zoom-slider:hover::-moz-range-thumb,
+html[data-motion="reduced"] .pf-crop-zoom-slider:hover::-webkit-slider-thumb,
+html[data-motion="reduced"] .pillar-card:hover,
+html[data-motion="reduced"] .primary-action:hover,
+html[data-motion="reduced"] .public-brand:hover .public-logo,
+html[data-motion="reduced"] .public-login-btn:hover,
+html[data-motion="reduced"] .public-logout-btn:hover,
+html[data-motion="reduced"] .public-nav a:hover,
+html[data-motion="reduced"] .public-nav-dropdown-cta:focus-visible .public-nav-dropdown-cta-arrow,
+html[data-motion="reduced"] .public-nav-dropdown-cta:hover .public-nav-dropdown-cta-arrow,
+html[data-motion="reduced"] .public-nav-dropdown-toggle:hover,
+html[data-motion="reduced"] .public-register-btn:hover,
+html[data-motion="reduced"] .rating-star:hover,
+html[data-motion="reduced"] .rd-layer-btn:active,
+html[data-motion="reduced"] .rd-photo-thumb:hover img,
+html[data-motion="reduced"] .register-brand:hover,
+html[data-motion="reduced"] .register-button:active,
+html[data-motion="reduced"] .register-button:hover,
+html[data-motion="reduced"] .review-card:hover,
+html[data-motion="reduced"] .ri-layer-btn:active,
+html[data-motion="reduced"] .ri-photo-remove:hover,
+html[data-motion="reduced"] .risk-type-card:hover,
+html[data-motion="reduced"] .secondary-action:hover,
+html[data-motion="reduced"] .service-card:hover,
+html[data-motion="reduced"] .service-card:hover .service-icon,
+html[data-motion="reduced"] .sidebar-footer-link:focus-visible .sidebar-footer-arrow,
+html[data-motion="reduced"] .sidebar-footer-link:hover .sidebar-footer-arrow,
+html[data-motion="reduced"] .stat-card:hover {
+    transform: none !important;
+}
+
+/* Respect the OS/browser setting too, for users who have asked
+   for reduced motion at system level but have not (or cannot)
+   set the preference in NDMS. */
+@media (prefers-reduced-motion: reduce) {
+
+    body.dashboard-page *,
+    body.dashboard-page *::before,
+    body.dashboard-page *::after,
+    body.public-home-page *,
+    body.public-home-page *::before,
+    body.public-home-page *::after,
+    body.public-disaster-page *,
+    body.public-disaster-page *::before,
+    body.public-disaster-page *::after,
+    body.about-page *,
+    body.guidelines-page *,
+    body.login-page *,
+    body.register-page * {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+    }
+
+}
+
+
+/* =========================================================
+   5. HIGH CONTRAST
+   =========================================================
+   An accessibility enhancement layered on top of whichever
+   theme is active — NOT a separate skin. It darkens text,
+   lifts muted text out of the grey, strengthens borders and
+   makes focus unmistakable. The NDMS palette (navy / red /
+   green / amber) is kept; only its contrast is raised.
+   ========================================================= */
+
+html[data-contrast="high"] {
+
+    --white:           #ffffff;
+    --background:      #f4f5f8;
+    --soft-gray:       #eceff4;
+    --border:          #98a2b3;
+    --text:            #101828;
+    --muted:           #3d4859;
+    --navy:            #0b1017;
+    --navy-2:          #05080d;
+    --navy-light:      #151d2c;
+    --navy-soft:       #1d2739;
+    --red:             #96150c;
+    --red-dark:        #7a1610;
+    --light-red:       #fff2f0;
+    --green:           #0b5c37;
+    --green-bg:        #e3fbec;
+    --green-dark:      #015c36;
+    --green-border:    #6fd9a0;
+    --orange:          #8a3508;
+    --orange-bg:       #fff6dc;
+    --amber-dark:      #8a3508;
+    --amber-bg:        #fff6dc;
+    --amber-border:    #e8be4e;
+    --blue-dark:       #014f79;
+    --blue-bg:         #e4f4ff;
+    --blue-border:     #79cbf7;
+    --c-ink-2:         #05080d;
+    --c-text-2:        #1d2939;
+    --c-muted-2:       #5a6579;
+    --c-muted-3:       #5a6579;
+    --c-muted-4:       #4d586b;
+    --c-muted-5:       #5a6579;
+    --c-border-2:      #9aa4b4;
+    --c-border-3:      #96a0b1;
+    --c-border-4:      #8d97a8;
+    --c-border-5:      #8d97a8;
+    --c-border-6:      #8892a3;
+    --c-border-7:      #8892a3;
+    --c-border-8:      #828d9e;
+    --c-border-9:      #828d9e;
+    --c-border-10:     #7a8596;
+    --c-surface-1:     #f5f5f5;
+    --c-surface-2:     #f6f8fa;
+    --c-surface-3:     #f6f6f8;
+    --c-surface-4:     #f5f6f8;
+    --c-surface-5:     #f2f5f8;
+    --c-surface-6:     #eef0f4;
+    --c-surface-7:     #edf0f6;
+    --c-surface-8:     #e8eaee;
+    --c-red-10:        #fff9f9;
+    --c-red-20:        #fff4f4;
+    --c-red-25:        #fff1ef;
+    --c-red-30:        #ffece9;
+    --c-red-50:        #fde8e6;
+    --c-red-150:       #f9b8af;
+    --c-red-160:       #dfa49c;
+    --c-red-170:       #dfa49c;
+    --c-red-200:       #f8a49f;
+    --c-red-210:       #df9990;
+    --c-red-220:       #dc8d84;
+    --c-red-230:       #d6867c;
+    --c-red-240:       #d38b82;
+    --c-red-300:       #e5786e;
+    --c-red-900:       #5e0f0a;
+    --c-green-400:     #12a06b;
+    --c-green-500:     #0a8d4f;
+    --c-green-600:     #037049;
+    --c-green-800:     #045733;
+    --c-green-900:     #013c24;
+    --c-orange-500:    #c46f00;
+    --c-orange-600:    #8c2a0f;
+    --c-orange-700:    #5c2209;
+    --c-orange-bg-2:   #ffeade;
+    --c-blue-500:      #01618f;
+
+}
+
+html[data-theme="dark"][data-contrast="high"] {
+
+    --white:           #10161f;
+    --background:      #05080d;
+    --soft-gray:       #141b25;
+    --border:          #5c687a;
+    --text:            #ffffff;
+    --muted:           #c7cfdb;
+    --navy:            #05080d;
+    --navy-2:          #000308;
+    --navy-light:      #0b1017;
+    --navy-soft:       #151d2c;
+    --red:             #ff7a6a;
+    --red-dark:        #ff9a8c;
+    --light-red:       #1c1416;
+    --green:           #5ce0a4;
+    --green-bg:        #0a1c14;
+    --green-dark:      #5ce0a4;
+    --green-border:    #3d8a63;
+    --orange:          #ffb066;
+    --orange-bg:       #1f180d;
+    --amber-dark:      #ffb066;
+    --amber-bg:        #1f180d;
+    --amber-border:    #8a6a28;
+    --blue-dark:       #86d0f5;
+    --blue-bg:         #0a1822;
+    --blue-border:     #3d7f9e;
+    --c-ink-2:         #ffffff;
+    --c-text-2:        #e8edf3;
+    --c-muted-2:       #b3bdcb;
+    --c-muted-3:       #b3bdcb;
+    --c-muted-4:       #b3bdcb;
+    --c-muted-5:       #b3bdcb;
+    --c-border-2:      #5c687a;
+    --c-border-3:      #5c687a;
+    --c-border-4:      #66738a;
+    --c-border-5:      #66738a;
+    --c-border-6:      #66738a;
+    --c-border-7:      #66738a;
+    --c-border-8:      #6f7d94;
+    --c-border-9:      #6f7d94;
+    --c-border-10:     #6f7d94;
+    --c-surface-1:     #0a0e15;
+    --c-surface-2:     #0c111a;
+    --c-surface-3:     #0c111a;
+    --c-surface-4:     #0e131c;
+    --c-surface-5:     #101720;
+    --c-surface-6:     #121926;
+    --c-surface-7:     #141b25;
+    --c-surface-8:     #161e29;
+    --c-red-10:        #150f10;
+    --c-red-20:        #170f11;
+    --c-red-25:        #1a1113;
+    --c-red-30:        #1c1315;
+    --c-red-50:        #201416;
+    --c-red-150:       #6b352f;
+    --c-red-160:       #6b352f;
+    --c-red-170:       #6b352f;
+    --c-red-200:       #7d3d35;
+    --c-red-210:       #7d3d35;
+    --c-red-220:       #7d3d35;
+    --c-red-230:       #7d3d35;
+    --c-red-240:       #7d3d35;
+    --c-red-300:       #b0574a;
+    --c-red-900:       #ff9a8c;
+    --c-green-400:     #7bf0bf;
+    --c-green-500:     #5ce0a4;
+    --c-green-600:     #5ce0a4;
+    --c-green-800:     #5ce0a4;
+    --c-green-900:     #a8f0d0;
+    --c-orange-500:    #ffc078;
+    --c-orange-600:    #ffa07a;
+    --c-orange-700:    #ffbd99;
+    --c-orange-bg-2:   #1f150e;
+    --c-blue-500:      #86d0f5;
+
+}
+
+
+/* ---------------------------------------------------------
+   Structural contrast reinforcement
+   --------------------------------------------------------- */
+
+/* Muted/secondary text must not disappear. */
+html[data-contrast="high"] small,
+html[data-contrast="high"] .muted,
+html[data-contrast="high"] label {
+    color: var(--text);
+}
+
+/* Borders: give cards, inputs, tables and dropdowns a
+   definite edge rather than a hairline. */
+html[data-contrast="high"] input,
+html[data-contrast="high"] select,
+html[data-contrast="high"] textarea {
+    border-width: 2px;
+}
+
+html[data-contrast="high"] th,
+html[data-contrast="high"] td {
+    border-color: var(--border);
+}
+
+/* Links stay recognisable as links. */
+html[data-contrast="high"] a {
+    text-decoration-thickness: 2px;
+}
+
+html[data-contrast="high"] a:hover {
+    text-decoration: underline;
+}
+
+/* Unmistakable keyboard focus everywhere — the single biggest
+   practical win of this setting. */
+html[data-contrast="high"] :focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+html[data-theme="dark"][data-contrast="high"] :focus-visible {
+    outline-color: var(--red);
+}
+
+/* Disabled controls must still be legible, just clearly
+   inactive. */
+html[data-contrast="high"] :disabled,
+html[data-contrast="high"] [aria-disabled="true"] {
+    opacity: .75;
+}
+
+/* Badges/pills keep their meaning colour but gain an edge so
+   they read as distinct blocks. */
+html[data-contrast="high"] [class*="badge"],
+html[data-contrast="high"] [class*="-pill"],
+html[data-contrast="high"] [class*="-chip"],
+html[data-contrast="high"] [class*="-status"] {
+    border: 1px solid currentColor;
+}
+
+
+/* =========================================================
+   5b. TRANSLUCENT LIGHT SURFACES
+   =========================================================
+   A handful of surfaces are painted with a hardcoded
+   rgba(255,255,255,.95-.98) rather than a token, because in
+   light mode they are frosted-glass white bars sitting over
+   scrolling content. A token swap cannot reach them, so they
+   are re-pointed at the themed surface colour here.
+
+   Only surfaces that are WHITE-ON-LIGHT are listed. The many
+   other rgba(255,255,255,...) values in the project sit on the
+   navy sidebar, navy footer and dark CTA panels, which stay
+   dark in dark mode — those are deliberately left untouched,
+   as is every dark scrim (modals, image overlays), which is
+   already correct on both themes.
+   ========================================================= */
+
+html[data-theme="dark"] .dashboard-topbar,
+html[data-theme="dark"] .public-navbar,
+html[data-theme="dark"] .guidelines-sticky-toolbar {
+    background: rgba(22, 28, 39, .97);
+}
+
+html[data-theme="dark"] .ndms-visual-ring,
+html[data-theme="dark"] .symbol-ring {
+    background: rgba(22, 28, 39, .98);
+}
+
+/* High contrast wants hard edges, not frosted glass. */
+html[data-contrast="high"] .dashboard-topbar,
+html[data-contrast="high"] .public-navbar,
+html[data-contrast="high"] .guidelines-sticky-toolbar {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+}
+
+
+/* =========================================================
+   6. PRINT
+   =========================================================
+   Printing is always light-on-white regardless of theme.
+   ========================================================= */
+
+@media print {
+
+    html[data-theme="dark"] {
+        --white: #ffffff;
+        --background: #ffffff;
+        --soft-gray: #f2f4f7;
+        --text: #101828;
+        --muted: #475467;
+        --border: #d0d5dd;
+    }
+
+}

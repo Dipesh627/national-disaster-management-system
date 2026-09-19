@@ -1,0 +1,515 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Disasters | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disaster-reports.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-disasters.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Disasters</span>
+{% endblock %}
+
+{% block page_title %}
+Disasters
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard ds-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ds-page-header">
+
+        <div class="ds-page-header-copy">
+
+            <span class="ds-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>Disasters</h1>
+
+            <p>
+                Track and manage every disaster event recorded in
+                the system.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'admin_disaster_create' %}"
+            class="ds-primary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+                stroke-linecap="round"
+            >
+                <path d="M12 5v14"></path>
+                <path d="M5 12h14"></path>
+            </svg>
+
+            <span>Add Disaster</span>
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         SUMMARY CARDS (5 — from the real Disaster table)
+         ===================================================== -->
+    <section
+        class="dr-summary-grid"
+        aria-label="Disaster summary"
+    >
+
+        <article class="dr-summary-card dr-summary-total">
+            <span class="dr-summary-label">Total</span>
+            <strong class="dr-summary-value">{{ total_disasters }}</strong>
+            <span class="dr-summary-meta">All recorded disasters</span>
+        </article>
+
+        <article class="dr-summary-card ds-summary-active">
+            <span class="dr-summary-label">Active</span>
+            <strong class="dr-summary-value">{{ active_disasters_count }}</strong>
+            <span class="dr-summary-meta">Currently unfolding</span>
+        </article>
+
+        <article class="dr-summary-card ds-summary-under_control">
+            <span class="dr-summary-label">Under Control</span>
+            <strong class="dr-summary-value">{{ under_control_disasters_count }}</strong>
+            <span class="dr-summary-meta">Response in progress</span>
+        </article>
+
+        <article class="dr-summary-card ds-summary-resolved">
+            <span class="dr-summary-label">Resolved</span>
+            <strong class="dr-summary-value">{{ resolved_disasters_count }}</strong>
+            <span class="dr-summary-meta">Situation resolved</span>
+        </article>
+
+        <article class="dr-summary-card ds-summary-closed">
+            <span class="dr-summary-label">Closed</span>
+            <strong class="dr-summary-value">{{ closed_disasters_count }}</strong>
+            <span class="dr-summary-meta">Archived events</span>
+        </article>
+
+    </section>
+
+
+    <!-- =====================================================
+         FILTER BAR
+         ===================================================== -->
+    <section
+        class="ds-filter-bar"
+        aria-label="Disaster filters"
+    >
+
+        <form
+            method="get"
+            class="ds-filter-form"
+        >
+
+            <label class="ds-search-field">
+
+                <span class="ds-visually-hidden">
+                    Search disasters
+                </span>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                >
+                    <circle cx="11" cy="11" r="6.5"></circle>
+                    <path d="m16 16 4.5 4.5"></path>
+                </svg>
+
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ search_query }}"
+                    placeholder="Search disasters..."
+                    autocomplete="off"
+                >
+
+            </label>
+
+
+            <label class="ds-select-field">
+
+                <span class="ds-visually-hidden">
+                    Filter by severity
+                </span>
+
+                <select name="severity">
+
+                    <option value="ALL" {% if severity_filter == 'ALL' %}selected{% endif %}>
+                        All Severity
+                    </option>
+
+                    {% for value, label in severity_choices %}
+                        <option value="{{ value }}" {% if severity_filter == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+
+                </select>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="m7 10 5 5 5-5"></path>
+                </svg>
+
+            </label>
+
+
+            <label class="ds-select-field">
+
+                <span class="ds-visually-hidden">
+                    Filter by status
+                </span>
+
+                <select name="status">
+
+                    <option value="ALL" {% if status_filter == 'ALL' %}selected{% endif %}>
+                        All Status
+                    </option>
+
+                    {% for value, label in status_choices %}
+                        <option value="{{ value }}" {% if status_filter == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                    {% endfor %}
+
+                </select>
+
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="m7 10 5 5 5-5"></path>
+                </svg>
+
+            </label>
+
+
+            <button
+                type="submit"
+                class="ds-filter-button"
+            >
+                Apply
+            </button>
+
+
+            {% if search_query or severity_filter != 'ALL' or status_filter != 'ALL' %}
+
+                <a
+                    href="{% url 'admin_disasters' %}"
+                    class="ds-reset-button"
+                >
+                    Reset
+                </a>
+
+            {% endif %}
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         TABLE (no extra heading above it, per spec)
+         ===================================================== -->
+    <section class="ds-table-panel">
+
+        {% if page_obj.object_list %}
+
+            <div class="ds-table-wrap">
+
+                <table class="ds-table">
+
+                    <thead>
+
+                        <tr>
+                            <th scope="col" class="ds-col-disaster">Disaster</th>
+                            <th scope="col" class="ds-col-type">Type</th>
+                            <th scope="col" class="ds-col-severity">Severity</th>
+                            <th scope="col" class="ds-col-status">Status</th>
+                            <th scope="col" class="ds-col-start">Start</th>
+                            <th scope="col" class="ds-col-reports">Reports</th>
+                            <th scope="col" class="ds-col-actions">
+                                <span class="ds-visually-hidden">Actions</span>
+                            </th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for disaster in page_obj.object_list %}
+
+                            <tr class="ds-table-row">
+
+                                <!-- DISASTER -->
+                                <td class="ds-title-cell">
+                                    <span
+                                        class="ds-title-name"
+                                        title="{{ disaster.title }}"
+                                    >
+                                        {{ disaster.title }}
+                                    </span>
+                                </td>
+
+
+                                <!-- TYPE -->
+                                <td>
+                                    <span class="ds-type-name">
+                                        {{ disaster.disaster_type.name }}
+                                    </span>
+                                </td>
+
+
+                                <!-- SEVERITY -->
+                                <td>
+                                    <span class="ds-severity ds-severity-{{ disaster.severity|lower }}">
+                                        <i aria-hidden="true"></i>
+                                        {{ disaster.get_severity_display }}
+                                    </span>
+                                </td>
+
+
+                                <!-- STATUS -->
+                                <td>
+                                    <span class="ds-status ds-status-{{ disaster.status|lower }}">
+                                        <i aria-hidden="true"></i>
+                                        {{ disaster.get_status_display }}
+                                    </span>
+                                </td>
+
+
+                                <!-- START -->
+                                <td>
+                                    <time datetime="{{ disaster.start_date|date:'c' }}">
+                                        {{ disaster.start_date|date:"M d, Y H:i" }}
+                                    </time>
+                                </td>
+
+
+                                <!-- REPORTS -->
+                                <td>
+                                    {{ disaster.reports_count }}
+                                </td>
+
+
+                                <!-- ACTIONS -->
+                                <td class="ds-actions-cell">
+
+                                    <div class="ds-actions">
+
+                                        <a
+                                            href="{% url 'admin_disaster_detail' disaster.id %}"
+                                            class="ds-action ds-action-view"
+                                        >
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                aria-hidden="true"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                            >
+                                                <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z"></path>
+                                                <circle cx="12" cy="12" r="3"></circle>
+                                            </svg>
+                                            <span>View</span>
+                                        </a>
+
+
+                                        {% if disaster.status != 'CLOSED' %}
+                                            <!-- CLOSED disasters are permanent
+                                                 records -- View only, no Edit.
+                                                 This is a UI convenience; the
+                                                 real protection is enforced
+                                                 server-side in
+                                                 admin_disaster_edit regardless
+                                                 of whether this link exists. -->
+                                            <a
+                                                href="{% url 'admin_disaster_edit' disaster.id %}"
+                                                class="ds-action ds-action-edit"
+                                            >
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    aria-hidden="true"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                >
+                                                    <path d="M12 20h9"></path>
+                                                    <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"></path>
+                                                </svg>
+                                                <span>Edit</span>
+                                            </a>
+                                        {% endif %}
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            <!-- PAGINATION -->
+            {% if page_obj.paginator.num_pages > 1 %}
+
+                <div class="ds-pagination">
+
+                    <span class="ds-pagination-summary">
+                        Showing
+                        <strong>{{ page_obj.start_index }}</strong>
+                        –
+                        <strong>{{ page_obj.end_index }}</strong>
+                        of
+                        <strong>{{ page_obj.paginator.count }}</strong>
+                    </span>
+
+
+                    <nav class="ds-pagination-nav" aria-label="Disasters pagination">
+
+                        {% if page_obj.has_previous %}
+                            <a
+                                href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if severity_filter != 'ALL' %}&severity={{ severity_filter }}{% endif %}{% if status_filter != 'ALL' %}&status={{ status_filter }}{% endif %}"
+                                class="ds-pagination-button"
+                                aria-label="Previous page"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </a>
+                        {% else %}
+                            <span class="ds-pagination-button is-disabled">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m15 18-6-6 6-6"></path>
+                                </svg>
+                            </span>
+                        {% endif %}
+
+
+                        {% for number in page_obj.paginator.page_range %}
+                            <a
+                                href="?page={{ number }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if severity_filter != 'ALL' %}&severity={{ severity_filter }}{% endif %}{% if status_filter != 'ALL' %}&status={{ status_filter }}{% endif %}"
+                                class="ds-pagination-number {% if number == page_obj.number %}is-current{% endif %}"
+                            >
+                                {{ number }}
+                            </a>
+                        {% endfor %}
+
+
+                        {% if page_obj.has_next %}
+                            <a
+                                href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}{% if severity_filter != 'ALL' %}&severity={{ severity_filter }}{% endif %}{% if status_filter != 'ALL' %}&status={{ status_filter }}{% endif %}"
+                                class="ds-pagination-button"
+                                aria-label="Next page"
+                            >
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </a>
+                        {% else %}
+                            <span class="ds-pagination-button is-disabled">
+                                <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            </span>
+                        {% endif %}
+
+                    </nav>
+
+                </div>
+
+            {% endif %}
+
+
+        {% else %}
+
+            <div class="ds-empty-state">
+
+                <h3>No disasters found</h3>
+
+                <p>
+
+                    {% if search_query or severity_filter != 'ALL' or status_filter != 'ALL' %}
+                        Try adjusting your search or filters.
+                    {% else %}
+                        Disasters you add will appear here.
+                    {% endif %}
+
+                </p>
+
+                {% if search_query or severity_filter != 'ALL' or status_filter != 'ALL' %}
+
+                    <a href="{% url 'admin_disasters' %}" class="ds-secondary-button">
+                        Reset filters
+                    </a>
+
+                {% else %}
+
+                    <a href="{% url 'admin_disaster_create' %}" class="ds-secondary-button">
+                        Add Disaster
+                    </a>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}

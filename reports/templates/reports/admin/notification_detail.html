@@ -1,0 +1,182 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ notification.title }} | NDMS Administration
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-notifications.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Notifications</span>
+<span class="nt-breadcrumb-divider">/</span>
+<span>View</span>
+{% endblock %}
+
+{% block page_title %}
+Notification
+{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard nt-page">
+
+    <header class="nt-page-header nt-detail-page-header">
+
+        <div class="nt-page-header-copy">
+            <span class="nt-kicker">NOTIFICATION</span>
+
+            <h1>
+                {{ notification.title }}
+            </h1>
+
+            <p>
+                Sent
+                {{ notification.publish_date|date:"d M Y, h:i A" }}
+            </p>
+        </div>
+
+        <a
+            href="{% url 'admin_notifications' %}"
+            class="nt-secondary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+
+            <span>Back</span>
+        </a>
+
+    </header>
+
+
+    <section class="nt-detail-shell">
+
+        <div class="nt-detail-intro">
+
+            <div>
+                <span class="nt-detail-kicker">
+                    MESSAGE DETAILS
+                </span>
+
+                <h2>
+                    {{ notification.title }}
+                </h2>
+            </div>
+
+            {% if notification.recipient %}
+
+                <span class="nt-detail-recipient nt-recipient-personal">
+                    Personal alert
+                </span>
+
+            {% else %}
+
+                <span class="nt-detail-recipient nt-recipient-broadcast">
+                    All Citizens
+                </span>
+
+            {% endif %}
+
+        </div>
+
+
+        <div class="nt-detail-meta">
+
+            <div class="nt-detail-meta-item">
+
+                <span class="nt-detail-label">
+                    Recipient
+                </span>
+
+                <span class="nt-detail-value">
+
+                    {% if notification.recipient %}
+
+                        {{ notification.recipient.full_name|default:notification.recipient.username }}
+
+                    {% else %}
+
+                        All Citizens
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="nt-detail-meta-item">
+
+                <span class="nt-detail-label">
+                    Related Disaster
+                </span>
+
+                <span class="nt-detail-value {% if not notification.disaster %}nt-detail-value-muted{% endif %}">
+
+                    {% if notification.disaster %}
+                        {{ notification.disaster.title }}
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="nt-detail-meta-item">
+
+                <span class="nt-detail-label">
+                    Sent By
+                </span>
+
+                <span class="nt-detail-value">
+                    {{ notification.published_by.full_name|default:notification.published_by.username }}
+                </span>
+
+            </div>
+
+
+            <div class="nt-detail-meta-item">
+
+                <span class="nt-detail-label">
+                    Sent
+                </span>
+
+                <span class="nt-detail-value">
+                    {{ notification.publish_date|date:"d M Y, h:i A" }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="nt-detail-message">
+
+            <span class="nt-detail-label">
+                Message
+            </span>
+
+            <div class="nt-message-content">
+                {{ notification.message }}
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+{% endblock %}

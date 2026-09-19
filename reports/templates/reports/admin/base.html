@@ -1,0 +1,909 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}NDMS Administration{% endblock %}
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/admin/dashboard-shell.css' %}"
+    >
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<div
+    class="admin-shell{% if admin_reduce_motion %} admin-reduce-motion{% endif %}{% if admin_high_contrast %} admin-high-contrast{% endif %}{% if admin_font_size == 'LARGE' %} admin-font-large{% endif %}"
+    id="adminShell"
+>
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="admin-sidebar" id="adminSidebar" aria-label="Administration sidebar">
+
+        <div class="sidebar-brand">
+
+            <a
+                href="{% url 'admin_dashboard' %}"
+                class="admin-brand"
+            >
+
+                <span class="admin-brand-mark">
+                    ND
+                </span>
+
+                <span class="admin-brand-text">
+                    <strong>NDMS</strong>
+                    <small>Administration</small>
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <nav
+            class="sidebar-navigation"
+            aria-label="Administration navigation"
+        >
+
+            <!-- OVERVIEW -->
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Overview
+                </div>
+
+                <a
+                    href="{% url 'admin_dashboard' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_dashboard' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1"></rect>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Dashboard
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- OPERATIONS -->
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Operations
+                </div>
+
+                <a
+                    href="{% url 'admin_reports' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_reports' or request.resolver_match.url_name == 'admin_report_detail' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M6 3h9l4 4v14H6z"></path>
+                            <path d="M14 3v5h5"></path>
+                            <path d="M9 13h6"></path>
+                            <path d="M9 17h6"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Disaster Reports
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_disasters' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_disasters' or request.resolver_match.url_name == 'admin_disaster_create' or request.resolver_match.url_name == 'admin_disaster_edit' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 3 4 8v8l8 5 8-5V8z"></path>
+                            <path d="m4 8 8 5 8-5"></path>
+                            <path d="M12 13v8"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Disasters
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_disaster_types' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_disaster_types' or request.resolver_match.url_name == 'admin_disaster_type_create' or request.resolver_match.url_name == 'admin_disaster_type_edit' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+
+                            <circle
+                                cx="12"
+                                cy="12"
+                                r="10"
+                            ></circle>
+
+                            <path d="M12 8v8"></path>
+                            <path d="M8 12h8"></path>
+
+                        </svg>
+
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Disaster Types
+                    </span>
+                
+                </a>
+
+            </div>
+
+
+            <!-- RESPONSE -->
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Response
+                </div>
+
+                <a
+                    href="{% url 'admin_agencies' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_agencies' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 21V8l8-5 8 5v13"></path>
+                            <path d="M8 21v-6h8v6"></path>
+                            <path d="M8 10h2"></path>
+                            <path d="M14 10h2"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Emergency Agencies
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_response_updates' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_response_updates' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 12h16"></path>
+                            <path d="m13 5 7 7-7 7"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Response Updates
+                    </span>
+
+                </a>
+
+            </div>
+
+
+            <!-- COMMUNITY -->
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Community
+                </div>
+
+                <a
+                    href="{% url 'admin_users' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_users' or request.resolver_match.url_name == 'admin_user_detail' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="9" cy="8" r="3"></circle>
+                            <path d="M3 20c0-3 2.5-5 6-5s6 2 6 5"></path>
+                            <path d="M16 11a3 3 0 1 0 0-6"></path>
+                            <path d="M17 15c2.5.4 4 2 4 5"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Citizens
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_notifications' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_notifications' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                            <path d="M10 21h4"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Notifications
+                    </span>
+
+                    {% if admin_pending_reports_count %}
+                        <span class="sidebar-count">
+                            {{ admin_pending_reports_count }}
+                        </span>
+                    {% endif %}
+
+                </a>
+
+            </div>
+
+
+            <!-- ADMINISTRATION -->
+            <div class="nav-section">
+
+                <div class="nav-section-label">
+                    Administration
+                </div>
+
+                <a
+                    href="{% url 'admin_feedback' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_feedback' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 5h16v11H8l-4 4z"></path>
+                            <path d="M8 9h8"></path>
+                            <path d="M8 13h5"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Feedback
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="{% url 'admin_support_requests' %}"
+                    class="sidebar-link {% if request.resolver_match.url_name == 'admin_support_requests' %}is-active{% endif %}"
+                >
+
+                    <span class="sidebar-icon">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M4 6h16v10H8l-4 4z"></path>
+                            <path d="M8 10h8"></path>
+                            <path d="M8 13h5"></path>
+                        </svg>
+                    </span>
+
+                    <span class="sidebar-link-text">
+                        Support Requests
+                    </span>
+
+                </a>
+
+            </div>
+
+        </nav>
+
+
+        <!-- SIDEBAR FOOTER -- "Back to Website"
+             Minimal variant: one arrow + label, no subtitle, no
+             boxed icon, no second arrow, with a subtle translateX
+             hover on the arrow (dashboard-shell.css
+             .sidebar-footer-link / .sidebar-footer-icon--plain).
+             Mirrors the Citizen Dashboard's minimal footer link
+             (dashboard.css .sidebar-footer-link--minimal /
+             .sidebar-footer-icon--plain) so "leave the app" reads
+             the same way across the whole site. Destination is
+             unchanged. Shared across every Admin page via this
+             base template. -->
+
+        <div class="sidebar-footer">
+
+            <a
+                href="{% url 'home' %}"
+                class="sidebar-footer-link"
+                aria-label="Back to Website"
+            >
+
+                <span class="sidebar-footer-icon--plain" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M19 12H5"></path>
+                        <path d="m11 18-6-6 6-6"></path>
+                    </svg>
+                </span>
+
+                <span class="sidebar-footer-title">Back to Website</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         MAIN
+         ===================================================== -->
+
+    <div class="admin-main">
+
+        <!-- TOPBAR -->
+
+    <header class="admin-topbar">
+
+    <!-- LEFT -->
+    <div class="topbar-left">
+
+        <!-- Mobile only -->
+        <button
+            type="button"
+            class="sidebar-toggle"
+            id="sidebarToggle"
+            aria-label="Toggle navigation"
+            aria-controls="adminSidebar"
+            aria-expanded="false"
+        >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16"></path>
+                <path d="M4 12h16"></path>
+                <path d="M4 17h16"></path>
+            </svg>
+        </button>
+
+
+        <!-- Page identity -->
+        <div class="page-identity">
+
+            <div class="page-breadcrumb" aria-label="Breadcrumb">
+                <span>NDMS</span>
+                <span class="breadcrumb-separator">/</span>
+                <span>Administration</span>
+                <span class="breadcrumb-separator">/</span>
+                <span>
+                    {% block breadcrumb %}
+                        Dashboard
+                    {% endblock %}
+                </span>
+            </div>
+
+            <h1 class="page-title">
+                {% block page_title %}
+                    Dashboard
+                {% endblock %}
+            </h1>
+
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH -->
+    <div
+        class="topbar-search"
+        id="adminSearch"
+    >
+
+        <!-- Search icon -->
+        <button
+            type="button"
+            class="search-trigger"
+            id="searchToggle"
+            aria-label="Open search"
+            aria-expanded="false"
+            aria-controls="adminSearchForm"
+            title="Search"
+        >
+
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m16 16 5 5"></path>
+            </svg>
+
+        </button>
+
+
+        <!-- Search field — GLOBAL ADMIN SEARCH, isolated from any
+             module's own request.GET.q search/filter. Submits to
+             its own dedicated endpoint, never to the current page. -->
+        <form
+            method="get"
+            action="{% url 'admin_global_search' %}"
+            class="search-form"
+            id="adminSearchForm"
+            role="search"
+            hidden
+        >
+
+            <svg
+                class="search-form-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+            >
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="m16 16 5 5"></path>
+            </svg>
+
+
+            <input
+                type="text"
+                name="q"
+                id="adminSearchInput"
+                placeholder="Search admin records..."
+                autocomplete="off"
+                aria-label="Search admin records"
+            >
+
+
+            <button
+                type="button"
+                class="search-clear"
+                id="searchClear"
+                aria-label="Clear search"
+                hidden
+            >
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M6 6l12 12"></path>
+                    <path d="M18 6 6 18"></path>
+                </svg>
+            </button>
+
+        </form>
+
+    </div>
+
+
+    <!-- RIGHT -->
+    <div class="topbar-right">
+
+        <!-- Admin Alerts -->
+        <div class="admin-alerts">
+
+            <button
+                type="button"
+                class="topbar-icon-button notification-button"
+                id="adminAlertButton"
+                aria-label="Admin alerts"
+                aria-haspopup="true"
+                aria-expanded="false"
+                title="Admin alerts"
+            >
+
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path>
+                    <path d="M10 21h4"></path>
+                </svg>
+
+                {% if admin_alerts_total_count %}
+
+                    <span class="notification-dot">
+                        {% if admin_alerts_total_count > 99 %}
+                            99+
+                        {% else %}
+                            {{ admin_alerts_total_count }}
+                        {% endif %}
+                    </span>
+
+                {% endif %}
+
+            </button>
+
+
+            <!-- Admin Alerts dropdown -->
+            <div
+                class="admin-alert-dropdown"
+                id="adminAlertDropdown"
+                role="menu"
+                aria-label="Admin alerts"
+            >
+
+                <div class="admin-alert-header">
+
+                    <span>Admin Alerts</span>
+
+                    <a href="{% url 'admin_reports' %}">
+                        View all
+                    </a>
+
+                </div>
+
+
+                {% if admin_pending_reports or admin_support_notifications %}
+
+                    {% if admin_support_notifications %}
+
+                        <div class="admin-alert-list">
+
+                            {% for notification in admin_support_notifications %}
+
+                                <form
+                                    action="{% url 'admin_mark_support_notification_read' notification.id %}"
+                                    method="post"
+                                    role="none"
+                                >
+                                    {% csrf_token %}
+
+                                    <button
+                                        type="submit"
+                                        class="admin-alert-item"
+                                        role="menuitem"
+                                        style="background:none; border:none; width:100%; text-align:left; font:inherit; color:inherit; cursor:pointer;"
+                                    >
+
+                                        <span class="admin-alert-dot" aria-hidden="true"></span>
+
+                                        <span class="admin-alert-body">
+
+                                            <strong>
+                                                {{ notification.title }}
+                                            </strong>
+
+                                            <span class="admin-alert-meta">
+                                                {{ notification.message }}
+                                            </span>
+
+                                            <span class="admin-alert-time">
+                                                {{ notification.publish_date|timesince }} ago
+                                            </span>
+
+                                        </span>
+
+                                        <svg class="admin-alert-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                            <path d="m9 6 6 6-6 6"></path>
+                                        </svg>
+
+                                    </button>
+
+                                </form>
+
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+
+                    {% if admin_pending_reports %}
+
+                        <div class="admin-alert-list">
+
+                            {% for report in admin_pending_reports %}
+
+                                <a
+                                    href="{% url 'admin_report_detail' report.id %}"
+                                    class="admin-alert-item"
+                                    role="menuitem"
+                                >
+
+                                    <span class="admin-alert-dot" aria-hidden="true"></span>
+
+                                    <span class="admin-alert-body">
+
+                                        <strong>
+                                            {% if report.disaster %}
+                                                Report requires review
+                                            {% else %}
+                                                New disaster report
+                                            {% endif %}
+                                        </strong>
+
+                                        <span class="admin-alert-meta">
+                                            {{ report.disaster_type.name }}
+                                            {% if report.address %}
+                                                · {{ report.address }}
+                                            {% endif %}
+                                        </span>
+
+                                        <span class="admin-alert-time">
+                                            {{ report.report_date|timesince }} ago
+                                        </span>
+
+                                    </span>
+
+                                    <svg class="admin-alert-arrow" viewBox="0 0 24 24" aria-hidden="true">
+                                        <path d="m9 6 6 6-6 6"></path>
+                                    </svg>
+
+                                </a>
+
+                            {% endfor %}
+
+                        </div>
+
+
+                        <div class="admin-alert-footer">
+
+                            <a href="{% url 'admin_reports' %}?status=PENDING">
+                                View pending reports →
+                            </a>
+
+                        </div>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <div class="admin-alert-empty">
+
+                        <span class="admin-alert-empty-icon" aria-hidden="true">
+                            &check;
+                        </span>
+
+                        <strong>
+                            No pending alerts
+                        </strong>
+
+                        <p>
+                            All disaster reports are currently up to date.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- Clean divider -->
+        <span
+            class="topbar-divider"
+            aria-hidden="true"
+        ></span>
+
+
+        <!-- Admin avatar -->
+        <div class="admin-profile">
+
+            <button
+                type="button"
+                class="admin-profile-button"
+                id="adminProfileButton"
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-label="Open administrator profile menu"
+                title="Administrator profile"
+            >
+
+                {% if request.user.avatar %}
+
+                    <img
+                        src="{{ request.user.avatar.url }}"
+                        alt="{{ request.user.full_name|default:request.user.username }}"
+                        class="admin-avatar"
+                    >
+
+                {% else %}
+
+                    <span class="admin-avatar admin-avatar-fallback" aria-hidden="true">
+                        {{ request.user.full_name|default:request.user.username|first|upper }}
+                    </span>
+
+                {% endif %}
+
+
+                <span class="admin-profile-info">
+
+                    <strong
+                        title="{{ request.user.full_name|default:request.user.username }}"
+                    >
+                        {{ request.user.full_name|default:request.user.username }}
+                    </strong>
+
+                    <small>
+                        <span
+                            class="admin-profile-status-dot {% if not request.user.is_active %}is-inactive{% endif %}"
+                            aria-hidden="true"
+                        ></span>
+
+                        Administrator
+                    </small>
+
+                </span>
+
+
+                <svg
+                    class="profile-chevron"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path d="m6 9 6 6 6-6"></path>
+                </svg>
+
+            </button>
+
+
+            <!-- Admin dropdown -->
+            <div
+                class="admin-profile-menu"
+                id="adminProfileMenu"
+            >
+
+                <div class="profile-menu-header">
+
+                    {% if request.user.avatar %}
+
+                        <img
+                            src="{{ request.user.avatar.url }}"
+                            alt=""
+                            class="profile-menu-avatar"
+                        >
+
+                    {% else %}
+
+                        <span class="profile-menu-avatar profile-menu-avatar-fallback" aria-hidden="true">
+                            {{ request.user.full_name|default:request.user.username|first|upper }}
+                        </span>
+
+                    {% endif %}
+
+
+                    <div class="profile-menu-identity">
+
+                        <strong
+                            title="{{ request.user.full_name|default:request.user.username }}"
+                        >
+                            {{ request.user.full_name|default:request.user.username }}
+                        </strong>
+
+                        <span
+                            title="{{ request.user.email }}"
+                            class="profile-menu-email"
+                        >
+                            {{ request.user.email }}
+                        </span>
+
+                        <small class="profile-menu-role">
+                            <span
+                                class="profile-menu-status-dot {% if not request.user.is_active %}is-inactive{% endif %}"
+                                aria-hidden="true"
+                            ></span>
+
+                            Administrator
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-menu-divider"></div>
+
+
+                <a
+                    href="{% url 'admin_profile' %}"
+                    class="profile-menu-item"
+                >
+                    <span class="profile-menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"></path>
+                        </svg>
+                    </span>
+                    My Profile
+                </a>
+
+
+                <a
+                    href="{% url 'admin_settings' %}"
+                    class="profile-menu-item"
+                >
+                    <span class="profile-menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 13a7.6 7.6 0 0 0 0-2l2-1.5-2-3.4-2.3.9a7.6 7.6 0 0 0-1.7-1l-.3-2.5H9.9l-.3 2.5a7.6 7.6 0 0 0-1.7 1l-2.3-.9-2 3.4L5.6 11a7.6 7.6 0 0 0 0 2l-2 1.5 2 3.4 2.3-.9c.5.4 1.1.75 1.7 1l.3 2.5h4.2l.3-2.5c.6-.25 1.2-.6 1.7-1l2.3.9 2-3.4z"></path>
+                        </svg>
+                    </span>
+                    Settings
+                </a>
+
+
+                <div class="profile-menu-divider"></div>
+
+
+                <a
+                    href="{% url 'admin_logout' %}"
+                    class="profile-menu-item profile-menu-danger"
+                >
+                    <span class="profile-menu-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                    </span>
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+        <!-- MOBILE OVERLAY -->
+
+        <div
+            class="sidebar-overlay"
+            id="sidebarOverlay"
+        ></div>
+
+
+        <!-- CONTENT -->
+
+        <main class="admin-content">
+
+            {% if messages %}
+
+                <div class="admin-messages">
+
+                    {% for message in messages %}
+
+                        <div class="admin-message {{ message.tags }}">
+                            {{ message }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            {% block content %}{% endblock %}
+
+        </main>
+
+    </div>
+
+</div>
+
+
+<script src="{% static 'reports/admin/admin-shell.js' %}"></script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

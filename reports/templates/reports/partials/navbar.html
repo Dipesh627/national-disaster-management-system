@@ -1,0 +1,479 @@
+{% load static %}
+
+<!-- =====================================================
+     SHARED PUBLIC NAVBAR
+     Used by home.html and about.html.
+
+     Requires: reports/navbar-avatar.css + reports/js/navbar-avatar.js
+     to already be linked in the including page's <head> / before
+     </body>. Relies on the "public-nav" / "mobile-menu-toggle" /
+     "publicMobileMenu" hooks that home.js / about.js already
+     listen for, plus the new "disastersDropdown" hooks handled
+     in reports/js/navbar-avatar.js.
+     ===================================================== -->
+
+<header class="public-navbar">
+
+    <!-- BRAND -->
+
+    <a
+        href="{% url 'home' %}"
+        class="public-brand"
+        aria-label="NDMS Home"
+    >
+
+        <div class="public-logo">
+            ND
+        </div>
+
+        <div class="public-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+    <!-- MOBILE MENU BUTTON -->
+
+    <button
+        type="button"
+        class="mobile-menu-toggle"
+        id="mobileMenuToggle"
+        aria-label="Open main menu"
+        aria-expanded="false"
+        aria-controls="publicMobileMenu"
+    >
+
+        <span></span>
+        <span></span>
+        <span></span>
+
+    </button>
+
+
+    <!-- MAIN NAVIGATION (toggled by the hamburger on mobile) -->
+
+    <div
+        class="public-mobile-menu"
+        id="publicMobileMenu"
+    >
+
+        <nav
+            class="public-nav"
+            aria-label="Primary navigation"
+        >
+
+            <a
+                href="{% url 'home' %}"
+                {% if request.resolver_match.url_name == 'home' %}class="active"{% endif %}
+            >
+                Home
+            </a>
+
+            <a
+                href="{% url 'about' %}"
+                {% if request.resolver_match.url_name == 'about' %}class="active"{% endif %}
+            >
+                About
+            </a>
+
+
+            <!-- =========================================
+                 DISASTERS DROPDOWN
+                 View Disasters / Emergency Agencies / Disaster
+                 Awareness / the Report Incident CTA all live
+                 here instead of as separate top-level nav items.
+
+                 Citizen/Public-only: Admin/Staff accounts manage
+                 disasters and agencies through the Admin
+                 Dashboard, and are blocked server-side from the
+                 public Disaster routes by
+                 AdminCitizenPortalIsolationMiddleware, so this
+                 entire dropdown (desktop and mobile — same
+                 markup) is not rendered for them at all rather
+                 than just hidden with CSS.
+                 ========================================= -->
+
+            {% if not user.is_staff and not user.is_superuser %}
+
+            <div
+                class="public-nav-dropdown"
+                id="disastersDropdown"
+            >
+
+                <button
+                    type="button"
+                    class="public-nav-dropdown-toggle{% if request.resolver_match.url_name == 'create_disaster_report' or request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' or request.resolver_match.url_name == 'emergency_agencies' %} active{% endif %}"
+                    id="disastersDropdownToggle"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="disastersDropdownMenu"
+                >
+
+                    <span class="public-nav-dropdown-toggle-label">
+
+                        Disasters
+
+                        {% if has_unread_disaster_alert %}
+
+                            <span
+                                class="disaster-unread-dot"
+                                role="status"
+                                aria-label="Unread disaster alerts"
+                            ></span>
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="public-nav-dropdown-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="public-nav-dropdown-menu"
+                    id="disastersDropdownMenu"
+                    role="menu"
+                    aria-label="Disasters"
+                >
+
+                    <a
+                        href="{% url 'disaster_list' %}"
+                        class="public-nav-dropdown-item{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %} active{% endif %}"
+                        role="menuitem"
+                    >
+                        View Disasters
+
+                        {% if has_unread_disaster_alert %}
+
+                            <span
+                                class="disaster-unread-dot"
+                                role="status"
+                                aria-label="Unread disaster alerts"
+                            ></span>
+
+                        {% endif %}
+
+                    </a>
+
+                    <a
+                        href="{% url 'emergency_agencies' %}"
+                        class="public-nav-dropdown-item{% if request.resolver_match.url_name == 'emergency_agencies' %} active{% endif %}"
+                        role="menuitem"
+                    >
+                        Emergency Agencies
+                    </a>
+
+                    <a
+                        href="{% url 'disaster_guidelines' %}"
+                        class="public-nav-dropdown-item{% if request.resolver_match.url_name == 'disaster_guidelines' %} active{% endif %}"
+                        role="menuitem"
+                    >
+                        Awareness &amp; Guidelines
+                    </a>
+
+                    {% if not user.is_staff and not user.is_superuser %}
+
+                        <!-- Report Incident is a citizen-only action
+                             (create_disaster_report is citizen_required),
+                             so it is not offered to Admin accounts here. -->
+
+                        <div class="public-nav-dropdown-divider" role="none"></div>
+
+                        <a
+                            href="{% url 'create_disaster_report' %}"
+                            class="public-nav-dropdown-cta"
+                            role="menuitem"
+                        >
+                            Report Incident
+                            <span class="public-nav-dropdown-cta-arrow" aria-hidden="true">→</span>
+                        </a>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if user.is_authenticated %}
+
+                {% if user.is_staff or user.is_superuser %}
+
+                    <!-- =========================================
+                         ADMIN: Dashboard replaces My Reports.
+                         Links to the existing Admin Dashboard —
+                         no new dashboard is created here.
+                         ========================================= -->
+
+                    <a
+                        href="{% url 'admin_dashboard' %}"
+                        {% if request.resolver_match.url_name == 'admin_dashboard' or request.resolver_match.url_name == 'admin_dashboard_explicit' %}class="active"{% endif %}
+                    >
+                        Dashboard
+                    </a>
+
+                {% else %}
+
+                    <a
+                        href="{% url 'my_reports' %}"
+                        {% if request.resolver_match.url_name == 'my_reports' %}class="active"{% endif %}
+                    >
+                        My Reports
+                    </a>
+
+                {% endif %}
+
+            {% endif %}
+
+        </nav>
+
+    </div>
+
+
+    <!-- AUTH / ACCOUNT (always visible — desktop and mobile) -->
+
+    <div class="public-auth{% if user.is_authenticated %} is-authenticated{% endif %}">
+
+        {% if user.is_authenticated %}
+
+            {% with display_name=user.full_name|default:user.username %}
+
+            <!-- =========================================
+                 AVATAR + ACCOUNT DROPDOWN
+                 (account/profile actions only — Dashboard,
+                 Alerts, Notifications, My Reports and Report
+                 Incident live in the main nav / dashboard,
+                 not here)
+                 ========================================= -->
+
+            <div
+                class="ndms-avatar-wrapper"
+                id="ndmsAvatarWrapper"
+            >
+
+                <button
+                    type="button"
+                    class="ndms-avatar-btn"
+                    id="ndmsAvatarBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="ndmsAvatarMenu"
+                    aria-label="Open account menu"
+                >
+
+                    <span class="ndms-avatar-circle">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% else %}
+
+                            {{ display_name|first|upper }}
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="ndms-avatar-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="ndms-avatar-menu"
+                    id="ndmsAvatarMenu"
+                    role="menu"
+                >
+
+                    <div class="ndms-avatar-menu-header">
+
+                        <span class="ndms-avatar-menu-avatar">
+
+                            {% if user.avatar %}
+
+                                <img
+                                    src="{{ user.avatar.url }}"
+                                    alt=""
+                                >
+
+                            {% else %}
+
+                                {{ display_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                        <div class="ndms-avatar-menu-info">
+
+                            <strong class="ndms-avatar-menu-name">
+                                {{ display_name }}
+                            </strong>
+
+                            {% if user.email %}
+
+                                <span class="ndms-avatar-menu-email">
+                                    {{ user.email }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        {% if user.is_staff or user.is_superuser %}
+
+                            <!-- ADMIN: existing Admin Dashboard
+                                 "My Profile" / "Settings" pages —
+                                 no new pages are created here. -->
+
+                            <a
+                                href="{% url 'admin_profile' %}"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3.6" stroke="currentColor" stroke-width="1.8"/></svg>
+                                My Profile
+                            </a>
+
+                            <a
+                                href="{% url 'admin_settings' %}"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                Settings
+                            </a>
+
+                        {% else %}
+
+                            <a
+                                href="{% url 'profile' %}"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3.6" stroke="currentColor" stroke-width="1.8"/></svg>
+                                Profile
+                            </a>
+
+                            <a
+                                href="{% url 'settings' %}"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                                Settings
+                            </a>
+
+                            <a
+                                href="{% url 'home' %}#contact"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v10H9l-4 3.5v-3.5H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                                Contact Us
+                            </a>
+
+                            <a
+                                href="{% url 'help_support' %}"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9.3a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .9-1 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                                Help &amp; Support
+                            </a>
+
+                        {% endif %}
+
+                        {% if not user.is_staff and not user.is_superuser %}
+
+                            <a
+                                href="{% url 'home' %}#feedback-section-title"
+                                class="ndms-avatar-menu-item"
+                                role="menuitem"
+                            >
+                                <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7L12 4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                                Feedback
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="ndms-avatar-menu-item ndms-avatar-menu-logout"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4.5H6a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 6 19.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 8 20 12l-4.5 4M20 12H9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endwith %}
+
+        {% else %}
+
+            <a
+                href="{% url 'login' %}"
+                class="public-login-btn"
+            >
+                Login
+            </a>
+
+            <a
+                href="{% url 'register' %}"
+                class="public-register-btn"
+            >
+                Register
+            </a>
+
+        {% endif %}
+
+    </div>
+
+</header>

@@ -1,0 +1,498 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Citizens | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-disaster-reports.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-citizens.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Citizens</span>
+{% endblock %}
+
+{% block page_title %}
+Citizens
+{% endblock %}
+
+
+{% block content %}
+
+<div class="ndms-dashboard">
+
+    <div class="dashboard-body">
+
+
+        <!-- =================================================
+             PAGE INTRO
+             ================================================= -->
+
+        <header class="dr-page-intro">
+
+            <div class="dr-page-intro-copy">
+
+                <p class="dr-page-eyebrow">
+                    CITIZENS
+                </p>
+
+                <h1>
+                    Citizens
+                </h1>
+
+                <p class="dr-page-description">
+                    View and manage citizen accounts registered on NDMS.
+                </p>
+
+            </div>
+
+        </header>
+
+
+        <!-- =================================================
+             SUMMARY
+             ================================================= -->
+
+        <section
+            class="citizens-summary-grid"
+            aria-label="Citizen summary">
+
+            <article class="dr-summary-card">
+
+                <span class="dr-summary-label">
+                    Total citizens
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ total_citizens }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    All registered citizens
+                </span>
+
+            </article>
+
+
+            <article class="dr-summary-card citizens-summary-active">
+
+                <span class="dr-summary-label">
+                    Active
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ active_citizens }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    Currently active accounts
+                </span>
+
+            </article>
+
+
+            <article class="dr-summary-card citizens-summary-inactive">
+
+                <span class="dr-summary-label">
+                    Inactive
+                </span>
+
+                <strong class="dr-summary-value">
+                    {{ inactive_citizens }}
+                </strong>
+
+                <span class="dr-summary-meta">
+                    Deactivated accounts
+                </span>
+
+            </article>
+
+        </section>
+
+
+        <!-- =================================================
+             FILTER TOOLBAR
+             ================================================= -->
+
+        <section
+            class="citizens-filter-bar"
+            aria-label="Citizen filters">
+
+            <form
+                method="get"
+                action=""
+                class="citizens-filter-form">
+
+                <label class="citizens-search-field">
+
+                    <span class="citizens-visually-hidden">
+                        Search citizens
+                    </span>
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        aria-hidden="true">
+
+                        <circle cx="11" cy="11" r="6.5"></circle>
+                        <path d="m16 16 4.5 4.5"></path>
+
+                    </svg>
+
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ search_query }}"
+                        placeholder="Search username, name, or email..."
+                        autocomplete="off">
+
+                </label>
+
+
+                <label class="citizens-select-field">
+
+                    <span class="citizens-visually-hidden">
+                        Filter by status
+                    </span>
+
+                    <select name="status">
+
+                        <option
+                            value="ALL"
+                            {% if status_filter == 'ALL' %}selected{% endif %}>
+                            All statuses
+                        </option>
+
+                        <option
+                            value="ACTIVE"
+                            {% if status_filter == 'ACTIVE' %}selected{% endif %}>
+                            Active
+                        </option>
+
+                        <option
+                            value="INACTIVE"
+                            {% if status_filter == 'INACTIVE' %}selected{% endif %}>
+                            Inactive
+                        </option>
+
+                    </select>
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+
+                        <path d="m7 10 5 5 5-5"></path>
+
+                    </svg>
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="citizens-filter-button">
+
+                    Apply filters
+
+                </button>
+
+
+                {% if search_query or status_filter != 'ALL' %}
+
+                    <a
+                        href="{% url 'admin_users' %}"
+                        class="citizens-reset-button">
+
+                        Clear
+
+                    </a>
+
+                {% endif %}
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             CITIZENS TABLE
+             ================================================= -->
+
+        <section class="dashboard-panel dashboard-panel-table">
+
+            <div class="panel-header">
+
+                <div>
+
+                    <h2>
+                        All Citizens
+                    </h2>
+
+                    <p>
+                        {{ page_obj.paginator.count }}
+                        citizen{{ page_obj.paginator.count|pluralize }}
+                        matching the current filters.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if page_obj.object_list %}
+
+                <div class="table-wrap">
+
+                    <table class="dashboard-table">
+
+                        <caption class="sr-only">
+                            Citizens
+                        </caption>
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Citizen</th>
+                                <th>Email</th>
+                                <th>Reports</th>
+                                <th>Joined</th>
+                                <th>Status</th>
+                                <th>
+                                    <span class="sr-only">
+                                        Action
+                                    </span>
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            {% for citizen in page_obj.object_list %}
+
+                                <tr>
+
+
+                                    <!-- CITIZEN -->
+
+                                    <td>
+
+                                        <div class="citizen-cell">
+
+                                            <span class="citizen-avatar">
+
+                                                {% if citizen.avatar %}
+
+                                                    <img
+                                                        src="{{ citizen.avatar.url }}"
+                                                        alt=""
+                                                        loading="lazy">
+
+                                                {% else %}
+
+                                                    <span class="citizen-avatar-fallback">
+
+                                                        {{ citizen.full_name|default:citizen.username|first|upper }}
+
+                                                    </span>
+
+                                                {% endif %}
+
+                                            </span>
+
+
+                                            <div class="citizens-name-cell">
+
+                                                <a
+                                                    href="{% url 'admin_user_detail' citizen.id %}"
+                                                    class="table-primary-link"
+                                                    title="{{ citizen.full_name|default:citizen.username }}">
+
+                                                    {{ citizen.full_name|default:citizen.username }}
+
+                                                </a>
+
+                                                <span class="citizens-username">
+                                                    @{{ citizen.username }}
+                                                </span>
+
+                                            </div>
+
+                                        </div>
+
+                                    </td>
+
+
+                                    <!-- EMAIL -->
+
+                                    <td>
+                                        {{ citizen.email|default:"Not provided" }}
+                                    </td>
+
+
+                                    <!-- REPORTS -->
+
+                                    <td>
+                                        {{ citizen.reports_count }}
+                                    </td>
+
+
+                                    <!-- JOINED -->
+
+                                    <td>
+
+                                        <time datetime="{{ citizen.date_joined|date:'c' }}">
+                                            {{ citizen.date_joined|date:"M d, Y" }}
+                                        </time>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        {% if citizen.is_active %}
+                                            <span class="table-status citizens-status-active">
+                                                Active
+                                            </span>
+                                        {% else %}
+                                            <span class="table-status citizens-status-inactive">
+                                                Inactive
+                                            </span>
+                                        {% endif %}
+
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td class="table-action-cell">
+
+                                        <a
+                                            href="{% url 'admin_user_detail' citizen.id %}"
+                                            class="table-action">
+
+                                            View Profile
+
+                                            <span aria-hidden="true">
+                                                ›
+                                            </span>
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+                <!-- PAGINATION -->
+
+                {% if page_obj.paginator.num_pages > 1 %}
+
+                    <nav
+                        class="dr-pagination"
+                        aria-label="Citizens pagination">
+
+                        {% if page_obj.has_previous %}
+
+                            <a
+                                class="dr-page-link"
+                                href="?status={{ status_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.previous_page_number }}">
+
+                                ‹ Previous
+
+                            </a>
+
+                        {% endif %}
+
+
+                        {% for page_number in page_obj.paginator.page_range %}
+
+                            <a
+                                class="dr-page-link {% if page_number == page_obj.number %}active{% endif %}"
+                                href="?status={{ status_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_number }}">
+
+                                {{ page_number }}
+
+                            </a>
+
+                        {% endfor %}
+
+
+                        {% if page_obj.has_next %}
+
+                            <a
+                                class="dr-page-link"
+                                href="?status={{ status_filter }}{% if search_query %}&q={{ search_query|urlencode }}{% endif %}&page={{ page_obj.next_page_number }}">
+
+                                Next ›
+
+                            </a>
+
+                        {% endif %}
+
+                    </nav>
+
+                {% endif %}
+
+
+            {% else %}
+
+                <div class="empty-state table-empty">
+
+                    <span
+                        class="empty-state-icon"
+                        aria-hidden="true">
+                        •
+                    </span>
+
+                    <strong>
+                        No citizens found
+                    </strong>
+
+                    <span>
+
+                        {% if search_query or status_filter != 'ALL' %}
+
+                            Try adjusting your search or filters.
+
+                        {% else %}
+
+                            Registered citizens will appear here.
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </div>
+
+</div>
+
+{% endblock %}

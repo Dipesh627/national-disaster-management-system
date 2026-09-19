@@ -1,0 +1,24 @@
+{% load static %}{% comment %}
+=========================================================
+NDMS — CITIZEN PREFERENCE HEAD
+=========================================================
+
+Included by every citizen/public template, as the LAST thing
+in <head> so the preference layer is applied after the page's
+own stylesheets.
+
+Pair it with the matching attributes on the root element:
+
+    <html lang="en"{% citizen_html_attrs %}>
+
+Nothing here is loaded by any Administration template — the
+Administration side keeps its own independent appearance
+mechanism (Admin Settings).
+=========================================================
+{% endcomment %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/citizen-prefs.css' %}"
+>
+
+<script src="{% static 'reports/js/citizen-prefs.js' %}"></script>

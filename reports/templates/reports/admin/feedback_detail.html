@@ -1,0 +1,109 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Feedback | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'reports/admin/admin-dashboard.css' %}">
+<link rel="stylesheet" href="{% static 'reports/admin/admin-feedback.css' %}">
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Feedback</span>
+<span class="fb-breadcrumb-divider">/</span>
+<span>View</span>
+{% endblock %}
+
+{% block page_title %}
+Feedback
+{% endblock %}
+
+{% block content %}
+<div class="ndms-dashboard feedback-page">
+
+    <header class="feedback-header fb-detail-page-header">
+
+        <div class="fb-page-header-copy">
+            <span class="fb-kicker">FEEDBACK</span>
+
+            <h1>
+                {{ feedback_item.user.full_name|default:feedback_item.user.username }}
+            </h1>
+
+            <p>
+                Submitted {{ feedback_item.created_at|date:"d M Y, h:i A" }}
+            </p>
+        </div>
+
+        <a href="{% url 'admin_feedback' %}" class="fb-secondary-button">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+            <span>Back</span>
+        </a>
+
+    </header>
+
+    <section class="feedback-detail">
+
+        <div class="fb-detail-intro">
+
+            <div>
+                <span class="fb-detail-kicker">SERVICE RATING</span>
+
+                <span
+                    class="fb-stars fb-stars-lg"
+                    aria-label="{{ feedback_item.rating }} out of 5 stars"
+                >
+                    {% for star in "12345" %}
+                        <svg
+                            viewBox="0 0 20 20"
+                            aria-hidden="true"
+                            class="fb-star {% if forloop.counter <= feedback_item.rating %}is-filled{% endif %}"
+                        >
+                            <path d="M10 1.6l2.47 5.24 5.72.66-4.27 3.9 1.15 5.68L10 14.9l-5.07 2.18 1.15-5.68-4.27-3.9 5.72-.66L10 1.6z"></path>
+                        </svg>
+                    {% endfor %}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="fb-detail-meta">
+
+            <div class="fb-detail-meta-item">
+                <span class="fb-detail-label">From</span>
+                <span class="fb-detail-value">
+                    {{ feedback_item.user.full_name|default:feedback_item.user.username }}
+                </span>
+            </div>
+
+            <div class="fb-detail-meta-item">
+                <span class="fb-detail-label">Email</span>
+                <span class="fb-detail-value">
+                    {{ feedback_item.email }}
+                </span>
+            </div>
+
+            <div class="fb-detail-meta-item">
+                <span class="fb-detail-label">Submitted</span>
+                <span class="fb-detail-value">
+                    {{ feedback_item.created_at|date:"d M Y, h:i A" }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="fb-detail-message">
+            <span class="fb-detail-label">Feedback</span>
+
+            <div class="fb-message-content">
+                {{ feedback_item.message }}
+            </div>
+        </div>
+
+    </section>
+
+</div>
+{% endblock %}

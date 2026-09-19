@@ -1,0 +1,1744 @@
+{% load static %}
+{% load citizen_extras %}
+{% load ndms_extras %}
+
+<!DOCTYPE html>
+<html lang="en"{% citizen_html_attrs %}>
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="NDMS Help & Support"
+    >
+
+    <title>
+        NDMS | Help & Support
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/dashboard.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/navbar-avatar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/help-support.css' %}"
+    >
+
+{% include 'reports/partials/citizen_prefs_head.html' %}
+
+</head>
+
+
+<body class="dashboard-page">
+
+
+<!-- =====================================================
+     MOBILE OVERLAY
+     ===================================================== -->
+
+<div
+    class="sidebar-overlay"
+    id="sidebarOverlay"
+></div>
+
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside
+    class="dashboard-sidebar"
+    id="dashboardSidebar"
+>
+
+
+    <!-- BRAND -->
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="dashboard-brand"
+    >
+
+        <div class="dashboard-logo">
+            ND
+        </div>
+
+        <div class="dashboard-brand-text">
+
+            <strong>
+                NDMS
+            </strong>
+
+            <span>
+                National Disaster Management System
+            </span>
+
+        </div>
+
+    </a>
+
+
+
+    <!-- SIDEBAR NAVIGATION -->
+
+        <nav
+        class="sidebar-navigation"
+        aria-label="Dashboard navigation"
+    >
+
+
+        <span class="sidebar-section-title">
+            OVERVIEW
+        </span>
+
+
+        <!-- DASHBOARD -->
+
+        <a
+            href="{% url 'dashboard' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'dashboard' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'dashboard' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.4"></rect><rect x="14" y="3" width="7" height="7" rx="1.4"></rect><rect x="3" y="14" width="7" height="7" rx="1.4"></rect><rect x="14" y="14" width="7" height="7" rx="1.4"></rect></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Dashboard
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            REPORTING
+        </span>
+
+
+        <!-- REPORT INCIDENT -->
+
+        <a
+            href="{% url 'create_disaster_report' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'create_disaster_report' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'create_disaster_report' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3Z"></path><path d="M12 10v4"></path><path d="M12 17.2v.1"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Report Incident
+            </span>
+
+        </a>
+
+
+        <!-- MY REPORTS -->
+
+        <a
+            href="{% url 'my_reports' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'my_reports' or request.resolver_match.url_name == 'report_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h9l4 4v14H6z"></path><path d="M14 3v5h5"></path><path d="M9 13h6"></path><path d="M9 17h6"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Reports
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            DISCOVER
+        </span>
+
+
+        <!-- DISASTERS — collapsible group -->
+
+        <div class="sidebar-group{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %} is-open is-active-group{% endif %}">
+
+            <button
+                type="button"
+                class="sidebar-link sidebar-group-toggle"
+                aria-expanded="{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' or request.resolver_match.url_name == 'disaster_guidelines' %}true{% else %}false{% endif %}"
+                aria-controls="sidebarDisastersMenu"
+            >
+
+                <span class="sidebar-icon">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 8v8l8 5 8-5V8z"></path><path d="m4 8 8 5 8-5"></path><path d="M12 13v8"></path></svg>
+                </span>
+
+                <span class="sidebar-link-text">
+                    Disasters
+                </span>
+
+                <svg class="sidebar-group-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+
+            </button>
+
+            <div
+                class="sidebar-submenu"
+                id="sidebarDisastersMenu"
+            >
+
+                <a
+                    href="{% url 'disaster_list' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %}aria-current="page"{% endif %}
+                >
+                    View Disasters
+                </a>
+
+                <a
+                    href="{% url 'home' %}#disasters"
+                    class="sidebar-sublink"
+                >
+                    Disaster Types
+                </a>
+
+                <a
+                    href="{% url 'disaster_guidelines' %}"
+                    class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_guidelines' %} active{% endif %}"
+                    {% if request.resolver_match.url_name == 'disaster_guidelines' %}aria-current="page"{% endif %}
+                >
+                    Awareness &amp; Guidelines
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            SAFETY
+        </span>
+
+
+        <!-- ALERTS -->
+
+        <a
+            href="{% url 'alerts' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'alerts' or request.resolver_match.url_name == 'notification_detail' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"></path><path d="M10 21h4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Alerts
+            </span>
+
+
+            {% if unread_count > 0 %}
+
+                <span class="sidebar-badge">
+                    {{ unread_count }}
+                </span>
+
+            {% endif %}
+
+
+        </a>
+
+
+        <div class="sidebar-divider"></div>
+
+
+        <span class="sidebar-section-title">
+            ACCOUNT
+        </span>
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{% url 'profile' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'profile' or request.resolver_match.url_name == 'password_change' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"></path><circle cx="12" cy="7" r="3.6"></circle></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                My Profile
+            </span>
+
+        </a>
+
+
+        <!-- SETTINGS -->
+
+        <a
+            href="{% url 'settings' %}"
+            class="sidebar-link{% if request.resolver_match.url_name == 'settings' %} active{% endif %}"
+            {% if request.resolver_match.url_name == 'settings' %}aria-current="page"{% endif %}
+        >
+
+            <span class="sidebar-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"></circle><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4"></path></svg>
+            </span>
+
+            <span class="sidebar-link-text">
+                Settings
+            </span>
+
+        </a>
+
+
+    </nav>
+
+
+
+    <!-- =================================================
+         SIDEBAR FOOTER -- "Back to Website"
+         Minimal variant: one arrow + label, no subtitle, no
+         boxed icon, no second arrow, with a subtle translateX
+         hover on the arrow (dashboard.css .sidebar-footer-link--
+         minimal / .sidebar-footer-icon--plain). Destination and
+         underlying .sidebar-footer-link base are unchanged; the
+         modifier classes keep this scoped to the Citizen
+         Dashboard so Alerts / My Reports / Profile / Report
+         Detail / Report Incident / Settings / Help & Support
+         keep their existing footer link as-is.
+         ================================================= -->
+
+    <div class="sidebar-footer">
+
+        <a
+            href="{% url 'home' %}"
+            class="sidebar-footer-link sidebar-footer-link--minimal"
+            aria-label="Back to Website"
+        >
+
+            <span class="sidebar-footer-icon--plain" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                    <path d="M19 12H5"></path>
+                    <path d="m11 18-6-6 6-6"></path>
+                </svg>
+            </span>
+
+            <span class="sidebar-footer-title">Back to Website</span>
+
+        </a>
+
+    </div>
+
+
+
+</aside>
+
+
+
+<!-- =====================================================
+     MAIN WRAPPER
+     ===================================================== -->
+
+<div class="dashboard-wrapper">
+
+
+    <!-- =================================================
+         TOPBAR
+         ================================================= -->
+
+    <header class="dashboard-topbar">
+
+
+        <div class="topbar-left">
+
+
+            <!-- MOBILE MENU -->
+
+            <button
+                type="button"
+                class="mobile-sidebar-toggle"
+                id="mobileSidebarToggle"
+                aria-label="Open dashboard menu"
+                aria-expanded="false"
+            >
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <div class="page-identity">
+
+    <div class="page-breadcrumb" aria-label="Breadcrumb">
+        <span>NDMS</span>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span>Citizen</span>
+        <span class="breadcrumb-separator" aria-hidden="true">/</span>
+        <span>Help & Support</span>
+    </div>
+
+
+    <div class="page-heading">
+
+        <h1>
+            Help & Support
+        </h1>
+
+    </div>
+
+</div>
+
+
+        </div>
+
+
+
+        <div class="topbar-right">
+
+
+            <!-- =================================================
+                 NOTIFICATION
+                 ================================================= -->
+
+            {% include 'reports/partials/notification_dropdown.html' %}
+
+
+
+            <!-- =================================================
+                 USER
+                 ================================================= -->
+
+            <div
+                class="topbar-user ndms-avatar-wrapper"
+                id="ndmsAvatarWrapper"
+            >
+
+                {% with display_name=user.full_name|default:user.username %}
+
+                <button
+                    type="button"
+                    class="ndms-avatar-btn"
+                    id="ndmsAvatarBtn"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                    aria-controls="ndmsAvatarMenu"
+                    aria-label="Open account menu"
+                >
+
+                    <span class="ndms-avatar-circle">
+
+                        {% if user.avatar %}
+
+                            <img
+                                src="{{ user.avatar.url }}"
+                                alt=""
+                            >
+
+                        {% else %}
+
+                            {{ display_name|first|upper }}
+
+                        {% endif %}
+
+                    </span>
+
+                    <span
+                        class="ndms-avatar-caret"
+                        aria-hidden="true"
+                    >
+                        ▾
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="ndms-avatar-menu"
+                    id="ndmsAvatarMenu"
+                    role="menu"
+                >
+
+                    <div class="ndms-avatar-menu-header">
+
+                        <span class="ndms-avatar-menu-avatar">
+
+                            {% if user.avatar %}
+
+                                <img
+                                    src="{{ user.avatar.url }}"
+                                    alt=""
+                                >
+
+                            {% else %}
+
+                                {{ display_name|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                        <div class="ndms-avatar-menu-info">
+
+                            <strong class="ndms-avatar-menu-name">
+                                {{ display_name }}
+                            </strong>
+
+                            {% if user.email %}
+
+                                <span class="ndms-avatar-menu-email">
+                                    {{ user.email }}
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'profile' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="7" r="3.6" stroke="currentColor" stroke-width="1.8"/></svg>
+                            Profile
+                        </a>
+
+                        <a
+                            href="{% url 'settings' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5v2M12 18.5v2M4.6 6.6l1.4 1.4M18 16l1.4 1.4M3.5 12h2M18.5 12h2M4.6 17.4 6 16M18 8l1.4-1.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+                            Settings
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#contact"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 5.5h16v10H9l-4 3.5v-3.5H4Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Contact Us
+                        </a>
+
+                        <a
+                            href="{% url 'help_support' %}"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M9.6 9.3a2.4 2.4 0 1 1 3.4 2.2c-.8.4-1 .9-1 1.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="16.6" r="0.9" fill="currentColor"/></svg>
+                            Help &amp; Support
+                        </a>
+
+                        <a
+                            href="{% url 'home' %}#feedback-section-title"
+                            class="ndms-avatar-menu-item"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4.5l2.2 4.6 5 .7-3.6 3.5.9 5-4.5-2.4-4.5 2.4.9-5-3.6-3.5 5-.7L12 4.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+                            Feedback
+                        </a>
+
+                    </div>
+
+
+                    <div class="ndms-avatar-menu-divider" role="none"></div>
+
+
+                    <div class="ndms-avatar-menu-list" role="none">
+
+                        <a
+                            href="{% url 'logout' %}"
+                            class="ndms-avatar-menu-item ndms-avatar-menu-logout"
+                            role="menuitem"
+                        >
+                            <svg class="ndms-avatar-menu-item-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 4.5H6a1.5 1.5 0 0 0-1.5 1.5v12A1.5 1.5 0 0 0 6 19.5h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 8 20 12l-4.5 4M20 12H9.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Logout
+                        </a>
+
+                    </div>
+
+                </div>
+
+                {% endwith %}
+
+            </div>
+
+
+
+        </div>
+
+
+    </header>
+
+
+
+    <!-- =================================================
+         MAIN CONTENT
+         ================================================= -->
+
+    <main class="dashboard-main">
+
+
+        <!-- =================================================
+             DJANGO MESSAGES
+             ================================================= -->
+
+        {% if messages %}
+
+            <div class="django-messages">
+
+                {% for message in messages %}
+
+                    <div
+                        class="django-message django-message-{{ message.tags }}"
+                        role="alert"
+                    >
+
+                        <span class="message-icon">
+                            {% if message.tags == 'error' %}
+                                !
+                            {% else %}
+                                ✓
+                            {% endif %}
+                        </span>
+
+                        <span class="message-text">
+                            {{ message }}
+                        </span>
+
+                        <button
+                            type="button"
+                            class="message-close"
+                            aria-label="Close message"
+                        >
+                            ×
+                        </button>
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% endif %}
+
+
+        <!-- =================================================
+             PAGE HEADER
+             ================================================= -->
+
+        <section class="hs-header">
+
+            <span class="hs-header-label">
+                SUPPORT CENTER
+            </span>
+
+            <h1>
+                Help &amp; Support
+            </h1>
+
+            <p>
+                Find answers, learn how to use NDMS, or get
+                assistance with the system.
+            </p>
+
+            <div class="hs-status">
+
+                <span class="hs-status-dot"></span>
+
+                <span>
+                    NDMS Support Center
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             SEARCH HELP
+             ================================================= -->
+
+        <section class="hs-search-section">
+
+            <div class="hs-search-wrap">
+
+                <div class="hs-search-box">
+
+                    <span
+                        class="hs-search-icon"
+                        aria-hidden="true"
+                    >
+                        ⌕
+                    </span>
+
+                    <input
+                        type="text"
+                        class="hs-search-input"
+                        id="hsSearchInput"
+                        placeholder="Search help articles..."
+                        aria-label="Search help articles"
+                        autocomplete="off"
+                        role="combobox"
+                        aria-expanded="false"
+                        aria-controls="hsSearchSuggestions"
+                        aria-autocomplete="list"
+                    >
+
+                    <button
+                        type="button"
+                        class="hs-search-clear"
+                        id="hsSearchClear"
+                        aria-label="Clear search"
+                        hidden
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <div
+                    class="hs-search-suggestions"
+                    id="hsSearchSuggestions"
+                    role="listbox"
+                    aria-label="Matching help articles"
+                    hidden
+                ></div>
+
+            </div>
+
+            <p
+                class="hs-search-hint"
+                id="hsSearchHint"
+                aria-live="polite"
+            ></p>
+
+        </section>
+
+
+        <!-- =================================================
+             SEARCH EMPTY STATE
+             ================================================= -->
+
+        <section
+            class="hs-search-empty"
+            id="hsSearchEmpty"
+            hidden
+        >
+
+            <div class="hs-search-empty-icon">
+                ⌕
+            </div>
+
+            <strong id="hsSearchEmptyTitle">
+                No matching help articles
+            </strong>
+
+            <p id="hsSearchEmptyDescription">
+                Try a different search or choose one of the
+                common topics below.
+            </p>
+
+            <div class="hs-search-empty-topics">
+
+                <a
+                    href="{% url 'create_disaster_report' %}"
+                    class="hs-search-empty-topic"
+                >
+                    Report an Incident
+                </a>
+
+                <a
+                    href="{% url 'my_reports' %}"
+                    class="hs-search-empty-topic"
+                >
+                    Track My Report
+                </a>
+
+                <a
+                    href="{% url 'alerts' %}"
+                    class="hs-search-empty-topic"
+                >
+                    Alerts &amp; Notifications
+                </a>
+
+                <a
+                    href="{% url 'settings' %}"
+                    class="hs-search-empty-topic"
+                >
+                    Profile &amp; Settings
+                </a>
+
+            </div>
+
+            <p class="hs-search-empty-cta-label">
+                Still can't find what you need?
+            </p>
+
+            <a
+                href="#hs-report-problem"
+                class="secondary-action"
+            >
+                Report a Problem →
+            </a>
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK HELP
+             ================================================= -->
+
+        <section class="hs-section">
+
+            <span class="hs-section-label">
+                GET STARTED
+            </span>
+
+            <h2>
+                Quick Help
+            </h2>
+
+            <div class="hs-quick-help-grid">
+
+                <div class="hs-quick-help-card">
+
+                    <div class="hs-quick-help-icon">
+                        +
+                    </div>
+
+                    <strong>
+                        Report an Incident
+                    </strong>
+
+                    <p>
+                        Learn how to submit a disaster
+                        incident report.
+                    </p>
+
+                    <a href="{% url 'create_disaster_report' %}">
+                        Report Incident →
+                    </a>
+
+                </div>
+
+
+                <div class="hs-quick-help-card">
+
+                    <div class="hs-quick-help-icon">
+                        ≡
+                    </div>
+
+                    <strong>
+                        Track My Report
+                    </strong>
+
+                    <p>
+                        Understand report status and check
+                        the progress of what you've submitted.
+                    </p>
+
+                    <a href="{% url 'my_reports' %}">
+                        View My Reports →
+                    </a>
+
+                </div>
+
+
+                <div class="hs-quick-help-card">
+
+                    <div class="hs-quick-help-icon">
+                        !
+                    </div>
+
+                    <strong>
+                        Alerts &amp; Notifications
+                    </strong>
+
+                    <p>
+                        Learn how NDMS alerts and
+                        notifications work.
+                    </p>
+
+                    <a href="{% url 'alerts' %}">
+                        View Alerts →
+                    </a>
+
+                </div>
+
+
+                <div class="hs-quick-help-card">
+
+                    <div class="hs-quick-help-icon">
+                        ○
+                    </div>
+
+                    <strong>
+                        Profile &amp; Settings
+                    </strong>
+
+                    <p>
+                        Manage your profile and citizen
+                        preferences.
+                    </p>
+
+                    <a href="{% url 'profile' %}">
+                        View Profile →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             HOW NDMS WORKS
+             ================================================= -->
+
+        <section class="hs-section">
+
+            <span class="hs-section-label">
+                THE PROCESS
+            </span>
+
+            <h2>
+                How NDMS Works
+            </h2>
+
+            <div class="hs-steps-grid">
+
+                <div class="hs-step-card">
+
+                    <div class="hs-step-number">
+                        01
+                    </div>
+
+                    <strong>
+                        Report
+                    </strong>
+
+                    <p>
+                        Citizens submit disaster incidents
+                        with details, location and photos.
+                    </p>
+
+                </div>
+
+
+                <div class="hs-step-card">
+
+                    <div class="hs-step-number">
+                        02
+                    </div>
+
+                    <strong>
+                        Review
+                    </strong>
+
+                    <p>
+                        The submitted incident is reviewed
+                        by authorized personnel.
+                    </p>
+
+                </div>
+
+
+                <div class="hs-step-card">
+
+                    <div class="hs-step-number">
+                        03
+                    </div>
+
+                    <strong>
+                        Verify
+                    </strong>
+
+                    <p>
+                        Authorized personnel verify the
+                        report and, where applicable, link
+                        it to an official disaster.
+                    </p>
+
+                </div>
+
+
+                <div class="hs-step-card">
+
+                    <div class="hs-step-number">
+                        04
+                    </div>
+
+                    <strong>
+                        Inform
+                    </strong>
+
+                    <p>
+                        You're notified of the outcome, and
+                        official disaster information and
+                        alerts are published when relevant.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FAQ
+             ================================================= -->
+
+        <section class="hs-section">
+
+            <span class="hs-section-label">
+                COMMON QUESTIONS
+            </span>
+
+            <h2>
+                Frequently Asked Questions
+            </h2>
+
+            <div
+                class="hs-faq-list"
+                id="hsFaqList"
+            >
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            How do I report a disaster incident?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Go to Report Incident, select the
+                                disaster type, provide a
+                                description, select the incident
+                                location, optionally upload
+                                supporting photos, and submit the
+                                report.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            Why do I need to provide an incident
+                            location?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                The location helps NDMS identify
+                                where the incident occurred and
+                                allows responsible authorities to
+                                assess and coordinate an
+                                appropriate response.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            Can I upload photos with my report?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Yes. Citizens can upload up to 5
+                                supporting photos with an incident
+                                report.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            How can I check or track my
+                            submitted reports?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Open My Reports from the dashboard
+                                sidebar to view and track submitted
+                                incidents and their current status.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            What do report statuses mean?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <ul>
+                                <li>
+                                    <strong>Pending</strong> —
+                                    the report has been submitted
+                                    and is waiting for review.
+                                </li>
+                                <li>
+                                    <strong>Under Review</strong> —
+                                    the report is currently being
+                                    reviewed by authorized
+                                    personnel.
+                                </li>
+                                <li>
+                                    <strong>Verified</strong> —
+                                    the report has been verified.
+                                </li>
+                                <li>
+                                    <strong>Rejected</strong> —
+                                    the report was reviewed but
+                                    could not be accepted as a
+                                    valid report.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            Where can I see disaster alerts?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Open Alerts from the dashboard
+                                sidebar to view important NDMS
+                                alerts and updates.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            How do NDMS notifications work?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Notifications may be provided
+                                when there are important updates
+                                relevant to the citizen or
+                                disaster situation.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            What should I do if I have a
+                            technical problem?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Use the support/contact
+                                information provided in the
+                                Contact Support section below.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="hs-faq-item" data-open="false">
+
+                    <button
+                        type="button"
+                        class="hs-faq-question"
+                        aria-expanded="false"
+                    >
+                        <span>
+                            How do I update my profile or
+                            change my password?
+                        </span>
+                        <span class="hs-faq-icon">+</span>
+                    </button>
+
+                    <div class="hs-faq-answer">
+                        <div class="hs-faq-answer-inner">
+                            <p>
+                                Open My Profile from the
+                                dashboard sidebar to update your
+                                profile details, or go to
+                                Settings to change your password
+                                and manage account preferences.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             WAS THIS HELPFUL
+             ================================================= -->
+
+        <section
+            class="hs-helpful"
+            id="hsHelpful"
+        >
+
+            <div
+                class="hs-helpful-prompt"
+                id="hsHelpfulPrompt"
+            >
+
+                <span>
+                    Was this helpful?
+                </span>
+
+                <div class="hs-helpful-buttons">
+
+                    <button
+                        type="button"
+                        class="hs-helpful-btn"
+                        id="hsHelpfulYes"
+                        aria-label="Yes, this was helpful"
+                    >
+                        <span aria-hidden="true">👍</span>
+                        Yes
+                    </button>
+
+                    <button
+                        type="button"
+                        class="hs-helpful-btn"
+                        id="hsHelpfulNo"
+                        aria-label="No, this was not helpful"
+                    >
+                        <span aria-hidden="true">👎</span>
+                        No
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div
+                class="hs-helpful-response hs-helpful-response-yes"
+                id="hsHelpfulYesResponse"
+                hidden
+                aria-live="polite"
+            >
+                Glad this helped — thanks for the feedback!
+            </div>
+
+            <div
+                class="hs-helpful-response hs-helpful-response-no"
+                id="hsHelpfulNoResponse"
+                hidden
+                aria-live="polite"
+            >
+
+                <p>
+                    Sorry this wasn't helpful. Would you like
+                    to report a problem or contact support?
+                </p>
+
+                <a
+                    href="#hs-report-problem"
+                    class="secondary-action"
+                >
+                    Report a Problem
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CONTACT SUPPORT
+             ================================================= -->
+
+        <section class="hs-section">
+
+            <span class="hs-section-label">
+                STILL NEED HELP?
+            </span>
+
+            <h2>
+                Still need help?
+            </h2>
+
+            <div class="hs-contact-card">
+
+                <strong>
+                    Still need help?
+                </strong>
+
+                <p>
+                    If you are experiencing a problem with
+                    NDMS, you can send a support request to
+                    the support team.
+                </p>
+
+                <a
+                    href="#hs-report-problem"
+                    class="primary-action"
+                >
+                    Report a Problem
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             REPORT A PROBLEM
+             ================================================= -->
+
+        <section
+            class="hs-section"
+            id="hs-report-problem"
+        >
+
+            <span class="hs-section-label">
+                REPORT A PROBLEM
+            </span>
+
+            <h2>
+                Report a Problem
+            </h2>
+
+            <p class="hs-report-intro">
+                Ran into something that isn't working right?
+                Let us know the details and we'll take a look.
+            </p>
+
+            <form
+                method="post"
+                enctype="multipart/form-data"
+                class="hs-report-form"
+                novalidate
+            >
+
+                {% csrf_token %}
+
+                <div class="hs-form-group">
+
+                    <label
+                        for="id_issue_type"
+                        class="hs-form-label"
+                    >
+                        Issue Type
+                        <span class="hs-required">*</span>
+                    </label>
+
+                    {{ form.issue_type }}
+
+                    {% if form.issue_type.errors %}
+
+                        <span class="hs-field-error">
+                            {{ form.issue_type.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="hs-form-group">
+
+                    <label
+                        for="id_subject"
+                        class="hs-form-label"
+                    >
+                        Subject
+                        <span class="hs-required">*</span>
+                    </label>
+
+                    {{ form.subject }}
+
+                    {% if form.subject.errors %}
+
+                        <span class="hs-field-error">
+                            {{ form.subject.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="hs-form-group">
+
+                    <label
+                        for="id_description"
+                        class="hs-form-label"
+                    >
+                        Description
+                        <span class="hs-required">*</span>
+                    </label>
+
+                    {{ form.description }}
+
+                    {% if form.description.errors %}
+
+                        <span class="hs-field-error">
+                            {{ form.description.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="hs-form-group">
+
+                    <label
+                        for="id_attachment"
+                        class="hs-form-label"
+                    >
+                        Attachment
+                        <span class="hs-optional">
+                            (optional)
+                        </span>
+                    </label>
+
+                    <div class="hs-file-upload">
+
+                        <label
+                            for="id_attachment"
+                            class="secondary-action hs-file-upload-btn"
+                        >
+                            Choose File
+                        </label>
+
+                        {{ form.attachment }}
+
+                        <span
+                            class="hs-file-upload-name"
+                            id="hsFileUploadName"
+                        >
+                            No file chosen
+                        </span>
+
+                    </div>
+
+                    <p class="hs-hint">
+                        JPG, PNG, or PDF. Max size 5MB.
+                    </p>
+
+                    {% if form.attachment.errors %}
+
+                        <span class="hs-field-error">
+                            {{ form.attachment.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <button
+                    type="submit"
+                    class="primary-action hs-submit-btn"
+                >
+                    Send Support Request →
+                </button>
+
+            </form>
+
+        </section>
+
+
+        <!-- =================================================
+             MY SUPPORT REQUESTS
+             ================================================= -->
+
+        <section class="hs-section">
+
+            <span class="hs-section-label">
+                MY SUPPORT REQUESTS
+            </span>
+
+            <h2>
+                My Support Requests
+            </h2>
+
+            <p class="hs-report-intro">
+                Requests you've submitted, their current status,
+                and any response from the NDMS team.
+            </p>
+
+            {% if my_support_requests %}
+
+                <div class="hs-support-request-list">
+
+                    {% for sr in my_support_requests %}
+
+                        <div class="hs-support-request-card">
+
+                            <div class="hs-sr-top">
+
+                                <span class="hs-sr-subject">
+                                    {{ sr.subject }}
+                                </span>
+
+                                <span class="status {% if sr.status == 'OPEN' %}pending{% elif sr.status == 'IN_PROGRESS' %}under-review{% else %}verified{% endif %}">
+                                    {{ sr.get_status_display }}
+                                </span>
+
+                            </div>
+
+                            <div class="hs-sr-meta">
+                                {{ sr.get_issue_type_display }}
+                                &middot;
+                                Submitted {{ sr.created_at|date:"M d, Y" }}
+                            </div>
+
+                            {% if sr.admin_response %}
+
+                                <div class="hs-sr-response">
+
+                                    <span class="hs-sr-response-label">
+                                        Response from NDMS
+                                        {% if sr.responded_at %}
+                                            &middot; {{ sr.responded_at|date:"M d, Y" }}
+                                        {% endif %}
+                                    </span>
+
+                                    <p>
+                                        {{ sr.admin_response }}
+                                    </p>
+
+                                </div>
+
+                            {% else %}
+
+                                <p class="hs-sr-awaiting">
+                                    Awaiting a response from the NDMS team.
+                                </p>
+
+                            {% endif %}
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <p class="hs-report-intro">
+                    You haven't submitted any support requests yet.
+                </p>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- =================================================
+             IMPORTANT / EMERGENCY NOTICE
+             ================================================= -->
+
+        <section class="hs-section">
+
+            <div class="hs-emergency-note hs-emergency-note-standalone">
+
+                <strong>
+                    Important
+                </strong>
+
+                <p>
+                    Help &amp; Support is for assistance with
+                    the NDMS platform, reports, alerts and
+                    account-related issues. For immediate
+                    life-safety emergencies, use the
+                    appropriate local emergency services.
+                </p>
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =================================================
+         FOOTER
+         ================================================= -->
+
+    <footer class="dashboard-footer">
+
+        <span>
+            © 2026 National Disaster Management System
+        </span>
+
+        <span>
+            NDMS
+        </span>
+
+    </footer>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+     ===================================================== -->
+
+<script
+    src="{% static 'reports/js/dashboard.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/navbar-avatar.js' %}"
+    defer
+></script>
+
+<script
+    src="{% static 'reports/js/help-support.js' %}"
+    defer
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,581 @@
+/* =========================================================
+   NDMS ADMIN — SETTINGS
+   Clean / Compact / Professional
+   Reuses the --ndms-* tokens defined by admin-dashboard.css
+   on .ndms-dashboard — no new colors are introduced here.
+   All selectors are scoped under .as-page (or its descendant
+   cards) so nothing here can affect any other admin module.
+   ========================================================= */
+
+.as-page {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.as-page-header {
+    margin-bottom: 18px;
+}
+
+.as-kicker {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--ndms-red);
+    font-size: 9.5px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: .085em;
+}
+
+.as-page-header h1 {
+    margin: 0;
+    color: var(--ndms-navy);
+    font-size: 25px;
+    font-weight: 720;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+}
+
+.as-page-header p {
+    max-width: 650px;
+    margin: 6px 0 0;
+    color: var(--ndms-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BUTTONS
+   (same visual language as the rest of the admin shell:
+   navy primary, neutral-bordered secondary)
+   ========================================================= */
+
+.as-primary-button,
+.as-secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 39px;
+    padding: 0 16px;
+    border-radius: 7px;
+    font-size: 11px;
+    font-weight: 680;
+    line-height: 1;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.as-primary-button {
+    color: #ffffff;
+    background: var(--ndms-navy);
+    border: 1px solid var(--ndms-navy);
+}
+
+.as-primary-button:hover {
+    background: var(--ndms-navy-light);
+    border-color: var(--ndms-navy-light);
+}
+
+.as-primary-button:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .10);
+    outline-offset: 2px;
+}
+
+.as-primary-button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.as-secondary-button {
+    color: var(--ndms-text);
+    background: #ffffff;
+    border: 1px solid var(--ndms-border);
+}
+
+.as-secondary-button:hover {
+    color: var(--ndms-navy);
+    background: #fbfcfd;
+    border-color: #bfc6d0;
+}
+
+.as-secondary-button:focus-visible {
+    outline: 3px solid rgba(23, 32, 51, .08);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.as-card {
+    width: min(760px, 100%);
+    margin-bottom: 14px;
+    background: #ffffff;
+    border: 1px solid var(--ndms-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.as-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid var(--ndms-border);
+}
+
+.as-card-kicker {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ndms-light-muted);
+    font-size: 8.5px;
+    font-weight: 750;
+    letter-spacing: .09em;
+}
+
+.as-card-header h2 {
+    margin: 0;
+    color: var(--ndms-navy);
+    font-size: 13.5px;
+    font-weight: 730;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   FIELD LIST (General Preferences / Password fields)
+   Single column, stacked — matches the locked layout.
+   ========================================================= */
+
+.as-field-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px 20px 20px;
+}
+
+.as-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 420px;
+}
+
+.as-field label {
+    color: var(--ndms-text);
+    font-size: 10.5px;
+    font-weight: 700;
+}
+
+.as-hint {
+    color: var(--ndms-light-muted);
+    font-size: 9.5px;
+    line-height: 1.4;
+}
+
+.as-field-error {
+    display: block;
+    margin-top: 2px;
+    color: var(--ndms-red);
+    font-size: 9.5px;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+.as-form-error {
+    margin: 0 0 12px 4px;
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.ads-select {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 40px;
+    padding: 0 12px;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 7px;
+    color: var(--ndms-text);
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.ads-select:hover {
+    border-color: #98a2b3;
+}
+
+.ads-select:focus {
+    border-color: var(--ndms-navy);
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .07);
+}
+
+
+/* =========================================================
+   PASSWORD INPUTS
+   (Django's PasswordChangeForm renders plain <input
+   type="password"> with no custom classes — styled here by
+   type + scope instead of adding widget classes to a
+   non-ModelForm.)
+   ========================================================= */
+
+.as-field-list input[type="password"] {
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 40px;
+    padding: 0 12px;
+    background: #ffffff;
+    border: 1px solid #d0d5dd;
+    border-radius: 7px;
+    color: var(--ndms-text);
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 500;
+    outline: none;
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.as-field-list input[type="password"]:focus {
+    border-color: var(--ndms-navy);
+    box-shadow: 0 0 0 3px rgba(23, 32, 51, .07);
+}
+
+
+/* =========================================================
+   TOGGLE ROWS (Reduce Motion / High Contrast)
+   ========================================================= */
+
+.as-toggle-list {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 20px 4px;
+}
+
+.as-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 13px 0;
+    border-bottom: 1px solid #f0f1f3;
+}
+
+.as-toggle-list .as-toggle-row:last-child {
+    border-bottom: 0;
+}
+
+.as-toggle-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    max-width: 460px;
+}
+
+.as-toggle-text strong {
+    color: var(--ndms-navy);
+    font-size: 12px;
+    font-weight: 720;
+}
+
+.as-toggle-text span {
+    color: var(--ndms-muted);
+    font-size: 10.5px;
+    line-height: 1.5;
+}
+
+.as-toggle {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.ads-toggle-input {
+    position: absolute;
+    opacity: 0;
+    width: 42px;
+    height: 24px;
+    margin: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.as-toggle-track {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 24px;
+    border-radius: 999px;
+    background: #d0d5dd;
+    transition: background-color .18s ease;
+}
+
+.as-toggle-track::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, .12);
+    transition: transform .18s ease;
+}
+
+.ads-toggle-input:checked + .as-toggle-track {
+    background: var(--ndms-red);
+}
+
+.ads-toggle-input:checked + .as-toggle-track::after {
+    transform: translateX(18px);
+}
+
+.ads-toggle-input:focus-visible + .as-toggle-track {
+    box-shadow: 0 0 0 3px rgba(180, 35, 24, .18);
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.as-divider {
+    height: 1px;
+    margin: 4px 20px 16px;
+    background: var(--ndms-border);
+}
+
+
+/* =========================================================
+   FONT SIZE — RADIO PILLS
+   ========================================================= */
+
+.as-font-size-field {
+    max-width: none;
+    padding: 0 20px 20px;
+    gap: 10px;
+}
+
+.as-radio-pills {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.as-radio-pill {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 18px;
+    border: 1px solid #d0d5dd;
+    border-radius: 999px;
+    color: var(--ndms-text);
+    font-size: 11.5px;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+        border-color .18s ease,
+        background-color .18s ease,
+        color .18s ease;
+}
+
+.as-radio-pill .ads-radio-pill-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    cursor: pointer;
+}
+
+.as-radio-pill:has(.ads-radio-pill-input:checked) {
+    background: #fff7f6;
+    border-color: var(--ndms-red);
+    color: var(--ndms-red);
+}
+
+.as-radio-pill.is-checked {
+    background: #fff7f6;
+    border-color: var(--ndms-red);
+    color: var(--ndms-red);
+}
+
+.as-radio-pill:hover {
+    border-color: #98a2b3;
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.as-security-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 16px 20px 20px;
+}
+
+.as-security-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 220px;
+}
+
+.as-security-text strong {
+    color: var(--ndms-navy);
+    font-size: 12px;
+    font-weight: 720;
+}
+
+.as-security-text span {
+    color: var(--ndms-muted);
+    font-size: 10.5px;
+    line-height: 1.5;
+}
+
+/* Hidden by default; toggled by admin-settings.js via a class
+   on the card so the button and the form are two DOM blocks,
+   matching the Personal Information view/edit pattern already
+   used on My Profile. */
+
+.as-password-form {
+    display: none;
+    padding-top: 4px;
+    border-top: 1px solid #f0f1f3;
+}
+
+.as-security.as-security-open .as-password-form {
+    display: block;
+}
+
+.as-password-actions {
+    display: flex;
+    gap: 10px;
+    padding: 4px 20px 20px;
+}
+
+
+/* =========================================================
+   SAVE BAR
+   ========================================================= */
+
+.as-save-bar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: min(760px, 100%);
+    margin-top: 8px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    .as-toggle-row {
+        align-items: flex-start;
+    }
+
+    .as-security-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .as-security-row .as-secondary-button {
+        width: 100%;
+    }
+
+    .as-password-actions {
+        flex-direction: column;
+    }
+
+    .as-password-actions .as-primary-button,
+    .as-password-actions .as-secondary-button {
+        width: 100%;
+    }
+
+    .as-save-bar {
+        justify-content: stretch;
+    }
+
+    .as-save-bar .as-primary-button {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .as-page-header h1 {
+        font-size: 21px;
+    }
+
+    .as-card {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .as-card-header,
+    .as-field-list,
+    .as-toggle-list,
+    .as-font-size-field,
+    .as-security-row,
+    .as-password-actions {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .as-divider {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .as-toggle-track,
+    .as-toggle-track::after,
+    .as-radio-pill,
+    .as-primary-button,
+    .as-secondary-button {
+        transition: none;
+    }
+
+}

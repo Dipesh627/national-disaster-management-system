@@ -1,0 +1,865 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}My Profile | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-profile.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>My Profile</span>
+{% endblock %}
+
+{% block page_title %}
+My Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard ap-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ap-page-header">
+
+        <div class="ap-page-header-copy">
+
+            <span class="ap-kicker">
+                ADMINISTRATOR ACCOUNT
+            </span>
+
+            <h1>My Profile</h1>
+
+            <p>
+                Manage your administrator account information.
+            </p>
+
+        </div>
+
+    </header>
+
+
+    <!-- =====================================================
+         IDENTITY
+         ===================================================== -->
+    <section class="ap-identity-card">
+
+        <div
+            class="ap-avatar-edit-wrapper"
+            id="apAvatarEditWrapper"
+        >
+
+            <div class="ap-identity-avatar">
+
+                {% if request.user.avatar %}
+
+                    <img
+                        src="{{ request.user.avatar.url }}"
+                        alt=""
+                    >
+
+                {% elif request.user.full_name %}
+
+                    {{ request.user.full_name|first|upper }}
+
+                {% else %}
+
+                    {{ request.user.username|first|upper }}
+
+                {% endif %}
+
+            </div>
+
+            <button
+                type="button"
+                class="ap-avatar-edit-badge"
+                id="apAvatarEditBadge"
+                aria-haspopup="true"
+                aria-expanded="false"
+                aria-controls="apAvatarPopover"
+                aria-label="Change profile photo"
+            >
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.1l.9-1.5a1.5 1.5 0 0 1 1.28-.72h4.44a1.5 1.5 0 0 1 1.28.72l.9 1.5h2.1A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.1" stroke="currentColor" stroke-width="1.7"/></svg>
+            </button>
+
+            <div
+                class="ap-avatar-popover"
+                id="apAvatarPopover"
+                role="menu"
+            >
+
+                {% if request.user.avatar %}
+
+                    <button
+                        type="button"
+                        class="ap-avatar-popover-item"
+                        id="apViewPhotoBtn"
+                        role="menuitem"
+                    >
+                        <svg class="ap-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="12" r="2.6" stroke="currentColor" stroke-width="1.7"/></svg>
+                        View Photo
+                    </button>
+
+                    <div class="ap-avatar-popover-divider"></div>
+
+                {% endif %}
+
+                <button
+                    type="button"
+                    class="ap-avatar-popover-item"
+                    id="apTakePhotoBtn"
+                    role="menuitem"
+                >
+                    <svg class="ap-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.5A1.5 1.5 0 0 1 5.5 7h2.1l.9-1.5a1.5 1.5 0 0 1 1.28-.72h4.44a1.5 1.5 0 0 1 1.28.72l.9 1.5h2.1A1.5 1.5 0 0 1 20 8.5v9A1.5 1.5 0 0 1 18.5 19h-13A1.5 1.5 0 0 1 4 17.5v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="13" r="3.1" stroke="currentColor" stroke-width="1.7"/></svg>
+                    Take Photo
+                </button>
+
+                <button
+                    type="button"
+                    class="ap-avatar-popover-item"
+                    id="apChooseGalleryBtn"
+                    role="menuitem"
+                >
+                    <svg class="ap-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="4" y="4.5" width="16" height="15" rx="2" stroke="currentColor" stroke-width="1.7"/><circle cx="9" cy="10" r="1.6" stroke="currentColor" stroke-width="1.7"/><path d="m5.5 16.5 4.2-4.3a1.6 1.6 0 0 1 2.2-.06L15 15.2l1-1a1.6 1.6 0 0 1 2.2 0l1.3 1.3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    Choose from Gallery
+                </button>
+
+                {% if request.user.avatar %}
+
+                    <div class="ap-avatar-popover-divider"></div>
+
+                    <button
+                        type="button"
+                        class="ap-avatar-popover-item ap-avatar-popover-item-danger"
+                        id="apRemovePhotoBtn"
+                        role="menuitem"
+                    >
+                        <svg class="ap-avatar-popover-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 7h14M9.5 7V5.2A1.2 1.2 0 0 1 10.7 4h2.6a1.2 1.2 0 0 1 1.2 1.2V7M7.5 7l.7 11a1.5 1.5 0 0 0 1.5 1.4h4.6a1.5 1.5 0 0 0 1.5-1.4l.7-11" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        Remove Photo
+                    </button>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="ap-identity-info">
+
+            <h2>
+
+                {% if request.user.full_name %}
+
+                    {{ request.user.full_name }}
+
+                {% else %}
+
+                    {{ request.user.username }}
+
+                {% endif %}
+
+            </h2>
+
+            <span class="ap-identity-username">
+                @{{ request.user.username }}
+            </span>
+
+            <span class="ap-identity-meta">
+
+                <span
+                    class="ap-status-dot {% if not request.user.is_active %}is-inactive{% endif %}"
+                    aria-hidden="true"
+                ></span>
+
+                Administrator
+
+                <span class="ap-identity-meta-divider">&middot;</span>
+
+                {% if request.user.is_active %}
+                    Active
+                {% else %}
+                    Inactive
+                {% endif %}
+
+            </span>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="ap-secondary-button ap-identity-edit-button"
+            id="apEditButton"
+            aria-expanded="false"
+            aria-controls="apEditForm"
+        >
+            Edit Profile
+        </button>
+
+    </section>
+
+
+    <!-- =====================================================
+         PERSONAL INFORMATION
+         ===================================================== -->
+    <section
+        class="ap-card"
+        id="apPersonalInfoCard"
+    >
+
+        <div class="ap-card-header">
+
+            <div>
+
+                <span class="ap-card-kicker">
+                    YOUR DETAILS
+                </span>
+
+                <h2>
+                    Personal Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <!-- VIEW MODE -->
+
+        <div
+            class="ap-view-grid"
+            id="apViewMode"
+        >
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Full Name
+                </span>
+
+                <span class="ap-view-value">
+
+                    {% if request.user.full_name %}
+
+                        {{ request.user.full_name }}
+
+                    {% else %}
+
+                        Not provided
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Username
+                </span>
+
+                <span class="ap-view-value">
+                    @{{ request.user.username }}
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Email Address
+                </span>
+
+                <span class="ap-view-value">
+                    {{ request.user.email }}
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Phone Number
+                </span>
+
+                <span class="ap-view-value">
+
+                    {% if request.user.phone %}
+
+                        {{ request.user.phone }}
+
+                    {% else %}
+
+                        Not provided
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- EDIT MODE -->
+
+        <form
+            method="POST"
+            action="{% url 'admin_profile' %}"
+            class="ap-edit-form"
+            id="apEditForm"
+        >
+
+            {% csrf_token %}
+
+            <input type="hidden" name="form" value="profile">
+
+            <div class="ap-edit-grid">
+
+                <div class="ap-form-group">
+
+                    <label for="id_full_name">
+                        Full Name
+                        <span class="ap-required">*</span>
+                    </label>
+
+                    {{ profile_form.full_name }}
+
+                    {% if profile_form.full_name.errors %}
+
+                        <span class="ap-field-error">
+                            {{ profile_form.full_name.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="ap-form-group">
+
+                    <label for="apUsernameReadonly">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        id="apUsernameReadonly"
+                        value="{{ request.user.username }}"
+                        class="ap-readonly-input"
+                        disabled
+                    >
+
+                    <span class="ap-hint">
+                        Username cannot be changed.
+                    </span>
+
+                </div>
+
+
+                <div class="ap-form-group">
+
+                    <label for="id_email">
+                        Email Address
+                        <span class="ap-required">*</span>
+                    </label>
+
+                    {{ profile_form.email }}
+
+                    {% if profile_form.email.errors %}
+
+                        <span class="ap-field-error">
+                            {{ profile_form.email.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="ap-form-group">
+
+                    <label for="id_phone">
+                        Phone Number
+                    </label>
+
+                    {{ profile_form.phone }}
+
+                    {% if profile_form.phone.errors %}
+
+                        <span class="ap-field-error">
+                            {{ profile_form.phone.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            {% if profile_form.non_field_errors %}
+
+                <span class="ap-field-error">
+                    {{ profile_form.non_field_errors.0 }}
+                </span>
+
+            {% endif %}
+
+
+            <div class="ap-edit-actions">
+
+                <button
+                    type="submit"
+                    class="ap-primary-button"
+                >
+                    Save Changes
+                </button>
+
+                <button
+                    type="button"
+                    class="ap-secondary-button"
+                    id="apCancelButton"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- =====================================================
+         ACCOUNT INFORMATION
+         ===================================================== -->
+    <section class="ap-card">
+
+        <div class="ap-card-header">
+
+            <div>
+
+                <span class="ap-card-kicker">
+                    ACCOUNT
+                </span>
+
+                <h2>
+                    Account Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="ap-view-grid">
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Username
+                </span>
+
+                <span class="ap-view-value">
+                    @{{ request.user.username }}
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Role
+                </span>
+
+                <span class="ap-view-value">
+                    Administrator
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Account Status
+                </span>
+
+                <span class="ap-view-value">
+
+                    {% if request.user.is_active %}
+
+                        <span class="ap-status-pill ap-status-pill-active">
+                            Active
+                        </span>
+
+                    {% else %}
+
+                        <span class="ap-status-pill ap-status-pill-inactive">
+                            Inactive
+                        </span>
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Member Since
+                </span>
+
+                <span class="ap-view-value">
+                    {{ request.user.date_joined|date:"d M Y" }}
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Last Login
+                </span>
+
+                <span class="ap-view-value">
+
+                    {% if request.user.last_login %}
+
+                        {{ request.user.last_login|date:"d M Y, g:i A" }}
+
+                    {% else %}
+
+                        Not available
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CHANGE PHOTO MODAL
+         (submits to admin_profile with form=avatar, the same
+         POST discriminator admin_profile() already handles)
+         ===================================================== -->
+
+    <div
+        class="ap-photo-modal"
+        id="apChangePhotoModal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="apChangePhotoTitle"
+    >
+
+        <div class="ap-photo-modal-content">
+
+            <div class="ap-photo-modal-header">
+
+                <h2 id="apChangePhotoTitle">
+                    Change Profile Photo
+                </h2>
+
+                <button
+                    type="button"
+                    class="ap-photo-modal-close"
+                    id="apChangePhotoClose"
+                    aria-label="Close"
+                >
+                    &#10005;
+                </button>
+
+            </div>
+
+
+            <div class="ap-photo-modal-preview">
+
+                <!-- FALLBACK — shown until a new photo is chosen,
+                     and again if the previous upload came back
+                     with a validation error -->
+                <div
+                    class="ap-photo-modal-avatar"
+                    id="apPhotoPreviewAvatar"
+                >
+
+                    {% if request.user.avatar %}
+
+                        <img
+                            src="{{ request.user.avatar.url }}"
+                            alt=""
+                            id="apPhotoPreviewImage"
+                        >
+
+                    {% else %}
+
+                        <img
+                            src=""
+                            alt=""
+                            id="apPhotoPreviewImage"
+                            hidden
+                        >
+
+                        <span id="apPhotoPreviewInitials">
+
+                            {% if request.user.full_name %}
+
+                                {{ request.user.full_name|first|upper }}
+
+                            {% else %}
+
+                                {{ request.user.username|first|upper }}
+
+                            {% endif %}
+
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- CROP + ZOOM — shown once a new photo is picked,
+                     so the admin can position and zoom it before
+                     it's saved as their avatar -->
+                <div
+                    class="ap-crop-shell"
+                    id="apCropShell"
+                    hidden
+                >
+
+                    <div
+                        class="ap-crop-stage"
+                        id="apCropStage"
+                    >
+                        <img
+                            src=""
+                            alt=""
+                            id="apCropImage"
+                            draggable="false"
+                        >
+                    </div>
+
+                    <div class="ap-crop-zoom-row">
+
+                        <svg class="ap-crop-zoom-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.7"/><path d="m19 19-3.8-3.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+
+                        <input
+                            type="range"
+                            class="ap-crop-zoom-slider"
+                            id="apCropZoom"
+                            min="0"
+                            max="100"
+                            step="1"
+                            value="0"
+                            aria-label="Zoom photo"
+                        >
+
+                        <svg class="ap-crop-zoom-icon ap-crop-zoom-icon-lg" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="1.7"/><path d="M8 10.5h5M10.5 8v5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="m19 19-3.8-3.8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+
+                    </div>
+
+                    <div class="ap-crop-actions-row">
+
+                        <span class="ap-crop-hint">
+                            Drag the photo to reposition it
+                        </span>
+
+                        <button
+                            type="button"
+                            class="ap-crop-reset"
+                            id="apCropReset"
+                        >
+                            Reset
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{% url 'admin_profile' %}"
+                enctype="multipart/form-data"
+                id="apChangePhotoForm"
+            >
+
+                {% csrf_token %}
+
+                <input type="hidden" name="form" value="avatar">
+
+                <p class="ap-photo-modal-hint">
+                    Upload a new profile photo
+                    <br>
+                    JPG, PNG &bull; Maximum 5MB
+                </p>
+
+
+                <label
+                    for="id_avatar"
+                    class="ap-choose-photo-btn"
+                    id="apChoosePhotoLabel"
+                    hidden
+                >
+                    Choose a different photo
+                </label>
+
+                {{ avatar_form.avatar }}
+
+                <span
+                    class="ap-photo-modal-filename"
+                    id="apPhotoFileName"
+                ></span>
+
+                {% if avatar_form.avatar.errors %}
+
+                    <span class="ap-field-error">
+                        {{ avatar_form.avatar.errors.0 }}
+                    </span>
+
+                {% endif %}
+
+
+                <div class="ap-photo-modal-actions">
+
+                    <button
+                        type="submit"
+                        class="ap-primary-button"
+                        id="apSavePhotoBtn"
+                        disabled
+                    >
+                        Save Photo
+                    </button>
+
+                    <button
+                        type="button"
+                        class="ap-secondary-button"
+                        id="apCancelPhotoBtn"
+                    >
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+
+            <!-- Offscreen canvas used only to render the final
+                 cropped square before it's attached to the file
+                 input and uploaded — never shown to the admin -->
+            <canvas
+                id="apCropOutputCanvas"
+                hidden
+            ></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         VIEW PHOTO
+         Lightweight lightbox — only ever opened from the
+         avatar popover's "View Photo" option, which is only
+         rendered when the admin has an avatar, so this modal
+         is only ever populated with a real photo.
+         ===================================================== -->
+
+    {% if request.user.avatar %}
+
+        <div
+            class="ap-photo-view-modal"
+            id="apViewPhotoModal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="apViewPhotoTitle"
+        >
+
+            <div class="ap-photo-view-content">
+
+                <div class="ap-photo-view-header">
+
+                    <h2 id="apViewPhotoTitle">
+                        Profile Photo
+                    </h2>
+
+                    <button
+                        type="button"
+                        class="ap-photo-modal-close"
+                        id="apViewPhotoClose"
+                        aria-label="Close"
+                    >
+                        &#10005;
+                    </button>
+
+                </div>
+
+                <div class="ap-photo-view-body">
+
+                    <img
+                        src="{{ request.user.avatar.url }}"
+                        alt="Your profile photo"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         REMOVE PHOTO
+         (submitted from the avatar popover's "Remove Photo"
+         option after a confirm() prompt — posts to
+         admin_profile with form=avatar_remove)
+         ===================================================== -->
+
+    <form
+        method="POST"
+        action="{% url 'admin_profile' %}"
+        id="apRemovePhotoForm"
+        hidden
+    >
+        {% csrf_token %}
+        <input type="hidden" name="form" value="avatar_remove">
+    </form>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script
+    src="{% static 'reports/admin/admin-profile.js' %}"
+    defer
+></script>
+{% endblock %}

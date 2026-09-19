@@ -1,0 +1,411 @@
+/* =========================================================
+   NDMS ADMIN — DISASTER DETAIL / SITUATION
+   Reuses the existing --ndms-* palette (admin-dashboard.css),
+   the .ds-status / .ds-severity badges and .ds-modal /
+   .ds-close-form close-confirmation system (admin-disasters.css),
+   and the .rd-admin-grid / .rd-admin-card detail-page layout,
+   map and photo-lightbox system (admin-report-detail.css).
+   Only the pieces genuinely new to Step 4 live here.
+   ========================================================= */
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.dd-header-title-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.dd-header-badges {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.dd-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+/* =========================================================
+   LATEST SITUATION BANNER
+   ========================================================= */
+
+.dd-situation-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    padding: 16px;
+}
+
+.dd-situation-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.dd-situation-status-block {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dd-situation-label {
+    color: var(--ndms-light-muted);
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.dd-situation-latest {
+    padding-top: 12px;
+    border-top: 1px solid var(--ndms-border);
+}
+
+.dd-situation-latest-empty {
+    color: var(--ndms-muted);
+    font-size: 12px;
+}
+
+.dd-situation-latest-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.dd-situation-latest-copy strong {
+    display: block;
+    color: var(--ndms-navy);
+    font-size: 12.5px;
+    font-weight: 750;
+}
+
+.dd-situation-latest-copy p {
+    margin: 4px 0 0;
+    color: var(--ndms-text);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.dd-situation-latest-time {
+    flex-shrink: 0;
+    color: var(--ndms-light-muted);
+    font-size: 10.5px;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   LIFECYCLE (RIGHT COLUMN)
+   ========================================================= */
+
+.dd-lifecycle-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    padding: 16px;
+}
+
+.dd-lifecycle-current {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dd-lifecycle-steps {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.dd-lifecycle-step {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: var(--ndms-soft);
+    color: var(--ndms-light-muted);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .02em;
+    white-space: nowrap;
+}
+
+.dd-lifecycle-step.is-current {
+    background: var(--ndms-navy);
+    color: #fff;
+}
+
+.dd-lifecycle-step.is-done {
+    background: var(--ndms-soft);
+    color: var(--ndms-green);
+}
+
+.dd-lifecycle-arrow {
+    color: var(--ndms-light-muted);
+    font-size: 10px;
+}
+
+.dd-lifecycle-action-desc {
+    margin: 0;
+    color: var(--ndms-muted);
+    font-size: 11.5px;
+    line-height: 1.6;
+}
+
+.dd-lifecycle-finalized {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+
+    padding: 12px;
+
+    background: var(--ndms-soft);
+    border-radius: 8px;
+}
+
+.dd-lifecycle-finalized svg {
+    flex-shrink: 0;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    color: var(--ndms-light-muted);
+}
+
+.dd-lifecycle-finalized p {
+    margin: 0;
+    color: var(--ndms-muted);
+    font-size: 11.5px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   RESPONSE UPDATES TIMELINE
+   ========================================================= */
+
+.dd-timeline {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 2px 4px 0;
+}
+
+.dd-timeline-item {
+    position: relative;
+    display: flex;
+    gap: 14px;
+    padding-bottom: 18px;
+}
+
+.dd-timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.dd-timeline-item::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 18px;
+    bottom: 0;
+    width: 1px;
+    background: var(--ndms-border);
+}
+
+.dd-timeline-item:last-child::before {
+    display: none;
+}
+
+.dd-timeline-node {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    width: 19px;
+    height: 19px;
+    margin-top: 2px;
+    border-radius: 999px;
+    background: #ecfdf3;
+    border: 3px solid var(--ndms-green);
+    box-sizing: border-box;
+}
+
+.dd-timeline-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.dd-timeline-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.dd-timeline-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.dd-timeline-agency {
+    color: var(--ndms-navy);
+    font-size: 12.5px;
+    font-weight: 750;
+}
+
+.dd-timeline-date {
+    flex-shrink: 0;
+    color: var(--ndms-light-muted);
+    font-size: 10.5px;
+    white-space: nowrap;
+}
+
+.dd-timeline-details {
+    margin: 6px 0 0;
+    color: var(--ndms-text);
+    font-size: 12px;
+    line-height: 1.65;
+}
+
+.dd-timeline-meta {
+    display: block;
+    margin-top: 6px;
+    color: var(--ndms-light-muted);
+    font-size: 10px;
+}
+
+.dd-timeline-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.dd-timeline-actions form {
+    margin: 0;
+}
+
+.dd-timeline-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: var(--ndms-muted);
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 650;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.dd-timeline-link:hover {
+    color: var(--ndms-navy);
+}
+
+.dd-timeline-link.dd-timeline-link-danger:hover {
+    color: var(--ndms-red);
+}
+
+.dd-empty-note {
+    padding: 14px 2px;
+    color: var(--ndms-muted);
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   OFFICIAL PHOTOS
+   (reuses .rd-admin-gallery / .rd-admin-photo / .rd-photo-thumb
+   from admin-report-detail.css — no extra rules needed)
+   ========================================================= */
+
+
+/* =========================================================
+   LINKED REPORTS
+   ========================================================= */
+
+.dd-report-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.dd-report-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 10px 16px;
+
+    border-top: 1px solid var(--ndms-border);
+
+    text-decoration: none;
+    color: inherit;
+}
+
+.dd-report-row:first-child {
+    border-top: 0;
+}
+
+.dd-report-row:hover {
+    background: var(--ndms-soft);
+}
+
+.dd-report-copy {
+    min-width: 0;
+}
+
+.dd-report-id {
+    display: block;
+    color: var(--ndms-navy);
+    font-size: 12px;
+    font-weight: 750;
+}
+
+.dd-report-reporter {
+    display: block;
+    margin-top: 2px;
+    overflow: hidden;
+    color: var(--ndms-muted);
+    font-size: 10.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .dd-situation-latest-row {
+        flex-direction: column;
+    }
+
+    .dd-timeline-top {
+        flex-direction: column;
+        gap: 4px;
+    }
+
+}
