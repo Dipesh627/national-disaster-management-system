@@ -12,6 +12,10 @@
     rel="stylesheet"
     href="{% static 'reports/admin/admin-disaster-types.css' %}"
 >
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-components.css' %}"
+>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -83,7 +87,7 @@ Disaster Types
 
             <label class="dt-search-field">
 
-                <span class="dt-visually-hidden">
+                <span class="sr-only">
                     Search disaster types
                 </span>
 
@@ -112,7 +116,7 @@ Disaster Types
 
             <label class="dt-select-field">
 
-                <span class="dt-visually-hidden">
+                <span class="sr-only">
                     Filter by status
                 </span>
 
@@ -258,7 +262,7 @@ Disaster Types
                                 scope="col"
                                 class="dt-col-actions"
                             >
-                                <span class="dt-visually-hidden">
+                                <span class="sr-only">
                                     Actions
                                 </span>
                             </th>
@@ -635,18 +639,18 @@ Disaster Types
      ========================================================= -->
 <div
     id="dtDeleteModal"
-    class="dt-modal"
+    class="admin-modal"
     hidden
     aria-hidden="true"
 >
     <div
-        class="dt-modal-backdrop"
+        class="admin-modal-backdrop"
         data-modal-close
     ></div>
 
 
     <div
-        class="dt-modal-dialog"
+        class="admin-modal-dialog"
         role="dialog"
         aria-modal="true"
         aria-labelledby="dtDeleteModalTitle"
@@ -654,10 +658,10 @@ Disaster Types
     >
 
         <!-- HEADER -->
-        <div class="dt-modal-top">
+        <div class="admin-modal-top">
 
             <div
-                class="dt-modal-danger-icon"
+                class="admin-modal-danger-icon"
                 aria-hidden="true"
             >
                 <svg
@@ -677,7 +681,7 @@ Disaster Types
 
             <button
                 type="button"
-                class="dt-modal-close"
+                class="admin-modal-close"
                 data-modal-close
                 aria-label="Close delete confirmation"
             >
@@ -698,7 +702,7 @@ Disaster Types
 
 
         <!-- CONTENT -->
-        <div class="dt-modal-content">
+        <div class="admin-modal-content">
 
             <h3 id="dtDeleteModalTitle">
                 Delete disaster type?
@@ -717,11 +721,11 @@ Disaster Types
             <!-- USAGE WARNING -->
             <div
                 id="dtDeleteUsageNote"
-                class="dt-delete-warning"
+                class="admin-modal-warning"
                 hidden
             >
 
-                <span class="dt-delete-warning-mark">
+                <span class="admin-modal-warning-mark">
 
                     <svg
                         viewBox="0 0 24 24"
@@ -740,7 +744,7 @@ Disaster Types
                 </span>
 
 
-                <div class="dt-delete-warning-copy">
+                <div class="admin-modal-warning-copy">
 
                     <strong>
                         This type is already in use
@@ -757,9 +761,9 @@ Disaster Types
 
 
             <!-- FINAL CONFIRMATION -->
-            <div class="dt-delete-final-note">
+            <div class="admin-modal-final-note">
 
-                <span class="dt-delete-final-dot"></span>
+                <span class="admin-modal-final-dot"></span>
 
                 <span>
                     This action cannot be undone.
@@ -771,11 +775,11 @@ Disaster Types
 
 
         <!-- ACTIONS -->
-        <div class="dt-modal-actions">
+        <div class="admin-modal-actions">
 
             <button
                 type="button"
-                class="dt-modal-cancel"
+                class="admin-modal-cancel"
                 data-modal-close
             >
                 Cancel
@@ -784,7 +788,7 @@ Disaster Types
 
             <button
                 type="button"
-                class="dt-confirm-delete-button"
+                class="admin-modal-confirm"
                 id="dtConfirmDelete"
             >
                 <svg
@@ -816,5 +820,6 @@ Disaster Types
 
 
 {% block extra_js %}
+<script src="{% static 'reports/admin/admin-confirm-modal.js' %}"></script>
 <script src="{% static 'reports/admin/admin-disaster-types.js' %}"></script>
 {% endblock %}

@@ -17,6 +17,10 @@
    When those optional attributes are absent the original
    "Close Disaster?" wording is used, so existing markup keeps
    behaving exactly as before.
+
+   Open / close / Escape / focus / confirm-submit behaviour lives in
+   admin-confirm-modal.js (load it first); only the wording swap
+   below is specific to this dialog.
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -28,13 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const closeModal =
         document.getElementById('dsCloseModal');
 
-    if (!closeModal) {
+    if (!closeModal || !window.NDMSConfirmModal) {
         return;
     }
 
-
-    const closeForms =
-        document.querySelectorAll('.ds-close-form');
 
     const titleElement =
         document.getElementById('dsCloseDisasterTitle');
@@ -51,9 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const confirmLabelElement =
         document.getElementById('dsConfirmCloseLabel');
 
-    const closeButtons =
-        closeModal.querySelectorAll('[data-modal-close]');
-
 
     // Remember the stock wording so a form without the optional
     // data-confirm-* attributes still gets the original dialog.
@@ -67,138 +65,56 @@ document.addEventListener('DOMContentLoaded', function () {
         confirmLabelElement ? confirmLabelElement.textContent : '';
 
 
-    let pendingCloseForm = null;
-    let lastCloseTrigger = null;
+    window.NDMSConfirmModal.init({
 
+        modal: closeModal,
 
-    function openCloseModal(form) {
+        forms: document.querySelectorAll('.ds-close-form'),
 
-        pendingCloseForm = form;
-        lastCloseTrigger =
-            form.querySelector('button[type="submit"]');
+        confirmButton: confirmCloseButton,
 
-        const disasterTitle =
-            form.dataset.title || 'this disaster';
+        bodyClass: 'ds-modal-open',
 
-        if (headingElement) {
+        onOpen: function (form) {
 
-            headingElement.textContent =
-                form.dataset.confirmTitle || defaultHeading;
+            const disasterTitle =
+                form.dataset.title || 'this disaster';
 
-        }
+            if (headingElement) {
 
-        if (bodyElement) {
+                headingElement.textContent =
+                    form.dataset.confirmTitle || defaultHeading;
 
-            if (form.dataset.confirmBody) {
+            }
 
-                // textContent, never innerHTML — the disaster
-                // title is user-supplied data and must never be
-                // parsed as markup.
-                bodyElement.textContent = form.dataset.confirmBody;
+            if (bodyElement) {
 
-            } else {
+                if (form.dataset.confirmBody) {
 
-                bodyElement.innerHTML = defaultBody;
+                    // textContent, never innerHTML — the disaster
+                    // title is user-supplied data and must never be
+                    // parsed as markup.
+                    bodyElement.textContent = form.dataset.confirmBody;
 
-                if (titleElement) {
-                    titleElement.textContent = disasterTitle;
+                } else {
+
+                    bodyElement.innerHTML = defaultBody;
+
+                    if (titleElement) {
+                        titleElement.textContent = disasterTitle;
+                    }
+
                 }
 
             }
 
-        }
+            if (confirmLabelElement) {
 
-        if (confirmLabelElement) {
+                confirmLabelElement.textContent =
+                    form.dataset.confirmLabel || defaultConfirmLabel;
 
-            confirmLabelElement.textContent =
-                form.dataset.confirmLabel || defaultConfirmLabel;
-
-        }
-
-        closeModal.hidden = false;
-
-        closeModal.setAttribute('aria-hidden', 'false');
-
-        document.body.classList.add('ds-modal-open');
-
-        if (confirmCloseButton) {
-
-            window.requestAnimationFrame(function () {
-                confirmCloseButton.focus();
-            });
-
-        }
-
-    }
-
-
-    function closeCloseModal() {
-
-        closeModal.hidden = true;
-
-        closeModal.setAttribute('aria-hidden', 'true');
-
-        document.body.classList.remove('ds-modal-open');
-
-        pendingCloseForm = null;
-
-        if (lastCloseTrigger) {
-
-            window.requestAnimationFrame(function () {
-                lastCloseTrigger.focus();
-            });
-
-        }
-
-        lastCloseTrigger = null;
-    }
-
-
-    closeForms.forEach(function (form) {
-
-        form.addEventListener('submit', function (event) {
-
-            event.preventDefault();
-
-            openCloseModal(form);
-
-        });
-
-    });
-
-
-    closeButtons.forEach(function (button) {
-
-        button.addEventListener('click', function () {
-            closeCloseModal();
-        });
-
-    });
-
-
-    if (confirmCloseButton) {
-
-        confirmCloseButton.addEventListener('click', function () {
-
-            if (!pendingCloseForm) {
-                return;
             }
 
-            const formToSubmit = pendingCloseForm;
-
-            pendingCloseForm = null;
-
-            formToSubmit.submit();
-
-        });
-
-    }
-
-
-    document.addEventListener('keydown', function (event) {
-
-        if (event.key === 'Escape' && !closeModal.hidden) {
-            closeCloseModal();
         }
 
     });

@@ -26,8 +26,12 @@
     color: var(--ndms-text);
 }
 
-.ndms-dashboard:has(.dashboard-admin-footer),
-.ndms-dashboard:not([class*="-page"]):not([class*=" "]) {
+/* Dashboard-only: fills the viewport so the in-flow footer sits at the
+   bottom. Keyed on the footer that only dashboard.html renders. It used
+   to also match any wrapper with a bare `ndms-dashboard` class (no
+   `*-page` modifier), which pulled Reports (and other bare-class pages)
+   into this viewport-height behaviour unintentionally. */
+.ndms-dashboard:has(.dashboard-admin-footer) {
     display: flex;
     flex-direction: column;
     min-height: calc(100vh - var(--topbar-height) - 40px);
@@ -45,16 +49,22 @@
     border-radius: 4px;
 }
 
+/* Canonical Admin visually-hidden utility (accessible text that is
+   not painted). Shared by every Admin page that loads this file:
+   Dashboard, Disaster Reports, Disasters, Disaster Types, Emergency
+   Agencies, Citizens. !important is deliberate: it keeps the hidden
+   text out of layout even when a page rule such as `label span` or
+   `th span` would otherwise re-position it. */
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
 }
 
 /* =========================================================

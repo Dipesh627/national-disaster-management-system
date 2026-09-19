@@ -472,6 +472,41 @@ def register(request):
 # LOGIN
 # =========================================================
 
+def _is_ajax_request(request):
+    """
+    True for a fetch()/XHR request that sets X-Requested-With
+    (same convention DeactivatedAccountMiddleware already uses).
+    """
+
+    return request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+
+def _safe_login_redirect_url(request, next_url):
+    """
+    Where to send a user who has just logged in.
+
+    `next_url` comes straight from POST data, so it can be forged
+    into an absolute external URL (e.g. "https://evil.example/phish").
+    url_has_allowed_host_and_scheme() is the standard way to confirm
+    a redirect target is a safe, same-site, non-protocol-relative URL
+    before following it — this mirrors exactly what Django's own
+    LoginView does for its `next` handling. Anything unsafe (or
+    missing) falls back to the home page.
+
+    Shared by the normal form POST (HTTP redirect) and the
+    login.html fetch() POST (JSON), so both apply the SAME check.
+    """
+
+    if next_url and url_has_allowed_host_and_scheme(
+        url=next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return next_url
+
+    return reverse('home')
+
+
 def user_login(request):
 
     # -----------------------------------------------------
@@ -527,33 +562,61 @@ def user_login(request):
             # SAFE "next" REDIRECT ONLY
             # -------------------------------------------------
             #
-            # `next_url` comes straight from POST data, so it can be
-            # forged into an absolute external URL (e.g.
-            # "https://evil.example/phish"). Django's own
-            # url_has_allowed_host_and_scheme() is the standard way
-            # to confirm a redirect target is a safe, same-site,
-            # non-protocol-relative URL before following it — this
-            # mirrors exactly what LoginView does internally for its
-            # own `next` handling.
+            # Validated by _safe_login_redirect_url() (see above).
             # -------------------------------------------------
 
-            if next_url and url_has_allowed_host_and_scheme(
-                url=next_url,
-                allowed_hosts={request.get_host()},
-                require_https=request.is_secure(),
-            ):
+            redirect_url = _safe_login_redirect_url(
+                request,
+                next_url
+            )
 
-                return redirect(
-                    next_url
-                )
+            # -------------------------------------------------
+            # LOGIN PAGE SHOULD NOT STAY IN BROWSER HISTORY
+            # -------------------------------------------------
+            #
+            # A normal form POST + HTTP redirect leaves the login
+            # page in the browser's history *underneath* the page
+            # the user lands on (Home -> Login -> Report Incident),
+            # so Back returns to Login. login.html therefore submits
+            # the form with fetch() and, on this JSON reply, calls
+            # location.replace(redirect_url), which swaps the Login
+            # history entry for the destination (Home -> Report
+            # Incident). Authentication itself is unchanged: the
+            # session is created here, on the server, exactly as for
+            # a normal POST, and the URL was validated above.
+            #
+            # Without JavaScript the form still posts normally and
+            # gets the ordinary redirect below.
+            # -------------------------------------------------
+
+            if _is_ajax_request(request):
+
+                return JsonResponse({
+                    'success': True,
+                    'redirect_url': redirect_url,
+                })
 
             return redirect(
-                'home'
+                redirect_url
             )
 
         # -------------------------------------------------
         # INVALID CREDENTIALS
         # -------------------------------------------------
+
+        # login.html's fetch() call shows this message in place
+        # (no navigation, so no extra Login history entry). Without
+        # JavaScript the form posts normally and gets the existing
+        # error page below (message, username, `next`).
+        if _is_ajax_request(request):
+
+            return JsonResponse(
+                {
+                    'success': False,
+                    'error': 'Invalid username or password.',
+                },
+                status=401,
+            )
 
         return render(
             request,
@@ -2277,15 +2340,17 @@ def mark_notification_read(
         )
 
     # A disaster-linked notification is marked read and then sent
-    # straight to its detail page (map/location included) instead
-    # of back to wherever the click came from, so the citizen sees
-    # the disaster info immediately. Plain notifications keep the
-    # existing "return to referer" behaviour unchanged.
+    # straight to the existing canonical Disaster Details page
+    # (map/location included) instead of back to wherever the
+    # click came from, so the citizen sees the official disaster
+    # info immediately -- and never a second, duplicate detail
+    # page. Plain notifications keep the existing "return to
+    # referer" behaviour unchanged.
     if notification.disaster_id is not None:
 
         return redirect(
-            'notification_detail',
-            notification_id=notification.id
+            'disaster_detail',
+            disaster_id=notification.disaster_id
         )
 
     return redirect(
@@ -2297,12 +2362,12 @@ def mark_notification_read(
 # NOTIFICATION DETAIL
 # =========================================================
 #
-# Shows a single notification together with its linked
-# disaster (type, severity, status, start date) and location
-# (address/lat/lng/map) when present. Notifications with no
-# disaster render normally with no map. Disasters with no
-# location render a "Location not available" state instead of
-# an empty/broken map.
+# Shows a single general notification (no linked Report, no
+# linked Disaster). Report-linked notifications redirect to the
+# existing Report Details page and disaster-linked notifications
+# redirect to the existing, canonical Disaster Details page --
+# see the redirects below -- so this template only ever needs to
+# render plain notification content.
 # =========================================================
 
 @citizen_required
@@ -2350,11 +2415,19 @@ def notification_detail(
             report_id=notification.report_id
         )
 
-    has_location = bool(
-        notification.disaster
-        and notification.disaster.latitude is not None
-        and notification.disaster.longitude is not None
-    )
+    # Disaster-linked notifications don't have their own detail
+    # page either -- they route straight to the existing,
+    # canonical Disaster Details page for the disaster they're
+    # about, same as mark_notification_read() does for the
+    # unread case. This keeps the Disaster Details page the
+    # SINGLE source of truth for disaster information instead of
+    # duplicating it here.
+    if notification.disaster_id is not None:
+
+        return redirect(
+            'disaster_detail',
+            disaster_id=notification.disaster_id
+        )
 
     # -----------------------------------------------------
     # SHARED TOPBAR CONTEXT
@@ -2380,9 +2453,6 @@ def notification_detail(
 
     context = {
         'notification': notification,
-        'disaster': notification.disaster,
-        'has_location': has_location,
-        'GOOGLE_MAPS_API_KEY': settings.GOOGLE_MAPS_API_KEY,
         'read_notification_ids': read_notification_ids,
         'notifications': (
             visible_notifications

@@ -1202,7 +1202,7 @@
 
 
                     <a
-                        href="{% if notification.report_id %}{% url 'report_detail' notification.report_id %}{% else %}{% url 'notification_detail' notification.id %}{% endif %}"
+                        href="{% if notification.report_id %}{% url 'report_detail' notification.report_id %}{% elif notification.disaster_id %}{% url 'disaster_detail' notification.disaster_id %}{% else %}{% url 'notification_detail' notification.id %}{% endif %}"
                         class="alert-card {% if notification.id not in read_notification_ids %}alert-unread{% endif %}"
                     >
 

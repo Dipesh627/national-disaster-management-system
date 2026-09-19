@@ -12,6 +12,10 @@
     rel="stylesheet"
     href="{% static 'reports/admin/admin-emergency-agencies.css' %}"
 >
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-components.css' %}"
+>
 {% endblock %}
 
 {% block breadcrumb %}
@@ -83,7 +87,7 @@ Emergency Agencies
 
             <label class="ea-search-field">
 
-                <span class="ea-visually-hidden">
+                <span class="sr-only">
                     Search emergency agencies
                 </span>
 
@@ -212,7 +216,7 @@ Emergency Agencies
                                 scope="col"
                                 class="ea-col-actions"
                             >
-                                <span class="ea-visually-hidden">
+                                <span class="sr-only">
                                     Actions
                                 </span>
                             </th>
@@ -573,18 +577,18 @@ Emergency Agencies
      ========================================================= -->
 <div
     id="eaDeleteModal"
-    class="ea-modal"
+    class="admin-modal"
     hidden
     aria-hidden="true"
 >
     <div
-        class="ea-modal-backdrop"
+        class="admin-modal-backdrop"
         data-modal-close
     ></div>
 
 
     <div
-        class="ea-modal-dialog"
+        class="admin-modal-dialog"
         role="dialog"
         aria-modal="true"
         aria-labelledby="eaDeleteModalTitle"
@@ -592,10 +596,10 @@ Emergency Agencies
     >
 
         <!-- HEADER -->
-        <div class="ea-modal-top">
+        <div class="admin-modal-top">
 
             <div
-                class="ea-modal-danger-icon"
+                class="admin-modal-danger-icon"
                 aria-hidden="true"
             >
                 <svg
@@ -615,7 +619,7 @@ Emergency Agencies
 
             <button
                 type="button"
-                class="ea-modal-close"
+                class="admin-modal-close"
                 data-modal-close
                 aria-label="Close delete confirmation"
             >
@@ -636,7 +640,7 @@ Emergency Agencies
 
 
         <!-- CONTENT -->
-        <div class="ea-modal-content">
+        <div class="admin-modal-content">
 
             <h3 id="eaDeleteModalTitle">
                 Delete emergency agency?
@@ -655,11 +659,11 @@ Emergency Agencies
             <!-- USAGE WARNING -->
             <div
                 id="eaDeleteUsageNote"
-                class="ea-delete-warning"
+                class="admin-modal-warning"
                 hidden
             >
 
-                <span class="ea-delete-warning-mark">
+                <span class="admin-modal-warning-mark">
 
                     <svg
                         viewBox="0 0 24 24"
@@ -678,7 +682,7 @@ Emergency Agencies
                 </span>
 
 
-                <div class="ea-delete-warning-copy">
+                <div class="admin-modal-warning-copy">
 
                     <strong>
                         This agency is already in use
@@ -694,9 +698,9 @@ Emergency Agencies
 
 
             <!-- FINAL CONFIRMATION -->
-            <div class="ea-delete-final-note">
+            <div class="admin-modal-final-note">
 
-                <span class="ea-delete-final-dot"></span>
+                <span class="admin-modal-final-dot"></span>
 
                 <span>
                     This action cannot be undone.
@@ -708,11 +712,11 @@ Emergency Agencies
 
 
         <!-- ACTIONS -->
-        <div class="ea-modal-actions">
+        <div class="admin-modal-actions">
 
             <button
                 type="button"
-                class="ea-modal-cancel"
+                class="admin-modal-cancel"
                 data-modal-close
             >
                 Cancel
@@ -721,7 +725,7 @@ Emergency Agencies
 
             <button
                 type="button"
-                class="ea-confirm-delete-button"
+                class="admin-modal-confirm"
                 id="eaConfirmDelete"
             >
                 <svg
@@ -753,5 +757,6 @@ Emergency Agencies
 
 
 {% block extra_js %}
+<script src="{% static 'reports/admin/admin-confirm-modal.js' %}"></script>
 <script src="{% static 'reports/admin/admin-emergency-agencies.js' %}"></script>
 {% endblock %}

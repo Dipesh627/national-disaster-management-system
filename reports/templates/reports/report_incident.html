@@ -199,6 +199,16 @@
                     Disasters
                 </span>
 
+                {% if has_unread_disaster_alert %}
+
+                    <span
+                        class="disaster-unread-dot"
+                        role="status"
+                        aria-label="Unread disaster alerts"
+                    ></span>
+
+                {% endif %}
+
                 <svg class="sidebar-group-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 
             </button>
@@ -214,6 +224,17 @@
                     {% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %}aria-current="page"{% endif %}
                 >
                     View Disasters
+
+                    {% if has_unread_disaster_alert %}
+
+                        <span
+                            class="disaster-unread-dot"
+                            role="status"
+                            aria-label="Unread disaster alerts"
+                        ></span>
+
+                    {% endif %}
+
                 </a>
 
                 <a

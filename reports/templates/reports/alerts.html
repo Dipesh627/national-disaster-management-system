@@ -200,6 +200,16 @@
                     Disasters
                 </span>
 
+                {% if has_unread_disaster_alert %}
+
+                    <span
+                        class="disaster-unread-dot"
+                        role="status"
+                        aria-label="Unread disaster alerts"
+                    ></span>
+
+                {% endif %}
+
                 <svg class="sidebar-group-caret" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
 
             </button>
@@ -215,6 +225,17 @@
                     {% if request.resolver_match.url_name == 'disaster_list' or request.resolver_match.url_name == 'disaster_detail' %}aria-current="page"{% endif %}
                 >
                     View Disasters
+
+                    {% if has_unread_disaster_alert %}
+
+                        <span
+                            class="disaster-unread-dot"
+                            role="status"
+                            aria-label="Unread disaster alerts"
+                        ></span>
+
+                    {% endif %}
+
                 </a>
 
                 <a
@@ -1014,12 +1035,34 @@
 
                                 Read
 
-                                <a
-                                    href="{% if notification.report_id %}{% url 'report_detail' notification.report_id %}{% else %}{% url 'notification_detail' notification.id %}{% endif %}"
-                                    class="alert-view-details-link"
-                                >
-                                    View details
-                                </a>
+                                {% if notification.report_id %}
+
+                                    <a
+                                        href="{% url 'report_detail' notification.report_id %}"
+                                        class="alert-view-details-link"
+                                    >
+                                        View details
+                                    </a>
+
+                                {% elif notification.disaster_id %}
+
+                                    <a
+                                        href="{% url 'disaster_detail' notification.disaster_id %}"
+                                        class="alert-view-details-link"
+                                    >
+                                        View Disaster
+                                    </a>
+
+                                {% else %}
+
+                                    <a
+                                        href="{% url 'notification_detail' notification.id %}"
+                                        class="alert-view-details-link"
+                                    >
+                                        View details
+                                    </a>
+
+                                {% endif %}
 
                             </span>
 
