@@ -1,8 +1,7 @@
 """
 Presentation-only helpers that turn the signed-in citizen's saved
-UserSettings preferences into (a) the root-element data attributes the
-citizen CSS keys off, and (b) a single reusable date/time formatting
-mechanism.
+UserSettings.date_format preference into a single reusable date/time
+formatting mechanism.
 
 Deliberately kept as a separate module from:
 
@@ -12,85 +11,23 @@ Deliberately kept as a separate module from:
                        mechanism, which this file does not touch,
                        replace, or share state with.
 
-Values come from the `citizen_prefs` / `citizen_date_format` context
-variables published by reports.context_processors.citizen_preferences,
-so nothing here queries the database.
+Values come from the `citizen_date_format` context variable published
+by reports.context_processors.citizen_preferences, so nothing here
+queries the database.
+
+This module previously also rendered the root-element data
+attributes (data-theme / data-text-size / data-motion / data-contrast)
+that drove the Appearance/Accessibility preference layer. That layer
+(citizen_html_attrs, citizen-prefs.css, citizen-prefs.js) has been
+removed; it may return as a new, separately designed system in the
+future.
 """
 
 from django import template
 from django.template.defaultfilters import date as django_date_filter
 from django.utils import timezone as django_timezone
-from django.utils.safestring import mark_safe
 
 register = template.Library()
-
-
-# =========================================================
-# ROOT ELEMENT ATTRIBUTES
-# =========================================================
-#
-# Rendered straight into <html> on every citizen/public page:
-#
-#     <html lang="en"{% citizen_html_attrs %}>
-#
-# ...producing e.g.
-#
-#     data-theme="dark" data-text-size="large"
-#     data-motion="reduced" data-contrast="high"
-#
-# Because the attributes are server-rendered, the correct theme is
-# present in the very first byte of HTML — there is no flash of the
-# wrong theme. Only theme="SYSTEM" needs client-side resolution, which
-# citizen-prefs.js does synchronously in <head> before first paint.
-#
-# =========================================================
-
-_THEME_ATTR = {
-    'LIGHT': 'light',
-    'DARK': 'dark',
-    'SYSTEM': 'system',
-}
-
-_FONT_SIZE_ATTR = {
-    'STANDARD': 'standard',
-    'LARGE': 'large',
-}
-
-
-@register.simple_tag(takes_context=True)
-def citizen_html_attrs(context):
-    """Render the citizen preference data-attributes for <html>."""
-
-    prefs = context.get('citizen_prefs') or {}
-
-    theme = _THEME_ATTR.get(
-        prefs.get('theme'),
-        'light'
-    )
-
-    text_size = _FONT_SIZE_ATTR.get(
-        prefs.get('font_size'),
-        'standard'
-    )
-
-    attrs = [
-        'data-theme="%s"' % theme,
-        'data-text-size="%s"' % text_size,
-    ]
-
-    # `data-theme="system"` is resolved to light/dark by
-    # citizen-prefs.js; data-theme-choice keeps the original choice so
-    # the script can keep following OS changes live.
-    if theme == 'system':
-        attrs.append('data-theme-choice="system"')
-
-    if prefs.get('reduce_motion'):
-        attrs.append('data-motion="reduced"')
-
-    if prefs.get('high_contrast'):
-        attrs.append('data-contrast="high"')
-
-    return mark_safe(' ' + ' '.join(attrs))
 
 
 # =========================================================

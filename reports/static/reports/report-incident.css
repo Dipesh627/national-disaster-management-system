@@ -517,8 +517,7 @@
 .ri-form-group textarea,
 #id_disaster_type,
 #id_description,
-#id_address,
-#id_incident_start_date {
+#id_address {
 
     width: 100%;
 
@@ -572,7 +571,8 @@
    always opens, no matter how the closed box itself is styled.
    ========================================================= */
 
-#id_disaster_type {
+#id_disaster_type,
+#id_incident_start_date {
 
     position: absolute;
 
@@ -860,8 +860,20 @@
 
 #id_disaster_type.ri-invalid,
 #id_description.ri-invalid,
-#id_address.ri-invalid,
-#id_incident_start_date.ri-invalid {
+#id_address.ri-invalid {
+
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(180, 35, 24, 0.07);
+}
+
+
+/* Mirrors the disaster-type pattern: the real (hidden)
+   datetime input still gets .ri-invalid from
+   report-incident.js, and that state is mirrored onto the
+   visible trigger button via this sibling selector. */
+#id_incident_start_date.ri-invalid ~ .ri-select-trigger {
 
     border-color: var(--red);
 
@@ -871,23 +883,433 @@
 
 
 /* =========================================================
-   INCIDENT START DATE & TIME
-   Same box-model as the other text-style inputs above; only
-   the native datetime-local calendar/clock icon needs a small
-   nudge so it lines up with the rest of the form on both
-   desktop and mobile widths.
+   INCIDENT START DATE & TIME -- CUSTOM PICKER
+   The real <input type="datetime-local" id="id_incident_start_date">
+   stays in the DOM (Django still renders/validates/submits it
+   exactly as before -- see report-incident.js) but is visually
+   hidden, same pattern as #id_disaster_type above. This avoids
+   the native datetime-local calendar/clock popup, which is
+   drawn entirely by the browser/OS and looks and sizes itself
+   differently (and can overflow the screen) on every browser
+   and device. The calendar + time UI below is built with plain
+   percentage/grid widths, so it always fits the field's own
+   width and never needs device-specific tweaks.
    ========================================================= */
 
-#id_incident_start_date {
+.ri-dt-trigger {
 
-    max-width: 100%;
+    justify-content: flex-start;
 }
 
-#id_incident_start_date::-webkit-calendar-picker-indicator {
+.ri-dt-trigger-icon {
 
-    margin-left: 6px;
+    flex: 0 0 auto;
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+
+    line-height: 1;
+}
+
+.ri-dt-trigger-text {
+
+    flex: 1 1 auto;
+
+    min-width: 0;
+
+    text-align: left;
+}
+
+.ri-dt-panel {
+
+    position: absolute;
+
+    left: 0;
+    right: auto;
+    top: calc(100% + 6px);
+
+    z-index: 50;
+
+    /* Compact, fixed-size popup (like a normal calendar picker)
+       instead of stretching to the field's own width -- on very
+       narrow fields max-width: 100% still caps it so it can
+       never overflow the screen. */
+    width: 264px;
+    max-width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 10px;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 10px 30px rgba(23, 32, 51, 0.12),
+        0 2px 6px rgba(23, 32, 51, 0.06);
+
+    opacity: 0;
+
+    transform: translateY(-4px);
+
+    pointer-events: none;
+
+    transition:
+        opacity .14s ease,
+        transform .14s ease;
+}
+
+.ri-select.ri-select-open .ri-dt-panel {
+
+    opacity: 1;
+
+    transform: translateY(0);
+
+    pointer-events: auto;
+}
+
+.ri-dt-cal-header {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    margin-bottom: 8px;
+}
+
+.ri-dt-cal-title {
+
+    color: var(--text);
+
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+}
+
+.ri-dt-nav {
+
+    flex: 0 0 auto;
+
+    width: 22px;
+    height: 22px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    color: var(--text);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    line-height: 1;
 
     cursor: pointer;
+
+    transition: background-color .12s ease, border-color .12s ease;
+}
+
+.ri-dt-nav:hover {
+
+    background: var(--c-surface-5);
+    border-color: var(--c-muted-2);
+}
+
+.ri-dt-weekdays,
+.ri-dt-days {
+
+    display: grid;
+
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+
+    gap: 2px;
+}
+
+.ri-dt-weekdays {
+
+    margin-bottom: 4px;
+}
+
+.ri-dt-weekdays span {
+
+    text-align: center;
+
+    color: var(--muted);
+
+    font-size: calc(9.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+.ri-dt-day {
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: transparent;
+
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 550;
+
+    cursor: pointer;
+
+    transition: background-color .12s ease, color .12s ease;
+}
+
+.ri-dt-day:hover:not(:disabled) {
+
+    background: var(--c-surface-5);
+}
+
+.ri-dt-day-today {
+
+    border-color: var(--c-muted-2);
+    font-weight: 700;
+}
+
+.ri-dt-day-selected {
+
+    background: var(--red);
+    border-color: var(--red);
+
+    color: var(--white);
+    font-weight: 700;
+}
+
+.ri-dt-day-selected:hover:not(:disabled) {
+
+    background: var(--red);
+}
+
+.ri-dt-day-outside {
+
+    color: var(--c-muted-2);
+
+    opacity: .55;
+
+    cursor: default;
+}
+
+.ri-dt-day:disabled {
+
+    color: var(--c-muted-2);
+
+    cursor: not-allowed;
+}
+
+.ri-dt-time-row {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    margin-top: 10px;
+    padding-top: 10px;
+
+    border-top: 1px solid var(--border);
+}
+
+.ri-dt-time-label {
+
+    color: var(--muted);
+
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+}
+
+.ri-dt-time-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.ri-dt-stepper {
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 2px;
+}
+
+.ri-dt-step-btn {
+
+    width: 22px;
+    height: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: var(--soft-gray);
+
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    color: var(--text);
+
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    line-height: 1;
+
+    cursor: pointer;
+}
+
+.ri-dt-step-btn:hover {
+
+    background: var(--c-surface-5);
+}
+
+.ri-dt-step-value {
+
+    min-width: 28px;
+
+    text-align: center;
+
+    color: var(--text);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    font-variant-numeric: tabular-nums;
+}
+
+.ri-dt-colon {
+
+    color: var(--text);
+
+    font-weight: 700;
+}
+
+.ri-dt-ampm {
+
+    margin-left: 4px;
+
+    padding: 5px 9px;
+
+    background: var(--soft-gray);
+
+    border: 1px solid var(--border);
+    border-radius: 7px;
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    cursor: pointer;
+}
+
+.ri-dt-ampm:hover {
+
+    background: var(--c-surface-5);
+}
+
+.ri-dt-actions {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 6px;
+
+    margin-top: 10px;
+}
+
+.ri-dt-btn {
+
+    padding: 7px 13px;
+
+    border-radius: 7px;
+
+    font-family: inherit;
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+
+    cursor: pointer;
+}
+
+.ri-dt-btn-ghost {
+
+    margin-right: auto;
+
+    background: transparent;
+
+    border: 1px solid transparent;
+
+    color: var(--muted);
+}
+
+.ri-dt-btn-ghost:hover {
+
+    color: var(--text);
+    text-decoration: underline;
+}
+
+.ri-dt-btn-primary {
+
+    background: var(--navy);
+
+    border: 1px solid var(--navy);
+
+    color: var(--white);
+}
+
+.ri-dt-btn-primary:hover {
+
+    background: var(--navy-light);
+}
+
+
+/* Small screens: the panel already matches the field's own
+   full width (left:0; right:0 above), so no extra breakpoint
+   is needed for the calendar grid -- it scales automatically.
+   Only the time row and action buttons need to wrap instead of
+   overflowing on very narrow phones. */
+@media (max-width: 360px) {
+
+    .ri-dt-time-row {
+
+        flex-wrap: wrap;
+    }
+
+    .ri-dt-actions {
+
+        flex-wrap: wrap;
+    }
+
+    .ri-dt-btn-ghost {
+
+        margin-right: 0;
+    }
 }
 
 
@@ -1647,9 +2069,7 @@
    Lightweight large preview opened when a thumbnail is
    clicked/tapped. Never submits the form, removes the photo,
    or navigates away — see report-incident.js for the open/
-   close/keyboard logic. Motion is already neutralised globally
-   by html[data-motion="reduced"] (citizen-prefs.css), so no
-   extra reduced-motion overrides are needed here.
+   close/keyboard logic.
    ========================================================= */
 
 .ri-lightbox {

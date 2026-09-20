@@ -300,179 +300,6 @@
 }
 
 /* =========================================================
-   TOGGLE ROWS (Accessibility)
-   (Admin Settings baseline: 42px x 24px track, 18px thumb)
-   ========================================================= */
-
-.st-toggle-list {
-    display: flex;
-    flex-direction: column;
-    padding: 6px 20px 4px;
-}
-
-.st-toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 13px 0;
-    border-bottom: 1px solid var(--c-surface-8);
-}
-
-.st-toggle-list .st-toggle-row:last-child {
-    border-bottom: 0;
-}
-
-.st-toggle-text {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    max-width: 500px;
-}
-
-.st-toggle-text strong {
-    color: var(--navy);
-    font-size: calc(12px * var(--ndms-font-scale, 1));
-    font-weight: 720;
-}
-
-.st-toggle-text span {
-    color: var(--muted);
-    font-size: calc(10.5px * var(--ndms-font-scale, 1));
-    line-height: 1.5;
-}
-
-.st-toggle {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-.st-toggle-input {
-    position: absolute;
-    opacity: 0;
-    width: 42px;
-    height: 24px;
-    margin: 0;
-    cursor: pointer;
-    z-index: 2;
-}
-
-.st-toggle-track {
-    position: relative;
-    display: inline-block;
-    width: 42px;
-    height: 24px;
-    border-radius: 999px;
-    background: var(--c-border-5);
-    transition: background-color .18s ease;
-}
-
-.st-toggle-track::after {
-    content: "";
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--white);
-    box-shadow: 0 1px 2px rgba(16, 24, 40, .12);
-    transition: transform .18s ease;
-}
-
-.st-toggle-input:checked + .st-toggle-track {
-    background: var(--red);
-}
-
-.st-toggle-input:checked + .st-toggle-track::after {
-    transform: translateX(18px);
-}
-
-.st-toggle-input:focus-visible + .st-toggle-track {
-    box-shadow: 0 0 0 3px rgba(180, 35, 24, .18);
-}
-
-/* =========================================================
-   DIVIDER
-   ========================================================= */
-
-.st-divider {
-    height: 1px;
-    margin: 4px 20px 16px;
-    background: var(--border);
-}
-
-/* =========================================================
-   RADIO PILLS (Theme & Text Size)
-   (Admin Settings baseline: 8px 18px, 11.5px font, 999px r)
-   ========================================================= */
-
-.st-pill-field {
-    display: flex;
-    flex-direction: column;
-    max-width: none;
-    padding: 0 20px 20px;
-    gap: 8px;
-}
-
-.st-pill-field:first-of-type {
-    padding-top: 18px;
-}
-
-.st-pill-field label {
-    color: var(--text);
-    font-size: calc(10.5px * var(--ndms-font-scale, 1));
-    font-weight: 700;
-}
-
-.st-radio-pills {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.st-radio-pill {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 18px;
-    border: 1px solid var(--c-border-5);
-    border-radius: 999px;
-    color: var(--text);
-    font-size: calc(11.5px * var(--ndms-font-scale, 1));
-    font-weight: 650;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition:
-        border-color .18s ease,
-        background-color .18s ease,
-        color .18s ease;
-}
-
-.st-radio-pill .st-radio-pill-input {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    cursor: pointer;
-}
-
-.st-radio-pill:has(.st-radio-pill-input:checked),
-.st-radio-pill.is-checked {
-    background: var(--light-red);
-    border-color: var(--red);
-    color: var(--red);
-}
-
-.st-radio-pill:hover {
-    border-color: var(--c-muted-2);
-}
-
-/* =========================================================
    ACTION ROWS (Security, Help & Support)
    ========================================================= */
 
@@ -643,10 +470,6 @@
    ========================================================= */
 
 @media (max-width: 640px) {
-    .st-toggle-row {
-        align-items: flex-start;
-    }
-
     .st-action-row {
         flex-direction: column;
         align-items: stretch;
@@ -687,17 +510,10 @@
 
     .st-card-header,
     .st-field-list,
-    .st-toggle-list,
-    .st-pill-field,
     .st-action-list,
     .st-about-row {
         padding-left: 16px;
         padding-right: 16px;
-    }
-
-    .st-divider {
-        margin-left: 16px;
-        margin-right: 16px;
     }
 }
 
@@ -708,16 +524,9 @@
         right: 15px;
         width: auto;
     }
-
-    .st-toggle-row {
-        padding: 12px 0;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .st-toggle-track,
-    .st-toggle-track::after,
-    .st-radio-pill,
     .st-primary-button,
     .st-secondary-button {
         transition: none;

@@ -14,9 +14,23 @@
         {% block title %}NDMS Administration{% endblock %}
     </title>
 
+    {% comment %}
+        CSS load order (see the admin-components.css header):
+        shell -> shared components -> shared responsive -> page CSS.
+    {% endcomment %}
     <link
         rel="stylesheet"
         href="{% static 'reports/admin/dashboard-shell.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/admin/admin-components.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/admin/admin-responsive.css' %}"
     >
 
     {% block extra_css %}{% endblock %}
@@ -25,7 +39,7 @@
 <body>
 
 <div
-    class="admin-shell{% if admin_reduce_motion %} admin-reduce-motion{% endif %}{% if admin_high_contrast %} admin-high-contrast{% endif %}{% if admin_font_size == 'LARGE' %} admin-font-large{% endif %}"
+    class="admin-shell"
     id="adminShell"
 >
 

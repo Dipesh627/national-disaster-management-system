@@ -93,28 +93,7 @@
    BUTTONS
    ========================================================= */
 
-.ds-primary-button,
-.ds-secondary-button,
-.ds-form-cancel,
-.ds-filter-button,
-.ds-reset-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 37px;
-    border-radius: 7px;
-    font-size: 10.5px;
-    font-weight: 680;
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        background-color .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        box-shadow .15s ease;
-}
+/* Button base: shared, see admin-components.css (Buttons). */
 
 .ds-primary-button {
     flex: 0 0 auto;
@@ -186,12 +165,7 @@
     margin-bottom: 14px;
 }
 
-.ds-filter-form {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    flex-wrap: wrap;
-}
+/* .*-filter-form base: shared, see admin-components.css (Filter form). */
 
 .ds-search-field,
 .ds-select-field {
@@ -422,12 +396,7 @@
     white-space: nowrap;
 }
 
-.ds-actions {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-}
+/* .*-actions base: shared, see admin-components.css (Row actions). */
 
 .ds-close-form {
     margin: 0;
@@ -1402,10 +1371,7 @@ textarea.ds-form-textarea {
        .ds-search-field carries `flex: 1 1 240px`; in a column flex
        container that basis would become a 240px HEIGHT, so it is reset
        here along with the fixed-width select fields. */
-    .ds-filter-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
+    /* .*-filter-form stacking at <=640px: shared, see admin-responsive.css. */
 
     .ds-search-field,
     .ds-select-field {

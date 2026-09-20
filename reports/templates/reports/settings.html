@@ -1,9 +1,8 @@
 {% load static %}
-{% load citizen_extras %}
 {% load ndms_extras %}
 
 <!DOCTYPE html>
-<html lang="en"{% citizen_html_attrs %}>
+<html lang="en">
 
 <head>
 
@@ -37,8 +36,6 @@
         rel="stylesheet"
         href="{% static 'reports/settings.css' %}"
     >
-
-{% include 'reports/partials/citizen_prefs_head.html' %}
 
 </head>
 
@@ -706,7 +703,7 @@
 
 
         <!-- =================================================
-             SETTINGS FORM (General, Appearance, Accessibility, Reporting)
+             SETTINGS FORM (General, Reporting)
              ================================================= -->
 
         <form
@@ -796,178 +793,7 @@
 
 
             <!-- =============================================
-                 B. APPEARANCE
-                 ============================================= -->
-
-            <section class="st-card">
-
-                <div class="st-card-header">
-
-                    <div>
-
-                        <span class="st-card-kicker">
-                            APPEARANCE
-                        </span>
-
-                        <h2>
-                            Appearance
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="st-pill-field">
-
-                    <label>
-                        Theme
-                    </label>
-
-                    <div class="st-radio-pills">
-
-                        {% for radio in form.theme %}
-
-                            <label class="st-radio-pill">
-                                {{ radio.tag }}
-                                <span>{{ radio.choice_label }}</span>
-                            </label>
-
-                        {% endfor %}
-
-                    </div>
-
-                    <span class="st-hint">
-                        Choose how NDMS looks on your device.
-                    </span>
-
-                    {% if form.theme.errors %}
-
-                        <span class="st-field-error">
-                            {{ form.theme.errors.0 }}
-                        </span>
-
-                    {% endif %}
-
-                </div>
-
-
-                <div class="st-divider"></div>
-
-
-                <div class="st-pill-field">
-
-                    <label>
-                        Text Size
-                    </label>
-
-                    <div class="st-radio-pills">
-
-                        {% for radio in form.font_size %}
-
-                            <label class="st-radio-pill">
-                                {{ radio.tag }}
-                                <span>{{ radio.choice_label }}</span>
-                            </label>
-
-                        {% endfor %}
-
-                    </div>
-
-                    <span class="st-hint">
-                        Adjust text size across the citizen portal.
-                    </span>
-
-                    {% if form.font_size.errors %}
-
-                        <span class="st-field-error">
-                            {{ form.font_size.errors.0 }}
-                        </span>
-
-                    {% endif %}
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =============================================
-                 C. ACCESSIBILITY
-                 ============================================= -->
-
-            <section class="st-card">
-
-                <div class="st-card-header">
-
-                    <div>
-
-                        <span class="st-card-kicker">
-                            ACCESSIBILITY
-                        </span>
-
-                        <h2>
-                            Accessibility
-                        </h2>
-
-                    </div>
-
-                </div>
-
-
-                <div class="st-toggle-list">
-
-                    <div class="st-toggle-row">
-
-                        <div class="st-toggle-text">
-
-                            <strong>
-                                Reduce Motion
-                            </strong>
-
-                            <span>
-                                Reduce unnecessary animations and transitions.
-                            </span>
-
-                        </div>
-
-                        <label class="st-toggle">
-                            {{ form.reduce_motion }}
-                            <span class="st-toggle-track"></span>
-                        </label>
-
-                    </div>
-
-
-                    <div class="st-toggle-row">
-
-                        <div class="st-toggle-text">
-
-                            <strong>
-                                High Contrast
-                            </strong>
-
-                            <span>
-                                Increase visual contrast for improved readability.
-                            </span>
-
-                        </div>
-
-                        <label class="st-toggle">
-                            {{ form.high_contrast }}
-                            <span class="st-toggle-track"></span>
-                        </label>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- =============================================
-                 D. REPORTING
+                 B. REPORTING
                  ============================================= -->
 
             <section class="st-card">
@@ -1073,7 +899,7 @@
 
 
         <!-- =================================================
-             E. SECURITY
+             C. SECURITY
              ================================================= -->
 
         <section class="st-card">
@@ -1127,7 +953,7 @@
 
 
         <!-- =================================================
-             F. HELP & SUPPORT
+             D. HELP & SUPPORT
              ================================================= -->
 
         <section class="st-card">
@@ -1204,7 +1030,7 @@
 
 
         <!-- =================================================
-             G. ABOUT NDMS
+             E. ABOUT NDMS
              ================================================= -->
 
         <section class="st-card">

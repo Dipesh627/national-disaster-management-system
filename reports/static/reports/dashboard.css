@@ -1761,9 +1761,7 @@ button {
         16px 24px;
 
     /* Flat fill, not a gradient -- matches the NDMS design
-       system's existing flat-card language and themes correctly
-       across Light / Dark / High Contrast (--c-red-20 is redefined
-       per theme in citizen-prefs.css). */
+       system's existing flat-card language. */
     background:
         var(--c-red-20);
 
@@ -3810,16 +3808,14 @@ button {
 
 
     /* =====================================================
-       COMPACT MOBILE SIDEBAR
+       MOBILE SIDEBAR
        Mobile-only (this whole block sits inside the existing
-       max-width:850px query, so desktop is untouched). Trims
-       the brand / nav links / section titles / dividers /
-       footer so the full nav + "Back to Website" normally fit
-       in one screen on a real phone without the user ever
-       needing to scroll the drawer. .sidebar-navigation keeps
-       overflow-y:auto as a safety net only (very large system
-       font size, many sidebar badges, etc.) — it is not the
-       primary way the footer is reached anymore.
+       max-width:850px query, so desktop is untouched). Gives
+       the nav links comfortable breathing room (bigger touch
+       targets, clearer section grouping) rather than squeezing
+       everything onto one screen — .sidebar-navigation's
+       overflow-y:auto lets the drawer scroll if the full list
+       doesn't fit, which is expected and fine.
        ===================================================== */
 
     .dashboard-brand {
@@ -3835,28 +3831,31 @@ button {
     .sidebar-navigation {
 
         padding:
-            8px 10px;
+            10px 12px;
+
+        gap:
+            3px;
 
     }
 
     .sidebar-link {
 
         min-height:
-            34px;
+            38px;
 
     }
 
     .sidebar-section-title {
 
         margin:
-            3px 0 2px;
+            10px 0 6px;
 
     }
 
     .sidebar-divider {
 
         margin:
-            4px 10px;
+            6px 12px;
 
     }
 
@@ -4791,9 +4790,7 @@ button.notification-item {
    Same small, non-animated dot as the public navbar (see
    navbar-avatar.css) -- reused here beside the sidebar
    "Disasters" group and its "View Disasters" submenu item.
-   Uses the existing --red token (already theme-aware via
-   citizen-prefs.css), so Light / Dark / High Contrast all
-   just work with no extra overrides.
+   Uses the existing --red token, so no extra overrides needed.
    --------------------------------------------------------- */
 
 .disaster-unread-dot {

@@ -42,30 +42,13 @@
    ACCESSIBILITY
    ========================================================= */
 
-.ru-visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-}
-
+/* Visually-hidden text uses the shared .sr-only utility (admin-components.css). */
 
 /* =========================================================
    PAGE HEADER
    ========================================================= */
 
-.ru-page-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 22px;
-    margin-bottom: 20px;
-}
+/* .*-page-header base: shared, see admin-components.css (Page header). */
 
 .ru-page-header-copy {
     min-width: 0;
@@ -103,28 +86,7 @@
    BUTTONS
    ========================================================= */
 
-.ru-primary-button,
-.ru-secondary-button,
-.ru-form-cancel,
-.ru-filter-button,
-.ru-reset-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 37px;
-    border-radius: 7px;
-    font-size: 10.5px;
-    font-weight: 680;
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        background-color .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        box-shadow .15s ease;
-}
+/* Button base: shared, see admin-components.css (Buttons). */
 
 .ru-primary-button {
     flex: 0 0 auto;
@@ -176,12 +138,7 @@
     margin-bottom: 14px;
 }
 
-.ru-filter-form {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px;
-}
+/* .*-filter-form base: shared, see admin-components.css (Filter form). */
 
 .ru-search-field {
     position: relative;
@@ -487,12 +444,7 @@
     white-space: nowrap;
 }
 
-.ru-actions {
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-}
+/* .*-actions base: shared, see admin-components.css (Row actions). */
 
 .ru-action {
     display: inline-flex;
@@ -622,15 +574,7 @@
    EMPTY STATE
    ========================================================= */
 
-.ru-empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 285px;
-    padding: 40px 20px;
-    text-align: center;
-    flex-direction: column;
-}
+/* .*-empty-state base: shared, see admin-components.css (Empty state). */
 
 .ru-empty-mark {
     display: grid;
@@ -1222,20 +1166,13 @@ select.ru-form-control {
         padding-bottom: 20px;
     }
 
-    .ru-page-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 13px;
-    }
+    /* Page header stacking at <=640px: shared, see admin-responsive.css. */
 
     .ru-page-header h1 {
         font-size: 22px;
     }
 
-    .ru-filter-form {
-        flex-direction: column;
-        align-items: stretch;
-    }
+    /* .*-filter-form stacking at <=640px: shared, see admin-responsive.css. */
 
     .ru-search-field,
     .ru-select-field,
@@ -1324,14 +1261,4 @@ select.ru-form-control {
 }
 
 
-@media (prefers-reduced-motion: reduce) {
-
-    .ru-page *,
-    .ru-page *::before,
-    .ru-page *::after {
-        transition-duration: .01ms !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-    }
-
-}
+/* Reduced motion is handled globally in dashboard-shell.css. */

@@ -1935,6 +1935,36 @@ svg {
 
     min-width: 0;
     max-width: 100%;
+
+    /* Containment guard for the whole Admin content area.
+
+       Root cause of the mobile "topbar disappears / page scrolls
+       oddly" bug: every list table has a visually-hidden <span>
+       (.sr-only and the per-page *-visually-hidden clones) inside
+       a <th>. It is position: absolute with no offsets, so it sits
+       at its static position -- at the far right end of a wide
+       table. The table wrappers are overflow-x: auto but NOT
+       positioned, so they are not that span's containing block and
+       cannot clip it; it leaked into the *document's* scrollable
+       width (e.g. 440px screen -> 876px). Mobile browsers respond
+       by widening the layout viewport, and position: sticky/fixed
+       elements (topbar, sidebar) then pin to that oversized layout
+       viewport instead of the visible screen, so panning the page
+       carried the topbar off the top.
+
+       position: relative makes this element the containing block
+       for any such leaked absolute descendant; overflow-x: clip
+       then clips it here. `clip` (not `hidden`) is deliberate: it
+       does NOT create a scroll container or force overflow-y to
+       auto, so there is no nested scrolling and position: sticky
+       keeps resolving against the viewport (same reasoning as the
+       html rule at the top of this file). Real content is never
+       wider than this box (tables scroll inside their own wrappers),
+       so nothing visible is clipped. Position: fixed descendants
+       (modals, mobile search) are unaffected. */
+
+    position: relative;
+    overflow-x: clip;
 }
 
 
@@ -2284,7 +2314,14 @@ svg {
 }
 
 @media (max-width: 820px) {
+    /* Shadow only while the drawer is open. Applied to the closed,
+       translateX(-100%) drawer it spilled a gray gradient onto the
+       left edge of every page. */
     .admin-sidebar {
+        box-shadow: none;
+    }
+
+    .admin-shell.sidebar-open .admin-sidebar {
         box-shadow: 18px 0 45px rgba(16,24,40,.18);
     }
 
@@ -2309,6 +2346,26 @@ svg {
         width: 100%;
         overflow: hidden;
         overscroll-behavior: none;
+    }
+
+    /* Pinning the body (above) also carries the sticky topbar off
+       the top of the screen by the saved scroll offset, so with the
+       drawer open the strip beside it showed scrolled page content
+       instead of the topbar. Keep the topbar where it always is
+       while the lock is active. Taking it out of flow would pull
+       the content up by its height, so .admin-main gets the same
+       amount as padding -- net layout is unchanged. Only applies
+       while body.admin-sidebar-lock is set (drawer open, <=820px),
+       and is removed with it on close. */
+    body.admin-sidebar-lock .admin-topbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    body.admin-sidebar-lock .admin-main {
+        padding-top: var(--topbar-height);
     }
 
 }

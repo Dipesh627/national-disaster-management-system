@@ -8,18 +8,24 @@ Views must NOT re-query UserSettings just to render preferences.
     request.user
         -> get_citizen_preferences(request)      (cached on request)
         -> citizen_preferences() context processor
-        -> {% citizen_html_attrs %} / citizen_date_format
-        -> citizen-prefs.css + citizen templates
+        -> citizen_date_format / citizen_time_zone
+        -> {{ value|citizen_date:citizen_date_format }} and friends
+           (reports.templatetags.citizen_extras)
+
+Appearance (Theme/Text Size) and Accessibility (Reduce Motion/High
+Contrast) preferences, and the citizen-prefs.css/.js layer that
+applied them, were removed — they may return as a new, separately
+designed system in the future.
 
 ADMIN ISOLATION
 ---------------
 Staff/superuser accounts are deliberately excluded here. Their
-appearance/date/timezone preferences are already driven by the
-Admin Settings mechanism (AdminSettingsForm + AdminTimezoneMiddleware
-+ `admin_date_format` from _admin_topbar_context()), and that
+date/timezone preferences are already driven by the Admin Settings
+mechanism (AdminSettingsForm + AdminTimezoneMiddleware +
+`admin_date_format` from _admin_topbar_context()), and that
 implementation is left completely untouched. Anonymous visitors and
-admins both receive the project defaults below, so public pages keep
-their current appearance and no user-specific value can ever leak.
+admins both receive the project defaults below, so no user-specific
+value can ever leak.
 """
 
 from django.conf import settings as django_settings
@@ -28,13 +34,7 @@ from django.db.models import Q
 
 # Project defaults — used for anonymous visitors, admin accounts, and
 # as a safe fallback if the settings row cannot be read for any reason.
-# These intentionally reproduce today's behaviour exactly (light theme,
-# standard text, no accessibility overrides, DD/MM/YYYY dates).
 CITIZEN_PREFERENCE_DEFAULTS = {
-    'theme': 'LIGHT',
-    'font_size': 'STANDARD',
-    'reduce_motion': False,
-    'high_contrast': False,
     'date_format': 'DMY',
     'time_zone': django_settings.TIME_ZONE,
     'is_citizen': False,
@@ -86,10 +86,6 @@ def get_citizen_preferences(request):
             UserSettings.objects
             .filter(user=request.user)
             .only(
-                'theme',
-                'font_size',
-                'reduce_motion',
-                'high_contrast',
                 'date_format',
                 'time_zone',
             )
@@ -98,21 +94,12 @@ def get_citizen_preferences(request):
 
         if user_settings is not None:
             prefs.update({
-                'theme': user_settings.theme or 'SYSTEM',
-                'font_size': user_settings.font_size or 'STANDARD',
-                'reduce_motion': bool(user_settings.reduce_motion),
-                'high_contrast': bool(user_settings.high_contrast),
                 'date_format': user_settings.date_format or 'DMY',
                 'time_zone': (
                     user_settings.time_zone
                     or django_settings.TIME_ZONE
                 ),
             })
-        else:
-            # No row yet (user has never opened Settings). Use the
-            # model's own defaults rather than creating a row here —
-            # a context processor should never write to the database.
-            prefs['theme'] = 'SYSTEM'
 
         prefs['is_citizen'] = True
 

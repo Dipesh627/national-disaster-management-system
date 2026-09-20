@@ -974,6 +974,581 @@
 
             incidentStartDateField.setAttribute("max", nowValue);
 
+
+            /* =============================================
+               INCIDENT START DATE & TIME -- CUSTOM PICKER
+               Replaces the native datetime-local calendar/
+               clock popup (which is drawn by the browser/OS
+               and looks and sizes itself differently on every
+               device -- sometimes overflowing the screen, as
+               on the compound Chrome/Edge widget) with a
+               custom calendar + time control built the same
+               way the Disaster Type dropdown replaces the
+               native <select> list above. The real hidden
+               <input type="datetime-local"> stays the source
+               of truth for validation/submission -- this UI
+               only ever writes to its .value.
+               ============================================= */
+
+            const dtPicker =
+                document.getElementById("riDateTimePicker");
+
+            const dtTrigger =
+                document.getElementById("riDtTrigger");
+
+            const dtTriggerText =
+                document.getElementById("riDtTriggerText");
+
+            const dtPanel =
+                document.getElementById("riDtPanel");
+
+            const dtCalTitle =
+                document.getElementById("riDtCalTitle");
+
+            const dtDays =
+                document.getElementById("riDtDays");
+
+            const dtPrevMonth =
+                document.getElementById("riDtPrevMonth");
+
+            const dtNextMonth =
+                document.getElementById("riDtNextMonth");
+
+            const dtHourValue =
+                document.getElementById("riDtHourValue");
+
+            const dtMinuteValue =
+                document.getElementById("riDtMinuteValue");
+
+            const dtAmPm =
+                document.getElementById("riDtAmPm");
+
+            const dtNowBtn =
+                document.getElementById("riDtNow");
+
+            const dtClearBtn =
+                document.getElementById("riDtClear");
+
+            const dtDoneBtn =
+                document.getElementById("riDtDone");
+
+            if (
+                dtPicker && dtTrigger && dtTriggerText && dtPanel &&
+                dtCalTitle && dtDays && dtPrevMonth && dtNextMonth &&
+                dtHourValue && dtMinuteValue && dtAmPm &&
+                dtNowBtn && dtClearBtn && dtDoneBtn
+            ) {
+
+                const monthNames = [
+                    "January", "February", "March", "April",
+                    "May", "June", "July", "August",
+                    "September", "October", "November", "December"
+                ];
+
+                // { year, month (0-11), day, hour (0-23), minute }
+                let selected = null;
+
+                let viewYear = now.getFullYear();
+                let viewMonth = now.getMonth();
+
+                const todayDateOnly = new Date(
+                    now.getFullYear(), now.getMonth(), now.getDate()
+                );
+
+                function formatTrigger(sel) {
+
+                    const d = new Date(
+                        sel.year, sel.month, sel.day,
+                        sel.hour, sel.minute
+                    );
+
+                    const dateStr = d.toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric"
+                    });
+
+                    const h12 = (sel.hour % 12) || 12;
+                    const ampm = sel.hour < 12 ? "AM" : "PM";
+
+                    return (
+                        dateStr + ", " + h12 + ":" +
+                        pad(sel.minute) + " " + ampm
+                    );
+
+                }
+
+                function syncNativeInput() {
+
+                    if (!selected) {
+
+                        incidentStartDateField.value = "";
+
+                        dtTriggerText.textContent =
+                            "Select date & time";
+
+                        dtTrigger.classList.add(
+                            "ri-select-placeholder"
+                        );
+
+                    } else {
+
+                        incidentStartDateField.value =
+                            selected.year + "-" +
+                            pad(selected.month + 1) + "-" +
+                            pad(selected.day) + "T" +
+                            pad(selected.hour) + ":" +
+                            pad(selected.minute);
+
+                        dtTriggerText.textContent =
+                            formatTrigger(selected);
+
+                        dtTrigger.classList.remove(
+                            "ri-select-placeholder"
+                        );
+
+                        incidentStartDateField.classList.remove(
+                            "ri-invalid"
+                        );
+
+                    }
+
+                    incidentStartDateField.dispatchEvent(
+                        new Event("change", { bubbles: true })
+                    );
+
+                }
+
+                function renderCalendar() {
+
+                    dtCalTitle.textContent =
+                        monthNames[viewMonth] + " " + viewYear;
+
+                    dtDays.innerHTML = "";
+
+                    const firstWeekday =
+                        new Date(viewYear, viewMonth, 1).getDay();
+
+                    const daysInMonth =
+                        new Date(viewYear, viewMonth + 1, 0).getDate();
+
+                    const daysInPrevMonth =
+                        new Date(viewYear, viewMonth, 0).getDate();
+
+                    const cells = [];
+
+                    for (let i = 0; i < firstWeekday; i++) {
+
+                        cells.push({
+                            day: daysInPrevMonth - firstWeekday + 1 + i,
+                            outside: true
+                        });
+
+                    }
+
+                    for (let d = 1; d <= daysInMonth; d++) {
+
+                        cells.push({ day: d, outside: false });
+
+                    }
+
+                    const remainder = cells.length % 7;
+
+                    if (remainder !== 0) {
+
+                        for (let i = 1; i <= 7 - remainder; i++) {
+
+                            cells.push({ day: i, outside: true });
+
+                        }
+
+                    }
+
+                    cells.forEach(function (cell) {
+
+                        const btn = document.createElement("button");
+                        btn.type = "button";
+                        btn.className = "ri-dt-day";
+                        btn.textContent = String(cell.day);
+
+                        if (cell.outside) {
+
+                            btn.classList.add("ri-dt-day-outside");
+                            btn.disabled = true;
+                            btn.tabIndex = -1;
+                            dtDays.appendChild(btn);
+                            return;
+
+                        }
+
+                        const cellDateOnly = new Date(
+                            viewYear, viewMonth, cell.day
+                        );
+
+                        if (
+                            viewYear === now.getFullYear() &&
+                            viewMonth === now.getMonth() &&
+                            cell.day === now.getDate()
+                        ) {
+                            btn.classList.add("ri-dt-day-today");
+                        }
+
+                        if (
+                            selected &&
+                            selected.year === viewYear &&
+                            selected.month === viewMonth &&
+                            selected.day === cell.day
+                        ) {
+                            btn.classList.add("ri-dt-day-selected");
+                        }
+
+                        if (cellDateOnly.getTime() > todayDateOnly.getTime()) {
+
+                            btn.disabled = true;
+                            btn.classList.add("ri-dt-day-disabled");
+
+                        } else {
+
+                            btn.addEventListener("click", function () {
+
+                                let hour =
+                                    selected ? selected.hour : now.getHours();
+
+                                let minute =
+                                    selected ? selected.minute : now.getMinutes();
+
+                                if (cellDateOnly.getTime() === todayDateOnly.getTime()) {
+
+                                    const candidate = new Date(
+                                        viewYear, viewMonth, cell.day,
+                                        hour, minute
+                                    );
+
+                                    if (candidate.getTime() > now.getTime()) {
+                                        hour = now.getHours();
+                                        minute = now.getMinutes();
+                                    }
+
+                                }
+
+                                selected = {
+                                    year: viewYear,
+                                    month: viewMonth,
+                                    day: cell.day,
+                                    hour: hour,
+                                    minute: minute
+                                };
+
+                                renderCalendar();
+                                renderTime();
+                                syncNativeInput();
+
+                            });
+
+                        }
+
+                        dtDays.appendChild(btn);
+
+                    });
+
+                }
+
+                function renderTime() {
+
+                    const hour =
+                        selected ? selected.hour : now.getHours();
+
+                    const minute =
+                        selected ? selected.minute : now.getMinutes();
+
+                    const h12 = (hour % 12) || 12;
+
+                    dtHourValue.textContent = pad(h12);
+                    dtMinuteValue.textContent = pad(minute);
+                    dtAmPm.textContent = hour < 12 ? "AM" : "PM";
+
+                }
+
+                function ensureSelected() {
+
+                    if (!selected) {
+
+                        selected = {
+                            year: now.getFullYear(),
+                            month: now.getMonth(),
+                            day: now.getDate(),
+                            hour: now.getHours(),
+                            minute: now.getMinutes()
+                        };
+
+                    }
+
+                }
+
+                function wouldBeFuture(hour, minute) {
+
+                    const cellDateOnly = new Date(
+                        selected.year, selected.month, selected.day
+                    );
+
+                    const candidate = new Date(
+                        selected.year, selected.month, selected.day,
+                        hour, minute
+                    );
+
+                    return (
+                        cellDateOnly.getTime() === todayDateOnly.getTime() &&
+                        candidate.getTime() > now.getTime()
+                    );
+
+                }
+
+                function stepTime(unit, dir) {
+
+                    ensureSelected();
+
+                    let hour = selected.hour;
+                    let minute = selected.minute;
+
+                    if (unit === "hour") {
+
+                        hour = (hour + (dir === "up" ? 1 : -1) + 24) % 24;
+
+                    } else {
+
+                        minute = (minute + (dir === "up" ? 1 : -1) + 60) % 60;
+
+                    }
+
+                    if (wouldBeFuture(hour, minute)) {
+                        return;
+                    }
+
+                    selected.hour = hour;
+                    selected.minute = minute;
+
+                    renderTime();
+                    syncNativeInput();
+
+                }
+
+                function toggleAmPm() {
+
+                    ensureSelected();
+
+                    const hour =
+                        selected.hour < 12 ?
+                            selected.hour + 12 : selected.hour - 12;
+
+                    if (wouldBeFuture(hour, selected.minute)) {
+                        return;
+                    }
+
+                    selected.hour = hour;
+
+                    renderTime();
+                    syncNativeInput();
+
+                }
+
+                function openPanel() {
+
+                    dtPicker.classList.add("ri-select-open");
+                    dtTrigger.setAttribute("aria-expanded", "true");
+
+                    if (selected) {
+                        viewYear = selected.year;
+                        viewMonth = selected.month;
+                    }
+
+                    renderCalendar();
+                    renderTime();
+
+                }
+
+                function closePanel() {
+
+                    dtPicker.classList.remove("ri-select-open");
+                    dtTrigger.setAttribute("aria-expanded", "false");
+
+                }
+
+                function togglePanel() {
+
+                    if (dtPicker.classList.contains("ri-select-open")) {
+                        closePanel();
+                    } else {
+                        openPanel();
+                    }
+
+                }
+
+                // Pre-fill from an existing value, e.g. when the
+                // form is re-rendered with other validation errors
+                // and Django re-populates this bound field.
+                if (incidentStartDateField.value) {
+
+                    const parts =
+                        incidentStartDateField.value.split(/[-T:]/);
+
+                    if (parts.length >= 5) {
+
+                        selected = {
+                            year: parseInt(parts[0], 10),
+                            month: parseInt(parts[1], 10) - 1,
+                            day: parseInt(parts[2], 10),
+                            hour: parseInt(parts[3], 10),
+                            minute: parseInt(parts[4], 10)
+                        };
+
+                        viewYear = selected.year;
+                        viewMonth = selected.month;
+
+                    }
+
+                }
+
+                if (selected) {
+                    dtTriggerText.textContent = formatTrigger(selected);
+                } else {
+                    dtTrigger.classList.add("ri-select-placeholder");
+                }
+
+                dtTrigger.addEventListener("click", function (event) {
+
+                    event.stopPropagation();
+                    togglePanel();
+
+                });
+
+                dtTrigger.addEventListener("keydown", function (event) {
+
+                    if (
+                        event.key === "Enter" ||
+                        event.key === " " ||
+                        event.key === "ArrowDown"
+                    ) {
+
+                        event.preventDefault();
+                        openPanel();
+
+                    } else if (event.key === "Escape") {
+
+                        closePanel();
+
+                    }
+
+                });
+
+                dtPanel.addEventListener("click", function (event) {
+
+                    event.stopPropagation();
+
+                });
+
+                dtPrevMonth.addEventListener("click", function () {
+
+                    viewMonth -= 1;
+
+                    if (viewMonth < 0) {
+                        viewMonth = 11;
+                        viewYear -= 1;
+                    }
+
+                    renderCalendar();
+
+                });
+
+                dtNextMonth.addEventListener("click", function () {
+
+                    viewMonth += 1;
+
+                    if (viewMonth > 11) {
+                        viewMonth = 0;
+                        viewYear += 1;
+                    }
+
+                    renderCalendar();
+
+                });
+
+                dtPanel.querySelectorAll(".ri-dt-step-btn").forEach(
+                    function (btn) {
+
+                        btn.addEventListener("click", function () {
+
+                            const unit = btn.closest(".ri-dt-stepper")
+                                .getAttribute("data-unit");
+
+                            stepTime(unit, btn.getAttribute("data-dir"));
+
+                        });
+
+                    }
+                );
+
+                dtAmPm.addEventListener("click", toggleAmPm);
+
+                dtNowBtn.addEventListener("click", function () {
+
+                    selected = {
+                        year: now.getFullYear(),
+                        month: now.getMonth(),
+                        day: now.getDate(),
+                        hour: now.getHours(),
+                        minute: now.getMinutes()
+                    };
+
+                    viewYear = selected.year;
+                    viewMonth = selected.month;
+
+                    renderCalendar();
+                    renderTime();
+                    syncNativeInput();
+
+                });
+
+                dtClearBtn.addEventListener("click", function () {
+
+                    selected = null;
+
+                    renderCalendar();
+                    renderTime();
+                    syncNativeInput();
+
+                });
+
+                dtDoneBtn.addEventListener("click", function () {
+
+                    closePanel();
+                    dtTrigger.focus();
+
+                });
+
+                document.addEventListener("click", function (event) {
+
+                    if (!dtPicker.contains(event.target)) {
+                        closePanel();
+                    }
+
+                });
+
+                document.addEventListener("keydown", function (event) {
+
+                    if (
+                        event.key === "Escape" &&
+                        dtPicker.classList.contains("ri-select-open")
+                    ) {
+
+                        closePanel();
+                        dtTrigger.focus();
+
+                    }
+
+                });
+
+            }
+
         }
 
 

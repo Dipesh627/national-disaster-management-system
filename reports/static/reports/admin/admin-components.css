@@ -1,5 +1,64 @@
 /* =========================================================
-   NDMS ADMIN - SHARED CONFIRMATION MODAL
+   NDMS ADMIN - SHARED COMPONENTS
+
+   Loaded for EVERY Admin page by admin/base.html, after
+   dashboard-shell.css and before admin-responsive.css and the
+   page stylesheets:
+
+       dashboard-shell.css     shell: sidebar, topbar, drawer, scroll
+       admin-components.css    this file: reusable component bases
+       admin-responsive.css    shared mobile behaviour of those bases
+       admin-<page>.css        page-specific rules only
+
+   Because it loads before the page stylesheets, a page rule with
+   the same specificity always wins, so a page can still override
+   anything defined here. Keep this file organised by component.
+
+   Sections:
+     1. Utilities            (.sr-only)
+     2. Confirmation modal   (.admin-modal*)
+     3. Filter form          (base layout of every list-page filter row)
+     4. Buttons              (base box of filter / form pill buttons)
+     5. Row actions
+     6. Empty state
+     7. Page header
+     8. Name cell
+   ========================================================= */
+
+
+/* =========================================================
+   1. UTILITIES
+   ========================================================= */
+
+/* Canonical Admin visually-hidden utility: text that is read by
+   assistive technology but not painted. Used for table-header
+   labels, <caption>s and form-field labels on every Admin page.
+   !important is deliberate: it keeps the hidden text out of layout
+   even when a page rule such as `label span` or `th span` would
+   otherwise re-position it.
+
+   NOTE: this is position: absolute with no offsets, so it sits at
+   its static position. Inside a horizontally scrolling table that
+   is the far right of the table -- dashboard-shell.css therefore
+   makes .admin-content the containing block and clips it there
+   (see the containment guard on .admin-content). Do not add
+   top/left offsets here: a focusable element inside .sr-only would
+   then scroll the page to the top when focused. */
+.sr-only {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+
+/* =========================================================
+   2. CONFIRMATION MODAL
 
    One dialog used by the Admin delete-confirmation flows
    (Disaster Types, Emergency Agencies). Driven by
@@ -364,4 +423,198 @@
         min-width: 0 !important;
     }
 
+}
+
+
+/* =========================================================
+   3. FILTER FORM
+
+   The search / select / button row above every Admin list table.
+   Base layout only; each page keeps its own field, select and
+   button styling. Mobile stacking is in admin-responsive.css.
+   Selector prefixes: citizens, dr (Disaster Reports), dt (Disaster
+   Types), ds (Disasters), ea (Emergency Agencies), fb (Feedback),
+   nt (Notifications), ru (Response Updates), sr (Support Requests).
+   ========================================================= */
+
+.citizens-filter-form,
+.dr-filter-form,
+.dt-filter-form,
+.ds-filter-form,
+.ea-filter-form,
+.fb-filter-form,
+.nt-filter-form,
+.ru-filter-form,
+.sr-filter-form {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+
+/* =========================================================
+   4. BUTTONS
+
+   Base box of the pill buttons used by the filter rows and form
+   footers. Colours, borders, backgrounds and hover / focus / disabled
+   states stay in each page stylesheet (they differ per page).
+   Two groups because their declarations differ in one property:
+   the first sets font-family: inherit (needed for <button>
+   elements), the second does not.
+   ========================================================= */
+
+/* Group A: with font-family: inherit */
+.citizens-filter-button,
+.citizens-reset-button,
+.dr-filter-button,
+.dr-reset-button,
+.fb-secondary-button,
+.fb-filter-button,
+.fb-reset-button,
+.nt-primary-button,
+.nt-secondary-button,
+.nt-form-cancel,
+.nt-filter-button,
+.nt-reset-button,
+.sr-secondary-button,
+.sr-filter-button,
+.sr-reset-button,
+.sr-attachment-open {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+/* Group B: without font-family */
+.dt-primary-button,
+.dt-secondary-button,
+.dt-form-cancel,
+.dt-filter-button,
+.dt-reset-button,
+.ds-primary-button,
+.ds-secondary-button,
+.ds-form-cancel,
+.ds-filter-button,
+.ds-reset-button,
+.ea-primary-button,
+.ea-secondary-button,
+.ea-form-cancel,
+.ea-filter-button,
+.ea-reset-button,
+.ru-primary-button,
+.ru-secondary-button,
+.ru-form-cancel,
+.ru-filter-button,
+.ru-reset-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    border-radius: 7px;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease;
+}
+
+
+/* =========================================================
+   5. ROW ACTIONS
+
+   Right-aligned action cluster in a table row (view / edit / delete).
+   ========================================================= */
+
+.dt-actions,
+.ds-actions,
+.ea-actions,
+.ru-actions {
+    align-items: center;
+    display: inline-flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+
+/* =========================================================
+   6. EMPTY STATE
+
+   Centered "nothing found" block shown inside a list panel when
+   a table has no rows. Icon, text and button styling stay per page.
+   ========================================================= */
+
+.dt-empty-state,
+.ea-empty-state,
+.fb-empty-state,
+.nt-empty-state,
+.ru-empty-state,
+.sr-empty-state {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 285px;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+
+/* =========================================================
+   7. PAGE HEADER
+
+   Title row at the top of an Admin list page (title on the left,
+   primary action on the right). Two groups because their bottom
+   margins differ (20px vs 18px). Stacking at <=640px is in
+   admin-responsive.css.
+   ========================================================= */
+
+/* Group A: margin-bottom 20px */
+.dt-page-header,
+.ea-page-header,
+.ru-page-header {
+    align-items: flex-end;
+    display: flex;
+    gap: 22px;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+/* Group B: margin-bottom 18px */
+.feedback-header,
+.nt-page-header,
+.support-header {
+    align-items: flex-end;
+    display: flex;
+    gap: 22px;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+
+/* =========================================================
+   8. NAME CELL
+
+   Two-line name + subtitle cell in the Citizens, Feedback and Support tables.
+   ========================================================= */
+
+.citizens-name-cell,
+.fb-name-cell,
+.sr-name-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    min-width: 0;
 }

@@ -83,7 +83,7 @@ Response Updates
 
             <label class="ru-search-field">
 
-                <span class="ru-visually-hidden">
+                <span class="sr-only">
                     Search response updates
                 </span>
 
@@ -112,7 +112,7 @@ Response Updates
 
             <label class="ru-select-field">
 
-                <span class="ru-visually-hidden">
+                <span class="sr-only">
                     Filter by status
                 </span>
 
@@ -239,7 +239,7 @@ Response Updates
                             </th>
 
                             <th scope="col" class="ru-col-actions">
-                                <span class="ru-visually-hidden">
+                                <span class="sr-only">
                                     Actions
                                 </span>
                             </th>
@@ -730,5 +730,6 @@ Response Updates
 
 
 {% block extra_js %}
+<script src="{% static 'reports/admin/admin-confirm-modal.js' %}"></script>
 <script src="{% static 'reports/admin/admin-response-updates.js' %}"></script>
 {% endblock %}

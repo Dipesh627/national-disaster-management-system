@@ -1,9 +1,8 @@
 {% load static %}
-{% load citizen_extras %}
 {% load ndms_extras %}
 
 <!DOCTYPE html>
-<html lang="en"{% citizen_html_attrs %}>
+<html lang="en">
 
 <head>
 
@@ -38,7 +37,6 @@
         href="{% static 'reports/report-incident.css' %}"
     >
 
-{% include 'reports/partials/citizen_prefs_head.html' %}
 
 </head>
 
@@ -855,7 +853,176 @@
                             <span class="ri-required">*</span>
                         </label>
 
-                        {{ form.incident_start_date }}
+                        <div class="ri-select" id="riDateTimePicker">
+
+                            {{ form.incident_start_date }}
+
+                            <button
+                                type="button"
+                                class="ri-select-trigger ri-dt-trigger"
+                                id="riDtTrigger"
+                                aria-haspopup="dialog"
+                                aria-expanded="false"
+                            >
+
+                                <span
+                                    class="ri-dt-trigger-icon"
+                                    aria-hidden="true"
+                                >
+                                    &#128197;
+                                </span>
+
+                                <span
+                                    class="ri-select-trigger-text ri-dt-trigger-text"
+                                    id="riDtTriggerText"
+                                >
+                                    Select date &amp; time
+                                </span>
+
+                            </button>
+
+                            <div
+                                class="ri-dt-panel"
+                                id="riDtPanel"
+                                role="dialog"
+                                aria-label="Choose incident start date and time"
+                            >
+
+                                <div class="ri-dt-cal-header">
+
+                                    <button
+                                        type="button"
+                                        class="ri-dt-nav"
+                                        id="riDtPrevMonth"
+                                        aria-label="Previous month"
+                                    >
+                                        &#8249;
+                                    </button>
+
+                                    <span
+                                        class="ri-dt-cal-title"
+                                        id="riDtCalTitle"
+                                    ></span>
+
+                                    <button
+                                        type="button"
+                                        class="ri-dt-nav"
+                                        id="riDtNextMonth"
+                                        aria-label="Next month"
+                                    >
+                                        &#8250;
+                                    </button>
+
+                                </div>
+
+                                <div class="ri-dt-weekdays">
+                                    <span>Su</span>
+                                    <span>Mo</span>
+                                    <span>Tu</span>
+                                    <span>We</span>
+                                    <span>Th</span>
+                                    <span>Fr</span>
+                                    <span>Sa</span>
+                                </div>
+
+                                <div
+                                    class="ri-dt-days"
+                                    id="riDtDays"
+                                ></div>
+
+                                <div class="ri-dt-time-row">
+
+                                    <span class="ri-dt-time-label">
+                                        Time
+                                    </span>
+
+                                    <div class="ri-dt-time-controls">
+
+                                        <div
+                                            class="ri-dt-stepper"
+                                            data-unit="hour"
+                                        >
+                                            <button
+                                                type="button"
+                                                class="ri-dt-step-btn"
+                                                data-dir="up"
+                                                aria-label="Increase hour"
+                                            >+</button>
+
+                                            <span
+                                                class="ri-dt-step-value"
+                                                id="riDtHourValue"
+                                            >--</span>
+
+                                            <button
+                                                type="button"
+                                                class="ri-dt-step-btn"
+                                                data-dir="down"
+                                                aria-label="Decrease hour"
+                                            >&minus;</button>
+                                        </div>
+
+                                        <span class="ri-dt-colon">:</span>
+
+                                        <div
+                                            class="ri-dt-stepper"
+                                            data-unit="minute"
+                                        >
+                                            <button
+                                                type="button"
+                                                class="ri-dt-step-btn"
+                                                data-dir="up"
+                                                aria-label="Increase minute"
+                                            >+</button>
+
+                                            <span
+                                                class="ri-dt-step-value"
+                                                id="riDtMinuteValue"
+                                            >--</span>
+
+                                            <button
+                                                type="button"
+                                                class="ri-dt-step-btn"
+                                                data-dir="down"
+                                                aria-label="Decrease minute"
+                                            >&minus;</button>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            class="ri-dt-ampm"
+                                            id="riDtAmPm"
+                                        >AM</button>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="ri-dt-actions">
+
+                                    <button
+                                        type="button"
+                                        class="ri-dt-btn ri-dt-btn-ghost"
+                                        id="riDtNow"
+                                    >Now</button>
+
+                                    <button
+                                        type="button"
+                                        class="ri-dt-btn ri-dt-btn-ghost"
+                                        id="riDtClear"
+                                    >Clear</button>
+
+                                    <button
+                                        type="button"
+                                        class="ri-dt-btn ri-dt-btn-primary"
+                                        id="riDtDone"
+                                    >Done</button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
 
                         <span class="ri-hint">
                             When did the incident begin? Select the

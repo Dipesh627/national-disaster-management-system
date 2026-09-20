@@ -965,14 +965,15 @@ def validate_incident_report_photo(photo):
 #
 # Backs the lightweight Citizen Settings page:
 #   - General: Date Format, Time Zone
-#   - Appearance: Theme (System/Light/Dark), Text Size (Standard/Large)
-#   - Accessibility: Reduce Motion, High Contrast
 #   - Reporting: Default Disaster Type
 #
 # Reuses the existing UserSettings model. Profile information,
 # notifications, and non-functional/unsupported settings (language,
 # location permission, photo upload preference) are intentionally
-# excluded per Phase 1 scope.
+# excluded per Phase 1 scope. Appearance (Theme/Text Size) and
+# Accessibility (Reduce Motion/High Contrast) were removed —
+# see UserSettings for details; they may return as a new,
+# separately designed system in the future.
 #
 # =========================================================
 
@@ -985,10 +986,6 @@ class CitizenSettingsForm(forms.ModelForm):
         fields = [
             'date_format',
             'time_zone',
-            'theme',
-            'font_size',
-            'reduce_motion',
-            'high_contrast',
             'default_disaster_type',
         ]
 
@@ -1008,36 +1005,6 @@ class CitizenSettingsForm(forms.ModelForm):
                 }
             ),
 
-            'theme': forms.RadioSelect(
-                attrs={
-                    'class': 'st-radio-pill-input',
-                }
-            ),
-
-            'font_size': forms.RadioSelect(
-                attrs={
-                    'class': 'st-radio-pill-input',
-                }
-            ),
-
-            'reduce_motion': forms.CheckboxInput(
-                attrs={
-                    'class': 'st-toggle-input',
-                    'id': 'id_reduce_motion',
-                    'role': 'switch',
-                    'aria-label': 'Reduce Motion',
-                }
-            ),
-
-            'high_contrast': forms.CheckboxInput(
-                attrs={
-                    'class': 'st-toggle-input',
-                    'id': 'id_high_contrast',
-                    'role': 'switch',
-                    'aria-label': 'High Contrast',
-                }
-            ),
-
             'default_disaster_type': forms.Select(
                 attrs={
                     'class': 'st-select',
@@ -1051,14 +1018,6 @@ class CitizenSettingsForm(forms.ModelForm):
             'date_format': 'Date Format',
 
             'time_zone': 'Time Zone',
-
-            'theme': 'Theme',
-
-            'font_size': 'Text Size',
-
-            'reduce_motion': 'Reduce Motion',
-
-            'high_contrast': 'High Contrast',
 
             'default_disaster_type': 'Default Disaster Type',
         }
@@ -1089,12 +1048,15 @@ class CitizenSettingsForm(forms.ModelForm):
 # dropdown's "Settings" page. Reuses the same UserSettings
 # model (it isn't Citizen-specific), but only exposes the
 # fields that make sense for an Administration account —
-# general + accessibility preferences. Citizen-only report
-# preferences (default disaster type, location permission,
-# photo upload preference) and citizen notification toggles
-# (disaster alerts, report status updates, etc.) are left out
-# since they describe Citizen reporting behaviour, not
-# Administration use of the system.
+# General Preferences. Citizen-only report preferences
+# (default disaster type, location permission, photo upload
+# preference) and citizen notification toggles (disaster
+# alerts, report status updates, etc.) are left out since they
+# describe Citizen reporting behaviour, not Administration use
+# of the system. Accessibility (Reduce Motion/High Contrast/
+# Font Size) was removed — see UserSettings for details; it
+# may return as a new, separately designed system in the
+# future.
 #
 # =========================================================
 
@@ -1108,9 +1070,6 @@ class AdminSettingsForm(forms.ModelForm):
             'language',
             'time_zone',
             'date_format',
-            'reduce_motion',
-            'high_contrast',
-            'font_size',
         ]
 
         widgets = {
@@ -1135,31 +1094,6 @@ class AdminSettingsForm(forms.ModelForm):
                     'id': 'id_date_format',
                 }
             ),
-
-            'reduce_motion': forms.CheckboxInput(
-                attrs={
-                    'class': 'ads-toggle-input',
-                    'id': 'id_reduce_motion',
-                }
-            ),
-
-            'high_contrast': forms.CheckboxInput(
-                attrs={
-                    'class': 'ads-toggle-input',
-                    'id': 'id_high_contrast',
-                }
-            ),
-
-            # RadioSelect (rendered as two pill buttons in
-            # settings.html — "Standard" / "Large") rather than
-            # a dropdown, matching the locked Admin Settings
-            # layout. Still the same model field/choices as
-            # before — only the widget changed.
-            'font_size': forms.RadioSelect(
-                attrs={
-                    'class': 'ads-radio-pill-input',
-                }
-            ),
         }
 
         labels = {
@@ -1169,12 +1103,6 @@ class AdminSettingsForm(forms.ModelForm):
             'time_zone': 'Time Zone',
 
             'date_format': 'Date Format',
-
-            'reduce_motion': 'Reduce Motion',
-
-            'high_contrast': 'High Contrast',
-
-            'font_size': 'Font Size',
         }
 
     # =====================================================

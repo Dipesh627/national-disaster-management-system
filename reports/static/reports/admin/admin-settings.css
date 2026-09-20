@@ -269,172 +269,6 @@
 
 
 /* =========================================================
-   TOGGLE ROWS (Reduce Motion / High Contrast)
-   ========================================================= */
-
-.as-toggle-list {
-    display: flex;
-    flex-direction: column;
-    padding: 6px 20px 4px;
-}
-
-.as-toggle-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 13px 0;
-    border-bottom: 1px solid #f0f1f3;
-}
-
-.as-toggle-list .as-toggle-row:last-child {
-    border-bottom: 0;
-}
-
-.as-toggle-text {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    max-width: 460px;
-}
-
-.as-toggle-text strong {
-    color: var(--ndms-navy);
-    font-size: 12px;
-    font-weight: 720;
-}
-
-.as-toggle-text span {
-    color: var(--ndms-muted);
-    font-size: 10.5px;
-    line-height: 1.5;
-}
-
-.as-toggle {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    flex-shrink: 0;
-    cursor: pointer;
-}
-
-.ads-toggle-input {
-    position: absolute;
-    opacity: 0;
-    width: 42px;
-    height: 24px;
-    margin: 0;
-    cursor: pointer;
-    z-index: 2;
-}
-
-.as-toggle-track {
-    position: relative;
-    display: inline-block;
-    width: 42px;
-    height: 24px;
-    border-radius: 999px;
-    background: #d0d5dd;
-    transition: background-color .18s ease;
-}
-
-.as-toggle-track::after {
-    content: "";
-    position: absolute;
-    top: 3px;
-    left: 3px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 0 1px 2px rgba(16, 24, 40, .12);
-    transition: transform .18s ease;
-}
-
-.ads-toggle-input:checked + .as-toggle-track {
-    background: var(--ndms-red);
-}
-
-.ads-toggle-input:checked + .as-toggle-track::after {
-    transform: translateX(18px);
-}
-
-.ads-toggle-input:focus-visible + .as-toggle-track {
-    box-shadow: 0 0 0 3px rgba(180, 35, 24, .18);
-}
-
-
-/* =========================================================
-   DIVIDER
-   ========================================================= */
-
-.as-divider {
-    height: 1px;
-    margin: 4px 20px 16px;
-    background: var(--ndms-border);
-}
-
-
-/* =========================================================
-   FONT SIZE — RADIO PILLS
-   ========================================================= */
-
-.as-font-size-field {
-    max-width: none;
-    padding: 0 20px 20px;
-    gap: 10px;
-}
-
-.as-radio-pills {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.as-radio-pill {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    padding: 8px 18px;
-    border: 1px solid #d0d5dd;
-    border-radius: 999px;
-    color: var(--ndms-text);
-    font-size: 11.5px;
-    font-weight: 650;
-    cursor: pointer;
-    transition:
-        border-color .18s ease,
-        background-color .18s ease,
-        color .18s ease;
-}
-
-.as-radio-pill .ads-radio-pill-input {
-    position: absolute;
-    opacity: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    cursor: pointer;
-}
-
-.as-radio-pill:has(.ads-radio-pill-input:checked) {
-    background: #fff7f6;
-    border-color: var(--ndms-red);
-    color: var(--ndms-red);
-}
-
-.as-radio-pill.is-checked {
-    background: #fff7f6;
-    border-color: var(--ndms-red);
-    color: var(--ndms-red);
-}
-
-.as-radio-pill:hover {
-    border-color: #98a2b3;
-}
-
-
-/* =========================================================
    SECURITY
    ========================================================= */
 
@@ -508,10 +342,6 @@
 
 @media (max-width: 640px) {
 
-    .as-toggle-row {
-        align-items: flex-start;
-    }
-
     .as-security-row {
         flex-direction: column;
         align-items: stretch;
@@ -553,26 +383,16 @@
 
     .as-card-header,
     .as-field-list,
-    .as-toggle-list,
-    .as-font-size-field,
     .as-security-row,
     .as-password-actions {
         padding-left: 16px;
         padding-right: 16px;
     }
 
-    .as-divider {
-        margin-left: 16px;
-        margin-right: 16px;
-    }
-
 }
 
 @media (prefers-reduced-motion: reduce) {
 
-    .as-toggle-track,
-    .as-toggle-track::after,
-    .as-radio-pill,
     .as-primary-button,
     .as-secondary-button {
         transition: none;

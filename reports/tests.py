@@ -41,14 +41,10 @@ class CitizenSettingsPhase1Test(TestCase):
         )
 
     def test_user_settings_model_defaults(self):
-        """Verify UserSettings model has theme and preserved defaults."""
+        """Verify UserSettings model has date/timezone defaults."""
         settings = UserSettings.objects.create(user=self.citizen)
         self.assertEqual(settings.date_format, 'DMY')
         self.assertEqual(settings.time_zone, 'Asia/Kathmandu')
-        self.assertEqual(settings.theme, 'SYSTEM')
-        self.assertEqual(settings.font_size, 'STANDARD')
-        self.assertFalse(settings.reduce_motion)
-        self.assertFalse(settings.high_contrast)
         self.assertIsNone(settings.default_disaster_type)
 
     def test_citizen_settings_form_valid(self):
@@ -57,10 +53,6 @@ class CitizenSettingsPhase1Test(TestCase):
         form_data = {
             'date_format': 'YMD',
             'time_zone': 'Asia/Kolkata',
-            'theme': 'DARK',
-            'font_size': 'LARGE',
-            'reduce_motion': True,
-            'high_contrast': True,
             'default_disaster_type': self.disaster_type.pk,
         }
         form = CitizenSettingsForm(data=form_data, instance=settings)
@@ -68,10 +60,6 @@ class CitizenSettingsPhase1Test(TestCase):
         saved = form.save()
         self.assertEqual(saved.date_format, 'YMD')
         self.assertEqual(saved.time_zone, 'Asia/Kolkata')
-        self.assertEqual(saved.theme, 'DARK')
-        self.assertEqual(saved.font_size, 'LARGE')
-        self.assertTrue(saved.reduce_motion)
-        self.assertTrue(saved.high_contrast)
         self.assertEqual(saved.default_disaster_type, self.disaster_type)
 
     def test_settings_view_get_authenticated(self):
@@ -80,8 +68,6 @@ class CitizenSettingsPhase1Test(TestCase):
         response = self.client.get(reverse('settings'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "General Preferences")
-        self.assertContains(response, "Appearance")
-        self.assertContains(response, "Accessibility")
         self.assertContains(response, "Reporting Preferences")
         self.assertContains(response, "Account Security")
         self.assertContains(response, "Help &amp; Support")
@@ -89,8 +75,6 @@ class CitizenSettingsPhase1Test(TestCase):
         self.assertContains(response, "id_date_format")
         self.assertContains(response, "id_time_zone")
         self.assertContains(response, "id_default_disaster_type")
-        self.assertContains(response, "id_reduce_motion")
-        self.assertContains(response, "id_high_contrast")
 
     def test_settings_view_post_success(self):
         """Verify citizen can save settings with PRG redirect and success message."""
@@ -98,10 +82,6 @@ class CitizenSettingsPhase1Test(TestCase):
         post_data = {
             'date_format': 'MDY',
             'time_zone': 'UTC',
-            'theme': 'LIGHT',
-            'font_size': 'LARGE',
-            'reduce_motion': 'on',
-            'high_contrast': 'on',
             'default_disaster_type': self.disaster_type.pk,
         }
         response = self.client.post(reverse('settings'), post_data, follow=True)
@@ -111,10 +91,6 @@ class CitizenSettingsPhase1Test(TestCase):
         settings = UserSettings.objects.get(user=self.citizen)
         self.assertEqual(settings.date_format, 'MDY')
         self.assertEqual(settings.time_zone, 'UTC')
-        self.assertEqual(settings.theme, 'LIGHT')
-        self.assertEqual(settings.font_size, 'LARGE')
-        self.assertTrue(settings.reduce_motion)
-        self.assertTrue(settings.high_contrast)
         self.assertEqual(settings.default_disaster_type, self.disaster_type)
 
     def test_create_disaster_report_preselects_default_disaster_type(self):
@@ -136,7 +112,7 @@ class CitizenSettingsPhase1Test(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "SYSTEM SETTINGS")
         self.assertContains(response, "General Preferences")
-        self.assertContains(response, "Accessibility")
+        self.assertContains(response, "Account Security")
 
 
 class SupportRequestAdminNotificationTest(TestCase):

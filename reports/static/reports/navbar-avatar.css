@@ -290,8 +290,7 @@
    DISASTER UNREAD RED-DOT INDICATOR
    Small, professional, non-animated. Reused as-is beside the
    "Disasters" dropdown toggle and the "View Disasters" item.
-   Uses the existing --red token so it follows Light / Dark /
-   High Contrast automatically -- no new colour is introduced.
+   Uses the existing --red token -- no new colour is introduced.
    ========================================================= */
 
 .disaster-unread-dot {

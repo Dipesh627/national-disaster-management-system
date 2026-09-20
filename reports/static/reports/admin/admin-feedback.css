@@ -35,30 +35,13 @@
    ACCESSIBILITY
    ========================================================= */
 
-.fb-visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-}
-
+/* Visually-hidden text uses the shared .sr-only utility (admin-components.css). */
 
 /* =========================================================
    PAGE HEADER
    ========================================================= */
 
-.feedback-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 22px;
-    margin-bottom: 18px;
-}
+/* Page header base: shared, see admin-components.css (Page header). */
 
 .fb-page-header-copy {
     min-width: 0;
@@ -100,27 +83,7 @@
    BUTTONS
    ========================================================= */
 
-.fb-secondary-button,
-.fb-filter-button,
-.fb-reset-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 37px;
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 10.5px;
-    font-weight: 680;
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        background-color .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        box-shadow .15s ease;
-}
+/* Button base (with font-family: inherit): shared, see admin-components.css (Buttons). */
 
 .fb-secondary-button {
     padding: 0 12px;
@@ -160,12 +123,7 @@
     margin-bottom: 13px;
 }
 
-.fb-filter-form {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px;
-}
+/* .*-filter-form base: shared, see admin-components.css (Filter form). */
 
 .fb-search-field {
     position: relative;
@@ -399,12 +357,7 @@
     width: 8%;
 }
 
-.fb-name-cell {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: 1px;
-}
+/* .*-name-cell base: shared, see admin-components.css (Name cell). */
 
 .fb-name-text {
     display: block;
@@ -562,15 +515,7 @@
    EMPTY STATE
    ========================================================= */
 
-.fb-empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 285px;
-    padding: 40px 20px;
-    text-align: center;
-    flex-direction: column;
-}
+/* .*-empty-state base: shared, see admin-components.css (Empty state). */
 
 .fb-empty-mark {
     display: grid;
@@ -720,11 +665,7 @@
         padding-bottom: 20px;
     }
 
-    .feedback-header {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 12px;
-    }
+    /* Page header stacking at <=640px: shared, see admin-responsive.css. */
 
     .feedback-header h1 {
         font-size: 22px;
@@ -734,10 +675,7 @@
         white-space: normal;
     }
 
-    .fb-filter-form {
-        align-items: stretch;
-        flex-direction: column;
-    }
+    /* .*-filter-form stacking at <=640px: shared, see admin-responsive.css. */
 
     .fb-search-field,
     .fb-select-field,
@@ -798,14 +736,4 @@
 }
 
 
-@media (prefers-reduced-motion: reduce) {
-
-    .feedback-page *,
-    .feedback-page *::before,
-    .feedback-page *::after {
-        transition-duration: .01ms !important;
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-    }
-
-}
+/* Reduced motion is handled globally in dashboard-shell.css. */

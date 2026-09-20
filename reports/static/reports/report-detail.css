@@ -1489,6 +1489,37 @@
    only the pieces genuinely new here are defined below.
    ========================================================= */
 
+.rd-official-title-row {
+
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    justify-content:
+        space-between;
+
+    gap:
+        12px;
+
+    flex-wrap:
+        wrap;
+
+}
+
+
+.rd-view-disaster-action {
+
+    flex-shrink:
+        0;
+
+    white-space:
+        nowrap;
+
+}
+
+
 .rd-official-status-row {
 
     display:

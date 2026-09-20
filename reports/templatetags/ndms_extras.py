@@ -38,30 +38,6 @@ def initials(value):
     return (parts[0][0] + parts[-1][0]).upper()
 
 
-@register.filter(name='has_multiple_accounts')
-def has_multiple_accounts(user):
-    """
-    Placeholder for future "Switch account" support in the navbar.
-
-    The project does not currently track multiple linked accounts
-    per user, so this always returns False today (nothing is built
-    or assumed here — no model, auth, or URL changes). Once a
-    `linked_accounts` relation exists on the User model, this will
-    start returning True for users with 2+ accounts and the
-    "Switch account" navbar item will appear automatically.
-    """
-
-    linked = getattr(user, 'linked_accounts', None)
-
-    if not linked:
-        return False
-
-    try:
-        return linked.count() > 1
-    except (AttributeError, TypeError):
-        return False
-
-
 # =========================================================
 # DISASTER TYPE ICON
 # =========================================================

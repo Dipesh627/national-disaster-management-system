@@ -49,7 +49,7 @@ Settings
 
 
     <!-- =====================================================
-         SINGLE FORM — General + Accessibility save together
+         SINGLE FORM — General Preferences
          (Security/Change Password submits separately, below)
          ===================================================== -->
 
@@ -159,114 +159,6 @@ Settings
         </section>
 
 
-        <!-- =================================================
-             2. ACCESSIBILITY
-             ================================================= -->
-
-        <section class="as-card as-accessibility">
-
-            <div class="as-card-header">
-
-                <div>
-
-                    <span class="as-card-kicker">
-                        ACCESSIBILITY
-                    </span>
-
-                    <h2>
-                        Accessibility
-                    </h2>
-
-                </div>
-
-            </div>
-
-
-            <div class="as-toggle-list">
-
-                <div class="as-toggle-row">
-
-                    <div class="as-toggle-text">
-
-                        <strong>
-                            Reduce Motion
-                        </strong>
-
-                        <span>
-                            Minimize animation and transition
-                            effects across the admin interface.
-                        </span>
-
-                    </div>
-
-                    <label class="as-toggle">
-                        {{ settings_form.reduce_motion }}
-                        <span class="as-toggle-track"></span>
-                    </label>
-
-                </div>
-
-
-                <div class="as-toggle-row">
-
-                    <div class="as-toggle-text">
-
-                        <strong>
-                            High Contrast
-                        </strong>
-
-                        <span>
-                            Increase contrast for improved
-                            readability.
-                        </span>
-
-                    </div>
-
-                    <label class="as-toggle">
-                        {{ settings_form.high_contrast }}
-                        <span class="as-toggle-track"></span>
-                    </label>
-
-                </div>
-
-            </div>
-
-
-            <div class="as-divider"></div>
-
-
-            <div class="as-field as-font-size-field">
-
-                <label>
-                    Font Size
-                </label>
-
-                <div class="as-radio-pills">
-
-                    {% for radio in settings_form.font_size %}
-
-                        <label class="as-radio-pill">
-                            {{ radio.tag }}
-                            <span>{{ radio.choice_label }}</span>
-                        </label>
-
-                    {% endfor %}
-
-                </div>
-
-                {% if settings_form.font_size.errors %}
-
-                    <span class="as-field-error">
-                        {{ settings_form.font_size.errors.0 }}
-                    </span>
-
-                {% endif %}
-
-            </div>
-
-        </section>
-
-
         {% if settings_form.non_field_errors %}
 
             <span class="as-field-error as-form-error">
@@ -277,7 +169,7 @@ Settings
 
 
         <!-- =================================================
-             SAVE — General + Accessibility
+             SAVE — General Preferences
              ================================================= -->
 
         <div class="as-save-bar">
@@ -295,7 +187,7 @@ Settings
 
 
     <!-- =====================================================
-         3. SECURITY
+         2. SECURITY
          (submits separately — form=password, matching
          admin_settings()'s POST discriminator)
          ===================================================== -->

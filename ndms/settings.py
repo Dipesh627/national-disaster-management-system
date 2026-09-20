@@ -121,8 +121,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 # Citizen Settings -> project-wide preferences
-                # (theme, text size, reduce motion, high contrast,
-                # date format, time zone). Admin accounts and
+                # (date format, time zone). Admin accounts and
                 # anonymous visitors receive project defaults.
                 'reports.context_processors.citizen_preferences',
 

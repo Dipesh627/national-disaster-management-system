@@ -293,17 +293,12 @@ class UserSettingsAdmin(admin.ModelAdmin):
         'user',
         'language',
         'time_zone',
-        'theme',
-        'dashboard_view',
-        'font_size',
+        'date_format',
         'updated_at',
     )
 
     list_filter = (
         'language',
-        'theme',
-        'font_size',
-        'dashboard_view',
     )
 
     search_fields = (

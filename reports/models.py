@@ -917,22 +917,6 @@ class UserSettings(models.Model):
         ('YMD', 'YYYY-MM-DD'),
     ]
 
-    DASHBOARD_VIEW_CHOICES = [
-        ('SUMMARY', 'Summary View'),
-        ('DETAILED', 'Detailed View'),
-    ]
-
-    THEME_CHOICES = [
-        ('SYSTEM', 'System'),
-        ('LIGHT', 'Light'),
-        ('DARK', 'Dark'),
-    ]
-
-    FONT_SIZE_CHOICES = [
-        ('STANDARD', 'Standard'),
-        ('LARGE', 'Large'),
-    ]
-
     LOCATION_PERMISSION_CHOICES = [
         ('ALWAYS_ASK', 'Always Ask'),
         ('ALWAYS_ALLOW', 'Always Allow'),
@@ -973,12 +957,6 @@ class UserSettings(models.Model):
         default='DMY'
     )
 
-    dashboard_view = models.CharField(
-        max_length=10,
-        choices=DASHBOARD_VIEW_CHOICES,
-        default='SUMMARY'
-    )
-
     # -----------------------------------------------------
     # NOTIFICATION PREFERENCES
     # -----------------------------------------------------
@@ -1005,30 +983,6 @@ class UserSettings(models.Model):
 
     allow_authority_contact = models.BooleanField(
         default=True
-    )
-
-    # -----------------------------------------------------
-    # ACCESSIBILITY
-    # -----------------------------------------------------
-
-    reduce_motion = models.BooleanField(
-        default=False
-    )
-
-    high_contrast = models.BooleanField(
-        default=False
-    )
-
-    theme = models.CharField(
-        max_length=10,
-        choices=THEME_CHOICES,
-        default='SYSTEM'
-    )
-
-    font_size = models.CharField(
-        max_length=10,
-        choices=FONT_SIZE_CHOICES,
-        default='STANDARD'
     )
 
     # -----------------------------------------------------

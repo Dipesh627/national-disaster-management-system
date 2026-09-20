@@ -20,18 +20,7 @@
    ACCESSIBILITY
    ========================================================= */
 
-.citizens-visually-hidden {
-    position: absolute !important;
-    width: 1px !important;
-    height: 1px !important;
-    padding: 0 !important;
-    margin: -1px !important;
-    overflow: hidden !important;
-    clip: rect(0, 0, 0, 0) !important;
-    white-space: nowrap !important;
-    border: 0 !important;
-}
-
+/* Visually-hidden text uses the shared .sr-only utility (admin-components.css). */
 
 /* =========================================================
    SEARCH + STATUS FILTER
@@ -44,12 +33,7 @@
     margin-bottom: 14px;
 }
 
-.citizens-filter-form {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px;
-}
+/* .*-filter-form base: shared, see admin-components.css (Filter form). */
 
 .citizens-search-field,
 .citizens-select-field {
@@ -121,26 +105,7 @@
     pointer-events: none;
 }
 
-.citizens-filter-button,
-.citizens-reset-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 37px;
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 10.5px;
-    font-weight: 680;
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        background-color .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        box-shadow .15s ease;
-}
+/* Button base (with font-family: inherit): shared, see admin-components.css (Buttons). */
 
 .citizens-filter-button {
     padding: 0 13px;
@@ -195,12 +160,7 @@
    CITIZEN CELL — name stacked above @username
    ========================================================= */
 
-.citizens-name-cell {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: 1px;
-}
+/* .*-name-cell base: shared, see admin-components.css (Name cell). */
 
 .citizens-name-cell .table-primary-link {
     display: block;

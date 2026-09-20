@@ -168,12 +168,7 @@
     margin-bottom: 14px;
 }
 
-.dr-filter-form {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 7px;
-}
+/* .*-filter-form base: shared, see admin-components.css (Filter form). */
 
 .dr-search-field,
 .dr-select-field {
@@ -251,26 +246,7 @@
     pointer-events: none;
 }
 
-.dr-filter-button,
-.dr-reset-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 37px;
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 10.5px;
-    font-weight: 680;
-    line-height: 1;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-        background-color .15s ease,
-        border-color .15s ease,
-        color .15s ease,
-        box-shadow .15s ease;
-}
+/* Button base (with font-family: inherit): shared, see admin-components.css (Buttons). */
 
 .dr-filter-button {
     padding: 0 13px;

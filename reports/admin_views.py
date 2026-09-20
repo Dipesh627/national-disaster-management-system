@@ -150,9 +150,9 @@ def admin_required(view_func):
 def _admin_topbar_context(request=None):
     """
     Context shared by every Admin shell page (base.html): the
-    notification bell, plus the signed-in admin's accessibility
-    preferences (reduce motion / high contrast / font size) so
-    the shell can apply them consistently on every page.
+    notification bell, plus the signed-in admin's Date Format
+    preference (admin_date_format), used by format_admin_date /
+    format_admin_datetime.
 
     Originally there was no separate "Admin notification"
     model/inbox in this project, so rather than fake one, the
@@ -239,9 +239,6 @@ def _admin_topbar_context(request=None):
 
         if admin_settings is not None:
 
-            context['admin_reduce_motion'] = admin_settings.reduce_motion
-            context['admin_high_contrast'] = admin_settings.high_contrast
-            context['admin_font_size'] = admin_settings.font_size
             context['admin_date_format'] = admin_settings.date_format
 
     else:

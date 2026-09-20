@@ -9,9 +9,8 @@
 
    Uses only the existing shared design tokens (--white,
    --text, --muted, --navy, --red, --border, --background,
-   --shadow-*, --c-*) defined in dashboard.css / citizen-
-   prefs.css, so Dark Mode, High Contrast and Text Size all
-   work automatically with no page-specific overrides.
+   --shadow-*, --c-*) defined in dashboard.css, so nothing
+   page-specific is duplicated here.
    ========================================================= */
 
 
