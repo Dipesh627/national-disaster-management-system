@@ -4,47 +4,8 @@
    ========================================================= */
 
 
-/* =========================================================
-   ROOT
-   ========================================================= */
-
-:root {
-
-    --red: #b42318;
-    --red-dark: #8f1d16;
-
-    --navy: #172033;
-    --navy-light: #202b40;
-    --navy-soft: #2b364b;
-
-    --text: #344054;
-    --muted: #667085;
-
-    --border: #e4e7ec;
-
-    --light-red: #fff7f6;
-    --white: #ffffff;
-
-    --background: #f8f9fb;
-    --soft-gray: #f2f4f7;
-
-    --green: #16794a;
-    --green-bg: #ecfdf3;
-
-    --orange: #b54708;
-    --orange-bg: #fffaeb;
-
-    --shadow-xs:
-        0 2px 8px rgba(23, 32, 51, .035);
-
-    --shadow-sm:
-        0 4px 14px rgba(23, 32, 51, .055);
-
-    --shadow-md:
-        0 10px 30px rgba(23, 32, 51, .075);
-
-}
-
+/* Design tokens (colours, shadows, radii) now live in
+   ndms-theme.css - the single Sentinel Teal source of truth. */
 
 /* =========================================================
    RESET
@@ -174,7 +135,7 @@ button {
         var(--navy-light);
 
     color:
-        var(--white);
+        var(--on-dark);
 
     z-index:
         1100;
@@ -192,27 +153,27 @@ button {
 
 .dashboard-brand {
 
-    min-height:
+    /* Same height as .dashboard-topbar, so the divider under the
+       logo lines up with the line under the topbar. */
+    height:
         78px;
 
     /* Brand must stay pinned to the top at full size — never
        compressed by the flex column when navigation content is
-       tall. (min-height already blocked visible shrinking; this
-       makes that intent explicit.) */
+       tall. */
     flex-shrink:
         0;
 
+    /* 23px = sidebar-navigation padding (12px) + link padding
+       (11px), so the logo's left edge lines up with the nav icons. */
     padding:
-        0 22px;
+        0 23px;
 
     display:
         flex;
 
     align-items:
         center;
-
-    gap:
-        11px;
 
     border-bottom:
         1px solid
@@ -221,108 +182,34 @@ button {
 }
 
 
+.dashboard-brand:focus-visible {
+
+    outline:
+        2px solid
+        var(--on-dark);
+
+    outline-offset:
+        -4px;
+
+}
+
+
 .dashboard-logo {
 
-    width:
-        40px;
-
     height:
-        40px;
+        36px;
 
-    border-radius:
-        8px;
-
-    background:
-        var(--red);
+    width:
+        auto;
 
     display:
-        flex;
+        block;
 
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    color:
-        var(--white);
-
-    font-size:
-        calc(13px * var(--ndms-font-scale, 1));
-
-    font-weight:
-        850;
-
-    letter-spacing:
-        .6px;
+    object-fit:
+        contain;
 
     flex-shrink:
         0;
-
-    transition:
-        transform .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
-
-}
-
-
-.dashboard-brand:hover .dashboard-logo {
-
-    background:
-        var(--red-dark);
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 6px 16px
-        rgba(180,35,24,.28);
-
-}
-
-
-.dashboard-brand-text {
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
-
-    min-width:
-        0;
-
-}
-
-
-.dashboard-brand-text strong {
-
-    font-size:
-        calc(18px * var(--ndms-font-scale, 1));
-
-    line-height:
-        1.15;
-
-    letter-spacing:
-        .2px;
-
-}
-
-
-.dashboard-brand-text span {
-
-    margin-top:
-        4px;
-
-    color:
-        rgba(255,255,255,.52);
-
-    font-size:
-        calc(8px * var(--ndms-font-scale, 1));
-
-    line-height:
-        1.25;
 
 }
 
@@ -483,7 +370,7 @@ button {
 .sidebar-link:hover {
 
     color:
-        var(--white);
+        var(--on-dark);
 
     background:
         rgba(255,255,255,.065);
@@ -497,7 +384,7 @@ button {
 .sidebar-link.active {
 
     color:
-        var(--white);
+        var(--on-dark);
 
     background:
         linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
@@ -535,7 +422,7 @@ button {
         0 3px 3px 0;
 
     background:
-        var(--red);
+        var(--blue-dark);
 
 }
 
@@ -582,11 +469,9 @@ button {
     border-radius:
         20px;
 
-    background:
-        var(--red);
+    background: var(--on-dark);
 
-    color:
-        var(--white);
+    color: var(--navy);
 
     display:
         flex;
@@ -676,7 +561,7 @@ button {
     background:
         rgba(255,255,255,.065);
 
-    color: var(--white);
+    color: var(--on-dark);
 
 }
 
@@ -730,9 +615,9 @@ button {
 .sidebar-footer-link:hover .sidebar-footer-icon,
 .sidebar-footer-link:focus-visible .sidebar-footer-icon {
 
-    background: var(--red);
+    background: rgba(255, 255, 255, .16);
 
-    color: var(--white);
+    color: var(--on-dark);
 
 }
 
@@ -821,7 +706,7 @@ button {
 .sidebar-footer-link:hover .sidebar-footer-arrow,
 .sidebar-footer-link:focus-visible .sidebar-footer-arrow {
 
-    color: var(--white);
+    color: var(--on-dark);
 
     transform: translateX(2px);
 
@@ -855,8 +740,7 @@ button {
     padding:
         0 30px;
 
-    background:
-        rgba(255,255,255,.97);
+    background: color-mix(in srgb, var(--white) 97%, transparent);
 
     border-bottom:
         1px solid var(--border);
@@ -925,7 +809,7 @@ button {
         1px 0 0;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(21px * var(--ndms-font-scale, 1));
@@ -993,7 +877,7 @@ button {
         2px;
 
     background:
-        var(--navy);
+        var(--heading);
 
     transition:
         transform .25s ease,
@@ -1084,14 +968,14 @@ button {
         var(--soft-gray);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
 
 .notification-button:focus-visible {
 
-    outline: 2px solid rgba(180,35,24,.55);
+    outline: 2px solid color-mix(in srgb, var(--red) 55%, transparent);
     outline-offset: 2px;
 
 }
@@ -1172,7 +1056,7 @@ button {
 
         box-shadow:
             0 0 0 0
-            rgba(180,35,24,.15);
+            color-mix(in srgb, var(--red) 15%, transparent);
 
     }
 
@@ -1180,7 +1064,7 @@ button {
 
         box-shadow:
             0 0 0 5px
-            rgba(180,35,24,.05);
+            color-mix(in srgb, var(--red) 5%, transparent);
 
     }
 
@@ -1284,7 +1168,7 @@ button {
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -1409,7 +1293,7 @@ button {
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -1515,7 +1399,7 @@ button {
         var(--green-bg);
 
     color:
-        var(--green);
+        var(--green-text);
 
     display:
         flex;
@@ -1538,7 +1422,7 @@ button {
 .notification-empty strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -1694,7 +1578,7 @@ button {
         nowrap;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -1817,7 +1701,7 @@ button {
 
     border:
         1px solid
-        rgba(180,35,24,.06);
+        color-mix(in srgb, var(--red) 6%, transparent);
 
 }
 
@@ -1862,7 +1746,7 @@ button {
 .welcome-content h2 {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(19px * var(--ndms-font-scale, 1));
@@ -1962,7 +1846,7 @@ button {
 
     box-shadow:
         0 5px 14px
-        rgba(180,35,24,.14);
+        color-mix(in srgb, var(--red) 14%, transparent);
 
 }
 
@@ -1977,7 +1861,7 @@ button {
 
     box-shadow:
         0 7px 18px
-        rgba(180,35,24,.20);
+        color-mix(in srgb, var(--red) 20%, transparent);
 
 }
 
@@ -1985,7 +1869,7 @@ button {
 .secondary-action {
 
     color:
-        var(--navy);
+        var(--heading);
 
     background:
         var(--white);
@@ -2041,7 +1925,7 @@ button {
         linear-gradient(
             35deg,
             transparent 49.5%,
-            rgba(180, 35, 24, .10) 50%,
+            color-mix(in srgb, var(--red) 10%, transparent) 50%,
             transparent 50.5%
         )
         0 0 / 100% 100% no-repeat;
@@ -2088,7 +1972,7 @@ button {
 
     border:
         1px dashed
-        rgba(180, 35, 24, .18);
+        color-mix(in srgb, var(--red) 18%, transparent);
 
     animation:
         network-drift
@@ -2109,8 +1993,7 @@ button {
 
     border-radius: 50%;
 
-    background:
-        rgba(255, 255, 255, .98);
+    background: color-mix(in srgb, var(--white) 98%, transparent);
 
     border:
         1px solid
@@ -2131,7 +2014,7 @@ button {
         rgba(23, 32, 51, .10),
 
         0 0 0 22px
-        rgba(180, 35, 24, .025);
+        color-mix(in srgb, var(--red) 2%, transparent);
 
     animation:
         central-float
@@ -2155,7 +2038,7 @@ button {
 
     border:
         1px solid
-        rgba(180, 35, 24, .25);
+        color-mix(in srgb, var(--red) 25%, transparent);
 
     animation:
         core-pulse
@@ -2181,10 +2064,10 @@ button {
         2px solid transparent;
 
     border-top-color:
-        rgba(180, 35, 24, .42);
+        color-mix(in srgb, var(--red) 42%, transparent);
 
     border-right-color:
-        rgba(180, 35, 24, .08);
+        color-mix(in srgb, var(--red) 8%, transparent);
 
     animation:
         radar-scan
@@ -2202,7 +2085,7 @@ button {
 
     z-index: 20;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(15px * var(--ndms-font-scale, 1));
 
@@ -2355,7 +2238,7 @@ button {
         2px;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(20px * var(--ndms-font-scale, 1));
@@ -2463,7 +2346,7 @@ button {
 
     border-radius: 0 3px 3px 0;
 
-    background: var(--navy);
+    background: var(--btn-dark);
 
 }
 
@@ -2519,7 +2402,7 @@ button {
 
     margin-top: 7px;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(24px * var(--ndms-font-scale, 1));
     line-height: 1;
@@ -2665,7 +2548,7 @@ button {
 .service-icon.navy {
 
     color:
-        var(--navy);
+        var(--heading);
 
     background:
         var(--soft-gray);
@@ -2706,7 +2589,7 @@ button {
 .service-content h3 {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -2887,7 +2770,7 @@ button {
 .reports-table td strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -2901,7 +2784,7 @@ button {
 .report-id {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -2969,7 +2852,7 @@ button {
 .status.verified {
 
     color:
-        var(--green);
+        var(--green-text);
 
     background:
         var(--green-bg);
@@ -2980,7 +2863,7 @@ button {
 .status.pending {
 
     color:
-        var(--orange);
+        var(--orange-text);
 
     background:
         var(--orange-bg);
@@ -2991,10 +2874,10 @@ button {
 .status.rejected {
 
     color:
-        var(--red);
+        var(--danger);
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
 }
 
@@ -3002,7 +2885,7 @@ button {
 .status.under-review {
 
     color:
-        var(--navy-light);
+        var(--blue-text);
 
     background:
         var(--soft-gray);
@@ -3050,7 +2933,7 @@ button {
 .severity-badge.low {
 
     color:
-        var(--green);
+        var(--green-text);
 
     background:
         var(--green-bg);
@@ -3061,7 +2944,7 @@ button {
 .severity-badge.medium {
 
     color:
-        var(--orange);
+        var(--orange-text);
 
     background:
         var(--orange-bg);
@@ -3083,10 +2966,10 @@ button {
 .severity-badge.critical {
 
     color:
-        var(--red);
+        var(--danger);
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
 }
 
@@ -3117,7 +3000,7 @@ button {
 .table-empty strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -3257,10 +3140,10 @@ button {
 .alert-card-icon.danger {
 
     color:
-        var(--red);
+        var(--danger);
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
 }
 
@@ -3268,7 +3151,7 @@ button {
 .alert-card-icon.information {
 
     color:
-        var(--navy);
+        var(--heading);
 
     background:
         var(--soft-gray);
@@ -3307,7 +3190,7 @@ button {
 .alert-card-heading h3 {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -3441,7 +3324,7 @@ button {
     border:
         1px solid var(--border);
     border-left:
-        4px solid var(--navy);
+        4px solid var(--red);
 
     border-radius:
         10px;
@@ -3498,7 +3381,7 @@ button {
 .ad-severity-low {
 
     color:
-        var(--green);
+        var(--green-text);
     background:
         var(--green-bg);
 
@@ -3509,7 +3392,7 @@ button {
 .ad-severity-high {
 
     color:
-        var(--orange);
+        var(--orange-text);
     background:
         var(--orange-bg);
 
@@ -3519,9 +3402,9 @@ button {
 .ad-severity-critical {
 
     color:
-        var(--red);
+        var(--danger);
     background:
-        var(--light-red);
+        var(--danger-bg);
 
 }
 
@@ -3547,7 +3430,7 @@ button {
 .ad-main strong {
 
     color:
-        var(--navy);
+        var(--heading);
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
     line-height:
@@ -3621,7 +3504,7 @@ button {
 .active-disasters-empty strong {
 
     color:
-        var(--navy);
+        var(--heading);
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
 
@@ -3820,11 +3703,18 @@ button {
 
     .dashboard-brand {
 
-        min-height:
-            56px;
+        height:
+            68px;
 
         padding:
-            0 18px;
+            0 20px;
+
+    }
+
+    .dashboard-logo {
+
+        height:
+            32px;
 
     }
 
@@ -4296,7 +4186,7 @@ button {
 .sidebar-footer-link--minimal:focus-visible .sidebar-footer-icon--plain {
 
     color:
-        var(--white);
+        var(--on-dark);
 
     transform:
         translateX(-3px);
@@ -4318,7 +4208,7 @@ button {
 .notification-item-icon.verified {
 
     color:
-        var(--green);
+        var(--green-text);
 
     background:
         var(--green-bg);
@@ -4329,10 +4219,10 @@ button {
 .notification-item-icon.rejected {
 
     color:
-        var(--red);
+        var(--danger);
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
 }
 
@@ -4340,7 +4230,7 @@ button {
 .notification-item-icon.under-review {
 
     color:
-        var(--orange);
+        var(--orange-text);
 
     background:
         var(--orange-bg);
@@ -4351,10 +4241,10 @@ button {
 .notification-item-icon.disaster-alert {
 
     color:
-        var(--red);
+        var(--orange-text);
 
     background:
-        var(--light-red);
+        var(--orange-bg);
 
 }
 
@@ -4363,7 +4253,7 @@ button {
 .notification-item-icon.general {
 
     color:
-        var(--navy);
+        var(--heading);
 
     background:
         var(--soft-gray);
@@ -4506,7 +4396,7 @@ button.notification-item {
 .alert-card-icon.verified {
 
     color:
-        var(--green);
+        var(--green-text);
 
     background:
         var(--green-bg);
@@ -4517,10 +4407,10 @@ button.notification-item {
 .alert-card-icon.rejected {
 
     color:
-        var(--red);
+        var(--danger);
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
 }
 
@@ -4528,7 +4418,7 @@ button.notification-item {
 .alert-card-icon.under-review {
 
     color:
-        var(--orange);
+        var(--orange-text);
 
     background:
         var(--orange-bg);
@@ -4595,13 +4485,13 @@ button.notification-item {
 }
 
 .page-breadcrumb span:first-child {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 650;
 }
 
 .page-breadcrumb .breadcrumb-separator {
     flex: 0 0 auto;
-    color: #98a2b3;
+    color: var(--muted);
     font-weight: 400;
 }
 
@@ -4666,7 +4556,7 @@ button.notification-item {
 
     position: relative;
 
-    color: var(--white);
+    color: var(--on-dark);
     background: linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.045);
     font-weight: 600;
@@ -4688,7 +4578,7 @@ button.notification-item {
 
     border-radius: 0 3px 3px 0;
 
-    background: var(--red);
+    background: var(--blue-dark);
 
 }
 
@@ -4769,19 +4659,19 @@ button.notification-item {
 }
 
 .sidebar-sublink:hover {
-    color: var(--white);
+    color: var(--on-dark);
     background: rgba(255,255,255,.06);
 }
 
 .sidebar-sublink.active {
-    color: var(--white);
+    color: var(--on-dark);
     font-weight: 700;
     background: linear-gradient(90deg, rgba(255,255,255,.075), rgba(255,255,255,.045));
     box-shadow: inset 0 0 0 1px rgba(255,255,255,.045);
 }
 
 .sidebar-sublink.active::before {
-    background: var(--red);
+    background: var(--blue-dark);
 }
 
 
@@ -4790,7 +4680,7 @@ button.notification-item {
    Same small, non-animated dot as the public navbar (see
    navbar-avatar.css) -- reused here beside the sidebar
    "Disasters" group and its "View Disasters" submenu item.
-   Uses the existing --red token, so no extra overrides needed.
+   Uses --blue-dark (information), matching navbar-avatar.css.
    --------------------------------------------------------- */
 
 .disaster-unread-dot {
@@ -4802,7 +4692,7 @@ button.notification-item {
 
     border-radius: 50%;
 
-    background: var(--red);
+    background: var(--blue-dark);
 }
 
 /* .sidebar-group-toggle already lays its children out with
@@ -4831,7 +4721,7 @@ button.notification-item {
 .sidebar-sublink:focus-visible,
 .mobile-sidebar-toggle:focus-visible {
 
-    outline: 2px solid rgba(180,35,24,.7);
+    outline: 2px solid color-mix(in srgb, var(--red) 70%, transparent);
     outline-offset: 2px;
 
 }
@@ -4868,4 +4758,55 @@ html[data-motion="reduced"] .sidebar-group-caret {
 
 html[data-motion="reduced"] .sidebar-submenu {
     transition: none;
+}
+
+
+/* =========================================================
+   TOP BAR - SMALL SCREENS
+   The theme toggle added a 40px control to .topbar-right.
+   Let the title area shrink (the breadcrumb already ellipsizes)
+   and tighten the right cluster so nothing overflows at 320px.
+   ========================================================= */
+
+.topbar-left {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.page-identity {
+    min-width: 0;
+}
+
+.page-heading h1 {
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.topbar-right {
+    flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+
+    .topbar-left {
+        gap: 10px;
+    }
+
+    .topbar-right {
+        gap: 4px;
+    }
+
+    .topbar-right .theme-toggle {
+        width: 38px;
+        height: 38px;
+
+        border-color: transparent;
+        background: transparent;
+    }
+
+    .topbar-right .theme-toggle:hover {
+        background: var(--soft-gray);
+    }
 }

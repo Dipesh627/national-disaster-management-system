@@ -49,7 +49,7 @@
 
 .django-message-error {
 
-    border-left: 4px solid var(--red);
+    border-left: 4px solid var(--danger);
 
 }
 
@@ -67,7 +67,7 @@
     border-radius: 50%;
 
     background: var(--green-bg);
-    color: var(--green);
+    color: var(--green-text);
 
     font-weight: 800;
 
@@ -165,7 +165,7 @@
         4px;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(22px * var(--ndms-font-scale, 1));
@@ -232,7 +232,7 @@
         var(--orange-bg);
 
     color:
-        var(--orange);
+        var(--orange-text);
 
 }
 
@@ -243,7 +243,7 @@
         var(--soft-gray);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -254,7 +254,7 @@
         var(--green-bg);
 
     color:
-        var(--green);
+        var(--green-text);
 
 }
 
@@ -262,10 +262,10 @@
 .rd-status-pill.rejected {
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
     color:
-        var(--red);
+        var(--danger);
 
 }
 
@@ -331,7 +331,7 @@
         3px;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(15px * var(--ndms-font-scale, 1));
@@ -397,7 +397,7 @@
 .rd-info-value {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -580,20 +580,20 @@
 
 .rd-layer-btn.active {
 
-    background: var(--navy);
+    background: var(--btn-dark);
 
-    color: var(--white);
+    color: var(--on-dark);
 
     box-shadow: 0 2px 8px rgba(23, 32, 51, 0.35);
 }
 
 .rd-layer-btn.active:hover {
-    background: var(--navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .rd-layer-btn:focus-visible {
 
-    outline: 2px solid var(--navy);
+    outline: 2px solid var(--red);
     outline-offset: 2px;
 }
 
@@ -756,7 +756,7 @@
         var(--soft-gray);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -767,7 +767,7 @@
         var(--orange-bg);
 
     color:
-        var(--orange);
+        var(--orange-text);
 
 }
 
@@ -778,7 +778,7 @@
         var(--soft-gray);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -789,7 +789,7 @@
         var(--green-bg);
 
     color:
-        var(--green);
+        var(--green-text);
 
 }
 
@@ -797,10 +797,10 @@
 .rd-status-icon.rejected {
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
     color:
-        var(--red);
+        var(--danger);
 
 }
 
@@ -811,7 +811,7 @@
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -966,7 +966,7 @@
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));
@@ -1045,11 +1045,11 @@
 
     padding: 11px 20px;
 
-    border: 1px solid var(--red);
+    border: 1px solid var(--danger);
     border-radius: 9px;
 
     background: var(--white);
-    color: var(--red);
+    color: var(--danger);
 
     font-family: inherit;
     font-size: calc(12.5px * var(--ndms-font-scale, 1));
@@ -1066,14 +1066,14 @@
 .rd-delete-action:hover,
 .rd-delete-action:focus-visible {
 
-    background: var(--red);
+    background: var(--danger);
     color: var(--white);
 
 }
 
 .rd-delete-action:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--danger);
     outline-offset: 3px;
 
 }
@@ -1133,7 +1133,7 @@
 
     margin: 0 0 9px;
 
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(19px * var(--ndms-font-scale, 1));
     font-weight: 750;
 
@@ -1200,8 +1200,8 @@
 
 .rd-delete-confirm {
 
-    border: 1px solid var(--red);
-    background: var(--red);
+    border: 1px solid var(--danger);
+    background: var(--danger);
     color: var(--white);
 
 }
@@ -1214,7 +1214,7 @@
 
 .rd-delete-modal-actions button:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--danger);
     outline-offset: 2px;
 
 }
@@ -1368,7 +1368,7 @@
         var(--white);
 
     color:
-        var(--navy);
+        var(--heading);
 
     display:
         flex;
@@ -1598,17 +1598,17 @@
 /* DISASTER STATUS */
 
 .rd-official-status-active {
-    color: var(--red);
-    background: var(--light-red);
+    color: var(--orange-text);
+    background: var(--orange-bg);
 }
 
 .rd-official-status-under_control {
-    color: var(--orange);
+    color: var(--orange-text);
     background: var(--orange-bg);
 }
 
 .rd-official-status-resolved {
-    color: var(--green);
+    color: var(--green-text);
     background: var(--green-bg);
 }
 
@@ -1621,12 +1621,12 @@
 /* SEVERITY */
 
 .rd-official-severity-low {
-    color: var(--green);
+    color: var(--green-text);
     background: var(--green-bg);
 }
 
 .rd-official-severity-medium {
-    color: var(--orange);
+    color: var(--orange-text);
     background: var(--orange-bg);
 }
 
@@ -1636,8 +1636,8 @@
 }
 
 .rd-official-severity-critical {
-    color: var(--red);
-    background: var(--light-red);
+    color: var(--danger);
+    background: var(--danger-bg);
 }
 
 
@@ -1684,7 +1684,7 @@
         8px;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));

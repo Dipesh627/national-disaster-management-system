@@ -50,13 +50,13 @@
     height: 7px;
     border-radius: 50%;
     background: var(--red);
-    box-shadow: 0 0 0 3px rgba(180, 35, 24, .16);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 16%, transparent);
 }
 
 .disaster-page-title {
     font-size: calc(clamp(24px, 3.2vw, 32px) * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.25;
     margin: 0 0 8px;
     letter-spacing: -.3px;
@@ -122,8 +122,8 @@
 }
 
 .disaster-search-input:focus {
-    border-color: var(--c-muted-3);
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--red);
+    box-shadow: var(--field-focus-ring);
 }
 
 .disaster-filter-select-wrap {
@@ -148,8 +148,8 @@
 }
 
 .disaster-filter-select:focus {
-    border-color: var(--c-muted-3);
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--red);
+    box-shadow: var(--field-focus-ring);
 }
 
 .disaster-filter-actions {
@@ -165,9 +165,9 @@
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
     font-weight: 680;
     font-family: inherit;
-    color: var(--white);
-    background: var(--navy);
-    border: 1px solid var(--navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
     border-radius: 7px;
     cursor: pointer;
     display: inline-flex;
@@ -178,7 +178,7 @@
 }
 
 .disaster-btn-search:hover {
-    background: var(--navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .disaster-btn-clear {
@@ -200,7 +200,7 @@
 }
 
 .disaster-btn-clear:hover {
-    color: var(--navy);
+    color: var(--heading);
     text-decoration: underline;
 }
 
@@ -216,7 +216,7 @@
 }
 
 .disaster-meta-count strong {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 700;
 }
 
@@ -253,18 +253,18 @@
 }
 
 .ds-status-active {
-    color: var(--red);
-    background: var(--c-red-50);
-    border: 1px solid rgba(180, 35, 24, .18);
+    color: var(--orange-text);
+    background: var(--orange-bg);
+    border: 1px solid color-mix(in srgb, var(--orange-text) 18%, transparent);
 }
 .ds-status-active .ds-status-dot {
-    background: var(--red);
+    background: var(--orange-text);
 }
 
 .ds-status-under_control {
     color: var(--amber-dark);
     background: var(--amber-bg);
-    border: 1px solid rgba(181, 71, 8, .18);
+    border: 1px solid color-mix(in srgb, var(--orange-text) 18%, transparent);
 }
 .ds-status-under_control .ds-status-dot {
     background: var(--amber-dark);
@@ -273,7 +273,7 @@
 .ds-status-resolved {
     color: var(--green-dark);
     background: var(--green-bg);
-    border: 1px solid rgba(2, 122, 72, .18);
+    border: 1px solid color-mix(in srgb, var(--green-text) 18%, transparent);
 }
 .ds-status-resolved .ds-status-dot {
     background: var(--green-dark);
@@ -282,7 +282,7 @@
 .ds-status-closed {
     color: var(--c-text-2);
     background: var(--soft-gray);
-    border: 1px solid rgba(71, 84, 103, .18);
+    border: 1px solid color-mix(in srgb, var(--muted) 18%, transparent);
 }
 .ds-status-closed .ds-status-dot {
     background: var(--c-muted-2);
@@ -318,9 +318,9 @@
 }
 
 .ds-severity-critical {
-    color: var(--red);
-    background: var(--c-red-50);
-    border: 1px solid rgba(180, 35, 24, .2);
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid color-mix(in srgb, var(--danger) 20%, transparent);
 }
 
 .response-status {
@@ -340,7 +340,7 @@
 }
 
 .response-in_progress {
-    color: var(--blue-dark);
+    color: var(--blue-text);
     background: var(--blue-bg);
 }
 
@@ -398,7 +398,7 @@
 .disaster-card-title {
     font-size: calc(17.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.35;
     margin: 6px 0 0;
 }
@@ -428,7 +428,7 @@
 }
 
 .disaster-card-meta-label {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 600;
 }
 
@@ -457,7 +457,7 @@
     font-weight: 700;
     color: var(--red);
     background: var(--light-red);
-    border: 1px solid rgba(180, 35, 24, .15);
+    border: 1px solid color-mix(in srgb, var(--red) 15%, transparent);
     border-radius: 6px;
     text-decoration: none;
     transition: background 160ms ease, color 160ms ease, transform 160ms ease;
@@ -502,7 +502,7 @@
 .disaster-empty-title {
     font-size: calc(18px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 6px;
 }
 
@@ -551,7 +551,7 @@
 
 .disaster-page-link:hover {
     background: var(--soft-gray);
-    color: var(--navy);
+    color: var(--heading);
     border-color: var(--c-border-6);
 }
 
@@ -611,7 +611,7 @@
 .disaster-detail-title {
     font-size: calc(clamp(22px, 3vw, 30px) * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.25;
     margin: 0;
 }
@@ -635,7 +635,7 @@
 }
 
 .disaster-detail-meta-item strong {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 650;
 }
 
@@ -673,7 +673,7 @@
 .disaster-section-title {
     font-size: calc(16px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0;
 }
 
@@ -704,7 +704,7 @@
 }
 
 .disaster-info-value {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 500;
 }
 
@@ -814,7 +814,7 @@
 .disaster-timeline-agency {
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -880,7 +880,7 @@
 .disaster-reports-icon {
     width: 20px;
     height: 20px;
-    color: var(--blue-dark);
+    color: var(--blue-text);
     flex-shrink: 0;
 }
 

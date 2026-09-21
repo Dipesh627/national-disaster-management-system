@@ -67,9 +67,9 @@ My Profile
                         alt=""
                     >
 
-                {% elif request.user.full_name %}
+                {% elif request.user.get_full_name %}
 
-                    {{ request.user.full_name|first|upper }}
+                    {{ request.user.get_full_name|first|upper }}
 
                 {% else %}
 
@@ -158,9 +158,9 @@ My Profile
 
             <h2>
 
-                {% if request.user.full_name %}
+                {% if request.user.get_full_name %}
 
-                    {{ request.user.full_name }}
+                    {{ request.user.get_full_name }}
 
                 {% else %}
 
@@ -244,14 +244,37 @@ My Profile
             <div class="ap-view-field">
 
                 <span class="ap-view-label">
-                    Full Name
+                    First Name
                 </span>
 
                 <span class="ap-view-value">
 
-                    {% if request.user.full_name %}
+                    {% if request.user.first_name %}
 
-                        {{ request.user.full_name }}
+                        {{ request.user.first_name }}
+
+                    {% else %}
+
+                        Not provided
+
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="ap-view-field">
+
+                <span class="ap-view-label">
+                    Last Name
+                </span>
+
+                <span class="ap-view-value">
+
+                    {% if request.user.last_name %}
+
+                        {{ request.user.last_name }}
 
                     {% else %}
 
@@ -332,17 +355,37 @@ My Profile
 
                 <div class="ap-form-group">
 
-                    <label for="id_full_name">
-                        Full Name
+                    <label for="id_first_name">
+                        First Name
                         <span class="ap-required">*</span>
                     </label>
 
-                    {{ profile_form.full_name }}
+                    {{ profile_form.first_name }}
 
-                    {% if profile_form.full_name.errors %}
+                    {% if profile_form.first_name.errors %}
 
                         <span class="ap-field-error">
-                            {{ profile_form.full_name.errors.0 }}
+                            {{ profile_form.first_name.errors.0 }}
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="ap-form-group">
+
+                    <label for="id_last_name">
+                        Last Name
+                        <span class="ap-required">*</span>
+                    </label>
+
+                    {{ profile_form.last_name }}
+
+                    {% if profile_form.last_name.errors %}
+
+                        <span class="ap-field-error">
+                            {{ profile_form.last_name.errors.0 }}
                         </span>
 
                     {% endif %}
@@ -625,9 +668,9 @@ My Profile
 
                         <span id="apPhotoPreviewInitials">
 
-                            {% if request.user.full_name %}
+                            {% if request.user.get_full_name %}
 
-                                {{ request.user.full_name|first|upper }}
+                                {{ request.user.get_full_name|first|upper }}
 
                             {% else %}
 

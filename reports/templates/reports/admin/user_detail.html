@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-{{ target_user.full_name|default:target_user.username }} | NDMS Administration
+{{ target_user.get_full_name|default:target_user.username }} | NDMS Administration
 {% endblock %}
 
 
@@ -71,7 +71,7 @@ Citizen Profile
 
                             <span class="ud-admin-avatar-fallback">
 
-                                {{ target_user.full_name|default:target_user.username|first|upper }}
+                                {{ target_user.get_full_name|default:target_user.username|first|upper }}
 
                             </span>
 
@@ -83,7 +83,7 @@ Citizen Profile
                     <div>
 
                         <h1>
-                            {{ target_user.full_name|default:target_user.username }}
+                            {{ target_user.get_full_name|default:target_user.username }}
                         </h1>
 
                         <p class="ud-admin-header-meta">
@@ -170,7 +170,7 @@ Citizen Profile
 
                         <span class="ud-admin-info-value">
 
-                            {{ target_user.full_name|default:target_user.username }}
+                            {{ target_user.get_full_name|default:target_user.username }}
 
                         </span>
 

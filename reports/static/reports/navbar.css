@@ -1,0 +1,843 @@
+/* =========================================================
+   NDMS - GLOBAL PUBLIC NAVBAR
+   ---------------------------------------------------------
+   Markup: templates/reports/partials/navbar.html
+   Brand is the logo only (no title text).
+   ========================================================= */
+
+/* =========================================================
+   1. HEADER SHELL + SCROLL STATE
+   ========================================================= */
+
+/* 1px marker at the top of the page. public-nav.js watches it
+   with IntersectionObserver (no scroll listener) and adds
+   .is-scrolled to the header once it leaves the viewport. */
+.nav-sentinel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+}
+
+.public-navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+
+    transition:
+        box-shadow .2s ease,
+        background-color .2s ease;
+}
+
+.public-navbar.is-scrolled {
+    box-shadow: var(--shadow-sm);
+}
+
+.public-navbar-inner {
+    width: min(1240px, calc(100% - 48px));
+    min-height: 68px;
+    margin-inline: auto;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 24px;
+
+    transition: min-height .2s ease;
+}
+
+.public-navbar.is-scrolled .public-navbar-inner {
+    min-height: 62px;
+}
+
+
+/* =========================================================
+   2. BRAND
+   ========================================================= */
+
+.public-brand {
+    justify-self: start;
+    min-width: 0;
+
+    display: inline-flex;
+    align-items: center;
+
+    text-decoration: none;
+}
+
+.public-brand:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 4px;
+    border-radius: var(--radius-md);
+}
+
+.public-logo {
+    height: 32px;
+    width: auto;
+    flex-shrink: 0;
+
+    display: block;
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   3. PRIMARY NAVIGATION
+   ========================================================= */
+
+.public-mobile-menu {
+    align-self: stretch;
+
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.public-nav {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+}
+
+.public-nav > a,
+.public-nav-dropdown-toggle {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 0 12px;
+
+    border: 0;
+    background: none;
+
+    color: var(--text);
+    font-family: inherit;
+    font-size: calc(14.5px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition: color .18s ease;
+}
+
+/* Active / hover indicator: a 2px bar on the header's bottom edge. */
+.public-nav > a::after,
+.public-nav-dropdown-toggle::after {
+    content: "";
+
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: -1px;
+
+    height: 2px;
+
+    background: var(--red);
+
+    transform: scaleX(0);
+    transform-origin: center;
+
+    transition: transform .2s var(--ease);
+}
+
+.public-nav > a:hover,
+.public-nav-dropdown-toggle:hover,
+.public-nav-dropdown.open .public-nav-dropdown-toggle {
+    color: var(--red);
+}
+
+.public-nav > a:hover::after,
+.public-nav-dropdown-toggle:hover::after {
+    transform: scaleX(.5);
+}
+
+.public-nav > a.active,
+.public-nav-dropdown-toggle.active {
+    color: var(--red);
+}
+
+.public-nav > a.active::after,
+.public-nav-dropdown-toggle.active::after {
+    transform: scaleX(1);
+}
+
+.public-nav > a:focus-visible,
+.public-nav-dropdown-toggle:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: -4px;
+    border-radius: var(--radius-md);
+}
+
+.public-nav-dropdown-toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.public-nav-dropdown-caret {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+
+    transition: transform .2s ease;
+}
+
+.public-nav-dropdown.open .public-nav-dropdown-caret {
+    transform: rotate(180deg);
+}
+
+
+/* =========================================================
+   4. DROPDOWN PANELS
+   ========================================================= */
+
+.public-nav-dropdown {
+    position: relative;
+
+    display: flex;
+    align-items: stretch;
+}
+
+.public-nav-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    z-index: 1100;
+
+    width: 372px;
+    max-height: min(72vh, 520px);
+    overflow-y: auto;
+
+    padding: 8px;
+
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 6px);
+
+    transition:
+        opacity .16s ease,
+        transform .16s ease,
+        visibility .16s ease;
+}
+
+.public-nav-dropdown-menu--compact {
+    width: 340px;
+}
+
+.public-nav-dropdown.open .public-nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+}
+
+.nav-menu-list {
+    display: grid;
+    gap: 2px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.nav-menu-item {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: var(--radius-md);
+
+    color: var(--text);
+    text-decoration: none;
+
+    transition: background-color .16s ease;
+}
+
+.nav-menu-item:hover,
+.nav-menu-item:focus-visible {
+    background: var(--light-red);
+}
+
+.nav-menu-item:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: -2px;
+}
+
+.nav-menu-icon {
+    width: 36px;
+    height: 36px;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: var(--radius-md);
+
+    background: var(--light-red);
+    color: var(--red);
+
+    transition: background-color .16s ease;
+}
+
+.nav-menu-item:hover .nav-menu-icon,
+.nav-menu-item:focus-visible .nav-menu-icon {
+    background: var(--white);
+}
+
+.nav-menu-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.nav-menu-text strong {
+    display: block;
+
+    color: var(--heading);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+.nav-menu-text small {
+    display: block;
+
+    margin-top: 2px;
+
+    color: var(--muted);
+
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    line-height: 1.45;
+}
+
+.nav-menu-empty {
+    padding: 12px;
+
+    color: var(--muted);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    line-height: 1.5;
+}
+
+.nav-menu-heading {
+    margin: 12px 12px 8px;
+
+    color: var(--muted);
+
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+}
+
+.nav-menu-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+
+    margin: 0;
+    padding: 0 12px 10px;
+
+    list-style: none;
+}
+
+.nav-menu-chips a {
+    display: inline-block;
+
+    padding: 5px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+
+    background: var(--white);
+    color: var(--text);
+
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+    text-decoration: none;
+
+    transition:
+        border-color .16s ease,
+        color .16s ease,
+        background-color .16s ease;
+}
+
+.nav-menu-chips a:hover,
+.nav-menu-chips a:focus-visible {
+    border-color: var(--red);
+    background: var(--light-red);
+    color: var(--red);
+}
+
+.nav-menu-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 6px;
+    padding: 12px 14px 8px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--red);
+
+    font-size: calc(13.5px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.nav-menu-footer svg {
+    width: 16px;
+    height: 16px;
+
+    transition: transform .18s ease;
+}
+
+.nav-menu-footer:hover svg,
+.nav-menu-footer:focus-visible svg {
+    transform: translateX(3px);
+}
+
+.nav-menu-footer:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: -2px;
+    border-radius: var(--radius-md);
+}
+
+
+/* =========================================================
+   5. ACCOUNT ACTIONS
+   ========================================================= */
+
+.public-auth {
+    justify-self: end;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Login: secondary (outline) so it never competes with the CTA. */
+.public-login-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+    padding: 0 16px;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background: transparent;
+    color: var(--heading);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        border-color .18s ease,
+        color .18s ease,
+        background-color .18s ease;
+}
+
+.public-login-btn:hover {
+    border-color: var(--red);
+    background: var(--light-red);
+    color: var(--red);
+}
+
+/* Get Started / Report Incident: the single primary action. */
+.public-register-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+    padding: 0 18px;
+
+    border: 1px solid var(--red);
+    border-radius: var(--radius-md);
+
+    background: var(--red);
+    color: var(--white);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    text-decoration: none;
+    white-space: nowrap;
+
+    transition:
+        background-color .18s ease,
+        border-color .18s ease;
+}
+
+.public-register-btn:hover {
+    border-color: var(--red-dark);
+    background: var(--red-dark);
+}
+
+.public-login-btn:focus-visible,
+.public-register-btn:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+}
+
+/* Mobile-panel copies of the actions: desktop hides them. */
+.public-menu-actions {
+    display: none;
+}
+
+
+/* =========================================================
+   6. HAMBURGER
+   ========================================================= */
+
+.mobile-menu-toggle {
+    display: none;
+
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    padding: 0;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    background: var(--white);
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        border-color .18s ease;
+}
+
+.mobile-menu-toggle:hover {
+    background: var(--light-red);
+    border-color: color-mix(in srgb, var(--red) 35%, var(--border));
+}
+
+.mobile-menu-toggle:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 2px;
+}
+
+.mobile-menu-toggle span {
+    display: block;
+
+    width: 20px;
+    height: 2px;
+
+    border-radius: 2px;
+
+    background: var(--heading);
+
+    transition:
+        transform .2s ease,
+        opacity .2s ease;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+
+/* =========================================================
+   7. MOBILE LAYOUT
+   ========================================================= */
+
+@media (max-width: 1120px) {
+
+    .public-navbar-inner {
+        width: min(100% - 32px, 1240px);
+        min-height: 64px;
+
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .public-navbar.is-scrolled .public-navbar-inner {
+        min-height: 60px;
+    }
+
+    .public-brand {
+        margin-right: auto;
+    }
+
+    .mobile-menu-toggle {
+        display: inline-flex;
+    }
+
+    /* Login / Get Started / Report Incident move into the panel. */
+    .public-auth > .public-login-btn,
+    .public-auth > .public-register-btn {
+        display: none;
+    }
+
+    .public-auth {
+        gap: 8px;
+    }
+
+    /* ---- Collapsible panel ---- */
+
+    .public-mobile-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-start;
+
+        max-height: calc(100vh - 64px);
+        max-height: calc(100dvh - 64px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+
+        padding: 4px max(16px, calc((100% - 1240px) / 2)) 20px;
+
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+    }
+
+    .public-mobile-menu.open {
+        display: flex;
+        animation: navPanelIn .18s ease-out;
+    }
+
+    .public-nav {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .public-nav > a,
+    .public-nav-dropdown-toggle {
+        justify-content: space-between;
+
+        width: 100%;
+        min-height: 50px;
+        padding: 14px 4px;
+
+        border-bottom: 1px solid var(--border);
+
+        font-size: calc(16px * var(--ndms-font-scale, 1));
+        text-align: left;
+    }
+
+    /* The bottom bar indicator becomes plain coloured text. */
+    .public-nav > a::after,
+    .public-nav-dropdown-toggle::after {
+        display: none;
+    }
+
+    .public-nav > a.active,
+    .public-nav-dropdown-toggle.active {
+        font-weight: 700;
+    }
+
+    .public-nav > a:focus-visible,
+    .public-nav-dropdown-toggle:focus-visible {
+        outline-offset: -2px;
+    }
+
+    /* ---- Dropdowns become inline accordions ---- */
+
+    .public-nav-dropdown {
+        display: block;
+    }
+
+    .public-nav-dropdown-menu,
+    .public-nav-dropdown-menu--compact {
+        position: static;
+
+        display: none;
+
+        width: auto;
+        max-height: none;
+        overflow: visible;
+
+        padding: 4px 0 8px 6px;
+
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        border-radius: 0;
+        box-shadow: none;
+
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .public-nav-dropdown.open .public-nav-dropdown-menu {
+        display: block;
+        transform: none;
+    }
+
+    .nav-menu-item {
+        padding: 10px 8px;
+    }
+
+    .nav-menu-footer {
+        margin-top: 2px;
+        padding: 12px 8px 6px;
+    }
+
+    /* ---- Actions inside the panel ---- */
+
+    .public-menu-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        margin-top: 18px;
+    }
+
+    .public-menu-actions .public-login-btn,
+    .public-menu-actions .public-register-btn {
+        width: 100%;
+        min-height: 48px;
+
+        font-size: calc(15px * var(--ndms-font-scale, 1));
+    }
+
+    /* The Report Incident shortcut is duplicated in the panel. */
+    .public-auth .public-report-btn {
+        display: none;
+    }
+
+    /* ---- Account dropdown: anchor to the header, not the avatar,
+       so it can never be pushed off the left edge. ---- */
+
+    .public-auth .ndms-avatar-wrapper {
+        position: static;
+    }
+
+    .public-auth .ndms-avatar-menu {
+        top: calc(100% + 6px);
+        right: max(16px, calc((100% - 1240px) / 2));
+
+        width: min(300px, calc(100vw - 32px));
+    }
+}
+
+@keyframes navPanelIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
+}
+
+
+/* =========================================================
+   8. SMALL PHONES (320 - 480px)
+   The full name stays visible: the subtitle wraps instead
+   of being hidden.
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .public-navbar-inner {
+        width: calc(100% - 24px);
+        gap: 6px;
+    }
+
+    .public-mobile-menu {
+        padding-inline: 12px;
+    }
+
+    .public-auth .ndms-avatar-menu {
+        right: 12px;
+    }
+
+    .public-logo {
+        height: 28px;
+    }
+
+    .public-auth .theme-toggle,
+    .mobile-menu-toggle {
+        width: 40px;
+        height: 40px;
+    }
+
+    .public-auth .ndms-avatar-btn {
+        height: 40px;
+        padding: 2px;
+    }
+
+    .public-auth .ndms-avatar-circle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .public-auth .ndms-avatar-caret {
+        display: none;
+    }
+}
+
+
+/* =========================================================
+   9. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .public-navbar,
+    .public-navbar-inner,
+    .public-nav > a,
+    .public-nav > a::after,
+    .public-nav-dropdown-toggle,
+    .public-nav-dropdown-toggle::after,
+    .public-nav-dropdown-caret,
+    .public-nav-dropdown-menu,
+    .nav-menu-item,
+    .nav-menu-icon,
+    .nav-menu-footer svg,
+    .public-login-btn,
+    .public-register-btn,
+    .mobile-menu-toggle,
+    .mobile-menu-toggle span {
+        transition: none;
+    }
+
+    .public-mobile-menu.open {
+        animation: none;
+    }
+}

@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const firstField =
             editForm
-                ? editForm.querySelector("#id_full_name")
+                ? editForm.querySelector("#id_first_name")
                 : null;
 
         if (firstField) {

@@ -52,7 +52,7 @@ Support Request
             <div class="sr-detail-meta-item">
                 <span class="sr-detail-label">Citizen</span>
                 <span class="sr-detail-value">
-                    {{ support_request.user.full_name|default:support_request.user.username }}
+                    {{ support_request.user.get_full_name|default:support_request.user.username }}
                 </span>
             </div>
 

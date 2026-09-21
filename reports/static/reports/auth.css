@@ -1,0 +1,1419 @@
+/* =========================================================
+   NDMS - CITIZEN AUTHENTICATION
+   ---------------------------------------------------------
+   One stylesheet for every full-screen Citizen auth page:
+
+     Login              templates/reports/login.html
+     Register           templates/reports/register.html
+     Forgot password    templates/reports/forgot_password.html
+     Reset link sent    templates/reports/password_reset_sent.html
+     Set new password   templates/reports/password_reset_confirm.html
+                        (valid form + expired-link state)
+     Password changed   templates/reports/password_reset_complete.html
+
+   All of them extend templates/reports/auth_base.html, which
+   owns the shell (brand panel + form panel). This file replaces
+   the old login.css and register.css.
+
+   The logged-in "Change password" page is NOT an auth page: it
+   stays inside the Citizen Dashboard shell (see profile.css).
+
+   Colour comes only from ndms-theme.css. Reminder: --red is the
+   Sentinel TEAL primary (the name is historical). Real errors use
+   --danger, success uses --green-*, warnings use --orange-*.
+
+   Sections
+     1. Tokens
+     2. Reset + page
+     3. Shell (split layout)
+     4. Brand panel
+     5. Form panel + card
+     6. Heading + status icon
+     7. Alert
+     8. Fields (label, input, password toggle, hint, error)
+     9. Checkboxes + consent
+    10. Buttons
+    11. Links + switch line
+    12. Panel footer
+    13. Responsive
+    14. Reduced motion
+   ========================================================= */
+
+
+/* =========================================================
+   1. TOKENS
+   Local aliases only - nothing here introduces a new colour.
+   ========================================================= */
+
+.auth-page {
+
+    /* Page behind the white card: a whisper of teal. */
+    --auth-page-bg: color-mix(in srgb, var(--red) 5%, var(--background));
+
+    /* Input outline strong enough to be seen (WCAG 1.4.11),
+       still calmer than the text colour. */
+    --auth-field-border: color-mix(in srgb, var(--muted) 70%, var(--border));
+
+    --auth-placeholder: color-mix(in srgb, var(--muted) 88%, var(--white));
+
+    --auth-focus-ring: 0 0 0 3px color-mix(in srgb, var(--red) 20%, transparent);
+    --auth-danger-ring: 0 0 0 3px color-mix(in srgb, var(--danger) 18%, transparent);
+
+    --auth-radius: 10px;
+
+    /* Type scale */
+    --auth-fs-eyebrow: 11px;
+    --auth-fs-small: 13px;
+    --auth-fs-body: 15px;
+    --auth-fs-h1: clamp(28px, 3.2vw, 34px);
+
+    /* Icons are drawn with CSS masks so the markup stays free
+       of repeated inline SVG; they inherit currentColor. */
+    --auth-icon-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m13 6 6 6-6 6'/%3E%3C/svg%3E");
+
+    --auth-icon-eye: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6z'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3C/svg%3E");
+
+    --auth-icon-eye-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3l18 18'/%3E%3Cpath d='M10.6 6.2A10.6 10.6 0 0112 6c6.1 0 9.5 6 9.5 6a16.4 16.4 0 01-3.1 3.7'/%3E%3Cpath d='M6.2 6.8C3.8 8.5 2.5 12 2.5 12s3.4 6 9.5 6c1.5 0 2.8-.3 4-.9'/%3E%3Cpath d='M9.9 9.9a3 3 0 004.2 4.2'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   2. RESET + PAGE
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+html {
+
+    min-height: 100%;
+
+    /* Stop iOS from inflating text in landscape */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+
+body.auth-page {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    background: var(--auth-page-bg);
+
+    color: var(--text);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: var(--auth-fs-body);
+
+    line-height: 1.5;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* Only NDMS's own show/hide control is used. */
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+
+    display: none;
+}
+
+
+/* =========================================================
+   3. SHELL
+   Desktop: brand panel | form panel.
+   <= 900px: compact brand band on top, form below.
+   ========================================================= */
+
+.auth-shell {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(340px, 44%)
+        minmax(0, 1fr);
+}
+
+
+/* =========================================================
+   4. BRAND PANEL
+   Sticky, so on long pages (Register) it stays in view while
+   the form scrolls.
+   ========================================================= */
+
+.auth-brand {
+
+    position: sticky;
+
+    top: 0;
+
+    align-self: start;
+
+    height: 100vh;
+    height: 100dvh;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    background-color: var(--navy);
+
+    color: var(--on-dark);
+}
+
+
+/* Existing NDMS photograph (also used by the Admin login). The
+   URL is relative to this stylesheet: reports/images/... */
+
+.auth-brand::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -2;
+
+    background: url("images/disaster-about.jpg") 72% bottom / cover no-repeat;
+}
+
+
+/* Deep teal wash: solid where the text sits, lighter toward the
+   bottom so the photograph stays faintly visible. */
+
+.auth-brand::after {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -1;
+
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--navy) 96%, transparent) 0%,
+            color-mix(in srgb, var(--navy) 88%, transparent) 55%,
+            color-mix(in srgb, var(--navy) 74%, transparent) 100%
+        );
+}
+
+
+.auth-brand__inner {
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: 48px clamp(40px, 6vw, 84px);
+}
+
+
+.auth-brand__logo {
+
+    width: fit-content;
+
+    display: block;
+
+    border-radius: var(--radius-sm);
+}
+
+
+.auth-brand__logo img {
+
+    height: 52px;
+    width: auto;
+
+    display: block;
+
+    object-fit: contain;
+}
+
+
+.auth-brand__logo:focus-visible {
+
+    outline: 2px solid var(--on-dark);
+
+    outline-offset: 6px;
+}
+
+
+.auth-brand__title {
+
+    max-width: 12em;
+
+    margin-top: 30px;
+
+    color: var(--on-dark);
+
+    font-size: clamp(26px, 2.6vw, 34px);
+
+    font-weight: 650;
+
+    line-height: 1.15;
+
+    letter-spacing: -.02em;
+
+    text-wrap: balance;
+}
+
+
+.auth-brand__message {
+
+    max-width: 27rem;
+
+    margin-top: 16px;
+
+    color: var(--on-dark-muted);
+
+    font-size: 16px;
+
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   5. FORM PANEL + CARD
+   ========================================================= */
+
+.auth-panel {
+
+    min-width: 0;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.auth-main {
+
+    flex: 1 0 auto;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding:
+        clamp(32px, 5vw, 56px)
+        clamp(16px, 4vw, 48px)
+        clamp(20px, 3vw, 32px);
+}
+
+
+/* Skip-link target: a region, not a control */
+
+.auth-main:focus {
+
+    outline: none;
+}
+
+
+.auth-card {
+
+    width: 100%;
+
+    max-width: 440px;
+
+    min-width: 0;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius-lg);
+
+    padding: clamp(24px, 5vw, 40px);
+
+    box-shadow: var(--shadow-md);
+}
+
+
+/* Register: two-column rows need a little more room. */
+
+.auth-card--wide {
+
+    max-width: 560px;
+}
+
+
+/* =========================================================
+   6. HEADING + STATUS ICON
+   ========================================================= */
+
+.auth-heading {
+
+    margin-bottom: 28px;
+}
+
+
+.auth-eyebrow {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--red);
+
+    font-size: var(--auth-fs-eyebrow);
+
+    font-weight: 700;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+
+.auth-heading h1 {
+
+    color: var(--heading);
+
+    font-size: var(--auth-fs-h1);
+
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    letter-spacing: -.02em;
+
+    overflow-wrap: break-word;
+}
+
+
+.auth-lead {
+
+    max-width: 40ch;
+
+    margin-top: 10px;
+
+    color: var(--muted);
+
+    font-size: var(--auth-fs-body);
+
+    line-height: 1.6;
+}
+
+
+/* Status pages (email sent / link expired / password changed).
+   Tone is set by the modifier: info = teal, success = green,
+   warning = amber. */
+
+.auth-status {
+
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-bottom: 20px;
+
+    border: 1px solid var(--_status-border);
+
+    border-radius: 50%;
+
+    background: var(--_status-bg);
+
+    color: var(--_status-fg);
+}
+
+
+.auth-status svg {
+
+    width: 26px;
+    height: 26px;
+
+    display: block;
+}
+
+
+.auth-status--info {
+
+    --_status-fg: var(--red);
+    --_status-bg: var(--light-red);
+    --_status-border: color-mix(in srgb, var(--red) 24%, var(--border));
+}
+
+
+.auth-status--success {
+
+    --_status-fg: var(--green-text);
+    --_status-bg: var(--green-bg);
+    --_status-border: var(--green-border);
+}
+
+
+.auth-status--warning {
+
+    --_status-fg: var(--orange-text);
+    --_status-bg: var(--orange-bg);
+    --_status-border: var(--amber-border);
+}
+
+
+/* =========================================================
+   7. ALERT (errors)
+   Server-rendered and injected by auth.js with the same markup.
+   ========================================================= */
+
+.auth-alert {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    padding: 12px 14px;
+
+    border: 1px solid var(--danger-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--danger-bg);
+
+    color: var(--danger);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.5;
+}
+
+
+.auth-alert__icon {
+
+    width: 20px;
+    height: 20px;
+
+    flex: 0 0 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 1px;
+
+    border-radius: 50%;
+
+    background: var(--danger);
+
+    color: var(--white);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* wraps, even for one very long word */
+
+.auth-alert__text {
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   8. FIELDS
+   ========================================================= */
+
+.auth-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.auth-field {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* Two columns; minmax(0, 1fr) lets each shrink below its
+   content so an input can never force the row wider. */
+
+.auth-row {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px 16px;
+}
+
+
+.auth-label {
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+}
+
+
+.auth-input {
+
+    width: 100%;
+
+    min-width: 0;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--auth-field-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--white);
+
+    color: var(--text);
+
+    font-family: inherit;
+
+    font-size: var(--auth-fs-body);
+
+    /* Keeps a visible indicator in forced-colours mode */
+    outline: 2px solid transparent;
+
+    outline-offset: 2px;
+
+    /* when the keyboard opens the browser scrolls the field
+       into view; keep it clear of the screen edge */
+    scroll-margin-block: 24px;
+
+    transition:
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.auth-input::placeholder {
+
+    color: var(--auth-placeholder);
+
+    opacity: 1;
+}
+
+
+.auth-input:hover {
+
+    border-color: var(--muted);
+}
+
+
+.auth-input:focus {
+
+    border-color: var(--red);
+
+    box-shadow: var(--auth-focus-ring);
+}
+
+
+.auth-input[aria-invalid="true"] {
+
+    border-color: var(--danger);
+}
+
+
+.auth-input[aria-invalid="true"]:focus {
+
+    box-shadow: var(--auth-danger-ring);
+}
+
+
+/* ---------- Password show / hide ---------- */
+
+.auth-input-wrap {
+
+    position: relative;
+}
+
+
+.auth-input-wrap .auth-input {
+
+    /* room for the toggle so text never runs under it */
+    padding-right: 50px;
+}
+
+
+.auth-toggle {
+
+    position: absolute;
+
+    top: 50%;
+    right: 4px;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(-50%);
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease;
+}
+
+
+.auth-toggle::before {
+
+    content: "";
+
+    width: 20px;
+    height: 20px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--auth-icon-eye) center / contain no-repeat;
+    mask: var(--auth-icon-eye) center / contain no-repeat;
+}
+
+
+.auth-toggle[aria-pressed="true"]::before {
+
+    -webkit-mask-image: var(--auth-icon-eye-off);
+    mask-image: var(--auth-icon-eye-off);
+}
+
+
+.auth-toggle:hover {
+
+    background: var(--soft-gray);
+
+    color: var(--red);
+}
+
+
+.auth-toggle:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 1px;
+}
+
+
+/* ---------- Helper + error text ---------- */
+
+.auth-hint {
+
+    color: var(--muted);
+
+    font-size: var(--auth-fs-small);
+
+    line-height: 1.5;
+}
+
+
+/* Django renders password rules as a <ul> */
+
+.auth-hint ul {
+
+    display: grid;
+
+    gap: 2px;
+
+    padding-left: 18px;
+}
+
+
+.auth-field-error {
+
+    display: grid;
+
+    gap: 2px;
+
+    color: var(--danger);
+
+    font-size: var(--auth-fs-small);
+
+    font-weight: 600;
+
+    line-height: 1.45;
+
+    list-style: none;
+}
+
+
+/* =========================================================
+   9. CHECKBOXES + CONSENT
+   ========================================================= */
+
+.auth-check {
+
+    /* containing block for .sr-only text inside the label */
+    position: relative;
+
+    width: fit-content;
+
+    max-width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    min-height: 24px;
+
+    color: var(--text);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    cursor: pointer;
+}
+
+
+.auth-check input[type="checkbox"] {
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    accent-color: var(--red);
+
+    cursor: pointer;
+}
+
+
+/* the sentence wraps freely */
+
+.auth-check > span {
+
+    min-width: 0;
+
+    overflow-wrap: break-word;
+}
+
+
+/* Required Terms & Privacy consent (register). Checked again
+   on the server in views.register(). */
+
+.auth-consent {
+
+    padding: 14px;
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--background);
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease;
+}
+
+
+.auth-consent .auth-check {
+
+    width: auto;
+}
+
+
+.auth-consent.has-error {
+
+    border-color: var(--danger);
+
+    background: var(--danger-bg);
+}
+
+
+.auth-consent .auth-field-error {
+
+    margin: 8px 0 0 28px;
+}
+
+
+/* =========================================================
+   10. BUTTONS
+   One primary button for every auth action. Works on <button>
+   and <a>. Add .auth-btn--arrow for the trailing arrow.
+   ========================================================= */
+
+.auth-btn {
+
+    width: 100%;
+
+    min-height: 48px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 0 20px;
+
+    border: 1px solid transparent;
+
+    border-radius: var(--auth-radius);
+
+    background: var(--red);
+
+    /* --white flips to a dark surface in dark mode, which is
+       exactly the readable text colour on the lighter dark-mode teal */
+    color: var(--white);
+
+    font-family: inherit;
+
+    font-size: var(--auth-fs-body);
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.auth-btn:hover {
+
+    background: var(--red-dark);
+}
+
+
+.auth-btn:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 3px;
+}
+
+
+.auth-btn:disabled,
+.auth-btn[aria-disabled="true"] {
+
+    opacity: .6;
+
+    cursor: not-allowed;
+}
+
+
+.auth-btn--arrow::after {
+
+    content: "";
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--auth-icon-arrow) center / contain no-repeat;
+    mask: var(--auth-icon-arrow) center / contain no-repeat;
+
+    transition: transform .18s ease;
+}
+
+
+.auth-btn--arrow:hover::after {
+
+    transform: translateX(2px);
+}
+
+
+/* Busy state (login submits with fetch; see auth.js) */
+
+.auth-btn.is-loading {
+
+    pointer-events: none;
+
+    opacity: .85;
+}
+
+
+.auth-btn.is-loading::after {
+
+    content: "";
+
+    width: 16px;
+    height: 16px;
+
+    flex-shrink: 0;
+
+    border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+
+    border-top-color: currentColor;
+
+    border-radius: 50%;
+
+    background: none;
+
+    -webkit-mask: none;
+    mask: none;
+
+    transform: none;
+
+    animation: auth-spin .7s linear infinite;
+}
+
+
+@keyframes auth-spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   11. LINKS + SWITCH LINE
+   ========================================================= */
+
+.auth-link {
+
+    color: var(--red);
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    border-radius: 3px;
+}
+
+
+.auth-link:hover {
+
+    color: var(--red-dark);
+
+    text-decoration: underline;
+
+    text-underline-offset: 3px;
+}
+
+
+.auth-link:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 2px;
+}
+
+
+/* Links inside running text are always underlined */
+
+.auth-check .auth-link {
+
+    text-decoration: underline;
+
+    text-underline-offset: 2px;
+}
+
+
+/* "Forgot password?" under the password field */
+
+.auth-field-aside {
+
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+
+.auth-field-aside .auth-link {
+
+    font-size: var(--auth-fs-small);
+}
+
+
+/* "Don't have an account?  Create an account".
+   Wraps onto two centred lines when it cannot fit on one. */
+
+.auth-switch {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 2px 6px;
+
+    margin-top: 24px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--muted);
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   12. PANEL FOOTER
+   ========================================================= */
+
+.auth-footer {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px 24px;
+
+    padding: 0 16px 28px;
+
+    color: var(--muted);
+
+    font-size: var(--auth-fs-small);
+
+    text-align: center;
+}
+
+
+.auth-back {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--muted);
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    border-radius: 3px;
+}
+
+
+.auth-back::before {
+
+    content: "";
+
+    width: 15px;
+    height: 15px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--auth-icon-arrow) center / contain no-repeat;
+    mask: var(--auth-icon-arrow) center / contain no-repeat;
+
+    transform: scaleX(-1);
+}
+
+
+.auth-back:hover {
+
+    color: var(--red);
+}
+
+
+.auth-back:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   13. RESPONSIVE
+   ========================================================= */
+
+/* ---------- Tablet / small laptop ---------- */
+
+@media (max-width: 1100px) {
+
+    .auth-shell {
+
+        grid-template-columns:
+            minmax(300px, 40%)
+            minmax(0, 1fr);
+    }
+
+    .auth-brand__inner {
+
+        padding-inline: 40px;
+    }
+}
+
+
+/* ---------- Stacked: compact brand band + form ---------- */
+
+@media (max-width: 900px) {
+
+    .auth-shell {
+
+        display: block;
+    }
+
+    .auth-panel {
+
+        min-height: 0;
+    }
+
+    .auth-brand {
+
+        position: static;
+
+        height: auto;
+    }
+
+    /* no photograph, no wash: a plain deep-teal band */
+
+    .auth-brand::before,
+    .auth-brand::after {
+
+        display: none;
+    }
+
+    .auth-brand__inner {
+
+        height: auto;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        gap: 14px;
+
+        padding: 14px 20px;
+    }
+
+    .auth-brand__logo img {
+
+        height: 32px;
+    }
+
+    .auth-brand__title {
+
+        max-width: none;
+
+        margin: 0;
+
+        padding-left: 14px;
+
+        border-left: 1px solid var(--on-dark-line);
+
+        font-size: 13px;
+
+        font-weight: 600;
+
+        line-height: 1.3;
+
+        letter-spacing: 0;
+    }
+
+    .auth-brand__message {
+
+        display: none;
+    }
+
+    .auth-main {
+
+        align-items: flex-start;
+
+        padding: 28px 16px 24px;
+    }
+
+    /* the band is short, so the form panel fills the rest */
+
+    .auth-panel {
+
+        min-height: calc(100vh - 64px);
+        min-height: calc(100dvh - 64px);
+    }
+}
+
+
+/* ---------- Phones + touch ---------- */
+
+@media (max-width: 900px), (pointer: coarse) {
+
+    /* 16px stops iOS Safari zooming the page on focus */
+
+    .auth-input {
+
+        font-size: 16px;
+    }
+
+    .auth-toggle {
+
+        width: 44px;
+        height: 44px;
+
+        right: 2px;
+    }
+
+    .auth-input-wrap .auth-input {
+
+        padding-right: 52px;
+    }
+
+    .auth-check {
+
+        min-height: 32px;
+    }
+
+    .auth-check input[type="checkbox"] {
+
+        width: 20px;
+        height: 20px;
+
+        margin-top: 1px;
+    }
+
+    .auth-field-aside .auth-link,
+    .auth-switch .auth-link,
+    .auth-back {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        min-height: 40px;
+    }
+}
+
+
+/* One column only where width is genuinely limited */
+
+@media (max-width: 560px) {
+
+    .auth-row {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        gap: 20px;
+    }
+
+    .auth-card {
+
+        padding: 24px 20px;
+    }
+
+    .auth-heading {
+
+        margin-bottom: 24px;
+    }
+
+    .auth-brand__title {
+
+        font-size: 12.5px;
+    }
+}
+
+
+/* =========================================================
+   14. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-input,
+    .auth-toggle,
+    .auth-btn,
+    .auth-btn--arrow::after,
+    .auth-consent {
+
+        transition: none;
+    }
+
+    .auth-btn--arrow:hover::after {
+
+        transform: none;
+    }
+
+    .auth-btn.is-loading::after {
+
+        animation-duration: 1.6s;
+    }
+}

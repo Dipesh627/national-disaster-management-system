@@ -27,7 +27,7 @@ Feedback
             <span class="fb-kicker">FEEDBACK</span>
 
             <h1>
-                {{ feedback_item.user.full_name|default:feedback_item.user.username }}
+                {{ feedback_item.user.get_full_name|default:feedback_item.user.username }}
             </h1>
 
             <p>
@@ -75,7 +75,7 @@ Feedback
             <div class="fb-detail-meta-item">
                 <span class="fb-detail-label">From</span>
                 <span class="fb-detail-value">
-                    {{ feedback_item.user.full_name|default:feedback_item.user.username }}
+                    {{ feedback_item.user.get_full_name|default:feedback_item.user.username }}
                 </span>
             </div>
 

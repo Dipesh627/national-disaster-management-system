@@ -27,9 +27,20 @@
 
     <link
         rel="stylesheet"
+        href="{% static 'reports/navbar.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
         href="{% static 'reports/navbar-avatar.css' %}"
     >
 
+    <link
+        rel="stylesheet"
+        href="{% static 'reports/footer.css' %}"
+    >
+
+    {% include 'reports/partials/theme_head.html' %}
 
 </head>
 
@@ -49,7 +60,7 @@
      MAIN
      ===================================================== -->
 
-<main class="about-main">
+<main class="about-main" id="main-content">
 
 
     <!-- =================================================
@@ -299,7 +310,7 @@
         <div class="connects-grid reveal">
 
             <div class="connects-item">
-                <span class="connects-mark" aria-hidden="true">+</span>
+                <span class="connects-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg></span>
                 <div>
                     <h3>Incident Reporting</h3>
                     <p>Submit useful incident information.</p>
@@ -307,7 +318,7 @@
             </div>
 
             <div class="connects-item">
-                <span class="connects-mark" aria-hidden="true">◎</span>
+                <span class="connects-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg></span>
                 <div>
                     <h3>Location-Based Reporting</h3>
                     <p>Add location context to reports.</p>
@@ -315,7 +326,7 @@
             </div>
 
             <div class="connects-item">
-                <span class="connects-mark" aria-hidden="true">→</span>
+                <span class="connects-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M8 12h8m-3-3 3 3-3 3"/></svg></span>
                 <div>
                     <h3>Report Tracking</h3>
                     <p>Follow submitted reports through the system.</p>
@@ -323,7 +334,7 @@
             </div>
 
             <div class="connects-item">
-                <span class="connects-mark" aria-hidden="true">✓</span>
+                <span class="connects-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3 5 6v5.5c0 4.5 3 8 7 9.5 4-1.5 7-5 7-9.5V6Z"/><path d="m9 12 2 2 4-4"/></svg></span>
                 <div>
                     <h3>Report Verification</h3>
                     <p>Support reliable and reviewed report information.</p>
@@ -331,7 +342,7 @@
             </div>
 
             <div class="connects-item">
-                <span class="connects-mark" aria-hidden="true">!</span>
+                <span class="connects-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13"/><path d="M12 16.5v.1"/></svg></span>
                 <div>
                     <h3>Disaster Updates</h3>
                     <p>Stay aware of relevant disaster information.</p>
@@ -339,7 +350,7 @@
             </div>
 
             <div class="connects-item">
-                <span class="connects-mark" aria-hidden="true">◇</span>
+                <span class="connects-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="5.5" r="2.3"/><circle cx="5.5" cy="18.5" r="2.3"/><circle cx="18.5" cy="18.5" r="2.3"/><path d="M12 7.8v4.2M12 12l-5 4.4M12 12l5 4.4"/></svg></span>
                 <div>
                     <h3>Emergency Coordination</h3>
                     <p>Support a more connected information flow.</p>

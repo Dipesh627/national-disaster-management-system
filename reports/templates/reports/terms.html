@@ -1,0 +1,414 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS — TERMS & CONDITIONS (public page)
+=========================================================
+
+Route:   /terms/   (URL name: terms, view: reports.views.terms)
+Styling: about.css (navbar/footer/tokens) + legal.css (document layout)
+
+To revise this text:
+  1. Edit the sections below.
+  2. Update LEGAL_LAST_UPDATED and TERMS_VERSION in reports/legal.py.
+     (The date and version shown on this page come from there.)
+=========================================================
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Terms &amp; Conditions for the National Disaster Management System (NDMS): how accounts, disaster reports, uploads and the platform may be used."
+    >
+    <title>Terms &amp; Conditions | NDMS</title>
+
+    <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/legal.css' %}">
+    {% include 'reports/partials/theme_head.html' %}
+</head>
+
+<body class="legal-page">
+
+<!-- =====================================================
+     PUBLIC NAVBAR (shared partial)
+     ===================================================== -->
+{% include 'reports/partials/navbar.html' %}
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+<main class="legal-main" id="main-content">
+    <div class="legal-container">
+
+        <a href="{% url 'home' %}" class="legal-back">
+            <span aria-hidden="true">&larr;</span> Back to Home
+        </a>
+
+        <header class="legal-header">
+            <h1 class="legal-title">Terms &amp; Conditions</h1>
+            <p class="legal-lede">
+                The rules for using the National Disaster Management System (NDMS)
+                to create an account, report incidents and read disaster information.
+            </p>
+            <dl class="legal-meta">
+                <div>
+                    <dt>Last Updated:</dt>
+                    <dd>{{ legal_last_updated }}</dd>
+                </div>
+                <div>
+                    <dt>Version:</dt>
+                    <dd>{{ terms_version }}</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="legal-layout">
+
+            <!-- Contents -->
+            <nav class="legal-toc" aria-label="Contents of the Terms &amp; Conditions">
+                <h2>Contents</h2>
+                <ol>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#acceptance">Acceptance of Terms</a></li>
+                    <li><a href="#accounts">User Account and Registration</a></li>
+                    <li><a href="#responsibilities">User Responsibilities</a></li>
+                    <li><a href="#reports">Disaster Report Submission</a></li>
+                    <li><a href="#accuracy">Accuracy of Information</a></li>
+                    <li><a href="#uploads">Uploaded Content and Images</a></li>
+                    <li><a href="#responsible-use">Responsible Use of the Platform</a></li>
+                    <li><a href="#prohibited">Prohibited Misuse</a></li>
+                    <li><a href="#security">Account Security</a></li>
+                    <li><a href="#role">NDMS Platform Role and Limitations</a></li>
+                    <li><a href="#availability">Service Availability</a></li>
+                    <li><a href="#intellectual-property">Intellectual Property</a></li>
+                    <li><a href="#changes">Changes to These Terms</a></li>
+                    <li><a href="#suspension">Account Suspension or Termination</a></li>
+                    <li><a href="#liability">Limitation of Liability</a></li>
+                    <li><a href="#contact">Contact and Support</a></li>
+                    <li><a href="#acknowledgement">Acknowledgement and Acceptance</a></li>
+                </ol>
+            </nav>
+
+            <!-- Document -->
+            <article class="legal-content">
+
+                <section class="legal-summary" aria-labelledby="summary-title">
+                    <h2 id="summary-title">In short</h2>
+                    <ul>
+                        <li>Report only incidents you have genuinely seen or have good reason to believe are real, and describe them as accurately as you can.</li>
+                        <li>A report is not verified automatically. Authorized NDMS administrators review it, and it may be verified or rejected.</li>
+                        <li>NDMS is not an emergency call or dispatch service. If someone is in immediate danger, contact your local emergency services first.</li>
+                        <li>Keep your password private. False, abusive or harmful use can lead to your account being deactivated.</li>
+                    </ul>
+                    <p>This summary is only a guide. The full Terms below are what apply.</p>
+                </section>
+
+                <div class="legal-notice" role="note">
+                    <h2>In an emergency</h2>
+                    <p>
+                        Submitting a report on NDMS does <strong>not</strong> call for help.
+                        If there is an immediate risk to life, contact the appropriate local
+                        emergency services directly.
+                    </p>
+                </div>
+
+                <section class="legal-section" id="introduction">
+                    <h2><span class="legal-num">1.</span> Introduction</h2>
+                    <p>
+                        Welcome to NDMS, the National Disaster Management System. NDMS is a web
+                        platform that lets registered citizens report disaster incidents in Nepal,
+                        share the location and details of those incidents, and follow the status of
+                        their reports. Authorized NDMS administrators review reports, manage official
+                        disaster records, publish alerts and response updates, and maintain a
+                        directory of emergency agencies. The platform also provides awareness and
+                        guidelines content, notifications, and a support and feedback channel.
+                    </p>
+                    <p>
+                        In these Terms, &ldquo;NDMS&rdquo;, &ldquo;we&rdquo; and &ldquo;us&rdquo; mean the
+                        team that operates and administers the NDMS platform, and &ldquo;you&rdquo;
+                        means anyone who visits or uses it. Please read these Terms together with our
+                        <a href="{% url 'privacy' %}">Privacy Policy</a>, which explains how personal
+                        information is handled.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="acceptance">
+                    <h2><span class="legal-num">2.</span> Acceptance of Terms</h2>
+                    <p>
+                        By creating an NDMS account, or by using the platform, you confirm that you
+                        have read these Terms and the Privacy Policy and that you agree to be bound
+                        by them. If you do not agree, please do not register or use the features that
+                        require an account. Public pages such as Home, About, Disasters, Awareness
+                        &amp; Guidelines and the Emergency Agencies directory can be read without an
+                        account.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="accounts">
+                    <h2><span class="legal-num">3.</span> User Account and Registration</h2>
+                    <p>
+                        Reporting incidents and using features such as My Reports, Profile, Settings
+                        and Help &amp; Support requires a citizen account. To register you must
+                        provide your first name, last name, a username, an email address and a
+                        password. A phone number is optional. Passwords must meet the platform&rsquo;s
+                        password rules.
+                    </p>
+                    <ul>
+                        <li>Provide information that is accurate and keep it up to date in your Profile.</li>
+                        <li>Use one account for yourself. Do not create accounts on behalf of others without their knowledge, or register in someone else&rsquo;s name.</li>
+                        <li>If you are under the age of majority where you live, please use NDMS together with a parent or guardian.</li>
+                        <li>Administrator accounts are created by NDMS and are not available through public registration.</li>
+                    </ul>
+                    <p>
+                        When you register, NDMS records the date and time and the version of these
+                        Terms and the Privacy Policy that you accepted (see
+                        <a href="#acknowledgement">Section 18</a>).
+                    </p>
+                </section>
+
+                <section class="legal-section" id="responsibilities">
+                    <h2><span class="legal-num">4.</span> User Responsibilities</h2>
+                    <p>When you use NDMS you agree to:</p>
+                    <ul>
+                        <li>submit reports and information honestly and in good faith;</li>
+                        <li>use the platform only for lawful purposes and in line with these Terms;</li>
+                        <li>respect the privacy and safety of other people, including anyone who appears in a photo you upload;</li>
+                        <li>keep your login details confidential (see <a href="#security">Section 10</a>);</li>
+                        <li>follow the instructions of the responsible authorities in a real emergency, and not rely on NDMS alone for urgent help.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="reports">
+                    <h2><span class="legal-num">5.</span> Disaster Report Submission</h2>
+                    <p>
+                        A disaster report can include the type of disaster, the severity as you see it,
+                        when the incident began, a description, the incident location, an address, and
+                        photos. Locations must be within Nepal. You choose the location on the map or
+                        use your device&rsquo;s location when you press the &ldquo;Use Current Location&rdquo;
+                        button and your browser allows it.
+                    </p>
+                    <p>How reports are handled:</p>
+                    <ul>
+                        <li>A new report starts as <strong>Pending</strong>. Authorized NDMS administrators may move it to <strong>Under Review</strong>, <strong>Verified</strong> or <strong>Rejected</strong>, and you will be notified of these changes.</li>
+                        <li>A verified report may be linked to an official disaster record. Reports may be rejected if they are incomplete, duplicated, cannot be verified, or do not meet these Terms.</li>
+                        <li>Submitting a report does not guarantee that anyone will respond, or how quickly.</li>
+                        <li>You can delete a report yourself only while it is still Pending. Once a report is being processed it may be kept as an official record.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="accuracy">
+                    <h2><span class="legal-num">6.</span> Accuracy of Information</h2>
+                    <p>
+                        Report what you have actually observed, and give your best honest estimate
+                        where you are not sure. The severity and start time you enter are your own
+                        assessment. NDMS administrators may review, correct or reclassify information
+                        and may record a different severity in the official disaster record.
+                    </p>
+                    <p>
+                        Information that NDMS publishes, including disaster records, alerts, response
+                        updates, guidelines and the emergency agency directory, is provided in good
+                        faith. It may be incomplete, delayed or out of date, and agency contact
+                        details can change. For decisions that affect safety, please confirm
+                        information with the responsible authorities.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="uploads">
+                    <h2><span class="legal-num">7.</span> Uploaded Content and Images</h2>
+                    <p>
+                        You may upload photos with a report (JPEG, PNG or WebP, up to 8&nbsp;MB each and
+                        5 per upload), a profile photo, and an attachment to a support request (JPEG,
+                        PNG or PDF, up to 5&nbsp;MB). By uploading content you confirm that:
+                    </p>
+                    <ul>
+                        <li>you took it yourself or have the right to share it;</li>
+                        <li>it genuinely relates to the report or request you are making;</li>
+                        <li>it is lawful, and does not contain malicious files, or unnecessarily show identifiable people, private documents or graphic material.</li>
+                    </ul>
+                    <p>
+                        You keep ownership of your content. You give NDMS a non-exclusive, royalty-free
+                        permission to store it, to show it to authorized administrators, and to use it
+                        to review and respond to your report. Report photos are not made public
+                        automatically. If an administrator selects a photo to appear in an official
+                        disaster record, it may be shown publicly as part of that record. NDMS may
+                        remove content that breaks these Terms.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="responsible-use">
+                    <h2><span class="legal-num">8.</span> Responsible Use of the Platform</h2>
+                    <p>
+                        Use NDMS to report real incidents and to stay informed. Do not use it as a
+                        substitute for emergency services. For immediate danger, contact the
+                        appropriate local emergency services first, and then report on NDMS if it is
+                        safe to do so. Please submit a single report per incident where you can, add
+                        useful detail instead of repeating the same report, and use Help &amp; Support
+                        for problems with the platform itself rather than for emergencies.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="prohibited">
+                    <h2><span class="legal-num">9.</span> Prohibited Misuse</h2>
+                    <p>You must not:</p>
+                    <ul>
+                        <li>submit false, misleading, exaggerated or prank reports, or reports made to cause panic or waste responders&rsquo; time;</li>
+                        <li>impersonate another person, agency or NDMS administrator;</li>
+                        <li>flood the platform with spam, duplicate reports or irrelevant feedback and support requests;</li>
+                        <li>upload unlawful, abusive, hateful or graphic content, or files intended to harm a device or system;</li>
+                        <li>share another person&rsquo;s personal information without a good reason and their permission;</li>
+                        <li>access or try to access accounts, data or admin areas that are not yours, or try to bypass or probe the platform&rsquo;s security;</li>
+                        <li>overload, disrupt or interfere with the platform, or copy its content by automated means without permission.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="security">
+                    <h2><span class="legal-num">10.</span> Account Security</h2>
+                    <p>
+                        You are responsible for what happens under your account. Choose a strong,
+                        unique password, do not share it, and sign out on shared or public devices.
+                        The &ldquo;Remember me&rdquo; option keeps you signed in on that device for an
+                        extended period, so use it only on devices you control. If you think someone
+                        has used your account without permission, change your password straight away
+                        (or use Forgot Password) and contact us using the details in
+                        <a href="#contact">Section 17</a>.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="role">
+                    <h2><span class="legal-num">11.</span> NDMS Platform Role and Limitations</h2>
+                    <p>
+                        NDMS supports incident reporting, review, status tracking and public
+                        awareness. Emergency response dispatch remains coordinated with designated
+                        authorities. NDMS is not an emergency call service and does not itself
+                        send responders.
+                    </p>
+                    <ul>
+                        <li>We do not promise that a report will be verified, acted on, or acted on within a particular time.</li>
+                        <li>Alerts, guidelines and other content are general information and are not professional or legal advice.</li>
+                        <li>The listing of an agency in the directory does not mean that agency endorses NDMS or has agreed to respond to reports made through it.</li>
+                        <li>Map features are provided using Google Maps, which is a separate service (see the <a href="{% url 'privacy' %}#third-parties">Privacy Policy</a>).</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="availability">
+                    <h2><span class="legal-num">12.</span> Service Availability</h2>
+                    <p>
+                        We aim to keep NDMS available, but we do not guarantee that it will always be
+                        uninterrupted, secure or error-free. The platform may be unavailable during
+                        maintenance, updates or technical problems, or when an outside service it
+                        relies on, such as Google Maps or email delivery, is not working. Features may
+                        change or be withdrawn over time. Please keep other ways of reaching help
+                        available to you.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="intellectual-property">
+                    <h2><span class="legal-num">13.</span> Intellectual Property</h2>
+                    <p>
+                        The NDMS name, logo, design, text, guidelines and software belong to NDMS or
+                        its licensors and are protected by applicable law. You may use the platform
+                        for your own personal, non-commercial and informational purposes. You may not
+                        copy, redistribute or sell NDMS content or software without permission. Your
+                        own content remains yours, subject to the permission described in
+                        <a href="#uploads">Section 7</a>. Third-party names and services, including
+                        Google Maps, belong to their owners and are subject to their own terms.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="changes">
+                    <h2><span class="legal-num">14.</span> Changes to These Terms</h2>
+                    <p>
+                        We may update these Terms from time to time, for example when NDMS features
+                        change. The &ldquo;Last Updated&rdquo; date and version at the top of this page show
+                        the current revision. For significant changes we may also tell you through the
+                        platform, such as with a notification. If you keep using NDMS after updated
+                        Terms take effect, you accept the updated Terms. If you do not agree with
+                        them, please stop using NDMS and contact us.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="suspension">
+                    <h2><span class="legal-num">15.</span> Account Suspension or Termination</h2>
+                    <p>
+                        NDMS administrators may deactivate an account, and may reject or remove
+                        content, if these Terms are broken, for example through false reports, abuse
+                        or misuse, if security is at risk, or if the law requires it. A deactivated
+                        account cannot sign in until it is reactivated, and NDMS decides whether to do
+                        that. You may stop using NDMS at any time. To ask for your account to be
+                        closed, contact us (see <a href="#contact">Section 17</a>). Reports that
+                        have been processed may be kept as official records, as described in the
+                        <a href="{% url 'privacy' %}#retention">Privacy Policy</a>.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="liability">
+                    <h2><span class="legal-num">16.</span> Limitation of Liability</h2>
+                    <p>
+                        NDMS is provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo;. To the extent the law
+                        allows, NDMS and the people who operate it are not responsible for loss or
+                        damage that results from using the platform or being unable to use it,
+                        including delays or errors in information, decisions made in reliance on
+                        alerts or guidelines, an interruption in service, a failure of a third-party
+                        service, or unauthorized use of your account where you did not keep your
+                        login details secure. Nothing in these Terms limits any responsibility that
+                        cannot lawfully be limited.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="contact">
+                    <h2><span class="legal-num">17.</span> Contact and Support</h2>
+                    <p>
+                        Questions about these Terms, or requests about your account, can be sent to
+                        <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>. Signed-in
+                        citizens can also use the
+                        <a href="{% url 'help_support' %}">Help &amp; Support</a> page to send a
+                        support request. NDMS is based in Dhangadhi, Nepal. Support is for the
+                        platform only and is not an emergency line.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="acknowledgement">
+                    <h2><span class="legal-num">18.</span> Acknowledgement and Acceptance</h2>
+                    <p>
+                        When you tick the box on the registration page and create an account, you
+                        confirm that you have read, understood and agree to these Terms &amp; Conditions
+                        and the <a href="{% url 'privacy' %}">Privacy Policy</a>. NDMS keeps a record of
+                        the date and time of your acceptance and the version you accepted.
+                    </p>
+                </section>
+
+                <aside class="legal-review-note" aria-labelledby="review-note-title">
+                    <h2 id="review-note-title">About this document</h2>
+                    <p>
+                        This text was prepared for the NDMS project and describes how the platform
+                        currently works. It is not a substitute for professional legal advice. The
+                        project owner should have it reviewed by a qualified legal professional
+                        before NDMS is used in real-world production.
+                    </p>
+                </aside>
+
+                <p class="legal-related">
+                    See also: <a href="{% url 'privacy' %}">Privacy Policy</a>
+                </p>
+
+            </article>
+        </div>
+
+    </div>
+</main>
+
+<!-- =====================================================
+     PUBLIC FOOTER (shared partial)
+     ===================================================== -->
+{% include 'reports/partials/footer.html' %}
+
+<script src="{% static 'reports/js/public-nav.js' %}" defer></script>
+<script src="{% static 'reports/js/navbar-avatar.js' %}" defer></script>
+
+</body>
+</html>

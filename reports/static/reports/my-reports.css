@@ -49,7 +49,7 @@
 
 .django-message-error {
 
-    border-left: 4px solid var(--red);
+    border-left: 4px solid var(--danger);
 
 }
 
@@ -67,7 +67,7 @@
     border-radius: 50%;
 
     background: var(--green-bg);
-    color: var(--green);
+    color: var(--green-text);
 
     font-weight: 800;
 
@@ -199,7 +199,7 @@
         4px;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(23px * var(--ndms-font-scale, 1));
@@ -263,7 +263,7 @@
         var(--soft-gray);
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -283,7 +283,7 @@
         var(--orange-bg);
 
     color:
-        var(--orange);
+        var(--orange-text);
 
 }
 
@@ -294,7 +294,7 @@
         var(--soft-gray);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -305,7 +305,7 @@
         var(--green-bg);
 
     color:
-        var(--green);
+        var(--green-text);
 
 }
 
@@ -313,10 +313,10 @@
 .stat-icon.rejected {
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
     color:
-        var(--red);
+        var(--danger);
 
 }
 
@@ -639,10 +639,9 @@
 .mr-search-box input[type="text"]:focus {
 
     border-color:
-        var(--navy);
+        var(--red);
 
-    box-shadow:
-        0 0 0 3px rgba(23, 32, 51, .08);
+    box-shadow: var(--field-focus-ring);
 
 }
 
@@ -777,7 +776,7 @@
         var(--c-border-9);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -785,10 +784,10 @@
 .mr-filters-toggle[aria-expanded="true"] {
 
     border-color:
-        var(--navy);
+        var(--red);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -976,10 +975,9 @@
 .mr-filters-field select:focus {
 
     border-color:
-        var(--navy);
+        var(--red);
 
-    box-shadow:
-        0 0 0 3px rgba(23, 32, 51, .08);
+    box-shadow: var(--field-focus-ring);
 
 }
 
@@ -1050,16 +1048,16 @@
         8px 16px;
 
     background:
-        var(--navy);
+        var(--btn-dark);
 
     border:
-        1px solid var(--navy);
+        1px solid var(--btn-dark);
 
     border-radius:
         7px;
 
     color:
-        var(--white);
+        var(--on-dark);
 
     font-family:
         inherit;
@@ -1082,7 +1080,7 @@
 .mr-filters-apply:hover {
 
     background:
-        var(--navy-light);
+        var(--btn-dark-hover);
 
 }
 
@@ -1120,7 +1118,7 @@
 .status.review {
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -1287,7 +1285,7 @@
 .mr-empty-state strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(15px * var(--ndms-font-scale, 1));
@@ -1442,7 +1440,7 @@
         var(--c-border-9);
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -1450,13 +1448,13 @@
 .mr-page-link.active {
 
     background:
-        var(--navy);
+        var(--btn-dark);
 
     border-color:
-        var(--navy);
+        var(--btn-dark);
 
     color:
-        var(--white);
+        var(--on-dark);
 
 }
 
@@ -1614,7 +1612,7 @@
 
 .mr-report-card-type {
 
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(13px * var(--ndms-font-scale, 1));
     font-weight: 750;
 
@@ -1680,7 +1678,7 @@
 
 .mr-report-card-row strong {
 
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 750;
 
 }

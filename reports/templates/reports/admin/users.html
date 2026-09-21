@@ -304,7 +304,7 @@ Citizens
 
                                                     <span class="citizen-avatar-fallback">
 
-                                                        {{ citizen.full_name|default:citizen.username|first|upper }}
+                                                        {{ citizen.get_full_name|default:citizen.username|first|upper }}
 
                                                     </span>
 
@@ -318,9 +318,9 @@ Citizens
                                                 <a
                                                     href="{% url 'admin_user_detail' citizen.id %}"
                                                     class="table-primary-link"
-                                                    title="{{ citizen.full_name|default:citizen.username }}">
+                                                    title="{{ citizen.get_full_name|default:citizen.username }}">
 
-                                                    {{ citizen.full_name|default:citizen.username }}
+                                                    {{ citizen.get_full_name|default:citizen.username }}
 
                                                 </a>
 

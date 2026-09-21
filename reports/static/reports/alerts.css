@@ -28,7 +28,7 @@
 
 .alerts-header h1 {
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(22px * var(--ndms-font-scale, 1));
     font-weight: 800;
@@ -114,7 +114,7 @@
 
     background: var(--c-surface-6);
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(17px * var(--ndms-font-scale, 1));
     font-weight: 800;
@@ -123,8 +123,8 @@
 
 .alerts-stat-card-danger .alerts-stat-icon {
 
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--danger-bg);
+    color: var(--danger);
 
 }
 
@@ -132,7 +132,7 @@
 
     display: block;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(21px * var(--ndms-font-scale, 1));
     font-weight: 800;
@@ -212,7 +212,7 @@
 
 .alerts-content-head h3 {
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(15px * var(--ndms-font-scale, 1));
     font-weight: 750;
@@ -245,7 +245,7 @@
     border: 1px solid var(--border);
     border-radius: 8px;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
     font-weight: 700;
@@ -339,7 +339,7 @@
 
 .alerts-filter-tab:hover {
 
-    color: var(--navy);
+    color: var(--heading);
 
 }
 
@@ -502,8 +502,8 @@
 
 .alert-icon-disaster-alert {
 
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--orange-bg);
+    color: var(--orange-text);
 
 }
 
@@ -517,14 +517,14 @@
 .alert-icon-verified {
 
     background: var(--green-bg);
-    color: var(--green);
+    color: var(--green-text);
 
 }
 
 .alert-icon-rejected {
 
-    background: var(--light-red);
-    color: var(--red-dark);
+    background: var(--danger-bg);
+    color: var(--danger-dark);
 
 }
 
@@ -538,7 +538,7 @@
 .alert-icon-general {
 
     background: var(--blue-bg);
-    color: var(--blue-dark);
+    color: var(--blue-text);
 
 }
 
@@ -568,7 +568,7 @@
 
 .alert-item-title-row strong {
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(12.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
@@ -681,8 +681,8 @@
 
 .alert-severity-critical {
 
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--danger-bg);
+    color: var(--danger);
 
 }
 
@@ -797,7 +797,7 @@
 
 .alerts-empty h4 {
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
@@ -871,7 +871,7 @@
 
     padding: 7px 12px;
 
-    color: var(--navy);
+    color: var(--heading);
     text-decoration: none;
 
     font-size: calc(11px * var(--ndms-font-scale, 1));
@@ -944,7 +944,7 @@
 .alerts-page-number:hover {
 
     background: var(--soft-gray);
-    color: var(--navy);
+    color: var(--heading);
 
 }
 

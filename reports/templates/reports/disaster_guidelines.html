@@ -14,8 +14,11 @@
 
     <!-- Core NDMS Stylesheets -->
     <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/footer.css' %}">
     <link rel="stylesheet" href="{% static 'reports/disaster-guidelines.css' %}">
+    {% include 'reports/partials/theme_head.html' %}
 
 </head>
 
@@ -50,7 +53,7 @@
 <!-- =====================================================
      2. MAIN CONTENT
      ===================================================== -->
-<main class="guidelines-main" id="mainContent">
+<main class="guidelines-main" id="main-content">
 
     <!-- =====================================================
          HERO SECTION (BILINGUAL)
@@ -217,7 +220,7 @@
                             <span class="lang-en">Phase 1: Prepare</span>
                             <span class="lang-ne">चरण १: पूर्वतयारी</span>
                         </span>
-                        <div class="pillar-icon-wrap" aria-hidden="true">🛡️</div>
+                        <div class="pillar-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3 5 6v5.5c0 4.5 3 8 7 9.5 4-1.5 7-5 7-9.5V6Z"/><path d="m9 12 2 2 4-4"/></svg></div>
                     </div>
 
                     <h3 class="pillar-title">
@@ -265,7 +268,7 @@
                             <span class="lang-en">Phase 2: Protect</span>
                             <span class="lang-ne">चरण २: सुरक्षा</span>
                         </span>
-                        <div class="pillar-icon-wrap" aria-hidden="true">⚡</div>
+                        <div class="pillar-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12Z"/></svg></div>
                     </div>
 
                     <h3 class="pillar-title">
@@ -313,7 +316,7 @@
                             <span class="lang-en">Phase 3: Recover</span>
                             <span class="lang-ne">चरण ३: पुनःस्थापना</span>
                         </span>
-                        <div class="pillar-icon-wrap" aria-hidden="true">🌱</div>
+                        <div class="pillar-icon-wrap" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 21v-8"/><path d="M12 13c0-4 3-7 8-7 0 5-3 8-8 8Z"/><path d="M12 16c0-3-2.5-5.5-7-5.5 0 4 2.5 6.5 7 6.5"/></svg></div>
                     </div>
 
                     <h3 class="pillar-title">
@@ -453,7 +456,7 @@
                 <!-- 1. Flood -->
                 <button type="button" class="risk-type-card" data-target-id="guide-flood">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">🌊</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 8c1.5 0 1.5 1.2 3 1.2S7.5 8 9 8s1.5 1.2 3 1.2S13.5 8 15 8s1.5 1.2 3 1.2S19.5 8 21 8"/><path d="M3 13c1.5 0 1.5 1.2 3 1.2S7.5 13 9 13s1.5 1.2 3 1.2S13.5 13 15 13s1.5 1.2 3 1.2S19.5 13 21 13"/><path d="M3 18c1.5 0 1.5 1.2 3 1.2S7.5 18 9 18s1.5 1.2 3 1.2S13.5 18 15 18s1.5 1.2 3 1.2S19.5 18 21 18"/></svg></div>
                         <span class="risk-type-tag">High Risk</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -470,7 +473,7 @@
                 <!-- 2. Earthquake -->
                 <button type="button" class="risk-type-card" data-target-id="guide-earthquake">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">🏛️</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/></svg></div>
                         <span class="risk-type-tag">Seismic</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -487,7 +490,7 @@
                 <!-- 3. Landslide -->
                 <button type="button" class="risk-type-card" data-target-id="guide-landslide">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">⛰️</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 20 9.5 7l3.5 6 2-3 6 10Z"/><circle cx="17.5" cy="5.5" r="1.4"/></svg></div>
                         <span class="risk-type-tag">Hilly Terrain</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -504,7 +507,7 @@
                 <!-- 4. Fire -->
                 <button type="button" class="risk-type-card" data-target-id="guide-fire">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">🔥</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5Z"/></svg></div>
                         <span class="risk-type-tag">Urban &amp; Forest</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -521,7 +524,7 @@
                 <!-- 5. Avalanche -->
                 <button type="button" class="risk-type-card" data-target-id="guide-avalanche">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">❄️</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 2.5v19M4 7.2l16 9.6M20 7.2 4 16.8"/><path d="m9.5 4.5 2.5 2 2.5-2M9.5 19.5l2.5-2 2.5 2"/></svg></div>
                         <span class="risk-type-tag">High Altitude</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -538,7 +541,7 @@
                 <!-- 6. Road Accident -->
                 <button type="button" class="risk-type-card" data-target-id="guide-road">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">🚗</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/></svg></div>
                         <span class="risk-type-tag">Transit</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -555,7 +558,7 @@
                 <!-- 7. Aircraft Accident -->
                 <button type="button" class="risk-type-card" data-target-id="guide-aircraft">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">✈️</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z"/></svg></div>
                         <span class="risk-type-tag">Aviation</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -572,7 +575,7 @@
                 <!-- 8. Other Hazards -->
                 <button type="button" class="risk-type-card" data-target-id="guide-other">
                     <div class="risk-card-top">
-                        <div class="risk-type-icon" aria-hidden="true">⚡</div>
+                        <div class="risk-type-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12Z"/></svg></div>
                         <span class="risk-type-tag">Weather</span>
                     </div>
                     <h3 class="risk-type-title">
@@ -634,7 +637,7 @@
                 <div class="accordion-item is-expanded" id="guide-flood" data-disaster-category="flood">
                     <button type="button" class="accordion-header" aria-expanded="true">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">🌊</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 8c1.5 0 1.5 1.2 3 1.2S7.5 8 9 8s1.5 1.2 3 1.2S13.5 8 15 8s1.5 1.2 3 1.2S19.5 8 21 8"/><path d="M3 13c1.5 0 1.5 1.2 3 1.2S7.5 13 9 13s1.5 1.2 3 1.2S13.5 13 15 13s1.5 1.2 3 1.2S19.5 13 21 13"/><path d="M3 18c1.5 0 1.5 1.2 3 1.2S7.5 18 9 18s1.5 1.2 3 1.2S13.5 18 15 18s1.5 1.2 3 1.2S19.5 18 21 18"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Flood Guidelines</span>
@@ -672,7 +675,7 @@
 
                             <div class="guide-warning-box">
                                 <div class="guide-warning-header">
-                                    <span aria-hidden="true">⚠️</span>
+                                    <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3.5 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/><path d="M12 17.2v.1"/></svg></span>
                                     <span class="lang-en">Warning Signs to Watch For</span>
                                     <span class="lang-ne">सम्भावित पूर्व-संकेतहरू</span>
                                 </div>
@@ -848,7 +851,7 @@
                 <div class="accordion-item" id="guide-earthquake" data-disaster-category="earthquake">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">🏛️</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Earthquake Guidelines</span>
@@ -886,7 +889,7 @@
 
                             <div class="guide-warning-box">
                                 <div class="guide-warning-header">
-                                    <span aria-hidden="true">⚠️</span>
+                                    <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3.5 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/><path d="M12 17.2v.1"/></svg></span>
                                     <span class="lang-en">Warning Signs</span>
                                     <span class="lang-ne">संकेत तथा अवस्था</span>
                                 </div>
@@ -1054,7 +1057,7 @@
                 <div class="accordion-item" id="guide-landslide" data-disaster-category="landslide">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">⛰️</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M3 20 9.5 7l3.5 6 2-3 6 10Z"/><circle cx="17.5" cy="5.5" r="1.4"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Landslide Guidelines</span>
@@ -1092,7 +1095,7 @@
 
                             <div class="guide-warning-box">
                                 <div class="guide-warning-header">
-                                    <span aria-hidden="true">⚠️</span>
+                                    <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3.5 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/><path d="M12 17.2v.1"/></svg></span>
                                     <span class="lang-en">Key Warning Signs</span>
                                     <span class="lang-ne">मुख्य पूर्व-संकेतहरू</span>
                                 </div>
@@ -1248,7 +1251,7 @@
                 <div class="accordion-item" id="guide-fire" data-disaster-category="fire">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">🔥</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5Z"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Fire &amp; Wildfire Guidelines</span>
@@ -1286,7 +1289,7 @@
 
                             <div class="guide-warning-box">
                                 <div class="guide-warning-header">
-                                    <span aria-hidden="true">⚠️</span>
+                                    <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3.5 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/><path d="M12 17.2v.1"/></svg></span>
                                     <span class="lang-en">Early Warning Signs</span>
                                     <span class="lang-ne">सुरुवाती संकेतहरू</span>
                                 </div>
@@ -1442,7 +1445,7 @@
                 <div class="accordion-item" id="guide-avalanche" data-disaster-category="avalanche">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">❄️</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 2.5v19M4 7.2l16 9.6M20 7.2 4 16.8"/><path d="m9.5 4.5 2.5 2 2.5-2M9.5 19.5l2.5-2 2.5 2"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Avalanche Guidelines</span>
@@ -1480,7 +1483,7 @@
 
                             <div class="guide-warning-box">
                                 <div class="guide-warning-header">
-                                    <span aria-hidden="true">⚠️</span>
+                                    <span aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3.5 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/><path d="M12 17.2v.1"/></svg></span>
                                     <span class="lang-en">Warning Signs in the Mountains</span>
                                     <span class="lang-ne">हिमाली भेगका चेतावनी संकेतहरू</span>
                                 </div>
@@ -1636,7 +1639,7 @@
                 <div class="accordion-item" id="guide-road" data-disaster-category="road">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">🚗</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/><path d="M9 17h6"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Road Accident Guidelines</span>
@@ -1812,7 +1815,7 @@
                 <div class="accordion-item" id="guide-aircraft" data-disaster-category="aircraft">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">✈️</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2Z"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Aircraft Accident Guidelines</span>
@@ -1980,7 +1983,7 @@
                 <div class="accordion-item" id="guide-other" data-disaster-category="other">
                     <button type="button" class="accordion-header" aria-expanded="false">
                         <div class="accordion-header-left">
-                            <div class="accordion-icon" aria-hidden="true">⚡</div>
+                            <div class="accordion-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M13 2 4.5 13.5H12L11 22l8.5-11.5H12Z"/></svg></div>
                             <div class="accordion-title-group">
                                 <h3>
                                     <span class="lang-en">Other Weather &amp; Seasonal Hazards</span>
@@ -2101,7 +2104,7 @@
                 <!-- Emergency Kit Card -->
                 <div class="prep-card">
                     <div class="prep-card-header">
-                        <div class="prep-card-icon" aria-hidden="true">🎒</div>
+                        <div class="prep-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M8 6V5a4 4 0 0 1 8 0v1"/><path d="M6 6h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"/><path d="M9 14h6"/><path d="M9 21v-4h6v4"/></svg></div>
                         <h3 class="prep-card-title">
                             <span class="lang-en">Build an Emergency Kit (Go-Bag)</span>
                             <span class="lang-ne">आपत्कालीन झोला (Go-Bag) तयारी</span>
@@ -2232,7 +2235,7 @@
                 <!-- Family Emergency Plan Card -->
                 <div class="prep-card" id="family-plan">
                     <div class="prep-card-header">
-                        <div class="prep-card-icon" aria-hidden="true">📋</div>
+                        <div class="prep-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M9 3h6v3H9Z"/><path d="M8 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-2"/><path d="M9 12h6M9 16h6"/></svg></div>
                         <h3 class="prep-card-title">
                             <span class="lang-en">Make a Family Emergency Plan</span>
                             <span class="lang-ne">पारिवारिक आपत्कालीन कार्ययोजना</span>
@@ -2347,7 +2350,7 @@
 
                 <div class="vulnerable-card">
                     <div class="vulnerable-header">
-                        <div class="vulnerable-icon" aria-hidden="true">👶</div>
+                        <div class="vulnerable-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M8.5 14a4.5 4.5 0 0 0 7 0"/><path d="M9 9.5h.01M15 9.5h.01"/></svg></div>
                         <h4>
                             <span class="lang-en">Children</span>
                             <span class="lang-ne">बालबालिकाको सुरक्षा</span>
@@ -2371,7 +2374,7 @@
 
                 <div class="vulnerable-card">
                     <div class="vulnerable-header">
-                        <div class="vulnerable-icon" aria-hidden="true">👵</div>
+                        <div class="vulnerable-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7"/></svg></div>
                         <h4>
                             <span class="lang-en">Elderly People</span>
                             <span class="lang-ne">ज्येष्ठ नागरिकको सुरक्षा</span>
@@ -2395,7 +2398,7 @@
 
                 <div class="vulnerable-card">
                     <div class="vulnerable-header">
-                        <div class="vulnerable-icon" aria-hidden="true">♿</div>
+                        <div class="vulnerable-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><circle cx="12" cy="4.5" r="1.7"/><path d="M5 8.5h14M12 8.5V14M9 21l3-7 3 7"/></svg></div>
                         <h4>
                             <span class="lang-en">Persons with Disabilities</span>
                             <span class="lang-ne">अपाङ्गता भएका व्यक्तिहरू</span>
@@ -2657,7 +2660,7 @@
                 </div>
 
                 <div class="misinfo-warning">
-                    <div class="misinfo-warning-icon" aria-hidden="true">⚠️</div>
+                    <div class="misinfo-warning-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M12 3.5 2.8 19.5h18.4Z"/><path d="M12 10v4.2"/><path d="M12 17.2v.1"/></svg></div>
                     <div class="misinfo-warning-body">
                         <h5>
                             <span class="lang-en">Combating Disinformation During Emergencies</span>
@@ -2700,7 +2703,7 @@
 
                 <!-- CRITICAL SAFETY ALERT BANNER -->
                 <div class="critical-safety-alert" role="alert">
-                    <div class="critical-alert-icon" aria-hidden="true">🛑</div>
+                    <div class="critical-alert-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="M8 3h8l5 5v8l-5 5H8l-5-5V8Z"/><path d="M12 8v5"/><path d="M12 16.4v.1"/></svg></div>
                     <div class="critical-alert-body">
                         <h4>
                             <span class="lang-en">CRITICAL SAFETY RULE: DO NOT PUT YOURSELF AT RISK</span>

@@ -30,7 +30,7 @@
         var(--shadow-md);
 
     color:
-        var(--white);
+        var(--on-dark);
 
 }
 
@@ -185,7 +185,7 @@
 .hs-section h2 {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(18px * var(--ndms-font-scale, 1));
@@ -299,7 +299,7 @@
 .hs-quick-help-card strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -422,7 +422,7 @@
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -523,7 +523,7 @@
         pointer;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));
@@ -661,7 +661,7 @@
 .hs-faq-answer li strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
 }
 
@@ -696,7 +696,7 @@
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(14px * var(--ndms-font-scale, 1));
@@ -736,10 +736,10 @@
         14px 16px;
 
     background:
-        var(--light-red);
+        var(--danger-bg);
 
     border:
-        1px solid rgba(180,35,24,.18);
+        1px solid color-mix(in srgb, var(--danger) 18%, transparent);
 
     border-radius:
         9px;
@@ -753,7 +753,7 @@
         block;
 
     color:
-        var(--red-dark);
+        var(--danger-dark);
 
     font-size:
         calc(11.5px * var(--ndms-font-scale, 1));
@@ -820,7 +820,7 @@
 
     box-shadow:
         0 3px 8px
-        rgba(180,35,24,.16);
+        color-mix(in srgb, var(--red) 16%, transparent);
 
     transform:
         translateY(-1px);
@@ -902,7 +902,7 @@
 
     border-left:
         4px solid
-        var(--red);
+        var(--danger);
 }
 
 
@@ -922,7 +922,7 @@
 
     background: var(--green-bg);
 
-    color: var(--green);
+    color: var(--green-text);
 
     font-weight: 800;
 }
@@ -1019,7 +1019,7 @@
         var(--red);
 
     box-shadow:
-        0 0 0 3px rgba(180,35,24,.10);
+        0 0 0 3px color-mix(in srgb, var(--red) 10%, transparent);
 }
 
 
@@ -1250,7 +1250,7 @@
         block;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));
@@ -1266,7 +1266,7 @@
 .hs-search-suggestion-question mark {
 
     background:
-        rgba(180,35,24,.16);
+        color-mix(in srgb, var(--red) 16%, transparent);
 
     color:
         var(--red-dark);
@@ -1413,7 +1413,7 @@
 .hs-search-empty strong {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(13px * var(--ndms-font-scale, 1));
@@ -1476,7 +1476,7 @@
         700;
 
     color:
-        var(--navy);
+        var(--heading);
 
     text-decoration:
         none;
@@ -1560,7 +1560,7 @@
 .hs-helpful-prompt > span {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));
@@ -1604,7 +1604,7 @@
         8px;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(11.5px * var(--ndms-font-scale, 1));
@@ -1628,7 +1628,7 @@
         var(--light-red);
 
     border-color:
-        rgba(180,35,24,.2);
+        color-mix(in srgb, var(--red) 20%, transparent);
 
     transform:
         translateY(-1px);
@@ -1660,7 +1660,7 @@
 .hs-helpful-response-yes {
 
     color:
-        var(--green);
+        var(--green-text);
 
     font-weight:
         700;
@@ -1744,7 +1744,7 @@
 .hs-form-label {
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size:
         calc(11.5px * var(--ndms-font-scale, 1));
@@ -1757,7 +1757,7 @@
 .hs-required {
 
     color:
-        var(--red);
+        var(--danger);
 }
 
 
@@ -1825,7 +1825,7 @@
         var(--red);
 
     box-shadow:
-        0 0 0 3px rgba(180,35,24,.10);
+        0 0 0 3px color-mix(in srgb, var(--red) 10%, transparent);
 }
 
 
@@ -1845,7 +1845,7 @@
 .hs-field-error {
 
     color:
-        var(--red);
+        var(--danger);
 
     font-size:
         calc(10.5px * var(--ndms-font-scale, 1));

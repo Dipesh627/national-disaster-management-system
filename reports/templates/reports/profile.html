@@ -39,6 +39,7 @@
     >
 
 
+    {% include 'reports/partials/theme_head.html' %}
 </head>
 
 
@@ -68,28 +69,7 @@
 
     <!-- BRAND -->
 
-    <a
-        href="{% url 'dashboard' %}"
-        class="dashboard-brand"
-    >
-
-        <div class="dashboard-logo">
-            ND
-        </div>
-
-        <div class="dashboard-brand-text">
-
-            <strong>
-                NDMS
-            </strong>
-
-            <span>
-                National Disaster Management System
-            </span>
-
-        </div>
-
-    </a>
+    {% include 'reports/partials/sidebar_brand.html' %}
 
 
 
@@ -450,6 +430,8 @@
                  NOTIFICATION
                  ================================================= -->
 
+            {% include 'reports/partials/theme_toggle.html' %}
+
             {% include 'reports/partials/notification_dropdown.html' %}
 
 
@@ -463,7 +445,7 @@
                 id="ndmsAvatarWrapper"
             >
 
-                {% with display_name=user.full_name|default:user.username %}
+                {% with display_name=user.get_full_name|default:user.username %}
 
                 <button
                     type="button"
@@ -700,9 +682,9 @@
                                 alt=""
                             >
 
-                        {% elif user.full_name %}
+                        {% elif user.get_full_name %}
 
-                            {{ user.full_name|first|upper }}
+                            {{ user.get_full_name|first|upper }}
 
                         {% else %}
 
@@ -795,9 +777,9 @@
 
                 <h2>
 
-                    {% if user.full_name %}
+                    {% if user.get_full_name %}
 
-                        {{ user.full_name }}
+                        {{ user.get_full_name }}
 
                     {% else %}
 
@@ -891,14 +873,37 @@
                 <div class="pf-view-field">
 
                     <span class="pf-view-label">
-                        Full Name
+                        First Name
                     </span>
 
                     <span class="pf-view-value">
 
-                        {% if user.full_name %}
+                        {% if user.first_name %}
 
-                            {{ user.full_name }}
+                            {{ user.first_name }}
+
+                        {% else %}
+
+                            Not provided
+
+                        {% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <div class="pf-view-field">
+
+                    <span class="pf-view-label">
+                        Last Name
+                    </span>
+
+                    <span class="pf-view-value">
+
+                        {% if user.last_name %}
+
+                            {{ user.last_name }}
 
                         {% else %}
 
@@ -982,17 +987,37 @@
 
                     <div class="pf-form-group">
 
-                        <label for="id_full_name">
-                            Full Name
+                        <label for="id_first_name">
+                            First Name
                             <span class="pf-required">*</span>
                         </label>
 
-                        {{ form.full_name }}
+                        {{ form.first_name }}
 
-                        {% if form.full_name.errors %}
+                        {% if form.first_name.errors %}
 
                             <span class="pf-field-error">
-                                {{ form.full_name.errors.0 }}
+                                {{ form.first_name.errors.0 }}
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="pf-form-group">
+
+                        <label for="id_last_name">
+                            Last Name
+                            <span class="pf-required">*</span>
+                        </label>
+
+                        {{ form.last_name }}
+
+                        {% if form.last_name.errors %}
+
+                            <span class="pf-field-error">
+                                {{ form.last_name.errors.0 }}
                             </span>
 
                         {% endif %}
@@ -1315,9 +1340,9 @@
 
                             <span id="pfPhotoPreviewInitials">
 
-                                {% if user.full_name %}
+                                {% if user.get_full_name %}
 
-                                    {{ user.full_name|first|upper }}
+                                    {{ user.get_full_name|first|upper }}
 
                                 {% else %}
 

@@ -26,7 +26,8 @@ class DisasterReportPhotoInline(admin.TabularInline):
 class CustomUserAdmin(UserAdmin):
     list_display = (
         'username',
-        'full_name',
+        'first_name',
+        'last_name',
         'email',
         'phone',
         'role',
@@ -40,7 +41,8 @@ class CustomUserAdmin(UserAdmin):
 
     search_fields = (
         'username',
-        'full_name',
+        'first_name',
+        'last_name',
         'email',
         'phone',
     )
@@ -96,7 +98,8 @@ class DisasterReportAdmin(admin.ModelAdmin):
         'description',
         'address',
         'user__username',
-        'user__full_name',
+        'user__first_name',
+        'user__last_name',
         'disaster__title',
     )
 
@@ -303,7 +306,8 @@ class UserSettingsAdmin(admin.ModelAdmin):
 
     search_fields = (
         'user__username',
-        'user__full_name',
+        'user__first_name',
+        'user__last_name',
     )
 
     ordering = (
@@ -333,7 +337,8 @@ class SupportRequestAdmin(admin.ModelAdmin):
 
     search_fields = (
         'user__username',
-        'user__full_name',
+        'user__first_name',
+        'user__last_name',
         'subject',
         'description',
     )

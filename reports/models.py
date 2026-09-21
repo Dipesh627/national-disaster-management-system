@@ -12,9 +12,14 @@ class User(AbstractUser):
         ('CITIZEN', 'Citizen'),
     ]
 
-    full_name = models.CharField(
-        max_length=150
-    )
+    # NOTE:
+    # first_name / last_name are already provided by
+    # AbstractUser -- do NOT redeclare them here. The old
+    # custom `full_name` field has been removed (its data was
+    # migrated into first_name/last_name by migration 0027,
+    # then the column itself was dropped by migration 0028).
+    # Use get_full_name() wherever a combined display name is
+    # needed.
 
     phone = models.CharField(
         max_length=20,
@@ -31,6 +36,31 @@ class User(AbstractUser):
         upload_to='avatars/',
         blank=True,
         null=True
+    )
+
+    # ---------------------------------------------------
+    # TERMS & PRIVACY ACCEPTANCE (recorded at registration)
+    #
+    # terms_accepted_at -- when the person ticked the consent
+    #   checkbox and created their account.
+    # terms_version     -- which version of the Terms & Conditions
+    #   and Privacy Policy they accepted (see reports/legal.py).
+    #
+    # Accounts created BEFORE the Terms were introduced keep
+    # NULL / '' here: no acceptance is recorded for them and none
+    # is assumed. A separate boolean is not needed -- "accepted"
+    # simply means terms_accepted_at is not NULL.
+    # ---------------------------------------------------
+
+    terms_accepted_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    terms_version = models.CharField(
+        max_length=20,
+        blank=True,
+        default=''
     )
 
     def __str__(self):

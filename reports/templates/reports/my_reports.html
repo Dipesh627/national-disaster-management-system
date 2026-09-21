@@ -39,6 +39,7 @@
     >
 
 
+    {% include 'reports/partials/theme_head.html' %}
 </head>
 
 
@@ -68,28 +69,7 @@
 
     <!-- BRAND -->
 
-    <a
-        href="{% url 'dashboard' %}"
-        class="dashboard-brand"
-    >
-
-        <div class="dashboard-logo">
-            ND
-        </div>
-
-        <div class="dashboard-brand-text">
-
-            <strong>
-                NDMS
-            </strong>
-
-            <span>
-                National Disaster Management System
-            </span>
-
-        </div>
-
-    </a>
+    {% include 'reports/partials/sidebar_brand.html' %}
 
 
 
@@ -450,6 +430,8 @@
                  NOTIFICATION
                  ================================================= -->
 
+            {% include 'reports/partials/theme_toggle.html' %}
+
             {% include 'reports/partials/notification_dropdown.html' %}
 
 
@@ -463,7 +445,7 @@
                 id="ndmsAvatarWrapper"
             >
 
-                {% with display_name=user.full_name|default:user.username %}
+                {% with display_name=user.get_full_name|default:user.username %}
 
                 <button
                     type="button"

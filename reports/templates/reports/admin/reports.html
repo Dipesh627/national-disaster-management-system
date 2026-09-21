@@ -397,7 +397,7 @@ Disaster Reports
 
                                                     <span class="citizen-avatar-fallback">
 
-                                                        {{ report.user.full_name|default:report.user.username|first|upper }}
+                                                        {{ report.user.get_full_name|default:report.user.username|first|upper }}
 
                                                     </span>
 
@@ -409,9 +409,9 @@ Disaster Reports
                                             <a
                                                 href="{% url 'admin_user_detail' report.user.id %}"
                                                 class="table-primary-link"
-                                                title="{{ report.user.full_name|default:report.user.username }}">
+                                                title="{{ report.user.get_full_name|default:report.user.username }}">
 
-                                                {{ report.user.full_name|default:report.user.username }}
+                                                {{ report.user.get_full_name|default:report.user.username }}
 
                                             </a>
 

@@ -1,44 +1,17 @@
 /* =========================================================
-   NDMS ABOUT PAGE
-   COMPLETE RESPONSIVE CSS
+   NDMS - SHARED PUBLIC BASE + ABOUT PAGE
+   Linked by every public page for the base reset and the
+   .about-* / section styles.
    ========================================================= */
-
 
 /* =========================================================
-   ROOT VARIABLES
+   DESIGN TOKENS
+   ---------------------------------------------------------
+   Colours, shadows and radii come from ndms-theme.css
+   (Sentinel Teal, light + dark). The navbar lives in
+   navbar.css / navbar-avatar.css and the footer in footer.css;
+   this file keeps the shared reset and the About page.
    ========================================================= */
-
-:root {
-
-    --red: #b42318;
-    --red-dark: #8f1d16;
-
-    --navy: #172033;
-    --navy-2: #101828;
-
-    --text: #344054;
-    --muted: #667085;
-
-    --border: #e4e7ec;
-
-    --light-red: #fff7f6;
-
-    --white: #ffffff;
-
-    --background: #f8f9fb;
-    --soft-gray: #f2f4f7;
-
-    --shadow-xs:
-        0 2px 8px rgba(23, 32, 51, .035);
-
-    --shadow-sm:
-        0 4px 14px rgba(23, 32, 51, .055);
-
-    --shadow-md:
-        0 10px 30px rgba(23, 32, 51, .075);
-
-}
-
 
 /* =========================================================
    RESET
@@ -52,14 +25,12 @@
 
 }
 
-
 html {
 
     scroll-behavior: smooth;
     scroll-padding-top: 90px;
 
 }
-
 
 body {
 
@@ -89,13 +60,11 @@ body {
 
 }
 
-
 body.menu-open {
 
     overflow: hidden;
 
 }
-
 
 a {
 
@@ -103,579 +72,11 @@ a {
 
 }
 
-
 button {
 
     font-family: inherit;
 
 }
-
-
-/* =========================================================
-   NAVBAR
-   ========================================================= */
-
-.public-navbar {
-
-    width: 100%;
-
-    min-height: 76px;
-
-    background:
-        rgba(255, 255, 255, .97);
-
-    border-top:
-        2px solid var(--navy);
-
-    border-bottom:
-        1px solid var(--border);
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    padding:
-        0 32px;
-
-    position:
-        sticky;
-
-    top:
-        0;
-
-    z-index:
-        1000;
-
-    box-shadow:
-        0 3px 14px
-        rgba(23, 32, 51, .055);
-
-    backdrop-filter:
-        blur(12px);
-
-}
-
-
-/* =========================================================
-   BRAND
-   ========================================================= */
-
-.public-brand {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        12px;
-
-    min-width:
-        320px;
-
-    text-decoration:
-        none;
-
-    color:
-        var(--navy);
-
-    flex-shrink:
-        0;
-
-}
-
-
-.public-logo {
-
-    width:
-        42px;
-
-    height:
-        42px;
-
-    flex-shrink:
-        0;
-
-    border-radius:
-        8px;
-
-    background:
-        var(--red);
-
-    color:
-        var(--white);
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    font-size:
-        calc(14px * var(--ndms-font-scale, 1));
-
-    font-weight:
-        800;
-
-    letter-spacing:
-        .5px;
-
-    transition:
-        transform .2s ease,
-        background .2s ease,
-        box-shadow .2s ease;
-
-}
-
-
-.public-brand:hover .public-logo {
-
-    background:
-        var(--red-dark);
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 5px 13px
-        rgba(180, 35, 24, .22);
-
-}
-
-
-.public-brand-text {
-
-    display:
-        flex;
-
-    flex-direction:
-        column;
-
-    line-height:
-        1.15;
-
-}
-
-
-.public-brand-text strong {
-
-    color:
-        var(--navy);
-
-    font-size:
-        calc(19px * var(--ndms-font-scale, 1));
-
-    font-weight:
-        800;
-
-    letter-spacing:
-        .2px;
-
-}
-
-
-.public-brand-text span {
-
-    margin-top:
-        4px;
-
-    color:
-        var(--muted);
-
-    font-size:
-        calc(10px * var(--ndms-font-scale, 1));
-
-    white-space:
-        nowrap;
-
-}
-
-
-/* =========================================================
-   MOBILE MENU BUTTON
-   ========================================================= */
-
-.mobile-menu-toggle {
-
-    display:
-        none;
-
-    width:
-        42px;
-
-    height:
-        42px;
-
-    border:
-        1px solid var(--border);
-
-    border-radius:
-        8px;
-
-    background:
-        var(--white);
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    flex-direction:
-        column;
-
-    gap:
-        5px;
-
-    cursor:
-        pointer;
-
-    margin-left:
-        auto;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-
-}
-
-
-.mobile-menu-toggle:hover {
-
-    background:
-        var(--light-red);
-
-    border-color:
-        var(--c-red-230);
-
-    box-shadow:
-        var(--shadow-xs);
-
-}
-
-
-.mobile-menu-toggle span {
-
-    display:
-        block;
-
-    width:
-        19px;
-
-    height:
-        2px;
-
-    background:
-        var(--navy);
-
-    border-radius:
-        3px;
-
-    transition:
-        transform .25s ease,
-        opacity .2s ease;
-
-}
-
-
-.mobile-menu-toggle.active span:nth-child(1) {
-
-    transform:
-        translateY(7px)
-        rotate(45deg);
-
-}
-
-
-.mobile-menu-toggle.active span:nth-child(2) {
-
-    opacity:
-        0;
-
-}
-
-
-.mobile-menu-toggle.active span:nth-child(3) {
-
-    transform:
-        translateY(-7px)
-        rotate(-45deg);
-
-}
-
-
-/* =========================================================
-   MENU WRAPPER
-   ========================================================= */
-
-.public-mobile-menu {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    flex:
-        1;
-
-    min-width:
-        0;
-
-}
-
-
-/* =========================================================
-   NAVIGATION
-   ========================================================= */
-
-.public-nav {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        2px;
-
-    margin-left:
-        auto;
-
-}
-
-
-.public-nav a {
-
-    position:
-        relative;
-
-    padding:
-        27px 12px;
-
-    color:
-        var(--text);
-
-    text-decoration:
-        none;
-
-    font-size:
-        calc(13px * var(--ndms-font-scale, 1));
-
-    font-weight:
-        650;
-
-    white-space:
-        nowrap;
-
-    transition:
-        color .2s ease,
-        background .2s ease;
-
-}
-
-
-.public-nav a:hover {
-
-    color:
-        var(--red);
-
-}
-
-
-.public-nav a.active {
-
-    color:
-        var(--red);
-
-}
-
-
-/* Active-state underline itself is defined once, in
-   navbar-avatar.css (.public-nav a.active::after), which is
-   linked after this file on every public page. Kept out of
-   this file on purpose so there is a single source of truth. */
-
-
-/* =========================================================
-   AUTH BUTTONS
-   ========================================================= */
-
-.public-auth {
-
-    display:
-        flex;
-
-    align-items:
-        center;
-
-    gap:
-        8px;
-
-    margin-left:
-        12px;
-
-    flex-shrink:
-        0;
-
-}
-
-
-.public-login-btn,
-.public-register-btn,
-.public-logout-btn {
-
-    height:
-        40px;
-
-    padding:
-        0 17px;
-
-    border-radius:
-        7px;
-
-    display:
-        inline-flex;
-
-    align-items:
-        center;
-
-    justify-content:
-        center;
-
-    text-decoration:
-        none;
-
-    font-size:
-        calc(13px * var(--ndms-font-scale, 1));
-
-    font-weight:
-        750;
-
-    white-space:
-        nowrap;
-
-    transition:
-        transform .2s ease,
-        background .2s ease,
-        color .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-
-}
-
-
-.public-login-btn {
-
-    color:
-        var(--navy);
-
-    background:
-        var(--white);
-
-    border:
-        1px solid var(--c-red-230);
-
-}
-
-
-.public-login-btn:hover {
-
-    color:
-        var(--red);
-
-    border-color:
-        var(--red);
-
-    background:
-        var(--light-red);
-
-    transform:
-        translateY(-1px);
-
-}
-
-
-.public-register-btn {
-
-    color:
-        var(--white);
-
-    background:
-        var(--red);
-
-    border:
-        1px solid var(--red);
-
-    box-shadow:
-        0 4px 12px
-        rgba(180, 35, 24, .14);
-
-}
-
-
-.public-register-btn:hover {
-
-    background:
-        var(--red-dark);
-
-    border-color:
-        var(--red-dark);
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 6px 16px
-        rgba(180, 35, 24, .20);
-
-}
-
-
-.public-logout-btn {
-
-    color:
-        var(--navy);
-
-    background:
-        var(--white);
-
-    border:
-        1px solid var(--c-border-5);
-
-}
-
-
-.public-logout-btn:hover {
-
-    color:
-        var(--red);
-
-    background:
-        var(--light-red);
-
-    border-color:
-        var(--c-red-230);
-
-    transform:
-        translateY(-1px);
-
-    box-shadow:
-        0 4px 12px
-        rgba(180, 35, 24, .08);
-
-}
-
-
-
 
 /* =========================================================
    MAIN
@@ -699,7 +100,6 @@ button {
 .about-section--tight {
     padding: 56px 0;
 }
-
 
 /* =========================================================
    SECTION HEADING
@@ -740,7 +140,7 @@ button {
 }
 
 .section-heading h2 {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(30px * var(--ndms-font-scale, 1));
     line-height: 1.25;
     font-weight: 800;
@@ -753,7 +153,6 @@ button {
     font-size: calc(15px * var(--ndms-font-scale, 1));
     line-height: 1.7;
 }
-
 
 /* =========================================================
    SHARED NDMS VISUAL (radar / connected-network symbol)
@@ -783,7 +182,7 @@ button {
         linear-gradient(
             35deg,
             transparent 49.5%,
-            rgba(180, 35, 24, .09) 50%,
+            color-mix(in srgb, var(--red) 9%, transparent) 50%,
             transparent 50.5%
         )
         0 0 / 100% 100% no-repeat;
@@ -805,7 +204,7 @@ button {
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    border: 1px dashed rgba(180, 35, 24, .18);
+    border: 1px dashed color-mix(in srgb, var(--red) 18%, transparent);
     animation: ndms-drift 18s linear infinite;
 }
 
@@ -813,7 +212,7 @@ button {
     width: 112px;
     height: 112px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, .98);
+    background: color-mix(in srgb, var(--white) 98%, transparent);
     border: 1px solid rgba(23, 32, 51, .13);
     display: flex;
     align-items: center;
@@ -822,7 +221,7 @@ button {
     z-index: 10;
     box-shadow:
         0 14px 35px rgba(23, 32, 51, .10),
-        0 0 0 20px rgba(180, 35, 24, .025);
+        0 0 0 20px color-mix(in srgb, var(--red) 2%, transparent);
     animation: ndms-float 5s ease-in-out infinite;
 }
 
@@ -831,7 +230,7 @@ button {
     position: absolute;
     inset: 9px;
     border-radius: 50%;
-    border: 1px solid rgba(180, 35, 24, .25);
+    border: 1px solid color-mix(in srgb, var(--red) 25%, transparent);
     animation: ndms-pulse 3.5s ease-in-out infinite;
 }
 
@@ -841,15 +240,15 @@ button {
     inset: -15px;
     border-radius: 50%;
     border: 2px solid transparent;
-    border-top-color: rgba(180, 35, 24, .42);
-    border-right-color: rgba(180, 35, 24, .08);
+    border-top-color: color-mix(in srgb, var(--red) 42%, transparent);
+    border-right-color: color-mix(in srgb, var(--red) 8%, transparent);
     animation: ndms-scan 8s linear infinite;
 }
 
 .ndms-visual-ring span {
     position: relative;
     z-index: 20;
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(19px * var(--ndms-font-scale, 1));
     font-weight: 850;
     letter-spacing: 1.6px;
@@ -879,7 +278,6 @@ button {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
-
 
 /* =========================================================
    ABOUT HERO
@@ -917,7 +315,7 @@ button {
 }
 
 .about-hero-content h1 {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(44px * var(--ndms-font-scale, 1));
     line-height: 1.16;
     font-weight: 800;
@@ -947,7 +345,6 @@ button {
 .ndms-visual-area-wrap {
     flex-shrink: 0;
 }
-
 
 /* =========================================================
    HERO / SECTION BUTTONS
@@ -990,19 +387,19 @@ button {
     background: var(--red);
     color: var(--white);
     border: 1px solid var(--red);
-    box-shadow: 0 4px 12px rgba(180, 35, 24, .14);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--red) 14%, transparent);
 }
 
 .about-primary-btn:hover {
     background: var(--red-dark);
     border-color: var(--red-dark);
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(180, 35, 24, .20);
+    box-shadow: 0 6px 16px color-mix(in srgb, var(--red) 20%, transparent);
 }
 
 .about-secondary-btn {
     background: var(--white);
-    color: var(--navy);
+    color: var(--heading);
     border: 1px solid var(--border);
 }
 
@@ -1012,7 +409,6 @@ button {
     color: var(--red);
     transform: translateY(-1px);
 }
-
 
 /* =========================================================
    WHAT IS NDMS
@@ -1057,7 +453,7 @@ button {
     font-size: calc(12px * var(--ndms-font-scale, 1));
     font-weight: 750;
     letter-spacing: .4px;
-    color: var(--navy);
+    color: var(--heading);
 }
 
 .mini-flow-arrow {
@@ -1074,11 +470,10 @@ button {
 }
 
 .mini-flow-node--result {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: var(--white);
+    background: var(--btn-dark);
+    border-color: var(--btn-dark);
+    color: var(--on-dark);
 }
-
 
 /* =========================================================
    WHY NDMS — EDITORIAL LIST
@@ -1114,7 +509,7 @@ button {
 }
 
 .why-body h3 {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(17px * var(--ndms-font-scale, 1));
     font-weight: 750;
     margin-bottom: 6px;
@@ -1126,7 +521,6 @@ button {
     line-height: 1.75;
     max-width: 620px;
 }
-
 
 /* =========================================================
    HOW NDMS WORKS — TIMELINE
@@ -1176,7 +570,7 @@ button {
 }
 
 .process-step h3 {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(16px * var(--ndms-font-scale, 1));
     font-weight: 750;
     margin-bottom: 6px;
@@ -1187,7 +581,6 @@ button {
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     line-height: 1.65;
 }
-
 
 /* =========================================================
    WHAT NDMS CONNECTS — COMPACT CAPABILITY LIST
@@ -1212,13 +605,16 @@ button {
     width: 20px;
     margin-top: 2px;
     color: var(--red);
-    font-size: calc(13px * var(--ndms-font-scale, 1));
-    font-weight: 850;
-    text-align: center;
+}
+
+.connects-mark svg {
+    display: block;
+    width: 20px;
+    height: 20px;
 }
 
 .connects-item h3 {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(14.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
     margin-bottom: 4px;
@@ -1229,7 +625,6 @@ button {
     font-size: calc(13px * var(--ndms-font-scale, 1));
     line-height: 1.6;
 }
-
 
 /* =========================================================
    WHO IS NDMS FOR
@@ -1243,7 +638,7 @@ button {
 }
 
 .audience-copy h2 {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(26px * var(--ndms-font-scale, 1));
     font-weight: 800;
     line-height: 1.3;
@@ -1294,7 +689,6 @@ button {
     flex-shrink: 0;
 }
 
-
 /* =========================================================
    COMMUNITY PARTICIPATION CTA
    ========================================================= */
@@ -1314,7 +708,7 @@ button {
 }
 
 .about-cta-copy h2 {
-    color: var(--white);
+    color: var(--on-dark);
     font-size: calc(26px * var(--ndms-font-scale, 1));
     font-weight: 800;
     line-height: 1.3;
@@ -1336,20 +730,20 @@ button {
     height: 46px;
     padding: 0 24px;
     border-radius: 8px;
-    background: var(--red);
-    color: var(--white);
+    background: var(--on-dark);
+    color: var(--navy);
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
     text-decoration: none;
     white-space: nowrap;
     transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
-    box-shadow: 0 4px 12px rgba(180, 35, 24, .25);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--red) 25%, transparent);
 }
 
 .about-cta-btn:hover {
-    background: var(--red-dark);
+    background: color-mix(in srgb, var(--on-dark) 88%, var(--navy));
     transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(180, 35, 24, .32);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .28);
 }
 
 .about-cta-btn span {
@@ -1359,7 +753,6 @@ button {
 .about-cta-btn:hover span {
     transform: translateX(3px);
 }
-
 
 /* =========================================================
    SCROLL REVEAL
@@ -1377,232 +770,11 @@ button {
     transform: none;
 }
 
-
-/* =========================================================
-   FOOTER
-   (Matches Home page footer — brand, links, social icons,
-   and bottom copyright strip.)
-   ========================================================= */
-
-.about-footer {
-    width: 100%;
-    background: var(--navy);
-    color: var(--white);
-    border-top: 2px solid var(--navy-2);
-    margin-top: 0;
-}
-
-.footer-inner {
-    width: min(1180px, calc(100% - 48px));
-    margin: 0 auto;
-    padding: 56px 0 44px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 48px;
-}
-
-.footer-brand {
-    max-width: 320px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.footer-brand-title {
-    display: flex;
-    flex-direction: column;
-    text-decoration: none;
-    line-height: 1.2;
-}
-
-.footer-brand-title strong {
-    font-size: calc(22px * var(--ndms-font-scale, 1));
-    font-weight: 800;
-    color: var(--white);
-    letter-spacing: .5px;
-}
-
-.footer-brand-title span {
-    font-size: calc(11px * var(--ndms-font-scale, 1));
-    color: var(--c-border-8);
-    margin-top: 4px;
-    letter-spacing: .3px;
-}
-
-.footer-brand p {
-    font-size: calc(13px * var(--ndms-font-scale, 1));
-    color: var(--c-muted-5);
-    line-height: 1.7;
-}
-
-.footer-links {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(110px, 1fr));
-    gap: 40px;
-}
-
-.footer-links > div {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.footer-links strong {
-    font-size: calc(13px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    color: var(--white);
-    margin-bottom: 4px;
-    text-transform: uppercase;
-    letter-spacing: .5px;
-}
-
-.footer-links a {
-    font-size: calc(12.5px * var(--ndms-font-scale, 1));
-    color: var(--c-muted-5);
-    text-decoration: none;
-    display: inline-block;
-    width: fit-content;
-    position: relative;
-}
-
-.footer-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -2px;
-    width: 100%;
-    height: 1px;
-    background: var(--red);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 250ms ease;
-}
-
-.footer-links a:hover::after {
-    transform: scaleX(1);
-}
-
-.footer-social {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-width: 220px;
-}
-
-.footer-social-title {
-    font-size: calc(13px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    color: var(--white);
-    text-transform: uppercase;
-    letter-spacing: .5px;
-}
-
-.footer-social-icons {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.footer-social-icon {
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    color: var(--c-border-8);
-    transition: all 200ms ease;
-}
-
-.footer-social-icon:hover {
-    background: var(--red);
-    border-color: var(--red);
-    color: var(--white);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(180, 35, 24, .3);
-}
-
-.footer-social-icon svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-}
-
-.footer-bottom {
-    width: min(1180px, calc(100% - 48px));
-    margin: 0 auto;
-    padding: 20px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.10);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    flex-wrap: wrap;
-    font-size: calc(12px * var(--ndms-font-scale, 1));
-    color: var(--c-muted-4);
-}
-
-.footer-bottom-links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.footer-bottom-links a {
-    color: var(--c-muted-4);
-    text-decoration: none;
-    position: relative;
-}
-
-.footer-bottom-links a::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -3px;
-    width: 100%;
-    height: 1px;
-    background: var(--red);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 200ms ease;
-}
-
-.footer-bottom-links a:hover::after {
-    transform: scaleX(1);
-}
-
-
-
-
 /* =========================================================
    TABLET (<=1050px)
    ========================================================= */
 
 @media (max-width: 1050px) {
-
-    .public-navbar {
-        padding: 0 22px;
-    }
-
-    .public-brand {
-        min-width: 250px;
-    }
-
-    .public-nav a {
-        padding: 27px 8px;
-        font-size: calc(12px * var(--ndms-font-scale, 1));
-    }
-
-    .public-login-btn,
-    .public-register-btn,
-    .public-logout-btn {
-        padding: 0 12px;
-    }
-
     .about-main {
         width: min(100% - 40px, 1000px);
     }
@@ -1612,7 +784,7 @@ button {
     }
 
     .what-layout,
-    .audience-layout {
+.audience-layout {
         grid-template-columns: 1fr;
         gap: 36px;
     }
@@ -1629,104 +801,13 @@ button {
     .connects-grid {
         grid-template-columns: 1fr 1fr;
     }
-
-    .footer-inner {
-        flex-wrap: wrap;
-        gap: 36px;
-    }
-
-    .footer-brand {
-        max-width: 100%;
-        flex-basis: 100%;
-    }
 }
-
 
 /* =========================================================
    MOBILE / SMALL TABLET (<=850px)
    ========================================================= */
 
 @media (max-width: 850px) {
-
-    .public-navbar {
-        min-height: 70px;
-        padding: 0 20px;
-        gap: 10px;
-    }
-
-    .public-brand {
-        min-width: 0;
-    }
-
-    .public-brand-text span {
-        max-width: 210px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .mobile-menu-toggle {
-        display: flex;
-        order: -1;
-        margin-left: 0;
-    }
-
-    .public-auth {
-        margin-left: auto;
-        width: auto;
-    }
-
-    .public-mobile-menu {
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        max-height: calc(100vh - 70px);
-        overflow-y: auto;
-        padding: 12px 20px 18px;
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
-        box-shadow: 0 12px 25px rgba(23, 32, 51, .08);
-        display: none;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-        opacity: 0;
-        transform: translateY(-8px);
-        pointer-events: none;
-        transition: opacity .22s ease, transform .22s ease;
-        z-index: 1100;
-    }
-
-    .public-mobile-menu.open {
-        display: flex;
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
-    }
-
-    .public-nav {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-        gap: 2px;
-        margin: 0;
-    }
-
-    .public-nav a {
-        width: 100%;
-        padding: 12px 13px;
-        border-radius: 7px;
-        font-size: calc(13px * var(--ndms-font-scale, 1));
-    }
-
-    .public-login-btn,
-    .public-register-btn {
-        height: 36px;
-        padding: 0 12px;
-        font-size: calc(12px * var(--ndms-font-scale, 1));
-    }
-
     .about-main {
         width: calc(100% - 30px);
     }
@@ -1779,6 +860,11 @@ button {
         top: 20px;
     }
 
+    /* keeps the number badges (which straddle the line) on-screen */
+    .process-timeline {
+        margin-left: 14px;
+    }
+
     .connects-grid {
         grid-template-columns: 1fr;
         gap: 20px;
@@ -1798,53 +884,13 @@ button {
         width: 100%;
         justify-content: center;
     }
-
-    .footer-links {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 28px;
-    }
 }
-
 
 /* =========================================================
    MOBILE (<=600px)
    ========================================================= */
 
 @media (max-width: 600px) {
-
-    .public-navbar {
-        min-height: 66px;
-        padding: 0 15px;
-    }
-
-    .public-logo {
-        width: 39px;
-        height: 39px;
-        font-size: calc(13px * var(--ndms-font-scale, 1));
-    }
-
-    .public-brand {
-        gap: 9px;
-    }
-
-    .public-brand-text strong {
-        font-size: calc(17px * var(--ndms-font-scale, 1));
-    }
-
-    .public-brand-text span {
-        display: none;
-    }
-
-    .mobile-menu-toggle {
-        width: 40px;
-        height: 40px;
-    }
-
-    .public-mobile-menu {
-        top: 66px;
-        padding: 11px 15px 16px;
-    }
-
     .about-main {
         width: calc(100% - 22px);
     }
@@ -1870,12 +916,12 @@ button {
     }
 
     .about-primary-btn,
-    .about-secondary-btn {
+.about-secondary-btn {
         width: 100%;
     }
 
     .ndms-visual,
-    .ndms-visual-core {
+.ndms-visual-core {
         transform: scale(.82);
     }
 
@@ -1904,49 +950,18 @@ button {
     .about-cta-copy h2 {
         font-size: calc(22px * var(--ndms-font-scale, 1));
     }
-
-    .footer-inner {
-        padding: 40px 0 30px;
-    }
-
-    .footer-links {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .footer-bottom {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-    }
 }
-
 
 /* =========================================================
    VERY SMALL MOBILE (<=380px)
    ========================================================= */
 
 @media (max-width: 380px) {
-
     .about-hero-content h1 {
         font-size: calc(27px * var(--ndms-font-scale, 1));
     }
 
-    .public-brand {
-        min-width: 0;
-        flex-shrink: 1;
-    }
-
-    .public-brand-text strong {
-        max-width: 78px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-
-    .public-auth,
-    .ndms-avatar-wrapper,
-    .mobile-menu-toggle {
+    .ndms-avatar-wrapper {
         flex-shrink: 0;
     }
 
@@ -1955,18 +970,16 @@ button {
     }
 
     .ndms-visual,
-    .ndms-visual-core {
+.ndms-visual-core {
         transform: scale(.72);
     }
 }
-
 
 /* =========================================================
    REDUCED MOTION ACCESSIBILITY
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
     html {
         scroll-behavior: auto;
     }
@@ -1978,31 +991,22 @@ button {
     }
 
     .ndms-visual-core::before,
-    .ndms-visual-core::after,
-    .ndms-visual-ring,
-    .ndms-visual-ring::before,
-    .ndms-visual-ring::after {
-        animation: none;
-    }
-
-    .footer-links a,
-    .footer-social-icon {
-        transition: none;
-        transform: none;
+.ndms-visual-core::after,
+.ndms-visual-ring,
+.ndms-visual-ring::before,
+.ndms-visual-ring::after {
         animation: none;
     }
 }
-
 
 /* =========================================================
    TOUCH DEVICE SAFETY
    ========================================================= */
 
 @media (hover: none) {
-
     .about-primary-btn:hover,
-    .about-secondary-btn:hover,
-    .about-cta-btn:hover {
+.about-secondary-btn:hover,
+.about-cta-btn:hover {
         transform: none;
     }
 }

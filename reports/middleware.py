@@ -216,6 +216,10 @@ class AdminCitizenPortalIsolationMiddleware:
     actions; every citizen-only route (reporting, my-reports,
     profile, settings, etc.) remains fully blocked below.
 
+    The public legal pages ("/terms/" and "/privacy/") are allowed
+    for the same reason: the shared site footer links to them, and
+    they contain only public policy text.
+
     "/disasters/" (public Disaster list/detail/guidelines, and the
     public Emergency Agencies directory) is deliberately NOT in
     this allow-list. Public Disaster information and the public
@@ -255,6 +259,8 @@ class AdminCitizenPortalIsolationMiddleware:
     ADMIN_ALLOWED_EXACT_PATHS = (
         '/',
         '/about/',
+        '/terms/',
+        '/privacy/',
         '/logout/',
     )
 

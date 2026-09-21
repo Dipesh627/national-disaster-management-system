@@ -1,296 +1,18 @@
 /* =========================================================
-   NDMS — NAVBAR + AVATAR DROPDOWN
-   FINAL CLEAN / COMPACT DISASTERS DROPDOWN
+   NDMS - AVATAR / ACCOUNT DROPDOWN (shared)
+   ---------------------------------------------------------
+   Used by the public navbar AND the dashboard-shell topbar,
+   so there is one avatar implementation project-wide:
+     photo when the user has one, otherwise ONE first letter.
+
+   The public navbar itself (brand, links, Disasters/Agencies
+   dropdowns, mobile menu) lives in navbar.css.
    ========================================================= */
 
-
 /* =========================================================
-   PUBLIC NAVBAR LINKS
-   ========================================================= */
-
-.public-nav a,
-.public-nav-dropdown-toggle {
-    position: relative;
-
-    padding: 27px 14px;
-
-    color: var(--text);
-    text-decoration: none;
-
-    font-size: calc(13.5px * var(--ndms-font-scale, 1));
-    font-weight: 650;
-
-    white-space: nowrap;
-
-    transition:
-        color 240ms cubic-bezier(0.4, 0, 0.2, 1),
-        transform 240ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.public-nav-dropdown-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-
-    border: none;
-    background: none;
-
-    font-family: inherit;
-
-    cursor: pointer;
-}
-
-.public-nav a::after,
-.public-nav-dropdown-toggle::after {
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-    bottom: 2px;
-
-    width: 18px;
-    height: 2px;
-
-    background: var(--red);
-
-    border-radius: 2px;
-
-    transform: translateX(-50%) scaleX(0);
-    opacity: 0;
-
-    transform-origin: center;
-
-    transition:
-        transform 260ms cubic-bezier(0.4, 0, 0.2, 1),
-        opacity 260ms ease;
-}
-
-.public-nav a:hover,
-.public-nav-dropdown-toggle:hover {
-    color: var(--red);
-    transform: translateY(-1px);
-}
-
-.public-nav a.active,
-.public-nav-dropdown-toggle.active {
-    color: var(--red);
-    font-weight: 750;
-}
-
-.public-nav a.active::after,
-.public-nav-dropdown-toggle.active::after {
-    transform: translateX(-50%) scaleX(1);
-    opacity: 1;
-}
-
-.public-nav a:focus-visible,
-.public-nav-dropdown-toggle:focus-visible {
-    outline: none;
-    box-shadow: inset 0 0 0 2px rgba(180, 35, 24, .25);
-    border-radius: 4px;
-}
-
-
-/* =========================================================
-   AUTH SLOT
-   ========================================================= */
-
-.public-auth.is-authenticated {
-    display: flex;
-    align-items: center;
-}
-
-
-/* =========================================================
-   DISASTERS DROPDOWN WRAPPER
-   ========================================================= */
-
-.public-nav-dropdown {
-    position: relative;
-}
-
-
-/* =========================================================
-   DISASTERS CARET
-   ========================================================= */
-
-.public-nav-dropdown-caret {
-    color: var(--muted);
-    font-size: calc(9px * var(--ndms-font-scale, 1));
-
-    transition: transform 180ms ease;
-}
-
-.public-nav-dropdown.open .public-nav-dropdown-caret {
-    transform: rotate(180deg);
-}
-
-
-/* =========================================================
-   DISASTERS DROPDOWN CONTAINER
-   =========================================================
-
-   Directly attached to Disasters.
-   No extra top gap.
-   Compact width.
-   ========================================================= */
-
-.public-nav-dropdown-menu {
-    position: absolute;
-
-    top: 100%;
-    left: 50%;
-
-    width: 205px;
-
-    box-sizing: border-box;
-
-    display: flex;
-    flex-direction: column;
-
-    gap: 0;
-
-    background: var(--white);
-
-    border: 1px solid var(--border);
-    border-radius: 6px;
-
-    box-shadow: 0 3px 10px rgba(15, 23, 42, .07);
-
-    padding: 3px;
-
-    z-index: 1100;
-
-    opacity: 0;
-    visibility: hidden;
-
-    transform: translate(-50%, -2px);
-
-    transition:
-        opacity 180ms ease,
-        transform 180ms ease,
-        visibility 180ms ease;
-}
-
-.public-nav-dropdown.open .public-nav-dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-
-    transform: translate(-50%, 0);
-}
-
-
-/* =========================================================
-   ALL DISASTER DROPDOWN LINKS
-   =========================================================
-
-   IMPORTANT:
-   All three rows are intentionally IDENTICAL.
-
-   Same:
-   - width
-   - height
-   - padding
-   - border radius
-   - clickable area
-
-   No item gets a larger background.
-   ========================================================= */
-
-.public-nav-dropdown-item,
-.public-nav-dropdown-cta {
-    box-sizing: border-box;
-
-    display: flex;
-    align-items: center;
-
-    width: 100%;
-
-    height: 27px;
-    min-height: 27px;
-    max-height: 27px;
-
-    margin: 0;
-    padding: 4px 7px;
-
-    border: 0;
-    border-radius: 3px;
-
-    background: transparent;
-
-    color: var(--text);
-
-    text-decoration: none;
-
-    font-family: inherit;
-    font-size: calc(11.5px * var(--ndms-font-scale, 1));
-    font-weight: 650;
-
-    line-height: 1;
-    text-align: left;
-
-    white-space: nowrap;
-
-    cursor: pointer;
-
-    transition:
-        background 160ms ease,
-        color 160ms ease;
-}
-
-
-/* =========================================================
-   NORMAL DISASTER ITEMS
-   ========================================================= */
-
-.public-nav-dropdown-item:hover,
-.public-nav-dropdown-item.active {
-    background: var(--light-red);
-    color: var(--red);
-}
-
-.public-nav-dropdown-item.active {
-    position: relative;
-    font-weight: 750;
-}
-
-.public-nav-dropdown-item.active::after {
-    content: "";
-
-    position: absolute;
-
-    left: 7px;
-    bottom: 3px;
-
-    width: 14px;
-    height: 2px;
-
-    background: var(--red);
-    border-radius: 2px;
-}
-
-/* Groups "Disasters" + its red dot as one flex item, so the
-   toggle's mobile `justify-content: space-between` still puts
-   only the caret on the far right -- exactly as before this
-   indicator was added. */
-.public-nav-dropdown-toggle-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-.public-nav-dropdown-item:focus-visible {
-    outline: 1px solid rgba(180, 35, 24, .30);
-    outline-offset: -1px;
-}
-
-
-/* =========================================================
-   DISASTER UNREAD RED-DOT INDICATOR
-   Small, professional, non-animated. Reused as-is beside the
-   "Disasters" dropdown toggle and the "View Disasters" item.
-   Uses the existing --red token -- no new colour is introduced.
+   UNREAD DISASTER-ALERT DOT
+   Small, non-animated. Beside the "Disasters" toggle in the
+   public navbar and the dashboard sidebar. Blue = information.
    ========================================================= */
 
 .disaster-unread-dot {
@@ -302,146 +24,8 @@
 
     border-radius: 50%;
 
-    background: var(--red);
+    background: var(--blue-dark);
 }
-
-/* Inside a full-width row (the dropdown item has no other
-   trailing element), align the dot to the right edge -- same
-   convention already used by .sidebar-badge in dashboard.css. */
-.public-nav-dropdown-item .disaster-unread-dot {
-    margin-left: auto;
-}
-
-
-/* =========================================================
-   DISASTER AWARENESS / GUIDELINES
-   ========================================================= */
-
-.public-nav-dropdown-item-disabled,
-.public-nav-dropdown-item-disabled:hover,
-.public-nav-dropdown-item-disabled:focus-visible {
-    /*
-       Keep EXACTLY the same row dimensions.
-       Only text color changes.
-    */
-
-    width: 100%;
-    height: 27px;
-    min-height: 27px;
-    max-height: 27px;
-
-    padding: 4px 7px;
-    margin: 0;
-
-    background: transparent;
-
-    color: var(--muted);
-
-    opacity: .65;
-
-    cursor: not-allowed;
-
-    outline: none;
-}
-
-
-/* =========================================================
-   DIVIDER
-   ========================================================= */
-
-.public-nav-dropdown-divider {
-    width: calc(100% - 8px);
-
-    height: 1px;
-
-    margin: 2px 4px;
-
-    background: var(--border);
-}
-
-
-/* =========================================================
-   REPORT INCIDENT
-   =========================================================
-
-   IMPORTANT:
-   Report Incident is NOT a large CTA button.
-
-   It has EXACTLY the same:
-   - width
-   - height
-   - padding
-   - background area
-   - border radius
-
-   as Disaster Types and Disaster Awareness.
-
-   Only its text is red/bolder.
-   ========================================================= */
-
-.public-nav-dropdown-cta {
-    width: 100%;
-
-    height: 27px;
-    min-height: 27px;
-    max-height: 27px;
-
-    margin: 0;
-    padding: 4px 7px;
-
-    /*
-       No special large background.
-    */
-    background: transparent;
-
-    color: var(--red);
-
-    font-size: calc(11.5px * var(--ndms-font-scale, 1));
-    font-weight: 700;
-
-    /*
-       Keep the arrow inside the SAME compact row.
-    */
-    justify-content: flex-start;
-
-    gap: 6px;
-}
-
-.public-nav-dropdown-cta:hover,
-.public-nav-dropdown-cta:focus-visible {
-    /*
-       Same hover background size as every other item.
-    */
-    background: var(--light-red);
-
-    color: var(--red-dark);
-}
-
-.public-nav-dropdown-cta:focus-visible {
-    outline: 1px solid rgba(180, 35, 24, .30);
-    outline-offset: -1px;
-}
-
-
-/* =========================================================
-   REPORT INCIDENT ARROW
-   ========================================================= */
-
-.public-nav-dropdown-cta-arrow {
-    flex-shrink: 0;
-
-    margin-left: 2px;
-
-    font-size: calc(9px * var(--ndms-font-scale, 1));
-
-    transition: transform 160ms ease;
-}
-
-.public-nav-dropdown-cta:hover .public-nav-dropdown-cta-arrow,
-.public-nav-dropdown-cta:focus-visible .public-nav-dropdown-cta-arrow {
-    transform: translateX(2px);
-}
-
 
 /* =========================================================
    AVATAR
@@ -481,8 +65,7 @@
 
     border-color: var(--red);
 
-    box-shadow:
-        0 0 0 3px rgba(180, 35, 24, .15);
+    box-shadow: var(--focus-ring);
 }
 
 .ndms-avatar-circle {
@@ -520,13 +103,16 @@
 
     transform: translateY(-1px);
 
-    box-shadow:
-        0 4px 12px rgba(180, 35, 24, .22);
+    box-shadow: var(--shadow-sm);
 }
 
 .ndms-avatar-caret {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+
     color: var(--muted);
-    font-size: calc(11px * var(--ndms-font-scale, 1));
 
     transition: transform 220ms ease;
 }
@@ -534,7 +120,6 @@
 .ndms-avatar-wrapper.open .ndms-avatar-caret {
     transform: rotate(180deg);
 }
-
 
 /* =========================================================
    AVATAR IMAGE
@@ -549,7 +134,6 @@
 
     border-radius: 50%;
 }
-
 
 /* =========================================================
    AVATAR DROPDOWN
@@ -592,7 +176,6 @@
     transform: translateY(0);
 }
 
-
 /* =========================================================
    AVATAR MENU HEADER
    ========================================================= */
@@ -633,7 +216,7 @@
 }
 
 .ndms-avatar-menu-name {
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 700;
@@ -653,7 +236,6 @@
     text-overflow: ellipsis;
 }
 
-
 /* =========================================================
    AVATAR DIVIDER
    ========================================================= */
@@ -671,7 +253,6 @@
     flex-direction: column;
     gap: 2px;
 }
-
 
 /* =========================================================
    AVATAR MENU ITEMS
@@ -702,14 +283,14 @@
 .ndms-avatar-menu-item:hover,
 .ndms-avatar-menu-item:focus-visible {
     background: var(--background);
-    color: var(--navy);
+    color: var(--heading);
 
     transform: translateX(3px);
 }
 
 .ndms-avatar-menu-item:focus-visible {
-    outline: 2px solid rgba(180, 35, 24, .35);
-    outline-offset: -1px;
+    outline: 2px solid var(--red);
+    outline-offset: -2px;
 }
 
 button.ndms-avatar-menu-item {
@@ -727,7 +308,6 @@ button.ndms-avatar-menu-item {
 
     cursor: pointer;
 }
-
 
 /* =========================================================
    AVATAR ICONS
@@ -749,7 +329,6 @@ button.ndms-avatar-menu-item {
     color: var(--red);
 }
 
-
 /* =========================================================
    AVATAR ACTIVE ITEM
    ========================================================= */
@@ -766,33 +345,31 @@ button.ndms-avatar-menu-item {
     color: var(--red);
 }
 
-
 /* =========================================================
    LOGOUT
    ========================================================= */
 
 .ndms-avatar-menu-logout {
-    color: var(--red);
+    color: var(--danger);
 }
 
 .ndms-avatar-menu-logout .ndms-avatar-menu-item-icon {
-    color: var(--red);
+    color: var(--danger);
 }
 
 .ndms-avatar-menu-logout:hover,
 .ndms-avatar-menu-logout:focus-visible {
-    background: var(--c-red-50);
+    background: var(--danger-bg);
 
-    color: var(--red-dark);
+    color: var(--danger-dark);
 
     transform: translateX(3px);
 }
 
 .ndms-avatar-menu-logout:hover .ndms-avatar-menu-item-icon,
 .ndms-avatar-menu-logout:focus-visible .ndms-avatar-menu-item-icon {
-    color: var(--red-dark);
+    color: var(--danger-dark);
 }
-
 
 /* =========================================================
    TOPBAR USER
@@ -816,134 +393,54 @@ button.ndms-avatar-menu-item {
 .topbar-user-btn:focus-visible {
     outline: none;
 
-    box-shadow:
-        0 0 0 3px rgba(180, 35, 24, .15);
+    box-shadow: var(--focus-ring);
 }
 
 .topbar-user.ndms-avatar-wrapper .ndms-avatar-menu {
     top: calc(100% + 12px);
 }
 
-
 /* =========================================================
    MOBILE
    ========================================================= */
 
 @media (max-width: 850px) {
-
-    .public-nav a,
-    .public-nav-dropdown-toggle {
-        padding: 12px 16px;
-        font-size: calc(14px * var(--ndms-font-scale, 1));
-
-        border-radius: 8px;
-    }
-
-    .public-nav a::after,
-    .public-nav-dropdown-toggle::after {
-        display: none;
-    }
-
-    .public-nav a:hover,
-    .public-nav a.active,
-    .public-nav-dropdown-toggle:hover,
-    .public-nav-dropdown-toggle.active {
-        color: var(--red);
-        transform: none;
-    }
-
-    .public-nav-dropdown-toggle {
-        width: 100%;
-
-        justify-content: space-between;
-    }
-
-
-    /* =====================================================
-       MOBILE DISASTERS DROPDOWN
-       ===================================================== */
-
-    .public-nav-dropdown-menu {
-        position: static;
-
-        width: 100%;
-
-        margin-top: 2px;
-
-        padding: 3px;
-
-        background: var(--background);
-
-        border: none;
-        border-radius: 6px;
-
-        box-shadow: none;
-
-        opacity: 1;
-        visibility: visible;
-
-        transform: none;
-
-        max-height: 0;
-
-        overflow: hidden;
-
-        transition:
-            max-height 220ms ease,
-            padding 220ms ease;
-    }
-
-    .public-nav-dropdown.open .public-nav-dropdown-menu {
-        max-height: 260px;
-
-        overflow-y: auto;
-
-        padding: 3px;
-
-        transform: none;
-    }
-
-
-    /*
-       Same compact size for ALL mobile items.
-    */
-
-    .public-nav-dropdown-item,
-    .public-nav-dropdown-cta,
-    .public-nav-dropdown-item-disabled {
-        width: 100%;
-
-        height: 29px;
-        min-height: 29px;
-        max-height: 29px;
-
-        padding: 5px 8px;
-
-        margin: 0;
-
-        font-size: calc(12px * var(--ndms-font-scale, 1));
-    }
-
-
-    .public-auth.is-authenticated {
-        display: flex;
-        align-items: center;
-
-        width: auto;
-    }
-
     .ndms-avatar-wrapper {
         display: flex;
     }
 }
 
+@media (max-width: 380px) {
+    .ndms-avatar-menu {
+        width: min(280px, calc(100vw - 24px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ndms-avatar-btn,
+    .ndms-avatar-circle,
+    .ndms-avatar-caret,
+    .ndms-avatar-menu,
+    .ndms-avatar-menu-item,
+    .ndms-avatar-menu-item-icon {
+        transition: none;
+    }
+
+    .ndms-avatar-menu-item:hover,
+    .ndms-avatar-menu-item:focus-visible,
+    .ndms-avatar-menu-logout:hover,
+    .ndms-avatar-menu-logout:focus-visible,
+    .ndms-avatar-btn:hover .ndms-avatar-circle,
+    .ndms-avatar-wrapper.open .ndms-avatar-circle {
+        transform: none;
+    }
+}
 
 /* =========================================================
    VERY SMALL SCREENS
    ========================================================= */
 
 @media (max-width: 380px) {
-
     .ndms-avatar-menu {
         width: min(280px, calc(100vw - 24px));
 
@@ -951,29 +448,18 @@ button.ndms-avatar-menu-item {
     }
 }
 
-
 /* =========================================================
    REDUCED MOTION
    ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
-
-    .public-nav a,
-    .public-nav a::after,
-    .public-nav-dropdown-toggle,
-    .public-nav-dropdown-toggle::after,
-    .public-nav-dropdown-caret,
-    .public-nav-dropdown-menu,
-    .public-nav-dropdown-item,
-    .public-nav-dropdown-cta,
-    .public-nav-dropdown-cta-arrow,
     .ndms-avatar-btn,
-    .ndms-avatar-circle,
-    .ndms-avatar-menu,
-    .ndms-avatar-caret,
-    .ndms-avatar-menu-item,
-    .ndms-avatar-menu-item-icon,
-    .ndms-avatar-menu-logout {
+.ndms-avatar-circle,
+.ndms-avatar-menu,
+.ndms-avatar-caret,
+.ndms-avatar-menu-item,
+.ndms-avatar-menu-item-icon,
+.ndms-avatar-menu-logout {
         transition: none !important;
         transform: none !important;
     }

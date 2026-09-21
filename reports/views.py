@@ -66,6 +66,12 @@ from .forms import (
     validate_incident_report_photo,
 )
 
+from .legal import (
+    TERMS_VERSION,
+    LEGAL_LAST_UPDATED,
+    LEGAL_CONTACT_EMAIL,
+)
+
 
 User = get_user_model()
 
@@ -187,6 +193,12 @@ def home(request):
             rating = 0
 
         if rating < 1 or rating > 5:
+
+            messages.error(
+                request,
+                'Please choose a rating from 1 to 5 stars.'
+            )
+
             return redirect('home')
 
         # -------------------------------------------------
@@ -194,6 +206,12 @@ def home(request):
         # -------------------------------------------------
 
         if not message:
+
+            messages.error(
+                request,
+                'Please write a short message before submitting.'
+            )
+
             return redirect('home')
 
         # -------------------------------------------------
@@ -246,12 +264,34 @@ def home(request):
         key=lambda dt: home_disaster_priority.index(dt.name)
     )
 
+    # -----------------------------------------------------
+    # SYSTEM SNAPSHOT -- real database counts only.
+    #
+    # These are the same public records already listed on the
+    # Disasters and Emergency Agencies pages, counted (never
+    # estimated). A value of 0 is shown as 0.
+    # -----------------------------------------------------
+
+    system_stats = {
+        'active_disasters': Disaster.objects.filter(
+            status='ACTIVE'
+        ).count(),
+        'resolved_disasters': Disaster.objects.filter(
+            status__in=['RESOLVED', 'CLOSED']
+        ).count(),
+        'disaster_categories': DisasterType.objects.filter(
+            is_active=True
+        ).count(),
+        'emergency_agencies': EmergencyAgency.objects.count(),
+    }
+
     return render(
         request,
         'reports/home.html',
         {
             'reviews': reviews,
             'disaster_types': disaster_types,
+            'system_stats': system_stats,
         }
     )
 
@@ -275,8 +315,13 @@ def register(request):
 
     if request.method == 'POST':
 
-        full_name = request.POST.get(
-            'full_name',
+        first_name = request.POST.get(
+            'first_name',
+            ''
+        ).strip()
+
+        last_name = request.POST.get(
+            'last_name',
             ''
         ).strip()
 
@@ -305,18 +350,33 @@ def register(request):
             ''
         )
 
+        remember_me = (
+            request.POST.get('remember_me') == 'on'
+        )
+
         # -------------------------------------------------
         # REQUIRED FIELDS
         # -------------------------------------------------
 
-        if not full_name:
+        if not first_name:
 
             return render(
                 request,
                 'reports/register.html',
                 {
                     'error':
-                    'Please enter your full name.'
+                    'Please enter your first name.'
+                }
+            )
+
+        if not last_name:
+
+            return render(
+                request,
+                'reports/register.html',
+                {
+                    'error':
+                    'Please enter your last name.'
                 }
             )
 
@@ -369,6 +429,35 @@ def register(request):
             )
 
         # -------------------------------------------------
+        # TERMS & PRIVACY CONSENT (required, server-side)
+        # The HTML `required` attribute is only a convenience;
+        # this check is the real gate. No account is created
+        # unless the box was ticked. The checkbox is never
+        # pre-ticked when the page is shown again, and
+        # passwords are never sent back to the page.
+        # -------------------------------------------------
+
+        if request.POST.get('accept_terms') != 'on':
+
+            return render(
+                request,
+                'reports/register.html',
+                {
+                    'error':
+                    'Please accept the Terms & Conditions '
+                    'and Privacy Policy to create your account.',
+
+                    'consent_error': True,
+
+                    'first_name': first_name,
+                    'last_name': last_name,
+                    'username': username,
+                    'email': email,
+                    'phone': phone,
+                }
+            )
+
+        # -------------------------------------------------
         # PASSWORD STRENGTH (project AUTH_PASSWORD_VALIDATORS)
         # This view builds the User manually (it does not use
         # Django's own UserCreationForm/SetPasswordForm, which
@@ -385,7 +474,8 @@ def register(request):
                 user=User(
                     username=username,
                     email=email,
-                    full_name=full_name,
+                    first_name=first_name,
+                    last_name=last_name,
                 ),
             )
 
@@ -442,9 +532,12 @@ def register(request):
             username=username,
             email=email,
             password=password,
-            full_name=full_name,
+            first_name=first_name,
+            last_name=last_name,
             phone=phone,
-            role='CITIZEN'
+            role='CITIZEN',
+            terms_accepted_at=timezone.now(),
+            terms_version=TERMS_VERSION,
         )
 
         # -------------------------------------------------
@@ -455,6 +548,30 @@ def register(request):
             request,
             user
         )
+
+        # -------------------------------------------------
+        # REMEMBER ME
+        # (registration logs the user straight in, so the
+        # checkbox on this page controls that same new
+        # session -- same set_expiry() convention as
+        # user_login() below.)
+        #
+        # CHECKED   -> persistent cookie for REMEMBER_ME_SESSION_AGE.
+        # UNCHECKED -> set_expiry(0): a browser-session cookie that
+        #              ends when the browser closes. (None would
+        #              fall back to SESSION_COOKIE_AGE, i.e. a
+        #              2-week persistent cookie, which made the
+        #              checkbox look like it did nothing.)
+        #
+        # Only the session id is stored -- never the password.
+        # -------------------------------------------------
+
+        if remember_me:
+            request.session.set_expiry(
+                settings.REMEMBER_ME_SESSION_AGE
+            )
+        else:
+            request.session.set_expiry(0)
 
         return redirect('home')
 
@@ -537,6 +654,10 @@ def user_login(request):
             ''
         )
 
+        remember_me = (
+            request.POST.get('remember_me') == 'on'
+        )
+
         # -------------------------------------------------
         # AUTHENTICATE
         # -------------------------------------------------
@@ -557,6 +678,33 @@ def user_login(request):
                 request,
                 user
             )
+
+            # -------------------------------------------------
+            # REMEMBER ME
+            # -------------------------------------------------
+            #
+            # CHECKED: keep the session alive for
+            # REMEMBER_ME_SESSION_AGE (settings.py), regardless
+            # of browser close.
+            #
+            # UNCHECKED: set_expiry(0) makes the session cookie
+            # a browser-session cookie -- the user is signed out
+            # when the browser is closed. (set_expiry(None) would
+            # fall back to Django's SESSION_COOKIE_AGE, a 2-week
+            # persistent cookie, so the checkbox would have no
+            # visible effect.)
+            #
+            # This only controls how long the *session id* cookie
+            # lives. Passwords are never stored; saving them is
+            # the browser's own, separate password-manager feature.
+            # -------------------------------------------------
+
+            if remember_me:
+                request.session.set_expiry(
+                    settings.REMEMBER_ME_SESSION_AGE
+                )
+            else:
+                request.session.set_expiry(0)
 
             # -------------------------------------------------
             # SAFE "next" REDIRECT ONLY
@@ -1806,6 +1954,43 @@ def about(request):
     return render(
         request,
         'reports/about.html'
+    )
+
+
+# =========================================================
+# LEGAL PAGES (Terms & Conditions / Privacy Policy)
+# =========================================================
+#
+# Public pages -- no login required, so visitors can read them
+# before registering. The wording lives in the templates; the
+# version, revision date and contact email come from
+# reports/legal.py so there is a single place to update them.
+# =========================================================
+
+def _legal_context():
+
+    return {
+        'terms_version': TERMS_VERSION,
+        'legal_last_updated': LEGAL_LAST_UPDATED,
+        'legal_contact_email': LEGAL_CONTACT_EMAIL,
+    }
+
+
+def terms(request):
+
+    return render(
+        request,
+        'reports/terms.html',
+        _legal_context()
+    )
+
+
+def privacy(request):
+
+    return render(
+        request,
+        'reports/privacy.html',
+        _legal_context()
     )
 
 

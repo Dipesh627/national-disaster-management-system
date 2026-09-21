@@ -405,13 +405,13 @@
                                             {% else %}
 
                                                 <span class="citizen-avatar-fallback" aria-hidden="true">
-                                                    {{ report.user.full_name|default:report.user.username|first|upper }}
+                                                    {{ report.user.get_full_name|default:report.user.username|first|upper }}
                                                 </span>
 
                                             {% endif %}
                                         </span>
-                                        <span class="table-primary" title="{{ report.user.full_name|default:report.user.username }}">
-                                            {{ report.user.full_name|default:report.user.username }}
+                                        <span class="table-primary" title="{{ report.user.get_full_name|default:report.user.username }}">
+                                            {{ report.user.get_full_name|default:report.user.username }}
                                         </span>
                                     </div>
                                 </td>

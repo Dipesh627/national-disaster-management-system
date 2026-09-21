@@ -15,7 +15,7 @@
 }
 
 .nd-back-link:hover {
-    color: var(--navy);
+    color: var(--heading);
 }
 
 .nd-header {
@@ -37,7 +37,7 @@
 
 .nd-header-left h1 {
     margin-top: 4px;
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(22px * var(--ndms-font-scale, 1));
     font-weight: 800;
 }
@@ -85,7 +85,7 @@
 
 .nd-card-title h2 {
     margin-top: 3px;
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(15px * var(--ndms-font-scale, 1));
     font-weight: 800;
 }
@@ -118,7 +118,7 @@
 }
 
 .nd-info-value {
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(13px * var(--ndms-font-scale, 1));
     font-weight: 750;
 }
@@ -136,14 +136,14 @@
     width: fit-content;
 }
 
-.nd-severity-low { color: var(--green); background: var(--green-bg); }
-.nd-severity-medium { color: var(--orange); background: var(--orange-bg); }
+.nd-severity-low { color: var(--green-text); background: var(--green-bg); }
+.nd-severity-medium { color: var(--orange-text); background: var(--orange-bg); }
 .nd-severity-high { color: var(--c-orange-600); background: var(--c-orange-bg-2); }
-.nd-severity-critical { color: var(--red); background: var(--light-red); }
+.nd-severity-critical { color: var(--danger); background: var(--danger-bg); }
 
-.nd-status-active { color: var(--red); background: var(--light-red); }
-.nd-status-under_control { color: var(--orange); background: var(--orange-bg); }
-.nd-status-resolved { color: var(--green); background: var(--green-bg); }
+.nd-status-active { color: var(--orange-text); background: var(--orange-bg); }
+.nd-status-under_control { color: var(--orange-text); background: var(--orange-bg); }
+.nd-status-resolved { color: var(--green-text); background: var(--green-bg); }
 .nd-status-closed { color: var(--muted); background: var(--soft-gray); }
 
 .nd-location-grid {
@@ -216,12 +216,12 @@
 }
 
 .nd-map-type-btn:hover {
-    color: var(--navy);
+    color: var(--heading);
 }
 
 .nd-map-type-btn.is-active {
-    color: var(--white);
-    background: var(--navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
 }
 
 .nd-map-fallback {

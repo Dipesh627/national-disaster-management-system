@@ -723,14 +723,14 @@
 
                     <img
                         src="{{ request.user.avatar.url }}"
-                        alt="{{ request.user.full_name|default:request.user.username }}"
+                        alt="{{ request.user.get_full_name|default:request.user.username }}"
                         class="admin-avatar"
                     >
 
                 {% else %}
 
                     <span class="admin-avatar admin-avatar-fallback" aria-hidden="true">
-                        {{ request.user.full_name|default:request.user.username|first|upper }}
+                        {{ request.user.get_full_name|default:request.user.username|first|upper }}
                     </span>
 
                 {% endif %}
@@ -739,9 +739,9 @@
                 <span class="admin-profile-info">
 
                     <strong
-                        title="{{ request.user.full_name|default:request.user.username }}"
+                        title="{{ request.user.get_full_name|default:request.user.username }}"
                     >
-                        {{ request.user.full_name|default:request.user.username }}
+                        {{ request.user.get_full_name|default:request.user.username }}
                     </strong>
 
                     <small>
@@ -786,7 +786,7 @@
                     {% else %}
 
                         <span class="profile-menu-avatar profile-menu-avatar-fallback" aria-hidden="true">
-                            {{ request.user.full_name|default:request.user.username|first|upper }}
+                            {{ request.user.get_full_name|default:request.user.username|first|upper }}
                         </span>
 
                     {% endif %}
@@ -795,9 +795,9 @@
                     <div class="profile-menu-identity">
 
                         <strong
-                            title="{{ request.user.full_name|default:request.user.username }}"
+                            title="{{ request.user.get_full_name|default:request.user.username }}"
                         >
-                            {{ request.user.full_name|default:request.user.username }}
+                            {{ request.user.get_full_name|default:request.user.username }}
                         </strong>
 
                         <span

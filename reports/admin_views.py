@@ -589,7 +589,8 @@ def admin_global_search(request):
             )
             .filter(
                 Q(user__username__icontains=search_query)
-                | Q(user__full_name__icontains=search_query)
+                | Q(user__first_name__icontains=search_query)
+                | Q(user__last_name__icontains=search_query)
                 | Q(address__icontains=search_query)
                 | Q(description__icontains=search_query)
                 | Q(disaster_type__name__icontains=search_query)
@@ -648,7 +649,8 @@ def admin_global_search(request):
             .exclude(is_superuser=True)
             .filter(
                 Q(username__icontains=search_query)
-                | Q(full_name__icontains=search_query)
+                | Q(first_name__icontains=search_query)
+                | Q(last_name__icontains=search_query)
                 | Q(email__icontains=search_query)
                 | Q(phone__icontains=search_query)
             )
@@ -740,7 +742,7 @@ def admin_users(request):
 
     # -----------------------------------------------------
     # SEARCH
-    # (username, full name, or email)
+    # (username, first/last name, or email)
     # -----------------------------------------------------
 
     search_query = request.GET.get(
@@ -752,7 +754,8 @@ def admin_users(request):
 
         users = users.filter(
             Q(username__icontains=search_query)
-            | Q(full_name__icontains=search_query)
+            | Q(first_name__icontains=search_query)
+            | Q(last_name__icontains=search_query)
             | Q(email__icontains=search_query)
         )
 
@@ -1034,7 +1037,8 @@ def admin_reports(request):
 
         search_q = (
             Q(user__username__icontains=search_query)
-            | Q(user__full_name__icontains=search_query)
+            | Q(user__first_name__icontains=search_query)
+            | Q(user__last_name__icontains=search_query)
             | Q(address__icontains=search_query)
             | Q(description__icontains=search_query)
             | Q(disaster_type__name__icontains=search_query)
@@ -2624,7 +2628,8 @@ def admin_notifications(request):
             Q(title__icontains=search_query)
             | Q(message__icontains=search_query)
             | Q(disaster__title__icontains=search_query)
-            | Q(recipient__full_name__icontains=search_query)
+            | Q(recipient__first_name__icontains=search_query)
+            | Q(recipient__last_name__icontains=search_query)
             | Q(recipient__username__icontains=search_query)
         )
 

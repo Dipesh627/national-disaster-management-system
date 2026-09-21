@@ -146,7 +146,7 @@ Feedback
                                                 <img src="{{ feedback_item.user.avatar.url }}" alt="" loading="lazy">
                                             {% else %}
                                                 <span class="citizen-avatar-fallback">
-                                                    {{ feedback_item.user.full_name|default:feedback_item.user.username|first|upper }}
+                                                    {{ feedback_item.user.get_full_name|default:feedback_item.user.username|first|upper }}
                                                 </span>
                                             {% endif %}
                                         </span>
@@ -154,9 +154,9 @@ Feedback
                                         <div class="fb-name-cell">
                                             <span
                                                 class="fb-name-text"
-                                                title="{{ feedback_item.user.full_name|default:feedback_item.user.username }}"
+                                                title="{{ feedback_item.user.get_full_name|default:feedback_item.user.username }}"
                                             >
-                                                {{ feedback_item.user.full_name|default:feedback_item.user.username }}
+                                                {{ feedback_item.user.get_full_name|default:feedback_item.user.username }}
                                             </span>
 
                                             <span class="fb-username-text">

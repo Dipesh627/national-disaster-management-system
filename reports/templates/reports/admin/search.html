@@ -116,7 +116,7 @@ Global Search
                                     <span class="search-result-meta">
                                         {{ report.get_status_display }}
                                         &middot;
-                                        {{ report.user.full_name|default:report.user.username }}
+                                        {{ report.user.get_full_name|default:report.user.username }}
                                     </span>
 
                                 </span>
@@ -311,7 +311,7 @@ Global Search
                                 <span class="search-result-body">
 
                                     <strong>
-                                        {{ citizen.full_name|default:citizen.username }}
+                                        {{ citizen.get_full_name|default:citizen.username }}
                                     </strong>
 
                                     <span class="search-result-meta">

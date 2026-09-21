@@ -1,412 +1,170 @@
-{% load static %}
+{% extends 'reports/auth_base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}NDMS | Login{% endblock %}
 
-<head>
+{% block content %}
 
-    <meta charset="UTF-8">
+    <!-- =================================================
+         HEADING
+         ================================================= -->
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <header class="auth-heading">
 
-    <title>NDMS | Login</title>
+        <p class="auth-eyebrow">Citizen portal</p>
 
-    <link rel="stylesheet"
-          href="{% static 'reports/login.css' %}">
+        <h1>Welcome back</h1>
 
+        <p class="auth-lead">
+            Sign in to your NDMS account to continue.
+        </p>
 
-</head>
-
-
-<body class="login-page">
-
-
-<main class="login-wrapper">
+    </header>
 
 
     <!-- =================================================
-         BRAND
+         ERROR
          ================================================= -->
 
-    <a href="{% url 'home' %}"
-       class="login-brand">
+    {% if error %}
 
-        <div class="login-logo">
-            ND
-        </div>
+    <div class="auth-alert" role="alert">
 
-        <div class="login-brand-text">
+        <span class="auth-alert__icon" aria-hidden="true">!</span>
 
-            <strong>
-                NDMS
-            </strong>
+        <span class="auth-alert__text">{{ error }}</span>
 
-            <span>
-                National Disaster Management System
-            </span>
+    </div>
 
-        </div>
-
-    </a>
-
+    {% endif %}
 
 
     <!-- =================================================
-         LOGIN CARD
+         LOGIN FORM
+         Submitted with fetch() by js/auth.js (falls back to a
+         normal POST).
          ================================================= -->
 
-    <section class="login-card">
+    <form method="POST"
+          class="auth-form"
+          data-auth-login>
+
+        {% csrf_token %}
 
 
-        <!-- Heading -->
+        <!-- Preserve next URL -->
 
-        <div class="login-heading">
-
-            <span class="login-label">
-                CITIZEN PORTAL
-            </span>
-
-            <h1>
-                Welcome back
-            </h1>
-
-            <p>
-                Sign in to your NDMS account to continue.
-            </p>
-
-        </div>
+        <input
+            type="hidden"
+            name="next"
+            value="{{ next }}"
+        >
 
 
+        <!-- Username -->
 
-        <!-- =================================================
-             ERROR
-             ================================================= -->
+        <div class="auth-field">
 
-        {% if error %}
-
-        <div class="login-error">
-
-            <span class="error-icon">
-                !
-            </span>
-
-            <span>
-                {{ error }}
-            </span>
-
-        </div>
-
-        {% endif %}
-
-
-
-        <!-- =================================================
-             LOGIN FORM
-             ================================================= -->
-
-        <form method="POST"
-              class="login-form">
-
-            {% csrf_token %}
-
-
-            <!-- Preserve next URL -->
+            <label class="auth-label" for="username">
+                Username
+            </label>
 
             <input
-                type="hidden"
-                name="next"
-                value="{{ next }}"
+                type="text"
+                id="username"
+                name="username"
+                class="auth-input"
+                placeholder="Enter your username"
+                value="{{ username|default:'' }}"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                required
             >
 
+        </div>
 
-            <!-- Username -->
 
-            <div class="form-group">
+        <!-- Password -->
 
-                <label for="username">
-                    Username
-                </label>
+        <div class="auth-field">
+
+            <label class="auth-label" for="password">
+                Password
+            </label>
+
+            <div class="auth-input-wrap">
 
                 <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Enter your username"
-                    value="{{ username|default:'' }}"
-                    autocomplete="username"
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="auth-input"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
                     required
                 >
 
-            </div>
-
-
-
-            <!-- Password -->
-
-            <div class="form-group">
-
-                <label for="password">
-                    Password
-                </label>
-
-
-                <div class="password-input-wrapper">
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
-                    >
-
-
-                    <button
-                        type="button"
-                        class="password-toggle"
-                        onclick="togglePassword()"
-                        aria-label="Show password">
-
-                        <span id="passwordEye">
-                            ◉
-                        </span>
-
-                    </button>
-
-                </div>
-
-
-                <!-- Forgot password -->
-
-                <div class="forgot-password">
-
-                    <a href="{% url 'password_reset' %}">
-                        Forgot password?
-                    </a>
-
-                </div>
+                <button
+                    type="button"
+                    class="auth-toggle"
+                    data-password-toggle
+                    aria-label="Show password"
+                    aria-pressed="false"
+                ></button>
 
             </div>
 
+            <div class="auth-field-aside">
 
+                <a href="{% url 'password_reset' %}"
+                   class="auth-link">
+                    Forgot password?
+                </a>
 
-            <!-- Login -->
-
-            <button
-                type="submit"
-                class="login-button">
-
-                <span>
-                    Sign In
-                </span>
-
-                <span class="login-arrow">
-                    →
-                </span>
-
-            </button>
-
-
-        </form>
-
-
-
-        <!-- =================================================
-             REGISTER
-             ================================================= -->
-
-        <div class="create-account">
-
-            <span>
-                Don't have an account?
-            </span>
-
-            <a href="{% url 'register' %}">
-                Create an account
-            </a>
+            </div>
 
         </div>
 
 
-    </section>
+        <!-- Remember me -->
 
+        <label class="auth-check" for="remember_me">
+
+            <input
+                type="checkbox"
+                id="remember_me"
+                name="remember_me"
+            >
+
+            <span>Remember me</span>
+
+        </label>
+
+
+        <!-- Sign in -->
+
+        <button
+            type="submit"
+            class="auth-btn auth-btn--arrow">
+            Sign In
+        </button>
+
+    </form>
 
 
     <!-- =================================================
-         FOOTER
+         REGISTER
          ================================================= -->
 
-    <footer class="login-footer">
+    <p class="auth-switch">
 
-        © 2026 National Disaster Management System
+        <span>Don't have an account?</span>
 
-    </footer>
+        <a href="{% url 'register' %}"
+           class="auth-link">
+            Create an account
+        </a>
 
+    </p>
 
-</main>
-
-
-
-<script>
-
-function togglePassword() {
-
-    const password =
-        document.getElementById("password");
-
-    const eye =
-        document.getElementById("passwordEye");
-
-
-    if (password.type === "password") {
-
-        password.type = "text";
-
-        eye.textContent = "◎";
-
-    } else {
-
-        password.type = "password";
-
-        eye.textContent = "◉";
-
-    }
-
-}
-
-
-/* =====================================================
-   KEEP THE LOGIN PAGE OUT OF BROWSER HISTORY
-
-   Login is only an authentication checkpoint. A plain
-   form POST + redirect would leave it in history beneath
-   the page the user lands on, so Back from Report
-   Incident would return here. Instead the form is sent
-   with fetch(); on success the server (which has already
-   created the session and validated `next`) replies with
-   the destination and location.replace() swaps THIS
-   history entry for it.
-
-   A wrong password is shown in place (same error box the
-   server renders), so a failed attempt does not add
-   extra Login entries to history either.
-
-   Anything unexpected (network error, non-JSON reply)
-   falls back to the normal form submit, and with
-   JavaScript off the form simply posts as before.
-   ===================================================== */
-
-(function () {
-
-    const form =
-        document.querySelector(".login-form");
-
-    if (!form || !window.fetch || !window.FormData) {
-        return;
-    }
-
-    let submitting = false;
-
-    function showError(message) {
-
-        // Reuse the server-rendered error box if it is already
-        // on the page; otherwise build the same markup.
-        let box =
-            form.parentNode.querySelector(".login-error");
-
-        if (!box) {
-
-            box = document.createElement("div");
-            box.className = "login-error";
-
-            const icon = document.createElement("span");
-            icon.className = "error-icon";
-            icon.textContent = "!";
-
-            box.appendChild(icon);
-            box.appendChild(document.createElement("span"));
-
-            form.parentNode.insertBefore(box, form);
-
-        }
-
-        box.lastElementChild.textContent = message;
-
-        const password =
-            document.getElementById("password");
-
-        if (password) {
-            password.value = "";
-            password.focus();
-        }
-
-    }
-
-    form.addEventListener("submit", async function (event) {
-
-        event.preventDefault();
-
-        if (submitting) {
-            return;
-        }
-
-        submitting = true;
-
-        try {
-
-            const response = await fetch(window.location.href, {
-                method: "POST",
-                body: new FormData(form),
-                credentials: "same-origin",
-                headers: {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "Accept": "application/json"
-                }
-            });
-
-            const data = await response.json();
-
-            if (response.ok && data.success && data.redirect_url) {
-
-                // Defence in depth only — the server has
-                // already validated this URL.
-                const target =
-                    new URL(data.redirect_url, window.location.href);
-
-                if (target.origin === window.location.origin) {
-
-                    window.location.replace(target.href);
-
-                    return;
-
-                }
-
-            } else if (response.status === 401 && data.error) {
-
-                showError(data.error);
-
-                submitting = false;
-
-                return;
-
-            }
-
-        } catch (error) {
-            // fall through to the normal submit below
-        }
-
-        // Normal form submit (does not re-fire this handler).
-        form.submit();
-
-    });
-
-})();
-
-</script>
-
-
-</body>
-
-</html>
+{% endblock %}

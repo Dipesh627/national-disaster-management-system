@@ -1,378 +1,325 @@
-{% load static %}
+{% extends 'reports/auth_base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
+{% block title %}NDMS | Create Account{% endblock %}
 
-<head>
+{% block card_modifier %} auth-card--wide{% endblock %}
 
-    <meta charset="UTF-8">
+{% block content %}
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <!-- =================================================
+         HEADING
+         ================================================= -->
 
-    <title>NDMS | Create Account</title>
+    <header class="auth-heading">
 
-    <link rel="stylesheet"
-          href="{% static 'reports/register.css' %}">
+        <p class="auth-eyebrow">Citizen portal</p>
 
+        <h1>Create your account</h1>
 
-</head>
+        <p class="auth-lead">
+            Register for an NDMS citizen account to report
+            incidents and stay informed.
+        </p>
 
-
-<body class="register-page">
-
-
-<main class="register-wrapper">
+    </header>
 
 
     <!-- =================================================
-         BRAND
+         ERROR
          ================================================= -->
 
-    <a href="{% url 'home' %}"
-       class="register-brand">
+    {% if error %}
 
-        <div class="register-logo">
-            ND
-        </div>
+    <div class="auth-alert" role="alert">
 
-        <div class="register-brand-text">
+        <span class="auth-alert__icon" aria-hidden="true">!</span>
 
-            <strong>
-                NDMS
-            </strong>
+        <span class="auth-alert__text">{{ error }}</span>
 
-            <span>
-                National Disaster Management System
-            </span>
+    </div>
 
-        </div>
-
-    </a>
-
+    {% endif %}
 
 
     <!-- =================================================
-         REGISTER CARD
+         REGISTER FORM
          ================================================= -->
 
-    <section class="register-card">
+    <form method="POST"
+          class="auth-form">
+
+        {% csrf_token %}
 
 
-        <!-- Heading -->
+        <!-- First Name + Last Name -->
 
-        <div class="register-heading">
+        <div class="auth-row">
 
-            <span class="register-label">
-                CITIZEN PORTAL
-            </span>
+            <div class="auth-field">
 
-            <h1>
-                Create your account
-            </h1>
-
-            <p>
-                Register for an NDMS citizen account to report
-                incidents and stay informed.
-            </p>
-
-        </div>
-
-
-
-        <!-- =================================================
-             ERROR
-             ================================================= -->
-
-        {% if error %}
-
-        <div class="register-message">
-
-            <span class="message-icon">
-                !
-            </span>
-
-            <span>
-                {{ error }}
-            </span>
-
-        </div>
-
-        {% endif %}
-
-
-
-        <!-- =================================================
-             REGISTER FORM
-             ================================================= -->
-
-        <form method="POST"
-              class="register-form">
-
-            {% csrf_token %}
-
-
-            <!-- Full Name -->
-
-            <div class="form-group">
-
-                <label for="full_name">
-                    Full Name
+                <label class="auth-label" for="first_name">
+                    First Name
                 </label>
 
                 <input
                     type="text"
-                    id="full_name"
-                    name="full_name"
-                    placeholder="Enter your full name"
-                    value="{{ full_name|default:'' }}"
-                    autocomplete="name"
+                    id="first_name"
+                    name="first_name"
+                    class="auth-input"
+                    placeholder="Enter your first name"
+                    value="{{ first_name|default:'' }}"
+                    autocomplete="given-name"
                     required
                 >
 
             </div>
 
 
+            <div class="auth-field">
 
-            <!-- Username -->
-
-            <div class="form-group">
-
-                <label for="username">
-                    Username
+                <label class="auth-label" for="last_name">
+                    Last Name
                 </label>
 
                 <input
                     type="text"
-                    id="username"
-                    name="username"
-                    placeholder="Choose a username"
-                    value="{{ username|default:'' }}"
-                    autocomplete="username"
+                    id="last_name"
+                    name="last_name"
+                    class="auth-input"
+                    placeholder="Enter your last name"
+                    value="{{ last_name|default:'' }}"
+                    autocomplete="family-name"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- Username -->
+
+        <div class="auth-field">
+
+            <label class="auth-label" for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                name="username"
+                class="auth-input"
+                placeholder="Choose a username"
+                value="{{ username|default:'' }}"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+            >
+
+        </div>
+
+
+        <!-- Email + Phone -->
+
+        <div class="auth-row">
+
+            <div class="auth-field">
+
+                <label class="auth-label" for="email">
+                    Email
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="auth-input"
+                    placeholder="Enter your email"
+                    value="{{ email|default:'' }}"
+                    autocomplete="email"
                     required
                 >
 
             </div>
 
 
+            <div class="auth-field">
 
-            <!-- Email + Phone -->
-
-            <div class="form-row">
-
-
-                <div class="form-group">
-
-                    <label for="email">
-                        Email
-                    </label>
-
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        value="{{ email|default:'' }}"
-                        autocomplete="email"
-                        required
-                    >
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label for="phone">
-                        Phone
-                    </label>
-
-                    <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        placeholder="Phone number"
-                        value="{{ phone|default:'' }}"
-                        autocomplete="tel"
-                    >
-
-                </div>
-
-
-            </div>
-
-
-
-            <!-- Password -->
-
-            <div class="form-group">
-
-                <label for="password">
-                    Password
+                <label class="auth-label" for="phone">
+                    Phone
                 </label>
 
-
-                <div class="password-input-wrapper">
-
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Create a password"
-                        autocomplete="new-password"
-                        required
-                    >
-
-
-                    <button
-                        type="button"
-                        class="password-toggle"
-                        onclick="togglePassword(
-                            'password',
-                            'passwordEye'
-                        )"
-                        aria-label="Show password">
-
-                        <span id="passwordEye">
-                            ◉
-                        </span>
-
-                    </button>
-
-                </div>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    class="auth-input"
+                    placeholder="Phone number"
+                    value="{{ phone|default:'' }}"
+                    autocomplete="tel"
+                >
 
             </div>
 
+        </div>
 
 
-            <!-- Confirm Password -->
+        <!-- Password -->
 
-            <div class="form-group">
+        <div class="auth-field">
 
-                <label for="confirm_password">
-                    Confirm Password
-                </label>
+            <label class="auth-label" for="password">
+                Password
+            </label>
 
+            <div class="auth-input-wrap">
 
-                <div class="password-input-wrapper">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="auth-input"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                    required
+                >
 
-                    <input
-                        type="password"
-                        id="confirm_password"
-                        name="confirm_password"
-                        placeholder="Confirm your password"
-                        autocomplete="new-password"
-                        required
-                    >
-
-
-                    <button
-                        type="button"
-                        class="password-toggle"
-                        onclick="togglePassword(
-                            'confirm_password',
-                            'confirmPasswordEye'
-                        )"
-                        aria-label="Show password">
-
-                        <span id="confirmPasswordEye">
-                            ◉
-                        </span>
-
-                    </button>
-
-                </div>
+                <button
+                    type="button"
+                    class="auth-toggle"
+                    data-password-toggle
+                    aria-label="Show password"
+                    aria-pressed="false"
+                ></button>
 
             </div>
 
+        </div>
 
 
-            <!-- Create Account -->
+        <!-- Confirm Password -->
 
-            <button
-                type="submit"
-                class="register-button">
+        <div class="auth-field">
+
+            <label class="auth-label" for="confirm_password">
+                Confirm Password
+            </label>
+
+            <div class="auth-input-wrap">
+
+                <input
+                    type="password"
+                    id="confirm_password"
+                    name="confirm_password"
+                    class="auth-input"
+                    placeholder="Confirm your password"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="auth-toggle"
+                    data-password-toggle
+                    aria-label="Show confirm password"
+                    aria-pressed="false"
+                ></button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Remember me -->
+
+        <label class="auth-check" for="remember_me">
+
+            <input
+                type="checkbox"
+                id="remember_me"
+                name="remember_me"
+            >
+
+            <span>Remember me</span>
+
+        </label>
+
+
+        <!-- =================================================
+             TERMS & PRIVACY CONSENT (required)
+             Checked again on the server in views.register().
+             Links open in a new tab so nothing typed above
+             is lost while the person reads them.
+             ================================================= -->
+
+        <div class="auth-consent{% if consent_error %} has-error{% endif %}">
+
+            <label for="accept_terms" class="auth-check">
+
+                <input
+                    type="checkbox"
+                    id="accept_terms"
+                    name="accept_terms"
+                    required
+                    {% if consent_error %}
+                    autofocus
+                    aria-invalid="true"
+                    aria-describedby="accept_terms_error"
+                    {% endif %}
+                >
 
                 <span>
-                    Create Account
+                    I agree to the
+                    <a href="{% url 'terms' %}"
+                       class="auth-link"
+                       target="_blank"
+                       rel="noopener noreferrer">Terms &amp; Conditions<span class="sr-only"> (opens in a new tab)</span></a>
+                    and
+                    <a href="{% url 'privacy' %}"
+                       class="auth-link"
+                       target="_blank"
+                       rel="noopener noreferrer">Privacy Policy<span class="sr-only"> (opens in a new tab)</span></a>.
                 </span>
 
-                <span class="register-arrow">
-                    →
-                </span>
+            </label>
 
-            </button>
-
-
-        </form>
-
-
-
-        <!-- =================================================
-             LOGIN
-             ================================================= -->
-
-        <div class="already-account">
-
-            <span>
-                Already have an account?
-            </span>
-
-            <a href="{% url 'login' %}">
-                Sign in
-            </a>
+            {% if consent_error %}
+            <p class="auth-field-error"
+               id="accept_terms_error"
+               role="alert">
+                Tick this box to accept both documents and continue.
+            </p>
+            {% endif %}
 
         </div>
 
 
-    </section>
+        <!-- Create account -->
 
+        <button
+            type="submit"
+            class="auth-btn">
+            Create Account
+        </button>
+
+    </form>
 
 
     <!-- =================================================
-         FOOTER
+         LOGIN
          ================================================= -->
 
-    <footer class="register-footer">
+    <p class="auth-switch">
 
-        © 2026 National Disaster Management System
+        <span>Already have an account?</span>
 
-    </footer>
+        <a href="{% url 'login' %}"
+           class="auth-link">
+            Sign in
+        </a>
 
+    </p>
 
-</main>
-
-
-
-<script>
-
-function togglePassword(inputId, eyeId) {
-
-    const password =
-        document.getElementById(inputId);
-
-    const eye =
-        document.getElementById(eyeId);
-
-
-    if (password.type === "password") {
-
-        password.type = "text";
-
-        eye.textContent = "◎";
-
-    } else {
-
-        password.type = "password";
-
-        eye.textContent = "◉";
-
-    }
-
-}
-
-</script>
-
-
-</body>
-
-</html>
+{% endblock %}

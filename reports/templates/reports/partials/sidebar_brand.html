@@ -1,0 +1,27 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS - CITIZEN DASHBOARD SIDEBAR BRAND (shared partial)
+=========================================================
+Logo only. Included at the top of every Citizen Dashboard
+sidebar (dashboard, report incident, my reports, report detail,
+alerts, notification detail, profile, change password,
+settings, help & support). Style: .dashboard-brand in
+reports/dashboard.css
+=========================================================
+{% endcomment %}
+<a
+    href="{% url 'dashboard' %}"
+    class="dashboard-brand"
+    aria-label="NDMS dashboard"
+>
+
+    <img
+        src="{% static 'reports/branding/ndms-logo.png' %}"
+        alt=""
+        class="dashboard-logo"
+        width="126"
+        height="36"
+    >
+
+</a>

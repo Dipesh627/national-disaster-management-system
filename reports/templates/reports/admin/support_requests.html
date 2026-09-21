@@ -148,7 +148,7 @@ Support Requests
                                                 <img src="{{ support_request.user.avatar.url }}" alt="" loading="lazy">
                                             {% else %}
                                                 <span class="citizen-avatar-fallback">
-                                                    {{ support_request.user.full_name|default:support_request.user.username|first|upper }}
+                                                    {{ support_request.user.get_full_name|default:support_request.user.username|first|upper }}
                                                 </span>
                                             {% endif %}
                                         </span>
@@ -156,9 +156,9 @@ Support Requests
                                         <div class="sr-name-cell">
                                             <span
                                                 class="sr-name-text"
-                                                title="{{ support_request.user.full_name|default:support_request.user.username }}"
+                                                title="{{ support_request.user.get_full_name|default:support_request.user.username }}"
                                             >
-                                                {{ support_request.user.full_name|default:support_request.user.username }}
+                                                {{ support_request.user.get_full_name|default:support_request.user.username }}
                                             </span>
 
                                             <span class="sr-username-text">

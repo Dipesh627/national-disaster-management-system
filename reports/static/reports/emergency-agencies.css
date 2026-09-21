@@ -52,13 +52,13 @@
     height: 7px;
     border-radius: 50%;
     background: var(--red);
-    box-shadow: 0 0 0 3px rgba(180, 35, 24, .16);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 16%, transparent);
 }
 
 .agency-page-title {
     font-size: calc(clamp(24px, 3.2vw, 32px) * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.25;
     margin: 0 0 8px;
     letter-spacing: -.3px;
@@ -124,8 +124,8 @@
 }
 
 .agency-search-input:focus {
-    border-color: var(--c-muted-3);
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--red);
+    box-shadow: var(--field-focus-ring);
 }
 
 .agency-filter-select-wrap {
@@ -150,8 +150,8 @@
 }
 
 .agency-filter-select:focus {
-    border-color: var(--c-muted-3);
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--red);
+    box-shadow: var(--field-focus-ring);
 }
 
 .agency-filter-actions {
@@ -167,9 +167,9 @@
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
     font-weight: 680;
     font-family: inherit;
-    color: var(--white);
-    background: var(--navy);
-    border: 1px solid var(--navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
     border-radius: 7px;
     cursor: pointer;
     display: inline-flex;
@@ -180,7 +180,7 @@
 }
 
 .agency-btn-search:hover {
-    background: var(--navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .agency-btn-clear {
@@ -202,7 +202,7 @@
 }
 
 .agency-btn-clear:hover {
-    color: var(--navy);
+    color: var(--heading);
     text-decoration: underline;
 }
 
@@ -220,7 +220,7 @@
 }
 
 .agency-meta-count strong {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 700;
 }
 
@@ -274,7 +274,7 @@
 .agency-card-title {
     font-size: calc(17px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.35;
     margin: 0;
     overflow-wrap: break-word;
@@ -290,7 +290,7 @@
     letter-spacing: .5px;
     color: var(--red);
     background: var(--light-red);
-    border: 1px solid rgba(180, 35, 24, .15);
+    border: 1px solid color-mix(in srgb, var(--red) 15%, transparent);
     border-radius: 5px;
     padding: 3px 9px;
 }
@@ -320,7 +320,7 @@
 }
 
 .agency-card-meta-label {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 600;
 }
 
@@ -394,7 +394,7 @@
 .agency-empty-title {
     font-size: calc(18px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 6px;
 }
 
@@ -443,7 +443,7 @@
 
 .agency-page-link:hover {
     background: var(--soft-gray);
-    color: var(--navy);
+    color: var(--heading);
     border-color: var(--c-border-6);
 }
 

@@ -102,7 +102,7 @@
 
                     <span>
                         <strong>Citizen:</strong>
-                        {{ source_report.user.full_name|default:source_report.user.username }}
+                        {{ source_report.user.get_full_name|default:source_report.user.username }}
                     </span>
 
                     <span>

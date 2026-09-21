@@ -198,6 +198,27 @@ LOGOUT_REDIRECT_URL = 'login'
 
 
 # =========================================================
+# "REMEMBER ME" SESSION DURATION
+# =========================================================
+#
+# How long a session lasts (in seconds) when the user checks
+# "Remember me" on login/register. Falls back to 30 days if
+# DJANGO_REMEMBER_ME_SESSION_AGE isn't set, so local dev is
+# unaffected. An UNCHECKED "Remember me" gives a browser-session
+# cookie (request.session.set_expiry(0) in user_login()/register()
+# in reports/views.py), so the user is signed out when the browser
+# closes. Only the session id is ever stored -- never the password.
+# =========================================================
+
+REMEMBER_ME_SESSION_AGE = int(
+    os.environ.get(
+        'DJANGO_REMEMBER_ME_SESSION_AGE',
+        str(60 * 60 * 24 * 30),  # 30 days
+    )
+)
+
+
+# =========================================================
 # PRODUCTION-ONLY SECURITY SETTINGS
 # =========================================================
 #

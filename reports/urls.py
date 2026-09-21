@@ -52,6 +52,18 @@ urlpatterns = [
         name='emergency_agencies'
     ),
 
+    path(
+        'terms/',
+        views.terms,
+        name='terms'
+    ),
+
+    path(
+        'privacy/',
+        views.privacy,
+        name='privacy'
+    ),
+
 
     # =====================================================
     # AUTHENTICATION

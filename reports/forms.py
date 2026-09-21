@@ -525,7 +525,7 @@ class NotificationForm(forms.ModelForm):
             .filter(role='CITIZEN')
             .exclude(is_staff=True)
             .exclude(is_superuser=True)
-            .order_by('full_name', 'username')
+            .order_by('first_name', 'last_name', 'username')
         )
 
         self.fields['recipient'].required = False
@@ -534,7 +534,7 @@ class NotificationForm(forms.ModelForm):
 
         self.fields['recipient'].label_from_instance = (
             lambda citizen: (
-                f"{citizen.full_name or citizen.username} "
+                f"{citizen.get_full_name() or citizen.username} "
                 f"(@{citizen.username})"
             )
         )
@@ -689,7 +689,7 @@ class FeedbackForm(forms.ModelForm):
 # =========================================================
 #
 # NOTE:
-# Only full_name, email and phone are editable by the
+# Only first_name, last_name, email and phone are editable by the
 # citizen. username and role are intentionally NOT part of
 # this form — role is system/admin controlled, and username
 # is not editable for now (per project requirements).
@@ -703,19 +703,29 @@ class ProfileUpdateForm(forms.ModelForm):
         model = User
 
         fields = [
-            'full_name',
+            'first_name',
+            'last_name',
             'email',
             'phone',
         ]
 
         widgets = {
 
-            'full_name': forms.TextInput(
+            'first_name': forms.TextInput(
                 attrs={
                     'class': 'form-control',
-                    'id': 'id_full_name',
-                    'placeholder': 'Enter your full name',
-                    'autocomplete': 'name',
+                    'id': 'id_first_name',
+                    'placeholder': 'Enter your first name',
+                    'autocomplete': 'given-name',
+                }
+            ),
+
+            'last_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control',
+                    'id': 'id_last_name',
+                    'placeholder': 'Enter your last name',
+                    'autocomplete': 'family-name',
                 }
             ),
 
@@ -740,7 +750,9 @@ class ProfileUpdateForm(forms.ModelForm):
 
         labels = {
 
-            'full_name': 'Full Name',
+            'first_name': 'First Name',
+
+            'last_name': 'Last Name',
 
             'email': 'Email Address',
 
@@ -749,23 +761,38 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
     # =====================================================
-    # FULL NAME VALIDATION
+    # FIRST / LAST NAME VALIDATION
     # =====================================================
 
-    def clean_full_name(self):
+    def clean_first_name(self):
 
-        full_name = self.cleaned_data.get(
-            'full_name',
+        first_name = self.cleaned_data.get(
+            'first_name',
             ''
         ).strip()
 
-        if not full_name:
+        if not first_name:
 
             raise forms.ValidationError(
-                'Please enter your full name.'
+                'Please enter your first name.'
             )
 
-        return full_name
+        return first_name
+
+    def clean_last_name(self):
+
+        last_name = self.cleaned_data.get(
+            'last_name',
+            ''
+        ).strip()
+
+        if not last_name:
+
+            raise forms.ValidationError(
+                'Please enter your last name.'
+            )
+
+        return last_name
 
 
     # =====================================================

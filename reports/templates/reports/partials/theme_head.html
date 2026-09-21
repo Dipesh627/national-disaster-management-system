@@ -1,0 +1,36 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS - THEME BOOTSTRAP (shared <head> partial)
+=========================================================
+Include ONCE at the very END of <head>, after the page's own
+stylesheets, on every Citizen / public page:
+
+    {% include 'reports/partials/theme_head.html' %}
+
+  1. Applies the saved theme (or the OS preference on a first
+     visit) to <html data-theme="..."> BEFORE the body paints,
+     so there is no light/dark flash.
+  2. Loads the Sentinel Teal design tokens (ndms-theme.css).
+  3. Loads theme.js, which wires every [data-theme-toggle]
+     button and remembers the choice (localStorage key
+     "ndms-theme"; nothing is sent to the server).
+
+The custom Admin panel does not use this partial.
+=========================================================
+{% endcomment %}
+<meta name="color-scheme" content="light dark">
+<script>
+(function () {
+    var root = document.documentElement;
+    var theme = null;
+    try { theme = localStorage.getItem('ndms-theme'); } catch (e) {}
+    if (theme !== 'light' && theme !== 'dark') {
+        theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+    }
+    root.setAttribute('data-theme', theme);
+    root.classList.add('js');
+})();
+</script>
+<link rel="stylesheet" href="{% static 'reports/ndms-theme.css' %}">
+<script src="{% static 'reports/js/theme.js' %}" defer></script>

@@ -1,0 +1,128 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS - CITIZEN AUTH SHELL (shared base template)
+=========================================================
+Every full-screen Citizen auth page extends this:
+
+    login, register, forgot_password, password_reset_sent,
+    password_reset_confirm, password_reset_complete
+
+Layout
+  Desktop  [ brand panel | form card ]
+  <= 900px [ compact brand band ] above the form card
+
+Blocks
+  title          the <title>
+  card_modifier  optional extra class for the card, e.g. " auth-card--wide"
+  content        everything inside the white card
+
+Styles:  reports/auth.css
+Script:  reports/js/auth.js  (password show/hide + login fetch flow)
+
+The Admin login is a separate page and does not use this.
+=========================================================
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}NDMS{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{% static 'reports/auth.css' %}">
+
+    {% include 'reports/partials/theme_head.html' %}
+
+    <script src="{% static 'reports/js/auth.js' %}"
+            defer></script>
+</head>
+
+
+<body class="auth-page">
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="auth-shell">
+
+
+    <!-- =================================================
+         BRAND PANEL
+         ================================================= -->
+
+    <aside class="auth-brand"
+           aria-label="About NDMS">
+
+        <div class="auth-brand__inner">
+
+            <a href="{% url 'home' %}"
+               class="auth-brand__logo"
+               aria-label="NDMS home">
+
+                <img
+                    src="{% static 'reports/branding/ndms-logo.png' %}"
+                    alt=""
+                    width="182"
+                    height="52"
+                >
+
+            </a>
+
+            <p class="auth-brand__title">
+                National Disaster Management System
+            </p>
+
+            <p class="auth-brand__message">
+                Report incidents, follow official alerts, and
+                track the response, all in one place.
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =================================================
+         FORM PANEL
+         ================================================= -->
+
+    <div class="auth-panel">
+
+        <main class="auth-main"
+              id="main-content"
+              tabindex="-1">
+
+            <div class="auth-card{% block card_modifier %}{% endblock %}">
+
+                {% block content %}{% endblock %}
+
+            </div>
+
+        </main>
+
+
+        <footer class="auth-footer">
+
+            <a href="{% url 'home' %}"
+               class="auth-back">
+                Back to home
+            </a>
+
+            <span>&copy; {% now "Y" %} NDMS</span>
+
+        </footer>
+
+    </div>
+
+
+</div>
+
+</body>
+
+</html>

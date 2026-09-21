@@ -6,813 +6,734 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta
         name="description"
         content="NDMS - National Disaster Management System. Report disaster incidents, stay informed, and connect with emergency authorities across Nepal."
     >
     <title>NDMS | Home</title>
 
-    <!-- Visual identity consistent with About page -->
     <link rel="stylesheet" href="{% static 'reports/about.css' %}">
-    <link rel="stylesheet" href="{% static 'reports/home.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/home.css' %}">
 
+    {% include 'reports/partials/theme_head.html' %}
 </head>
 
 <body class="public-home-page">
 
+{% comment %}
+=========================================================
+NDMS HOME PAGE
+Order: Navbar > Hero > System Snapshot > About > How it works >
+Disaster Types > Report CTA > Feedback > Citizen Reviews >
+Contact > Footer.
+
+Everything that was dynamic stays dynamic:
+  disaster_types   (DisasterType loop)
+  reviews          (Feedback loop)
+  system_stats     (real database counts from home())
+  feedback POST    (rating + message -> home view)
+=========================================================
+{% endcomment %}
+
+{% include 'reports/partials/navbar.html' %}
+
+
 {% if messages %}
 <div class="django-messages" aria-live="polite">
     {% for message in messages %}
-    <div
-        class="django-message django-message-{{ message.tags }}"
-        role="alert"
-    >
-        <span class="message-icon">
+    <div class="django-message django-message-{{ message.tags }}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">
+
+        <span class="message-icon" aria-hidden="true">
             {% if message.tags == 'error' %}
-                !
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5"/><path d="M12 16.5v.1"/></svg>
             {% else %}
-                ✓
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.8 2.8L16 9.5"/></svg>
             {% endif %}
         </span>
 
-        <span class="message-text">
-            {{ message }}
-        </span>
+        <span class="message-text">{{ message }}</span>
 
-        <button
-            type="button"
-            class="message-close"
-            aria-label="Close message"
-        >
-            ×
+        <button type="button" class="message-close" aria-label="Dismiss message">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
         </button>
+
     </div>
     {% endfor %}
 </div>
 {% endif %}
 
 
-<!-- =====================================================
-     1. PUBLIC NAVBAR (shared partial)
-     ===================================================== -->
-{% include 'reports/partials/navbar.html' %}
+<main class="public-main" id="main-content">
 
-
-<main class="public-main">
 
 <!-- =====================================================
-     2. CLEAN HERO SECTION
-     Balanced, compact two-column layout with controlled
-     typography, clear CTA actions, and status indicators.
+     1. HERO
      ===================================================== -->
-<section class="ndms-hero" aria-labelledby="hero-title">
-    <div class="home-container">
-        <div class="hero-grid">
+<section class="hero" aria-labelledby="hero-title">
 
-            <div class="hero-content reveal">
-                <div class="hero-eyebrow">
-                    <span class="hero-eyebrow-dot"></span>
-                    <span>National Disaster Management System</span>
-                </div>
+    <div class="hero-media" aria-hidden="true">
+        <img
+            src="{% static 'reports/images/disaster-about.jpg' %}"
+            alt=""
+            width="1500"
+            height="843"
+            decoding="async"
+            fetchpriority="high"
+        >
+    </div>
 
-                <h1 id="hero-title" class="hero-title">
-                    Stay Informed.<br>
-                    <span>Respond Faster.</span>
-                </h1>
+    <div class="home-container hero-inner">
 
-                <p class="hero-description">
-                    NDMS provides a unified, citizen-first platform to report disaster incidents, share verified location details, and stay connected with emergency authorities across Nepal.
-                </p>
+        <div class="hero-copy">
 
-                <div class="hero-actions">
-                    <a href="{% url 'create_disaster_report' %}" class="btn btn-primary hero-btn">
+            <p class="hero-eyebrow">National Disaster Management System</p>
+
+            <h1 id="hero-title">
+                <span>Report Faster.</span>
+                <span>Stay Informed.</span>
+                <span class="hero-title-soft">Support Safer Communities.</span>
+            </h1>
+
+            <p class="hero-lead">
+                NDMS lets citizens report disaster incidents with structured details
+                and precise location information, explore disaster awareness guidance,
+                and keep information moving to the responsible authorities.
+            </p>
+
+            <div class="hero-actions">
+                {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-on-dark-primary">
+                        Open Admin Dashboard
+                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+                    </a>
+                    <a href="{% url 'about' %}" class="btn btn-on-dark-outline">About NDMS</a>
+                {% else %}
+                    <a href="{% url 'create_disaster_report' %}" class="btn btn-on-dark-primary">
                         Report an Incident
-                        <span class="btn-arrow" aria-hidden="true">→</span>
+                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
                     </a>
-
-                    <a href="#about" class="btn btn-secondary hero-btn">
-                        Learn More
-                        <span class="btn-arrow" aria-hidden="true">↓</span>
+                    <a href="{% url 'disaster_list' %}" class="btn btn-on-dark-outline">
+                        Explore Disasters
+                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
                     </a>
-                </div>
-
-                <div class="hero-status-strip">
-                    <div class="status-pill">
-                        <span class="status-icon" aria-hidden="true">ϟ</span>
-                        <span class="status-label">Fast Reporting</span>
-                    </div>
-
-                    <div class="status-pill">
-                        <span class="status-icon" aria-hidden="true">✓</span>
-                        <span class="status-label">Verified Data</span>
-                    </div>
-
-                    <div class="status-pill">
-                        <span class="status-dot" aria-hidden="true"></span>
-                        <span class="status-label">24/7 Connected</span>
-                    </div>
-                </div>
+                {% endif %}
             </div>
 
-            <div class="hero-media reveal">
-                <div class="hero-image-card">
-                    <img
-                        src="{% static 'reports/images/disaster-about.jpg' %}"
-                        alt="NDMS emergency personnel assisting community members"
-                        class="hero-image"
-                        loading="eager"
-                    >
-                    <div class="hero-image-overlay"></div>
-                    <div class="hero-image-badge">
-                        <span class="badge-icon">▲</span>
-                        <div class="badge-text">
-                            <strong>Nepal Emergency Network</strong>
-                            <span>Active Coordination</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p class="hero-note">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/></svg>
+                <span>NDMS supports reporting, review and public awareness. Emergency response dispatch remains with the designated authorities.</span>
+            </p>
 
         </div>
-    </div>
-</section>
 
+    </div>
+
+</section>
 
 
 <!-- =====================================================
-     3. ABOUT NDMS PREVIEW
-     Quick overview connecting directly with the About page.
+     2. REAL SYSTEM SNAPSHOT
+     Live database counts only (see home() in views.py).
      ===================================================== -->
-<section
-    class="about-preview-section"
-    id="about"
-    aria-labelledby="about-preview-title"
->
+{% if system_stats %}
+<section class="snapshot" aria-labelledby="snapshot-title">
+
     <div class="home-container">
-        <div class="about-preview-grid">
 
-            <div class="about-preview-copy reveal">
-                <div class="eyebrow">
-                    <span class="eyebrow-line"></span>
-                    <span>About NDMS</span>
-                </div>
+        <h2 class="sr-only" id="snapshot-title">NDMS at a glance</h2>
 
-                <h2 id="about-preview-title">
-                    A safer Nepal starts with faster reporting.
-                </h2>
+        <ul class="snapshot-card">
 
-                <p class="about-preview-lead">
-                    NDMS gives citizens a clear way to report disaster incidents, share location information, and stay connected with updates from responsible authorities — built around Nepal's emergency needs.
-                </p>
+            <li class="snapshot-item">
+                <span class="snapshot-icon snapshot-icon--warning" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-3.2a2 2 0 0 0-1.9 1.4l-2.4 7.6a.3.3 0 0 1-.6 0L9.3 3a.3.3 0 0 0-.6 0l-2.4 7.6A2 2 0 0 1 4.4 12H2"/></svg>
+                </span>
+                <strong class="snapshot-value">{{ system_stats.active_disasters }}</strong>
+                <span class="snapshot-label">Active Disasters</span>
+                <span class="snapshot-help">Currently marked active</span>
+            </li>
 
-                <div class="about-highlights-list">
-                    <div class="about-highlight-item">
-                        <div class="highlight-number">01</div>
-                        <div class="highlight-body">
-                            <strong>Report Clearly</strong>
-                            <p>Simple, structured incident submission captures critical observations swiftly.</p>
-                        </div>
+            <li class="snapshot-item">
+                <span class="snapshot-icon snapshot-icon--success" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.3 2.8 2.8L16 9.5"/></svg>
+                </span>
+                <strong class="snapshot-value">{{ system_stats.resolved_disasters }}</strong>
+                <span class="snapshot-label">Resolved Disasters</span>
+                <span class="snapshot-help">Resolved or closed records</span>
+            </li>
+
+            <li class="snapshot-item">
+                <span class="snapshot-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></svg>
+                </span>
+                <strong class="snapshot-value">{{ system_stats.disaster_categories }}</strong>
+                <span class="snapshot-label">Disaster Categories</span>
+                <span class="snapshot-help">Available for reporting</span>
+            </li>
+
+            <li class="snapshot-item">
+                <span class="snapshot-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v5.5c0 4.5 3 7.9 8 9.5 5-1.6 8-5 8-9.5V6Z"/><path d="M12 8.5v5M9.5 11h5"/></svg>
+                </span>
+                <strong class="snapshot-value">{{ system_stats.emergency_agencies }}</strong>
+                <span class="snapshot-label">Emergency Agencies</span>
+                <span class="snapshot-help">Listed in the directory</span>
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+{% endif %}
+
+
+<!-- =====================================================
+     3. ABOUT NDMS
+     ===================================================== -->
+<section class="section section--about" id="about-preview" aria-labelledby="about-preview-title">
+
+    <div class="home-container about-grid">
+
+        <div class="about-copy reveal">
+
+            <p class="eyebrow">About NDMS</p>
+
+            <h2 id="about-preview-title">One place to report, organise and follow disaster information</h2>
+
+            <p class="lead">
+                NDMS is a web platform for disaster reporting and public awareness in Nepal.
+                Citizens submit incident reports, NDMS administrators review them and organise
+                verified information into disaster records, and updates and guidance flow back
+                to the public.
+            </p>
+
+            <ul class="capability-list">
+
+                <li>
+                    <span class="capability-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+                    </span>
+                    <div>
+                        <h3>Structured Reporting</h3>
+                        <p>Each report captures the disaster type, severity, description and photos in one consistent format that is easy to review.</p>
                     </div>
+                </li>
 
-                    <div class="about-highlight-item">
-                        <div class="highlight-number">02</div>
-                        <div class="highlight-body">
-                            <strong>Share Location</strong>
-                            <p>Precise map coordinates provide essential situational awareness for responders.</p>
-                        </div>
+                <li>
+                    <span class="capability-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                    </span>
+                    <div>
+                        <h3>Location-Based Information</h3>
+                        <p>Incidents are recorded with a map location and address, so reviewers know exactly where to look.</p>
                     </div>
+                </li>
 
-                    <div class="about-highlight-item">
-                        <div class="highlight-number">03</div>
-                        <div class="highlight-body">
-                            <strong>Support Response</strong>
-                            <p>Organized records empower emergency response agencies to coordinate action.</p>
-                        </div>
+                <li>
+                    <span class="capability-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.3"/><circle cx="5.5" cy="18.5" r="2.3"/><circle cx="18.5" cy="18.5" r="2.3"/><path d="M12 7.8v4.2M12 12l-5 4.4M12 12l5 4.4"/></svg>
+                    </span>
+                    <div>
+                        <h3>Coordinated Information Flow</h3>
+                        <p>Reviewed reports feed disaster records, response updates and notifications, so citizens and authorities work from the same information.</p>
                     </div>
-                </div>
+                </li>
 
-                <div class="about-preview-cta">
-                    <a href="{% url 'about' %}" class="btn btn-secondary">
-                        Learn More About NDMS
-                        <span class="btn-arrow" aria-hidden="true">→</span>
-                    </a>
-                </div>
-            </div>
+            </ul>
 
-            <div class="about-preview-media reveal">
-                <div class="map-card">
-                    <img
-                        src="{% static 'reports/images/nepal-map.png' %}"
-                        alt="Geographic disaster response coverage across Nepal"
-                        class="map-image"
-                        loading="lazy"
-                    >
-                    <div class="map-badge">
-                        <span class="map-badge-icon">▲</span>
-                        <div>
-                            <strong>Nepal-focused</strong>
-                            <span>Citizen-first emergency management</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a href="{% url 'about' %}" class="text-link">
+                Learn More
+                <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+            </a>
 
         </div>
-    </div>
-</section>
 
+        <figure class="about-visual reveal">
+            <div class="about-visual-frame">
+                <img
+                    src="{% static 'reports/images/nepal-map.png' %}"
+                    alt="Map of Nepal divided into its seven provinces"
+                    width="1774"
+                    height="887"
+                    loading="lazy"
+                    decoding="async"
+                >
+            </div>
+            <figcaption>Built for Nepal: every incident is recorded with a map location and address.</figcaption>
+        </figure>
+
+    </div>
+
+</section>
 
 
 <!-- =====================================================
      4. HOW NDMS WORKS
-     Clear 4-step workflow in clean, lightweight cards.
      ===================================================== -->
-<section
-    class="workflow-section"
-    id="workflow"
-    aria-labelledby="workflow-title"
->
+<section class="section section--tint" id="how-it-works" aria-labelledby="how-title">
+
     <div class="home-container">
-        <div class="section-header text-center reveal">
-            <div class="eyebrow centered">
-                <span class="eyebrow-line"></span>
-                <span>How NDMS Works</span>
-                <span class="eyebrow-line"></span>
-            </div>
 
-            <h2 id="workflow-title">
-                From incident report to informed response.
-            </h2>
+        <header class="section-head section-head--center reveal">
+            <p class="eyebrow">How NDMS works</p>
+            <h2 id="how-title">From a citizen's report to coordinated information</h2>
+            <p class="section-sub">Four steps keep every incident organised, located and reviewed.</p>
+        </header>
 
-            <p class="section-subtitle">
-                NDMS follows a structured four-step process that organizes disaster information from initial citizen reporting through validation and coordinated response.
-            </p>
-        </div>
+        <ol class="steps" id="processSteps">
 
-        <div class="workflow-grid reveal" id="workflowSteps">
-            <!-- Step 01 -->
-            <article class="workflow-card">
-                <div class="step-card-top">
-                    <span class="step-badge">01</span>
-                    <span class="step-icon">△</span>
+            <li class="step">
+                <span class="step-node" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h6"/></svg>
+                </span>
+                <div class="step-body">
+                    <span class="step-num">01</span>
+                    <h3>Report</h3>
+                    <p>Submit an incident with its disaster type, severity, description and photos.</p>
                 </div>
-                <h3>Report</h3>
-                <p>Citizens submit an incident report with descriptions, photographs, and observed severity.</p>
-            </article>
+            </li>
 
-            <!-- Step 02 -->
-            <article class="workflow-card">
-                <div class="step-card-top">
-                    <span class="step-badge">02</span>
-                    <span class="step-icon">📍</span>
+            <li class="step">
+                <span class="step-node" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                </span>
+                <div class="step-body">
+                    <span class="step-num">02</span>
+                    <h3>Locate</h3>
+                    <p>Mark where it happened on the map so the incident is placed accurately.</p>
                 </div>
-                <h3>Locate</h3>
-                <p>Precise map positioning establishes exactly where the incident occurred in Nepal.</p>
-            </article>
+            </li>
 
-            <!-- Step 03 -->
-            <article class="workflow-card">
-                <div class="step-card-top">
-                    <span class="step-badge">03</span>
-                    <span class="step-icon">✓</span>
+            <li class="step">
+                <span class="step-node" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5.5c0 4.5 3 8 7 9.5 4-1.5 7-5 7-9.5V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+                <div class="step-body">
+                    <span class="step-num">03</span>
+                    <h3>Review / Verify</h3>
+                    <p>NDMS administrators review, organise and verify the submitted information.</p>
                 </div>
-                <h3>Verify</h3>
-                <p>Submitted incident data is reviewed, structured, and organized by NDMS coordinators.</p>
-            </article>
+            </li>
 
-            <!-- Step 04 -->
-            <article class="workflow-card">
-                <div class="step-card-top">
-                    <span class="step-badge">04</span>
-                    <span class="step-icon">⚡</span>
+            <li class="step">
+                <span class="step-node" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5.5" r="2.3"/><circle cx="5.5" cy="18.5" r="2.3"/><circle cx="18.5" cy="18.5" r="2.3"/><path d="M12 7.8v4.2M12 12l-5 4.4M12 12l5 4.4"/></svg>
+                </span>
+                <div class="step-body">
+                    <span class="step-num">04</span>
+                    <h3>Coordinate</h3>
+                    <p>Verified information becomes disaster records and response updates that citizens can follow.</p>
                 </div>
-                <h3>Respond</h3>
-                <p>Verified information supports informed response coordination and public safety updates.</p>
-            </article>
-        </div>
+            </li>
 
-        <div class="workflow-disclaimer reveal">
-            <span class="disclaimer-icon">ℹ</span>
-            <span>NDMS supports reporting, review, status tracking, and public awareness; emergency response dispatch remains coordinated with designated authorities.</span>
-        </div>
+        </ol>
+
+        <p class="process-note reveal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/></svg>
+            <span>NDMS supports reporting, review, status tracking and public awareness; emergency response dispatch remains coordinated with designated authorities.</span>
+        </p>
+
     </div>
+
 </section>
 
 
-
 <!-- =====================================================
-     5. DISASTER TYPES
-     Consistent, clean safety cards with high readability.
+     5. DISASTER TYPES  (database-driven: disaster_types)
      ===================================================== -->
-<section
-    class="disaster-section"
-    id="disasters"
-    aria-labelledby="disaster-title"
->
+<section class="section" id="disaster-types" aria-labelledby="types-title">
+
     <div class="home-container">
-        <div class="section-header-row reveal">
+
+        <header class="section-head section-head--split reveal">
             <div>
-                <div class="eyebrow">
-                    <span class="eyebrow-line"></span>
-                    <span>Disaster Types</span>
-                </div>
-
-                <h2 id="disaster-title">
-                    Be prepared. Stay informed.
-                </h2>
-
-                <p class="section-subtitle">
-                    Understand essential safety information for common disaster categories across Nepal.
-                </p>
+                <p class="eyebrow">Disaster types</p>
+                <h2 id="types-title">Know the risks. Report what you see.</h2>
+                <p class="section-sub">Choose a category to report an incident or browse recorded events.</p>
             </div>
 
-            <a href="{% url 'create_disaster_report' %}" class="btn btn-outline">
-                Report an Incident
-                <span class="btn-arrow" aria-hidden="true">→</span>
+            {% if not user.is_staff and not user.is_superuser %}
+            <a href="{% url 'disaster_list' %}" class="text-link">
+                View All Disasters
+                <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
             </a>
-        </div>
+            {% endif %}
+        </header>
 
-        <div class="disaster-grid reveal">
+        <div class="type-grid">
             {% for dt in disaster_types %}
-            <article class="disaster-card">
-                <div class="disaster-card-img-wrap">
+            <article class="type-card reveal">
+
+                <div class="type-card-media">
                     <img
                         src="{% static dt.name|disaster_image %}"
-                        alt="{{ dt.name }} safety awareness and response"
+                        alt="{{ dt.name }}"
+                        width="640"
+                        height="400"
                         loading="lazy"
+                        decoding="async"
                     >
-                    <span class="disaster-tag">{{ dt.name }}</span>
                 </div>
 
-                <div class="disaster-card-content">
-                    <h3>{{ dt.name }}</h3>
+                <div class="type-card-body">
+                    <h3>
+                        <span class="type-card-icon" aria-hidden="true">{{ dt.name|disaster_svg }}</span>
+                        {{ dt.name }}
+                    </h3>
+
                     <p>
                         {% if dt.description %}
                             {{ dt.description|truncatewords:20 }}
                         {% else %}
-                            Report {{ dt.name|lower }} incidents quickly so responders can act with accurate, verified information.
+                            Report {{ dt.name|lower }} incidents quickly so reviewers can act on accurate information.
                         {% endif %}
                     </p>
-                    <a href="{% url 'create_disaster_report' %}?disaster_type={{ dt.id }}" class="card-action-link">
-                        Report {{ dt.name }}
-                        <span aria-hidden="true">→</span>
-                    </a>
-                </div>
-            </article>
-            {% empty %}
-            <p class="disaster-empty-note">
-                Disaster categories will appear here once they are added by NDMS administrators.
-            </p>
-            {% endfor %}
-        </div>
-    </div>
-</section>
 
-
-
-<!-- =====================================================
-     6. SMALL EMERGENCY CTA
-     Compact, slim professional notification strip.
-     ===================================================== -->
-<section
-    class="emergency-strip-section"
-    aria-labelledby="emergency-strip-title"
->
-    <div class="home-container">
-        <div class="emergency-strip-card reveal">
-            <div class="emergency-strip-left">
-                <span class="emergency-strip-badge">
-                    <span class="pulse-dot"></span>
-                    <span>Emergency Reporting</span>
-                </span>
-
-                <h2 id="emergency-strip-title" class="emergency-strip-title">
-                    Need to report an emergency?
-                </h2>
-
-                <p class="emergency-strip-text">
-                    Quickly submit an incident and help the response team act faster.
-                </p>
-            </div>
-
-            <div class="emergency-strip-right">
-                <a
-                    href="{% url 'create_disaster_report' %}"
-                    class="btn btn-primary emergency-btn"
-                >
-                    Report Incident
-                    <span class="btn-arrow" aria-hidden="true">→</span>
-                </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-
-
-<!-- =====================================================
-     7. GET IN TOUCH + FEEDBACK
-     Clean 2-column layout:
-     Left: Get in touch (informational contact details)
-     Right: Help us improve NDMS (real feedback form)
-     ===================================================== -->
-<section
-    class="contact-section"
-    id="contact"
-    aria-labelledby="contact-section-title"
->
-    <div class="home-container">
-        <div class="contact-grid">
-
-            <!-- LEFT: Get in touch -->
-            <div class="contact-info-col reveal">
-                <div class="eyebrow">
-                    <span class="eyebrow-line"></span>
-                    <span>Contact NDMS</span>
-                </div>
-
-                <h2 id="contact-section-title" class="contact-title">
-                    Get in touch
-                </h2>
-
-                <p class="contact-intro">
-                    Need assistance or have questions about NDMS? Our support channels are available to help citizens use the system effectively.
-                </p>
-
-                <div class="contact-details-list">
-                    <div class="contact-item">
-                        <div class="contact-item-icon" aria-hidden="true">⌂</div>
-                        <div class="contact-item-text">
-                            <span class="contact-label">Location / Office</span>
-                            <strong>Dhangadhi, Nepal</strong>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-item-icon" aria-hidden="true">☎</div>
-                        <div class="contact-item-text">
-                            <span class="contact-label">Phone / Emergency Helpline</span>
-                            <strong>1149 / +977-1-4200000</strong>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-item-icon" aria-hidden="true">✉</div>
-                        <div class="contact-item-text">
-                            <span class="contact-label">Official Email</span>
-                            <strong>info@ndms.com.np</strong>
-                        </div>
-                    </div>
-
-                    <div class="contact-item">
-                        <div class="contact-item-icon" aria-hidden="true">⏱</div>
-                        <div class="contact-item-text">
-                            <span class="contact-label">Availability</span>
-                            <strong>24/7 Disaster Incident Reporting &amp; Monitoring</strong>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="contact-quick-links">
-                    <span class="quick-links-title">Quick Portals:</span>
-                    <div class="quick-links-row">
-                        <a href="{% url 'help_support' %}" class="quick-link-pill">
-                            <span>↗</span> Help &amp; Support Center
+                    {% if not user.is_staff and not user.is_superuser %}
+                    <div class="type-card-actions">
+                        <a href="{% url 'create_disaster_report' %}?disaster_type={{ dt.id }}" class="text-link" aria-label="Report a {{ dt.name|lower }} incident">
+                            Report incident
+                            <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
                         </a>
-
-                        {% if user.is_authenticated %}
-                        <a href="{% url 'my_reports' %}" class="quick-link-pill">
-                            <span>≡</span> Track My Reports
-                        </a>
-                        {% else %}
-                        <a href="{% url 'login' %}" class="quick-link-pill">
-                            <span>🔒</span> Login to Track
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT: Feedback (real, backend-connected) -->
-            <div class="feedback-col reveal">
-                <div class="feedback-card">
-
-                    <div class="feedback-header">
-                        <div class="eyebrow">
-                            <span class="eyebrow-line"></span>
-                            <span>Citizen Feedback</span>
-                        </div>
-
-                        <h2 id="feedback-section-title">
-                            Help us improve NDMS
-                        </h2>
-
-                        <p class="feedback-lead">
-                            Your feedback helps us make disaster reporting and response faster and clearer for communities across Nepal.
-                        </p>
-                    </div>
-
-                    {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
-                    <form
-                        method="POST"
-                        action="{% url 'home' %}"
-                        class="feedback-form"
-                        id="feedbackForm"
-                    >
-                        {% csrf_token %}
-
-                        <div class="rating-block">
-                            <span class="rating-label">How would you rate your experience?</span>
-
-                            <div class="rating-stars-row">
-                                <div
-                                    class="rating-input"
-                                    id="ratingInput"
-                                    role="radiogroup"
-                                    aria-label="Rate your experience"
-                                >
-                                    <button
-                                        type="button"
-                                        class="rating-star"
-                                        data-rating="1"
-                                        aria-label="1 star"
-                                    >
-                                        ★
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="rating-star"
-                                        data-rating="2"
-                                        aria-label="2 stars"
-                                    >
-                                        ★
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="rating-star"
-                                        data-rating="3"
-                                        aria-label="3 stars"
-                                    >
-                                        ★
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="rating-star"
-                                        data-rating="4"
-                                        aria-label="4 stars"
-                                    >
-                                        ★
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="rating-star"
-                                        data-rating="5"
-                                        aria-label="5 stars"
-                                    >
-                                        ★
-                                    </button>
-                                </div>
-
-                                <span
-                                    id="ratingStatus"
-                                    class="rating-status-text"
-                                >
-                                    Select a rating
-                                </span>
-
-                                <input
-                                    type="hidden"
-                                    name="rating"
-                                    id="ratingValue"
-                                    value=""
-                                >
-                            </div>
-                        </div>
-
-                        <div class="feedback-textarea-block">
-                            <label for="feedbackMessage" class="feedback-label">Your Feedback / Suggestions</label>
-                            <textarea
-                                id="feedbackMessage"
-                                name="message"
-                                class="form-control"
-                                rows="4"
-                                maxlength="500"
-                                placeholder="Tell us what worked well or what we can improve in NDMS..."
-                                required
-                            ></textarea>
-
-                            <div class="feedback-char-count-wrap">
-                                <span
-                                    id="feedbackCharacterCount"
-                                    class="feedback-count"
-                                >
-                                    0 / 500
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="feedback-submit-wrap">
-                            <button
-                                type="submit"
-                                class="btn btn-primary feedback-submit-btn"
-                            >
-                                Submit Feedback
-                                <span class="btn-arrow" aria-hidden="true">→</span>
-                            </button>
-                        </div>
-                    </form>
-
-                    {% elif user.is_authenticated %}
-                    <div class="feedback-gate-box">
-                        <div class="gate-icon">🛡️</div>
-                        <div class="gate-content">
-                            <strong>Feedback is managed from the Admin Dashboard</strong>
-                            <p>Administrator accounts can review and manage citizen feedback directly in the administration portal.</p>
-                            <a href="{% url 'admin_feedback' %}" class="btn btn-secondary">
-                                View Feedback Portal →
-                            </a>
-                        </div>
-                    </div>
-
-                    {% else %}
-                    <div class="feedback-gate-box">
-                        <div class="gate-icon">💬</div>
-                        <div class="gate-content">
-                            <strong>Login to leave feedback</strong>
-                            <p>Sign in with your citizen account to rate the NDMS platform and share your experience.</p>
-                            <div class="gate-buttons">
-                                <a href="{% url 'login' %}" class="btn btn-primary">
-                                    Login to NDMS
-                                </a>
-                                <a href="{% url 'register' %}" class="btn btn-secondary">
-                                    Create Account
-                                </a>
-                            </div>
-                        </div>
+                        <a href="{% url 'disaster_list' %}?type={{ dt.id }}" class="type-card-secondary">View events</a>
                     </div>
                     {% endif %}
-
                 </div>
-            </div>
 
+            </article>
+            {% empty %}
+            <p class="empty-note">Disaster categories will appear here once they are added by NDMS administrators.</p>
+            {% endfor %}
         </div>
+
     </div>
+
 </section>
 
 
+<!-- =====================================================
+     6. REPORT INCIDENT CTA
+     ===================================================== -->
+<section class="section section--cta" aria-labelledby="report-cta-title">
+
+    <div class="home-container">
+
+        <div class="cta-panel reveal">
+
+            <div class="cta-copy">
+                <p class="cta-eyebrow">Report an incident</p>
+                <h2 id="report-cta-title">Need to report a disaster incident?</h2>
+                <p>
+                    Submit a structured report with the disaster type, severity, description,
+                    location and photos. NDMS administrators review every report. NDMS is not
+                    an emergency dispatch service, so contact the designated emergency
+                    authorities directly when lives are at immediate risk.
+                </p>
+            </div>
+
+            <div class="cta-action">
+                {% if user.is_staff or user.is_superuser %}
+                    <a href="{% url 'admin_dashboard' %}" class="btn btn-on-dark-primary btn-lg">
+                        Open Admin Dashboard
+                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+                    </a>
+                {% else %}
+                    <a href="{% url 'create_disaster_report' %}" class="btn btn-on-dark-primary btn-lg">
+                        Report an Incident
+                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
 
 <!-- =====================================================
-     9. CITIZEN REVIEWS
-     Compact, easy-to-scan dynamic review cards.
+     7. FEEDBACK  (real form: POST -> home view)
      ===================================================== -->
-<section
-    class="reviews-section"
-    id="reviews"
-    aria-labelledby="reviews-title"
->
-    <div class="home-container">
-        <div class="section-header-row reveal">
-            <div>
-                <div class="eyebrow">
-                    <span class="eyebrow-line"></span>
-                    <span>What Our Citizens Say</span>
+<section class="section section--tint" id="feedback" aria-labelledby="feedback-title">
+
+    <div class="home-container feedback-grid">
+
+        <div class="feedback-intro reveal">
+            <p class="eyebrow">Feedback</p>
+            <h2 id="feedback-title">Help us improve NDMS</h2>
+            <p class="lead">
+                Your feedback helps us make disaster reporting and response faster and
+                clearer for communities across Nepal.
+            </p>
+            <p class="feedback-privacy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/></svg>
+                <span>Submitted feedback may appear under Citizen Reviews on this page, together with your name.</span>
+            </p>
+        </div>
+
+        <div class="feedback-card reveal">
+
+            {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+
+            <form method="post" action="{% url 'home' %}" class="feedback-form" id="feedbackForm" novalidate>
+                {% csrf_token %}
+
+                <fieldset class="rating-block">
+                    <legend class="field-label">How would you rate your experience?</legend>
+
+                    <div class="rating-row">
+
+                        <div class="rating-stars" id="ratingStars">
+                            {% for i in "12345" %}
+                            <input
+                                type="radio"
+                                class="rating-radio"
+                                name="rating"
+                                id="rating{{ i }}"
+                                value="{{ i }}"
+                            >
+                            <label class="rating-star" for="rating{{ i }}">
+                                <span class="sr-only">{{ i }} out of 5</span>
+                                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.2 2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 3 1.1-6.1-4.5-4.3 6.1-.8Z" stroke-linejoin="round"/></svg>
+                            </label>
+                            {% endfor %}
+                        </div>
+
+                        <span class="rating-status" id="ratingStatus" aria-live="polite">Select a rating</span>
+
+                    </div>
+
+                    <p class="field-error" id="ratingError" role="alert" hidden>Please choose a rating from 1 to 5 stars.</p>
+                </fieldset>
+
+                <div class="field">
+                    <label for="feedbackMessage" class="field-label">Your feedback / suggestions</label>
+
+                    <textarea
+                        id="feedbackMessage"
+                        name="message"
+                        class="field-control"
+                        rows="5"
+                        maxlength="500"
+                        placeholder="Tell us what worked well or what we can improve in NDMS..."
+                        aria-describedby="feedbackCharacterCount messageError"
+                        required
+                    ></textarea>
+
+                    <div class="field-foot">
+                        <p class="field-error" id="messageError" role="alert" hidden>Please write a short message before submitting.</p>
+                        <span class="field-count" id="feedbackCharacterCount">0 / 500</span>
+                    </div>
                 </div>
 
-                <h2 id="reviews-title">
-                    Real people. Real impact.
-                </h2>
+                <button type="submit" class="btn btn-primary">
+                    Submit Feedback
+                    <svg class="btn-arrow" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>
+                </button>
+
+            </form>
+
+            {% elif user.is_authenticated %}
+
+            <div class="feedback-gate">
+                <span class="gate-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5.5c0 4.5 3 8 7 9.5 4-1.5 7-5 7-9.5V6Z"/><path d="m9 12 2 2 4-4"/></svg>
+                </span>
+                <h3>Administrator account</h3>
+                <p>Administrator accounts review and manage citizen feedback directly in the administration portal.</p>
+                <a href="{% url 'admin_feedback' %}" class="btn btn-secondary">Open Feedback Management</a>
+            </div>
+
+            {% else %}
+
+            <div class="feedback-gate">
+                <span class="gate-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+                </span>
+                <h3>Log in to leave feedback</h3>
+                <p>Feedback is linked to your NDMS account. Log in or create an account to share your experience.</p>
+                <div class="gate-actions">
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+                    <a href="{% url 'register' %}" class="btn btn-secondary">Create Account</a>
+                </div>
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     8. CITIZEN REVIEWS  (database-driven: reviews)
+     Shows the 12 most recent entries already ordered by the view.
+     ===================================================== -->
+<section class="section" id="reviews" aria-labelledby="reviews-title">
+
+    <div class="home-container">
+
+        <header class="section-head section-head--split reveal">
+            <div>
+                <p class="eyebrow">Citizen reviews</p>
+                <h2 id="reviews-title">What citizens are saying</h2>
+                <p class="section-sub">Feedback shared by people who use NDMS.</p>
             </div>
 
             {% if reviews %}
-            <div class="carousel-nav-buttons" aria-label="Reviews navigation">
-                <button
-                    type="button"
-                    class="carousel-arrow-btn"
-                    id="reviewPrev"
-                    aria-label="Previous reviews"
-                >
-                    ←
+            <div class="carousel-controls">
+                <button type="button" class="carousel-btn" id="reviewPrev" aria-label="Previous reviews" aria-controls="reviewsTrack">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 4-6 6 6 6"/></svg>
                 </button>
-
-                <button
-                    type="button"
-                    class="carousel-arrow-btn"
-                    id="reviewNext"
-                    aria-label="Next reviews"
-                >
-                    →
+                <button type="button" class="carousel-btn" id="reviewNext" aria-label="Next reviews" aria-controls="reviewsTrack">
+                    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 4 6 6-6 6"/></svg>
                 </button>
             </div>
             {% endif %}
-        </div>
+        </header>
 
         {% if reviews %}
-        <div class="reviews-carousel-wrapper reveal">
-            <div
-                class="reviews-viewport"
-                id="reviewsViewport"
-            >
-                <div
-                    class="reviews-track"
-                    id="reviewsTrack"
-                >
-                    {% for review in reviews %}
-                    <article class="review-card">
-                        <div class="review-card-top">
-                            <div class="review-avatar">
-                                {% if review.user.avatar %}
-                                    <img
-                                        src="{{ review.user.avatar.url }}"
-                                        alt=""
-                                    >
-                                {% elif review.user.full_name %}
-                                    {{ review.user.full_name|first|upper }}
-                                {% elif review.user.username %}
-                                    {{ review.user.username|first|upper }}
-                                {% else %}
-                                    U
-                                {% endif %}
-                            </div>
+        <div
+            class="reviews-track"
+            id="reviewsTrack"
+            role="region"
+            aria-roledescription="carousel"
+            aria-label="Citizen reviews"
+            tabindex="0"
+        >
+            {% for review in reviews|slice:":12" %}
+            <article class="review-card">
 
-                            <div class="review-meta">
-                                <strong class="review-author">
-                                    {% if review.user.full_name %}
-                                        {{ review.user.full_name }}
-                                    {% elif review.user.username %}
-                                        {{ review.user.username }}
-                                    {% else %}
-                                        NDMS Citizen
-                                    {% endif %}
-                                </strong>
+                <div class="review-top">
 
-                                <div
-                                    class="review-stars"
-                                    aria-label="{{ review.rating }} out of 5 stars"
-                                >
-                                    {% for star in "12345" %}
-                                    <span
-                                        class="{% if forloop.counter <= review.rating %}filled-star{% else %}empty-star{% endif %}"
-                                    >
-                                        ★
-                                    </span>
-                                    {% endfor %}
-                                </div>
-                            </div>
+                    <div class="review-avatar" aria-hidden="true">
+                        {% if review.user.avatar %}
+                            <img src="{{ review.user.avatar.url }}" alt="" loading="lazy">
+                        {% else %}
+                            {% with reviewer=review.user.get_full_name|default:review.user.username %}{{ reviewer|first|upper|default:"U" }}{% endwith %}
+                        {% endif %}
+                    </div>
+
+                    <div class="review-meta">
+                        <strong class="review-author">{% if review.user.get_full_name %}{{ review.user.get_full_name }}{% else %}{{ review.user.username }}{% endif %}</strong>
+
+                        <div class="review-stars" role="img" aria-label="{{ review.rating }} out of 5 stars">
+                            {% for i in "12345" %}
+                            <svg class="{% if forloop.counter <= review.rating %}is-filled{% endif %}" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3.2 2.7 5.6 6.1.8-4.5 4.3 1.1 6.1L12 17l-5.4 3 1.1-6.1-4.5-4.3 6.1-.8Z" stroke-linejoin="round"/></svg>
+                            {% endfor %}
                         </div>
+                    </div>
 
-                        <p class="review-text">
-                            “{{ review.message|truncatewords:30 }}”
-                        </p>
-
-                        <div class="review-card-footer">
-                            <span class="review-date">
-                                {{ review.created_at|citizen_date:citizen_date_format }}
-                            </span>
-                        </div>
-                    </article>
-                    {% endfor %}
                 </div>
-            </div>
+
+                <p class="review-text">&ldquo;{{ review.message|truncatewords:30 }}&rdquo;</p>
+
+                <p class="review-date">{{ review.created_at|citizen_date:citizen_date_format }}</p>
+
+            </article>
+            {% endfor %}
         </div>
         {% else %}
-        <div class="empty-reviews-card reveal">
-            <span class="empty-icon">💬</span>
+        <div class="empty-card reveal">
             <p>No citizen reviews yet. Feedback submitted through NDMS will appear here.</p>
         </div>
         {% endif %}
+
     </div>
+
+</section>
+
+
+<!-- =====================================================
+     9. CONTACT  (existing project details, unchanged)
+     ===================================================== -->
+<section class="section section--tint" id="contact" aria-labelledby="contact-title">
+
+    <div class="home-container contact-grid">
+
+        <div class="contact-intro reveal">
+            <p class="eyebrow">Contact</p>
+            <h2 id="contact-title">Get in touch</h2>
+            <p class="lead">
+                Need assistance or have questions about NDMS? Our support channels are
+                available to help citizens use the system effectively.
+            </p>
+
+            <div class="contact-links">
+                <a href="{% url 'help_support' %}" class="btn btn-secondary">Help &amp; Support Center</a>
+                {% if user.is_authenticated and not user.is_staff and not user.is_superuser %}
+                <a href="{% url 'my_reports' %}" class="btn btn-secondary">Track My Reports</a>
+                {% elif not user.is_authenticated %}
+                <a href="{% url 'login' %}" class="btn btn-secondary">Log in to Track Reports</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <ul class="contact-list reveal">
+
+            <li class="contact-item">
+                <span class="contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                </span>
+                <div>
+                    <span class="contact-label">Location / Office</span>
+                    <strong class="contact-value">Dhangadhi, Nepal</strong>
+                </div>
+            </li>
+
+            <li class="contact-item">
+                <span class="contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A15.5 15.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4Z"/></svg>
+                </span>
+                <div>
+                    <span class="contact-label">Phone / Emergency Helpline</span>
+                    <strong class="contact-value"><a href="tel:1149">1149</a> / <a href="tel:+97714200000">+977-1-4200000</a></strong>
+                </div>
+            </li>
+
+            <li class="contact-item">
+                <span class="contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+                </span>
+                <div>
+                    <span class="contact-label">Official Email</span>
+                    <strong class="contact-value"><a href="mailto:info@ndms.com.np">info@ndms.com.np</a></strong>
+                </div>
+            </li>
+
+            <li class="contact-item">
+                <span class="contact-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                </span>
+                <div>
+                    <span class="contact-label">Availability</span>
+                    <strong class="contact-value">24/7 Disaster Incident Reporting &amp; Monitoring</strong>
+                </div>
+            </li>
+
+        </ul>
+
+    </div>
+
 </section>
 
 </main>
 
 
-
-<!-- =====================================================
-     10. FOOTER (matches About page visual language)
-     ===================================================== -->
 {% include 'reports/partials/footer.html' %}
 
 
-<script
-    src="{% static 'reports/js/public-nav.js' %}"
-    defer
-></script>
-
-<script
-    src="{% static 'reports/js/home.js' %}"
-    defer
-></script>
-
-<script
-    src="{% static 'reports/js/navbar-avatar.js' %}"
-    defer
-></script>
+<script src="{% static 'reports/js/public-nav.js' %}" defer></script>
+<script src="{% static 'reports/js/navbar-avatar.js' %}" defer></script>
+<script src="{% static 'reports/js/home.js' %}" defer></script>
 
 </body>
 </html>

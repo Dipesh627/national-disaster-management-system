@@ -32,7 +32,7 @@
 .ri-intro h2 {
     margin: 0;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(25px * var(--ndms-font-scale, 1));
     font-weight: 720;
@@ -152,11 +152,11 @@
 }
 
 .ri-alert-error {
-    background: var(--light-red);
+    background: var(--danger-bg);
 
-    border: 1px solid var(--c-red-220);
+    border: 1px solid var(--danger-border);
 
-    color: var(--red-dark);
+    color: var(--danger-dark);
 }
 
 .ri-alert p {
@@ -253,7 +253,7 @@
 .ri-card-header h3 {
     margin: 0;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 730;
@@ -311,7 +311,7 @@
 .ri-required {
     margin-left: 2px;
 
-    color: var(--red);
+    color: var(--danger);
 
     font-weight: 800;
 }
@@ -446,7 +446,7 @@
 
 .ri-severity-card-title {
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(12px * var(--ndms-font-scale, 1));
     font-weight: 730;
@@ -495,7 +495,7 @@
 
     border-color: var(--red);
 
-    box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.09);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 9%, transparent);
 }
 
 /* Error state -- applied to the whole grid (matches the pattern
@@ -504,7 +504,7 @@
    glow ring, to match the rest of the form's border system. */
 .ri-severity-grid.ri-invalid .ri-severity-card {
 
-    border-color: var(--red);
+    border-color: var(--danger);
 }
 
 
@@ -647,7 +647,7 @@
     border-color: var(--red);
 
     box-shadow:
-        0 0 0 3px rgba(180, 35, 24, 0.09);
+        0 0 0 3px color-mix(in srgb, var(--red) 9%, transparent);
 
     background-color: var(--c-red-10);
 }
@@ -657,10 +657,10 @@
    pure CSS, no extra class-syncing JS needed. */
 #id_disaster_type.ri-invalid ~ .ri-select-trigger {
 
-    border-color: var(--red);
+    border-color: var(--danger);
 
     box-shadow:
-        0 0 0 3px rgba(180, 35, 24, 0.07);
+        0 0 0 3px color-mix(in srgb, var(--danger) 7%, transparent);
 }
 
 .ri-select-trigger-text {
@@ -820,10 +820,9 @@
 #id_description:focus,
 #id_incident_start_date:focus {
 
-    border-color: var(--navy);
+    border-color: var(--red);
 
-    box-shadow:
-        0 0 0 3px rgba(23, 32, 51, 0.07);
+    box-shadow: var(--field-focus-ring);
 }
 
 
@@ -862,10 +861,10 @@
 #id_description.ri-invalid,
 #id_address.ri-invalid {
 
-    border-color: var(--red);
+    border-color: var(--danger);
 
     box-shadow:
-        0 0 0 3px rgba(180, 35, 24, 0.07);
+        0 0 0 3px color-mix(in srgb, var(--danger) 7%, transparent);
 }
 
 
@@ -875,10 +874,10 @@
    visible trigger button via this sibling selector. */
 #id_incident_start_date.ri-invalid ~ .ri-select-trigger {
 
-    border-color: var(--red);
+    border-color: var(--danger);
 
     box-shadow:
-        0 0 0 3px rgba(180, 35, 24, 0.07);
+        0 0 0 3px color-mix(in srgb, var(--danger) 7%, transparent);
 }
 
 
@@ -1276,16 +1275,16 @@
 
 .ri-dt-btn-primary {
 
-    background: var(--navy);
+    background: var(--btn-dark);
 
-    border: 1px solid var(--navy);
+    border: 1px solid var(--btn-dark);
 
-    color: var(--white);
+    color: var(--on-dark);
 }
 
 .ri-dt-btn-primary:hover {
 
-    background: var(--navy-light);
+    background: var(--btn-dark-hover);
 }
 
 
@@ -1322,7 +1321,7 @@
 
     margin-top: 1px;
 
-    color: var(--red-dark);
+    color: var(--danger-dark);
 
     font-size: calc(10px * var(--ndms-font-scale, 1));
     font-weight: 650;
@@ -1385,11 +1384,11 @@
 
     background: var(--orange-bg);
 
-    border: 1px solid rgba(181, 71, 8, 0.25);
+    border: 1px solid color-mix(in srgb, var(--orange-text) 25%, transparent);
 
     border-radius: 8px;
 
-    color: var(--orange);
+    color: var(--orange-text);
 
     font-size: calc(11px * var(--ndms-font-scale, 1));
 
@@ -1437,7 +1436,7 @@
 
     border-radius: 7px;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-family: inherit;
 
@@ -1480,11 +1479,11 @@
 }
 
 .ri-map-status.ri-status-success {
-    color: var(--green);
+    color: var(--green-text);
 }
 
 .ri-map-status.ri-status-error {
-    color: var(--red-dark);
+    color: var(--danger-dark);
 }
 
 
@@ -1526,9 +1525,9 @@
 
     padding: 20px;
 
-    background: var(--light-red);
+    background: var(--danger-bg);
 
-    color: var(--red-dark);
+    color: var(--danger-dark);
 
     font-size: calc(12px * var(--ndms-font-scale, 1));
     font-weight: 600;
@@ -1619,7 +1618,7 @@
 .ri-map-search-input:focus {
 
     box-shadow:
-        0 0 0 2px var(--navy),
+        0 0 0 1px var(--red),
         0 1px 4px rgba(16, 24, 40, 0.18);
 }
 
@@ -1700,15 +1699,15 @@
 
 .ri-layer-btn.active {
 
-    background: var(--navy);
+    background: var(--btn-dark);
 
-    color: var(--white);
+    color: var(--on-dark);
 
     box-shadow: 0 2px 8px rgba(23, 32, 51, 0.35);
 }
 
 .ri-layer-btn.active:hover {
-    background: var(--navy-light);
+    background: var(--btn-dark-hover);
 }
 
 
@@ -1947,7 +1946,7 @@
 
     background: rgba(23, 32, 51, .78);
 
-    color: var(--white);
+    color: var(--on-dark);
 
     font-size: calc(13px * var(--ndms-font-scale, 1));
     line-height: 1;
@@ -1961,7 +1960,7 @@
 
 .ri-photo-remove:hover {
 
-    background: var(--red);
+    background: var(--danger);
 
     transform: scale(1.04);
 }
@@ -1999,7 +1998,7 @@
 
     margin: 0;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 730;
@@ -2060,7 +2059,7 @@
 
 .report-incident-page .primary-action:hover {
 
-    box-shadow: 0 2px 8px rgba(180, 35, 24, 0.16);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--red) 16%, transparent);
 }
 
 
@@ -2155,7 +2154,7 @@
 
     background: var(--white);
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: calc(13px * var(--ndms-font-scale, 1));
 
@@ -2200,7 +2199,7 @@
 
     background: rgba(23, 32, 51, .6);
 
-    color: var(--white);
+    color: var(--on-dark);
 
     font-size: calc(15px * var(--ndms-font-scale, 1));
 
@@ -2239,7 +2238,7 @@
 
     transform: translateX(-50%);
 
-    color: var(--white);
+    color: var(--on-dark);
 
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
     font-weight: 650;

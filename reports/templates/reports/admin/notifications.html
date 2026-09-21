@@ -205,9 +205,9 @@ Notifications
 
                                         <span
                                             class="nt-recipient-badge nt-recipient-personal"
-                                            title="{{ notification.recipient.full_name|default:notification.recipient.username }}"
+                                            title="{{ notification.recipient.get_full_name|default:notification.recipient.username }}"
                                         >
-                                            {{ notification.recipient.full_name|default:notification.recipient.username }}
+                                            {{ notification.recipient.get_full_name|default:notification.recipient.username }}
                                         </span>
 
                                     {% else %}
@@ -252,9 +252,9 @@ Notifications
                                 <td>
                                     <span
                                         class="nt-sent-by-text"
-                                        title="{{ notification.published_by.full_name|default:notification.published_by.username }}"
+                                        title="{{ notification.published_by.get_full_name|default:notification.published_by.username }}"
                                     >
-                                        {{ notification.published_by.full_name|default:notification.published_by.username }}
+                                        {{ notification.published_by.get_full_name|default:notification.published_by.username }}
                                     </span>
                                 </td>
 

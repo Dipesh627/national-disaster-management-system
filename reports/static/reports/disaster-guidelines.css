@@ -4,44 +4,8 @@
    Bilingual: English + Nepali
    ========================================================= */
 
-/* =========================================================
-   1. ROOT VARIABLES & THEME INHERITANCE
-   ========================================================= */
-:root {
-    --red: #b42318;
-    --red-dark: #8f1d16;
-    --navy: #172033;
-    --navy-2: #101828;
-    --text: #344054;
-    --muted: #667085;
-    --border: #e4e7ec;
-    --light-red: #fff7f6;
-    --white: #ffffff;
-    --background: #f8f9fb;
-    --soft-gray: #f2f4f7;
-
-    --green-dark: #027a48;
-    --green-bg: #ecfdf3;
-    --green-border: #a6f4c5;
-
-    --amber-dark: #b54708;
-    --amber-bg: #fffaeb;
-    --amber-border: #fedf89;
-
-    --blue-dark: #026aa2;
-    --blue-bg: #f0f9ff;
-    --blue-border: #b9e6fe;
-
-    --shadow-xs: 0 2px 8px rgba(23, 32, 51, .035);
-    --shadow-sm: 0 4px 14px rgba(23, 32, 51, .055);
-    --shadow-md: 0 10px 30px rgba(23, 32, 51, .075);
-    --shadow-lg: 0 14px 40px rgba(23, 32, 51, .10);
-
-    --radius-sm: 6px;
-    --radius-md: 10px;
-    --radius-lg: 16px;
-    --radius-full: 9999px;
-}
+/* Design tokens (colours, shadows, radii) now live in
+   ndms-theme.css - the single Sentinel Teal source of truth. */
 
 /* =========================================================
    2. BILINGUAL CONTENT VISIBILITY TOGGLES
@@ -113,7 +77,7 @@ body.guidelines-page[data-lang="ne"] {
     transform: translateX(-50%);
     width: min(1280px, 100%);
     height: 100%;
-    background: radial-gradient(circle at 50% 0%, rgba(180, 35, 24, 0.04) 0%, transparent 60%);
+    background: radial-gradient(circle at 50% 0%, color-mix(in srgb, var(--red) 4%, transparent) 0%, transparent 60%);
     pointer-events: none;
 }
 
@@ -130,7 +94,7 @@ body.guidelines-page[data-lang="ne"] {
     gap: 8px;
     padding: 6px 14px;
     background: var(--light-red);
-    border: 1px solid rgba(180, 35, 24, 0.15);
+    border: 1px solid color-mix(in srgb, var(--red) 15%, transparent);
     border-radius: var(--radius-full);
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
@@ -145,14 +109,14 @@ body.guidelines-page[data-lang="ne"] {
     height: 7px;
     border-radius: 50%;
     background: var(--red);
-    box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.18);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 18%, transparent);
     display: inline-block;
 }
 
 .guidelines-hero-title {
     font-size: calc(clamp(28px, 4vw, 42px) * var(--ndms-font-scale, 1));
     font-weight: 850;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.2;
     margin: 0 0 14px;
     letter-spacing: -0.6px;
@@ -194,7 +158,7 @@ body.guidelines-page[data-lang="ne"] {
     border-radius: var(--radius-sm);
     text-decoration: none;
     transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
-    box-shadow: 0 2px 8px rgba(180, 35, 24, 0.25);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--red) 25%, transparent);
     border: none;
     cursor: pointer;
 }
@@ -202,7 +166,7 @@ body.guidelines-page[data-lang="ne"] {
 .guidelines-btn-hero-primary:hover {
     background: var(--red-dark);
     transform: translateY(-1px);
-    box-shadow: 0 4px 14px rgba(180, 35, 24, 0.32);
+    box-shadow: 0 4px 14px color-mix(in srgb, var(--red) 32%, transparent);
     color: var(--white);
 }
 
@@ -211,7 +175,7 @@ body.guidelines-page[data-lang="ne"] {
     align-items: center;
     gap: 8px;
     background: var(--white);
-    color: var(--navy);
+    color: var(--heading);
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 650;
     padding: 11px 22px;
@@ -226,7 +190,7 @@ body.guidelines-page[data-lang="ne"] {
 .guidelines-btn-hero-secondary:hover {
     background: var(--soft-gray);
     color: var(--red);
-    border-color: rgba(180, 35, 24, 0.3);
+    border-color: color-mix(in srgb, var(--red) 30%, transparent);
     transform: translateY(-1px);
 }
 
@@ -237,7 +201,7 @@ body.guidelines-page[data-lang="ne"] {
     position: sticky;
     top: 0;
     z-index: 1050;
-    background: rgba(255, 255, 255, 0.95);
+    background: color-mix(in srgb, var(--white) 95%, transparent);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
@@ -299,7 +263,7 @@ body.guidelines-page[data-lang="ne"] {
 .guidelines-lang-btn.is-active {
     background: var(--red);
     color: var(--white);
-    box-shadow: 0 2px 6px rgba(180, 35, 24, 0.28);
+    box-shadow: 0 2px 6px color-mix(in srgb, var(--red) 28%, transparent);
 }
 
 .guidelines-quick-nav {
@@ -332,7 +296,7 @@ body.guidelines-page[data-lang="ne"] {
 .guidelines-nav-chip:hover {
     background: var(--light-red);
     color: var(--red);
-    border-color: rgba(180, 35, 24, 0.3);
+    border-color: color-mix(in srgb, var(--red) 30%, transparent);
 }
 
 /* =========================================================
@@ -366,7 +330,7 @@ body.guidelines-page[data-lang="ne"] {
 .guidelines-section-title {
     font-size: calc(clamp(22px, 2.8vw, 28px) * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     line-height: 1.3;
     margin: 0 0 10px;
     letter-spacing: -0.4px;
@@ -404,7 +368,7 @@ body.guidelines-page[data-lang="ne"] {
 .pillar-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
-    border-color: rgba(180, 35, 24, 0.25);
+    border-color: color-mix(in srgb, var(--red) 25%, transparent);
 }
 
 .pillar-card::before {
@@ -448,14 +412,14 @@ body.guidelines-page[data-lang="ne"] {
 
 .pillar-card.pillar-before .pillar-tag {
     background: var(--blue-bg);
-    color: var(--blue-dark);
+    color: var(--blue-text);
     border: 1px solid var(--blue-border);
 }
 
 .pillar-card.pillar-during .pillar-tag {
     background: var(--light-red);
     color: var(--red);
-    border: 1px solid rgba(180, 35, 24, 0.2);
+    border: 1px solid color-mix(in srgb, var(--red) 20%, transparent);
 }
 
 .pillar-card.pillar-after .pillar-tag {
@@ -476,7 +440,7 @@ body.guidelines-page[data-lang="ne"] {
 
 .pillar-card.pillar-before .pillar-icon-wrap {
     background: var(--blue-bg);
-    color: var(--blue-dark);
+    color: var(--blue-text);
 }
 
 .pillar-card.pillar-during .pillar-icon-wrap {
@@ -492,7 +456,7 @@ body.guidelines-page[data-lang="ne"] {
 .pillar-title {
     font-size: calc(18px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 6px;
 }
 
@@ -568,7 +532,7 @@ body.guidelines-page[data-lang="ne"] {
 .edu-item h4 {
     font-size: calc(15px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 6px;
 }
 
@@ -606,7 +570,7 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .risk-type-card:hover {
-    border-color: rgba(180, 35, 24, 0.35);
+    border-color: color-mix(in srgb, var(--red) 35%, transparent);
     border-left-color: var(--red);
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
@@ -643,7 +607,7 @@ body.guidelines-page[data-lang="ne"] {
 .risk-type-title {
     font-size: calc(15px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0;
     line-height: 1.3;
 }
@@ -689,13 +653,13 @@ body.guidelines-page[data-lang="ne"] {
 
 .guideline-filter-btn:hover {
     background: var(--soft-gray);
-    color: var(--navy);
+    color: var(--heading);
 }
 
 .guideline-filter-btn.is-active {
-    background: var(--navy);
-    color: var(--white);
-    border-color: var(--navy);
+    background: var(--btn-dark);
+    color: var(--on-dark);
+    border-color: var(--btn-dark);
 }
 
 .accordion-list {
@@ -714,7 +678,7 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .accordion-item.is-expanded {
-    border-color: rgba(180, 35, 24, 0.4);
+    border-color: color-mix(in srgb, var(--red) 40%, transparent);
     box-shadow: var(--shadow-sm);
 }
 
@@ -764,7 +728,7 @@ body.guidelines-page[data-lang="ne"] {
 .accordion-title-group h3 {
     font-size: calc(17.5px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 3px;
     line-height: 1.25;
 }
@@ -828,7 +792,7 @@ body.guidelines-page[data-lang="ne"] {
 
 .guide-definition-box {
     background: var(--soft-gray);
-    border-left: 3px solid var(--navy);
+    border-left: 3px solid var(--red);
     padding: 14px 18px;
     border-radius: 4px;
     margin-bottom: 20px;
@@ -837,7 +801,7 @@ body.guidelines-page[data-lang="ne"] {
 .guide-definition-box h4 {
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 4px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -910,7 +874,7 @@ body.guidelines-page[data-lang="ne"] {
 .guide-phase-box h5 {
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 10px;
     display: flex;
     align-items: center;
@@ -959,14 +923,14 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .guide-dont-box {
-    background: var(--light-red);
-    border: 1px solid rgba(180, 35, 24, 0.2);
+    background: var(--danger-bg);
+    border: 1px solid color-mix(in srgb, var(--danger) 20%, transparent);
     border-radius: var(--radius-sm);
     padding: 16px;
 }
 
 .guide-dont-box h5 {
-    color: var(--red);
+    color: var(--danger);
     font-size: calc(13px * var(--ndms-font-scale, 1));
     font-weight: 800;
     margin: 0 0 8px;
@@ -992,7 +956,7 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .guide-dont-box .guide-dodont-list li {
-    color: var(--c-red-900);
+    color: var(--danger);
     font-size: calc(13px * var(--ndms-font-scale, 1));
     line-height: 1.45;
 }
@@ -1033,7 +997,7 @@ body.guidelines-page[data-lang="ne"] {
 
 .guide-report-notice a:hover {
     background: var(--light-red);
-    border-color: rgba(180, 35, 24, 0.3);
+    border-color: color-mix(in srgb, var(--red) 30%, transparent);
 }
 
 /* =========================================================
@@ -1077,7 +1041,7 @@ body.guidelines-page[data-lang="ne"] {
 .prep-card-title {
     font-size: calc(19px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0;
 }
 
@@ -1120,7 +1084,7 @@ body.guidelines-page[data-lang="ne"] {
     padding: 12px 16px;
     font-size: calc(12.5px * var(--ndms-font-scale, 1));
     line-height: 1.5;
-    color: var(--blue-dark);
+    color: var(--blue-text);
 }
 
 .plan-steps-list {
@@ -1138,8 +1102,8 @@ body.guidelines-page[data-lang="ne"] {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: var(--navy);
-    color: var(--white);
+    background: var(--btn-dark);
+    color: var(--on-dark);
     font-size: calc(12px * var(--ndms-font-scale, 1));
     font-weight: 800;
     display: flex;
@@ -1151,7 +1115,7 @@ body.guidelines-page[data-lang="ne"] {
 .plan-step-body h5 {
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 750;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 3px;
 }
 
@@ -1192,7 +1156,7 @@ body.guidelines-page[data-lang="ne"] {
     height: 36px;
     border-radius: var(--radius-sm);
     background: var(--soft-gray);
-    color: var(--navy);
+    color: var(--heading);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1202,7 +1166,7 @@ body.guidelines-page[data-lang="ne"] {
 .vulnerable-card h4 {
     font-size: calc(16px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0;
 }
 
@@ -1244,8 +1208,8 @@ body.guidelines-page[data-lang="ne"] {
 
 .dodont-master-card.is-dont {
     background: var(--white);
-    border: 1px solid rgba(180, 35, 24, 0.25);
-    border-top: 5px solid var(--red);
+    border: 1px solid color-mix(in srgb, var(--danger) 25%, transparent);
+    border-top: 5px solid var(--danger);
 }
 
 .dodont-header-row {
@@ -1272,8 +1236,8 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .is-dont .dodont-icon-circle {
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--danger-bg);
+    color: var(--danger);
 }
 
 .dodont-header-row h3 {
@@ -1287,7 +1251,7 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .is-dont .dodont-header-row h3 {
-    color: var(--red);
+    color: var(--danger);
 }
 
 .dodont-items-list {
@@ -1319,7 +1283,7 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .is-dont .dodont-check-glyph {
-    color: var(--red);
+    color: var(--danger);
 }
 
 /* =========================================================
@@ -1348,13 +1312,13 @@ body.guidelines-page[data-lang="ne"] {
     display: flex;
     flex-direction: column;
     gap: 6px;
-    border-top: 3px solid var(--navy);
+    border-top: 3px solid var(--red);
 }
 
 .source-item h5 {
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0;
 }
 
@@ -1409,9 +1373,9 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .critical-safety-alert {
-    background: var(--light-red);
-    border: 1px solid rgba(180, 35, 24, 0.25);
-    border-left: 5px solid var(--red);
+    background: var(--danger-bg);
+    border: 1px solid color-mix(in srgb, var(--danger) 25%, transparent);
+    border-left: 5px solid var(--danger);
     border-radius: var(--radius-sm);
     padding: 18px 22px;
     margin-bottom: 24px;
@@ -1422,21 +1386,21 @@ body.guidelines-page[data-lang="ne"] {
 
 .critical-alert-icon {
     font-size: calc(24px * var(--ndms-font-scale, 1));
-    color: var(--red);
+    color: var(--danger);
     flex-shrink: 0;
 }
 
 .critical-alert-body h4 {
     font-size: calc(15px * var(--ndms-font-scale, 1));
     font-weight: 850;
-    color: var(--red);
+    color: var(--danger);
     margin: 0 0 4px;
 }
 
 .critical-alert-body p {
     font-size: calc(14px * var(--ndms-font-scale, 1));
     line-height: 1.55;
-    color: var(--c-red-900);
+    color: var(--danger);
     margin: 0;
 }
 
@@ -1450,7 +1414,7 @@ body.guidelines-page[data-lang="ne"] {
 .reporting-box h4 {
     font-size: calc(15px * var(--ndms-font-scale, 1));
     font-weight: 800;
-    color: var(--navy);
+    color: var(--heading);
     margin: 0 0 12px;
 }
 
@@ -1480,7 +1444,7 @@ body.guidelines-page[data-lang="ne"] {
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 0.6px;
-    color: var(--navy);
+    color: var(--heading);
     margin-bottom: 12px;
 }
 
@@ -1501,7 +1465,7 @@ body.guidelines-page[data-lang="ne"] {
     gap: 8px;
     font-size: calc(13px * var(--ndms-font-scale, 1));
     font-weight: 700;
-    color: var(--navy);
+    color: var(--heading);
     text-decoration: none;
 }
 
@@ -1515,7 +1479,7 @@ body.guidelines-page[data-lang="ne"] {
    ========================================================= */
 .guidelines-cta-banner {
     background: linear-gradient(135deg, var(--navy-2) 0%, var(--navy) 100%);
-    color: var(--white);
+    color: var(--on-dark);
     border-radius: var(--radius-lg);
     padding: 44px 36px;
     margin-top: 48px;
@@ -1532,7 +1496,7 @@ body.guidelines-page[data-lang="ne"] {
     right: -10%;
     width: 300px;
     height: 300px;
-    background: radial-gradient(circle, rgba(180, 35, 24, 0.25) 0%, transparent 70%);
+    background: radial-gradient(circle, color-mix(in srgb, var(--red) 25%, transparent) 0%, transparent 70%);
     pointer-events: none;
 }
 
@@ -1545,7 +1509,7 @@ body.guidelines-page[data-lang="ne"] {
 .cta-banner-title {
     font-size: calc(clamp(22px, 3vw, 30px) * var(--ndms-font-scale, 1));
     font-weight: 850;
-    color: var(--white);
+    color: var(--on-dark);
     margin: 0 0 10px;
     line-height: 1.25;
 }
@@ -1553,7 +1517,7 @@ body.guidelines-page[data-lang="ne"] {
 .cta-banner-subtitle {
     font-size: calc(15px * var(--ndms-font-scale, 1));
     line-height: 1.6;
-    color: var(--c-border-6);
+    color: var(--on-dark-muted);
     margin: 0 0 24px;
 }
 
@@ -1569,8 +1533,8 @@ body.guidelines-page[data-lang="ne"] {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: var(--white);
-    color: var(--red);
+    background: var(--on-dark);
+    color: var(--navy);
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 750;
     padding: 12px 24px;
@@ -1581,8 +1545,8 @@ body.guidelines-page[data-lang="ne"] {
 }
 
 .btn-cta-white:hover {
-    background: var(--light-red);
-    color: var(--red-dark);
+    background: color-mix(in srgb, var(--on-dark) 88%, var(--navy));
+    color: var(--navy);
     transform: translateY(-1px);
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
 }
@@ -1592,7 +1556,7 @@ body.guidelines-page[data-lang="ne"] {
     align-items: center;
     gap: 8px;
     background: transparent;
-    color: var(--white);
+    color: var(--on-dark);
     border: 1px solid rgba(255, 255, 255, 0.35);
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 650;
@@ -1604,8 +1568,8 @@ body.guidelines-page[data-lang="ne"] {
 
 .btn-cta-trans:hover {
     background: rgba(255, 255, 255, 0.1);
-    border-color: var(--white);
-    color: var(--white);
+    border-color: var(--on-dark);
+    color: var(--on-dark);
     transform: translateY(-1px);
 }
 
@@ -1783,7 +1747,7 @@ body.guidelines-page[data-lang="ne"] {
 @media print {
     .guidelines-sticky-toolbar,
     .public-navbar,
-    .about-footer,
+    .site-footer,
     .guidelines-hero-actions,
     .guidelines-cta-banner {
         display: none !important;
@@ -1797,4 +1761,30 @@ body.guidelines-page[data-lang="ne"] {
         background: #fff;
         color: #000;
     }
+}
+
+/* =========================================================
+   SVG ICONS (replaced the previous emoji icons)
+   Icons draw with currentColor at the container's font size,
+   so they follow the theme like any other text.
+   ========================================================= */
+
+.pillar-icon-wrap svg,
+.risk-type-icon svg,
+.accordion-icon svg,
+.prep-card-icon svg,
+.vulnerable-icon svg,
+.misinfo-warning-icon svg,
+.critical-alert-icon svg {
+    display: block;
+
+    width: 1em;
+    height: 1em;
+}
+
+span[aria-hidden="true"] > svg:only-child {
+    width: 1.1em;
+    height: 1.1em;
+
+    vertical-align: -.18em;
 }

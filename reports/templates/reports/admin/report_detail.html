@@ -677,7 +677,7 @@ Report #{{ report.id }}
 
                                 <span class="rd-admin-avatar-fallback">
 
-                                    {{ report.user.full_name|default:report.user.username|first|upper }}
+                                    {{ report.user.get_full_name|default:report.user.username|first|upper }}
 
                                 </span>
 
@@ -690,7 +690,7 @@ Report #{{ report.id }}
 
                             <span class="rd-admin-citizen-name">
 
-                                {{ report.user.full_name|default:report.user.username }}
+                                {{ report.user.get_full_name|default:report.user.username }}
 
                             </span>
 

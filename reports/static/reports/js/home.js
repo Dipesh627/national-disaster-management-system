@@ -1,295 +1,316 @@
 /* =========================================================
-   NDMS PUBLIC HOME INTERACTION SCRIPTS
-   Lightweight, accessible, professional interactions
+   NDMS HOME PAGE - BEHAVIOUR
+   ---------------------------------------------------------
+   The navbar (menu, dropdowns, scroll state) is handled by
+   public-nav.js and the theme by theme.js. This file only
+   drives the Home page:
+
+     - in-page anchor scrolling (offset for the sticky header)
+     - scroll reveal + timeline draw   (IntersectionObserver)
+     - feedback form: star rating, counter, inline validation
+     - dismissible Django messages
+     - citizen-reviews carousel (native scroll-snap + buttons)
+
+   Everything degrades gracefully: without JS the page is fully
+   visible, the form submits normally (the server validates),
+   and the reviews row can still be swiped / scrolled.
    ========================================================= */
 
-document.addEventListener("DOMContentLoaded", function () {
+(function () {
+    "use strict";
 
-    const reduceMotion =
-        window.matchMedia &&
-        window.matchMedia(
-            "(prefers-reduced-motion: reduce)"
-        ).matches;
+    var reduceMotion = window.matchMedia
+        && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-
-    /* =====================================================
-       1. SMOOTH LOCAL ANCHOR SCROLLING
-
-       (Mobile hamburger / public-nav toggle now lives in the
-       shared reports/js/public-nav.js, loaded on every page
-       that includes the public navbar partial.)
-       ===================================================== */
-
-    document
-        .querySelectorAll('a[href^="#"]')
-        .forEach(function (link) {
-            link.addEventListener("click", function (event) {
-                const id = link.getAttribute("href");
-                if (!id || id === "#") {
-                    return;
-                }
-
-                const target = document.querySelector(id);
-                if (!target) {
-                    return;
-                }
-
-                event.preventDefault();
-
-                const nav = document.querySelector(".public-navbar");
-                const offset = nav ? nav.offsetHeight + 16 : 16;
-                const top = target.getBoundingClientRect().top + window.scrollY - offset;
-
-                window.scrollTo({
-                    top: top,
-                    behavior: reduceMotion ? "auto" : "smooth"
-                });
-            });
-        });
-
-
-    /* =====================================================
-       2. FEEDBACK STAR RATING
-       ===================================================== */
-
-    const stars = Array.from(document.querySelectorAll(".rating-star"));
-    const ratingValue = document.getElementById("ratingValue");
-    const ratingStatus = document.getElementById("ratingStatus");
-    const ratingInput = document.getElementById("ratingInput");
-    let selectedRating = 0;
-
-    const labels = {
-        1: "Very Poor",
-        2: "Poor",
-        3: "Average",
-        4: "Good",
-        5: "Excellent"
-    };
-
-    function paintStars(value) {
-        stars.forEach(function (star) {
-            star.classList.toggle(
-                "selected",
-                Number(star.dataset.rating) <= value
-            );
-        });
-
-        if (ratingStatus) {
-            if (value) {
-                ratingStatus.textContent = value + " out of 5 — " + labels[value];
-                ratingStatus.style.color = "var(--navy)";
-            } else {
-                ratingStatus.textContent = "Select a rating";
-                ratingStatus.style.color = "var(--muted)";
-            }
+    function ready(fn) {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", fn);
+        } else {
+            fn();
         }
     }
 
-    stars.forEach(function (star) {
-        star.addEventListener("mouseenter", function () {
-            paintStars(Number(star.dataset.rating));
-        });
+    ready(function () {
 
-        star.addEventListener("focus", function () {
-            paintStars(Number(star.dataset.rating));
-        });
+        /* -------------------------------------------------
+           1. IN-PAGE ANCHORS  (#contact, #feedback, ...)
+           Handles "#x" and "/#x" (footer / navbar links on
+           this page) without a reload. scroll-padding-top in
+           about.css keeps the sticky header from covering
+           the target.
+           ------------------------------------------------- */
 
-        star.addEventListener("click", function () {
-            selectedRating = Number(star.dataset.rating);
-            if (ratingValue) {
-                ratingValue.value = selectedRating;
-            }
-            paintStars(selectedRating);
-        });
+        document.addEventListener("click", function (event) {
 
-        star.addEventListener("keydown", function (event) {
-            if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                star.click();
-            }
-        });
-    });
+            var link = event.target.closest("a[href*='#']");
 
-    if (ratingInput) {
-        ratingInput.addEventListener("mouseleave", function () {
-            paintStars(selectedRating);
-        });
-    }
-
-
-    /* =====================================================
-       3. FEEDBACK CHARACTER COUNTER
-       ===================================================== */
-
-    const feedbackMessage = document.getElementById("feedbackMessage");
-    const count = document.getElementById("feedbackCharacterCount");
-
-    if (feedbackMessage && count) {
-        function updateCount() {
-            count.textContent = feedbackMessage.value.length + " / " + feedbackMessage.maxLength;
-        }
-
-        feedbackMessage.addEventListener("input", updateCount);
-        updateCount();
-    }
-
-
-    /* =====================================================
-       4. FEEDBACK FORM SUBMISSION VALIDATION
-       ===================================================== */
-
-    const feedbackForm = document.getElementById("feedbackForm");
-
-    if (feedbackForm) {
-        feedbackForm.addEventListener("submit", function (event) {
-            if (!ratingValue || !ratingValue.value || Number(ratingValue.value) < 1) {
-                event.preventDefault();
-                alert("Please select a star rating before submitting your feedback.");
-                if (stars[0]) stars[0].focus();
+            if (!link || event.defaultPrevented || event.button !== 0
+                || event.metaKey || event.ctrlKey || event.shiftKey) {
                 return;
             }
 
-            if (feedbackMessage && !feedbackMessage.value.trim()) {
-                event.preventDefault();
-                feedbackMessage.focus();
+            var url;
+
+            try {
+                url = new URL(link.href, window.location.href);
+            } catch (e) {
                 return;
             }
 
-            const submit = feedbackForm.querySelector(".feedback-submit-btn");
-            if (submit) {
-                submit.disabled = true;
-                submit.innerHTML = "Submitting Feedback...";
-            }
-        });
-    }
-
-
-    /* =====================================================
-       5. DJANGO MESSAGES CLOSE
-       ===================================================== */
-
-    document
-        .querySelectorAll(".message-close")
-        .forEach(function (button) {
-            button.addEventListener("click", function () {
-                const box = button.closest(".django-message");
-                if (box) {
-                    box.remove();
-                }
-            });
-        });
-
-
-    /* =====================================================
-       6. CITIZEN REVIEWS CAROUSEL
-       ===================================================== */
-
-    const viewport = document.getElementById("reviewsViewport");
-    const track = document.getElementById("reviewsTrack");
-    const prev = document.getElementById("reviewPrev");
-    const next = document.getElementById("reviewNext");
-
-    if (viewport && track) {
-        const cards = Array.from(track.querySelectorAll(".review-card"));
-        let index = 0;
-
-        function visibleCount() {
-            if (window.innerWidth <= 600) {
-                return 1;
-            }
-            if (window.innerWidth <= 850) {
-                return 2;
-            }
-            return 3;
-        }
-
-        function resizeCards() {
-            if (!cards.length) {
+            if (url.origin !== window.location.origin
+                || url.pathname !== window.location.pathname
+                || !url.hash || url.hash === "#") {
                 return;
             }
 
-            const visible = visibleCount();
-            const styles = window.getComputedStyle(track);
-            const gap = parseFloat(styles.gap || styles.columnGap) || 0;
-            const width = (viewport.clientWidth - gap * (visible - 1)) / visible;
+            var target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
 
-            cards.forEach(function (card) {
-                card.style.flexBasis = width + "px";
-                card.style.width = width + "px";
-            });
-        }
-
-        function updateCarousel() {
-            resizeCards();
-            const max = Math.max(0, cards.length - visibleCount());
-            index = Math.max(0, Math.min(index, max));
-
-            if (cards[0]) {
-                const gap = parseFloat(window.getComputedStyle(track).gap) || 0;
-                track.style.transform = "translate3d(-" + (index * (cards[0].offsetWidth + gap)) + "px, 0, 0)";
+            if (!target) {
+                return;
             }
 
-            if (prev) {
-                prev.disabled = index <= 0;
-            }
-            if (next) {
-                next.disabled = index >= max;
-            }
-        }
+            event.preventDefault();
 
-        if (prev) {
-            prev.addEventListener("click", function () {
-                index--;
-                updateCarousel();
+            target.scrollIntoView({
+                behavior: reduceMotion ? "auto" : "smooth",
+                block: "start"
             });
-        }
 
-        if (next) {
-            next.addEventListener("click", function () {
-                index++;
-                updateCarousel();
-            });
-        }
+            // Keep the URL shareable and move keyboard focus.
+            if (window.history && window.history.replaceState) {
+                window.history.replaceState(null, "", url.hash);
+            }
 
-        let timer;
-        window.addEventListener("resize", function () {
-            clearTimeout(timer);
-            timer = setTimeout(updateCarousel, 120);
+            if (!target.hasAttribute("tabindex")) {
+                target.setAttribute("tabindex", "-1");
+            }
+
+            target.focus({ preventScroll: true });
         });
 
-        updateCarousel();
-    }
 
+        /* -------------------------------------------------
+           2. SCROLL REVEAL + TIMELINE DRAW
+           One observer, no scroll listeners.
+           ------------------------------------------------- */
 
-    /* =====================================================
-       7. LIGHTWEIGHT SCROLL REVEAL (IntersectionObserver)
-       ===================================================== */
+        var revealTargets = Array.prototype.slice.call(
+            document.querySelectorAll(".reveal, #processSteps")
+        );
 
-    const reveals = document.querySelectorAll(".reveal");
+        function show(node) {
+            node.classList.add("is-visible");
+        }
 
-    if (reduceMotion || !("IntersectionObserver" in window)) {
-        reveals.forEach(function (element) {
-            element.classList.add("reveal-visible");
-        });
-    } else {
-        const observer = new IntersectionObserver(
-            function (entries) {
+        if (!("IntersectionObserver" in window) || reduceMotion) {
+
+            revealTargets.forEach(show);
+
+        } else {
+
+            var observer = new IntersectionObserver(function (entries) {
                 entries.forEach(function (entry) {
                     if (entry.isIntersecting) {
-                        entry.target.classList.add("reveal-visible");
+                        show(entry.target);
                         observer.unobserve(entry.target);
                     }
                 });
-            },
-            {
-                threshold: 0.1,
-                rootMargin: "0px 0px -30px 0px"
-            }
-        );
+            }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
 
-        reveals.forEach(function (element) {
-            observer.observe(element);
+            revealTargets.forEach(function (node, index) {
+
+                // Light stagger for siblings that enter together
+                // (the disaster-type cards).
+                if (node.classList.contains("type-card")) {
+                    var slot = Array.prototype.indexOf.call(
+                        node.parentNode.children, node
+                    );
+                    node.style.transitionDelay = Math.min(slot, 3) * 70 + "ms";
+                }
+
+                observer.observe(node);
+            });
+        }
+
+
+        /* -------------------------------------------------
+           3. DJANGO MESSAGES
+           ------------------------------------------------- */
+
+        document.querySelectorAll(".message-close").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var message = button.closest(".django-message");
+
+                if (message) {
+                    message.remove();
+                }
+            });
         });
-    }
 
-});
+
+        /* -------------------------------------------------
+           4. FEEDBACK FORM
+           The server stays the source of truth (it validates
+           and saves). This only gives instant, inline
+           feedback and prevents an avoidable round trip.
+           ------------------------------------------------- */
+
+        var form = document.getElementById("feedbackForm");
+
+        if (form) {
+
+            var radios = Array.prototype.slice.call(
+                form.querySelectorAll("input[name='rating']")
+            );
+            var status = document.getElementById("ratingStatus");
+            var ratingError = document.getElementById("ratingError");
+            var message = document.getElementById("feedbackMessage");
+            var messageError = document.getElementById("messageError");
+            var counter = document.getElementById("feedbackCharacterCount");
+
+            var LABELS = ["Select a rating", "Poor", "Fair", "Good", "Very good", "Excellent"];
+
+            function selectedRating() {
+                var checked = radios.filter(function (radio) {
+                    return radio.checked;
+                })[0];
+
+                return checked ? parseInt(checked.value, 10) : 0;
+            }
+
+            function updateStatus() {
+                var value = selectedRating();
+
+                if (status) {
+                    status.textContent = value
+                        ? value + " of 5 \u2013 " + LABELS[value]
+                        : LABELS[0];
+                    status.classList.toggle("has-value", value > 0);
+                }
+
+                if (value && ratingError) {
+                    ratingError.hidden = true;
+                }
+            }
+
+            radios.forEach(function (radio) {
+                radio.addEventListener("change", updateStatus);
+            });
+
+            function updateCounter() {
+                if (!message || !counter) {
+                    return;
+                }
+
+                var length = message.value.length;
+                var max = message.maxLength > 0 ? message.maxLength : 500;
+
+                counter.textContent = length + " / " + max;
+                counter.classList.toggle("is-near", length >= max * 0.9);
+
+                if (message.value.trim() && messageError) {
+                    messageError.hidden = true;
+                    message.classList.remove("is-invalid");
+                    message.removeAttribute("aria-invalid");
+                }
+            }
+
+            if (message) {
+                message.addEventListener("input", updateCounter);
+            }
+
+            form.addEventListener("submit", function (event) {
+
+                var problems = [];
+
+                if (!selectedRating()) {
+                    if (ratingError) {
+                        ratingError.hidden = false;
+                    }
+                    problems.push(radios[0]);
+                }
+
+                if (message && !message.value.trim()) {
+                    if (messageError) {
+                        messageError.hidden = false;
+                    }
+                    message.classList.add("is-invalid");
+                    message.setAttribute("aria-invalid", "true");
+                    problems.push(message);
+                }
+
+                if (problems.length) {
+                    event.preventDefault();
+                    problems[0].focus();
+                }
+            });
+
+            updateStatus();
+            updateCounter();
+        }
+
+
+        /* -------------------------------------------------
+           5. CITIZEN REVIEWS CAROUSEL
+           The track scrolls natively (scroll-snap). Buttons
+           page it; their disabled state follows whether the
+           first / last card is fully in view.
+           ------------------------------------------------- */
+
+        var track = document.getElementById("reviewsTrack");
+        var prev = document.getElementById("reviewPrev");
+        var next = document.getElementById("reviewNext");
+
+        if (track && prev && next) {
+
+            var cards = track.querySelectorAll(".review-card");
+
+            function pageBy(direction) {
+                var first = cards[0];
+
+                if (!first) {
+                    return;
+                }
+
+                var gap = parseFloat(window.getComputedStyle(track).columnGap) || 20;
+                var visible = Math.max(
+                    1,
+                    Math.round(track.clientWidth / (first.offsetWidth + gap))
+                );
+
+                track.scrollBy({
+                    left: direction * visible * (first.offsetWidth + gap),
+                    behavior: reduceMotion ? "auto" : "smooth"
+                });
+            }
+
+            prev.addEventListener("click", function () { pageBy(-1); });
+            next.addEventListener("click", function () { pageBy(1); });
+
+            if ("IntersectionObserver" in window && cards.length) {
+
+                var edge = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var atEdge = entry.intersectionRatio > 0.95;
+
+                        if (entry.target === cards[0]) {
+                            prev.disabled = atEdge;
+                        }
+
+                        if (entry.target === cards[cards.length - 1]) {
+                            next.disabled = atEdge;
+                        }
+                    });
+                }, { root: track, threshold: [0, 0.95, 1] });
+
+                edge.observe(cards[0]);
+                edge.observe(cards[cards.length - 1]);
+
+            } else if (cards.length < 2) {
+
+                prev.disabled = true;
+                next.disabled = true;
+            }
+        }
+    });
+})();

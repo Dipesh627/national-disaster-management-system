@@ -1,0 +1,410 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS — PRIVACY POLICY (public page)
+=========================================================
+
+Route:   /privacy/   (URL name: privacy, view: reports.views.privacy)
+Styling: about.css (navbar/footer/tokens) + legal.css (document layout)
+
+This text describes what the NDMS code actually does today:
+  - the only third-party service is Google Maps
+  - no analytics, advertising or social-media trackers
+  - cookies: Django session + CSRF; browser storage: a language key
+    (Guidelines page) and a display-theme key (light/dark toggle)
+
+If you add a new feature that collects data, or a new third-party
+service, update this page too.
+
+To revise this text:
+  1. Edit the sections below.
+  2. Update LEGAL_LAST_UPDATED and TERMS_VERSION in reports/legal.py.
+=========================================================
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+        name="description"
+        content="Privacy Policy for the National Disaster Management System (NDMS): what information is collected, how it is used, who can see it and the choices you have."
+    >
+    <title>Privacy Policy | NDMS</title>
+
+    <link rel="stylesheet" href="{% static 'reports/about.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/navbar-avatar.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'reports/legal.css' %}">
+    {% include 'reports/partials/theme_head.html' %}
+</head>
+
+<body class="legal-page">
+
+<!-- =====================================================
+     PUBLIC NAVBAR (shared partial)
+     ===================================================== -->
+{% include 'reports/partials/navbar.html' %}
+
+<!-- =====================================================
+     MAIN CONTENT
+     ===================================================== -->
+<main class="legal-main" id="main-content">
+    <div class="legal-container">
+
+        <a href="{% url 'home' %}" class="legal-back">
+            <span aria-hidden="true">&larr;</span> Back to Home
+        </a>
+
+        <header class="legal-header">
+            <h1 class="legal-title">Privacy Policy</h1>
+            <p class="legal-lede">
+                What personal information the National Disaster Management System (NDMS)
+                collects, why, who can see it, and the choices you have.
+            </p>
+            <dl class="legal-meta">
+                <div>
+                    <dt>Last Updated:</dt>
+                    <dd>{{ legal_last_updated }}</dd>
+                </div>
+                <div>
+                    <dt>Version:</dt>
+                    <dd>{{ terms_version }}</dd>
+                </div>
+            </dl>
+        </header>
+
+        <div class="legal-layout">
+
+            <!-- Contents -->
+            <nav class="legal-toc" aria-label="Contents of the Privacy Policy">
+                <h2>Contents</h2>
+                <ol>
+                    <li><a href="#introduction">Introduction</a></li>
+                    <li><a href="#information-collected">Information We Collect</a></li>
+                    <li><a href="#account-information">Account Information</a></li>
+                    <li><a href="#contact-information">Contact Information</a></li>
+                    <li><a href="#report-information">Disaster Report Information</a></li>
+                    <li><a href="#location">Location Information</a></li>
+                    <li><a href="#uploads">Uploaded Images and Files</a></li>
+                    <li><a href="#feedback-support">Feedback and Support Information</a></li>
+                    <li><a href="#use">How We Use Information</a></li>
+                    <li><a href="#protection">How We Protect Information</a></li>
+                    <li><a href="#access">Who Can Access Information</a></li>
+                    <li><a href="#sharing">Data Sharing</a></li>
+                    <li><a href="#retention">Data Retention</a></li>
+                    <li><a href="#rights">Your Rights and Choices</a></li>
+                    <li><a href="#cookies">Cookies and Session Information</a></li>
+                    <li><a href="#third-parties">Third-Party Services</a></li>
+                    <li><a href="#changes">Changes to This Policy</a></li>
+                    <li><a href="#contact">Contact and Support</a></li>
+                </ol>
+            </nav>
+
+            <!-- Document -->
+            <article class="legal-content">
+
+                <section class="legal-summary" aria-labelledby="summary-title">
+                    <h2 id="summary-title">In short</h2>
+                    <ul>
+                        <li>We collect what is needed to run your account and handle your reports: your name, email, an optional phone number, and the details, location and photos you choose to submit.</li>
+                        <li>Your reports and account details are visible to you and to authorized NDMS administrators. Public disaster pages never show who reported an incident.</li>
+                        <li>The only outside service we use is Google Maps. We have no advertising or analytics trackers.</li>
+                        <li>You can update your profile yourself and ask us about correcting or deleting your information.</li>
+                    </ul>
+                    <p>This summary is only a guide. The full Policy below is what applies.</p>
+                </section>
+
+                <section class="legal-section" id="introduction">
+                    <h2><span class="legal-num">1.</span> Introduction</h2>
+                    <p>
+                        This Privacy Policy explains how NDMS, the National Disaster Management
+                        System, handles personal information when you visit the website, register an
+                        account, report an incident or contact support. &ldquo;NDMS&rdquo;, &ldquo;we&rdquo; and
+                        &ldquo;us&rdquo; mean the team that operates and administers the platform. It should
+                        be read with our <a href="{% url 'terms' %}">Terms &amp; Conditions</a>.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="information-collected">
+                    <h2><span class="legal-num">2.</span> Information We Collect</h2>
+                    <p>
+                        We collect only the information the platform needs in order to work. It falls
+                        into these groups, each described in the sections that follow:
+                    </p>
+                    <ul>
+                        <li>account information you give when you register and edit your profile;</li>
+                        <li>contact information, meaning your email address and optional phone number;</li>
+                        <li>disaster report information, including location and photos;</li>
+                        <li>feedback and support requests you send us;</li>
+                        <li>basic technical information kept through cookies and browser storage.</li>
+                    </ul>
+                    <p>
+                        Visitors who only read public pages do not need to give us any personal
+                        information.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="account-information">
+                    <h2><span class="legal-num">3.</span> Account Information</h2>
+                    <p>When you register or update your profile we store:</p>
+                    <ul>
+                        <li>your first name, last name and username;</li>
+                        <li>your password, stored in a scrambled (hashed) form so that it cannot be read back by us;</li>
+                        <li>an optional profile photo;</li>
+                        <li>your account type (citizen), whether the account is active, and the dates you joined and last signed in;</li>
+                        <li>the date, time and version of the Terms &amp; Privacy Policy you accepted at registration;</li>
+                        <li>preferences you choose in Settings, such as date format, time zone and default disaster type.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="contact-information">
+                    <h2><span class="legal-num">4.</span> Contact Information</h2>
+                    <p>
+                        We store your email address, and your phone number if you choose to add one.
+                        We use your email to identify your account, to send password reset messages,
+                        and to follow up on feedback or support requests. Your phone number is
+                        optional.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="report-information">
+                    <h2><span class="legal-num">5.</span> Disaster Report Information</h2>
+                    <p>When you submit a report we store:</p>
+                    <ul>
+                        <li>the disaster type, the severity as you reported it and the time the incident began;</li>
+                        <li>your description of what happened;</li>
+                        <li>the incident location and address (see <a href="#location">Section 6</a>) and any photos (see <a href="#uploads">Section 7</a>);</li>
+                        <li>the time you submitted the report, its review status (Pending, Under Review, Verified or Rejected), and the notifications we send you about it.</li>
+                    </ul>
+                    <p>
+                        Each report is linked to your account. Reports are not published on public
+                        pages. When a report helps verify an official disaster, public pages show only
+                        the number of verified reports, not who made them.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="location">
+                    <h2><span class="legal-num">6.</span> Location Information</h2>
+                    <p>
+                        NDMS collects the location of the incident you are reporting, as exact map
+                        coordinates and an address. You choose it by picking a point on the map,
+                        searching for a place, or pressing &ldquo;Use Current Location&rdquo;. Only when you
+                        press that button does your browser ask permission to share your device&rsquo;s
+                        position, and you can refuse. NDMS does not track your location in the
+                        background. Reported locations must be within Nepal.
+                    </p>
+                    <p>
+                        The incident location may be close to where you are, so please think about
+                        that before you submit. To turn coordinates into an address and to search for
+                        places, the platform sends them to Google Maps (see
+                        <a href="#third-parties">Section 16</a>).
+                    </p>
+                </section>
+
+                <section class="legal-section" id="uploads">
+                    <h2><span class="legal-num">7.</span> Uploaded Images and Files</h2>
+                    <p>
+                        You can upload photos with a report (JPEG, PNG or WebP), a profile photo, and
+                        an attachment (JPEG, PNG or PDF) with a support request. Files are stored on
+                        the NDMS server exactly as you upload them.
+                    </p>
+                    <p>
+                        <strong>Please note:</strong> NDMS does not remove the hidden metadata that a
+                        photo may contain, such as the time it was taken, the device used, or GPS
+                        coordinates. Consider this before uploading a photo.
+                    </p>
+                    <p>
+                        Report photos are shown to you and to authorized NDMS administrators. They
+                        are made public only if an administrator selects a photo to appear in an
+                        official disaster record.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="feedback-support">
+                    <h2><span class="legal-num">8.</span> Feedback and Support Information</h2>
+                    <p>
+                        If you send feedback we store your email address, your rating and your
+                        message. If you send a support request through Help &amp; Support we store its
+                        type, subject and description, any attachment, its status, and the reply from
+                        an administrator. This is seen by you and by authorized NDMS administrators.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="use">
+                    <h2><span class="legal-num">9.</span> How We Use Information</h2>
+                    <p>We use personal information to:</p>
+                    <ul>
+                        <li>create and manage your account and let you sign in;</li>
+                        <li>receive, review, verify and track disaster reports, and link verified reports to official disaster records;</li>
+                        <li>send you notifications, such as changes to the status of your report, alerts and replies to support requests;</li>
+                        <li>respond to feedback and support requests;</li>
+                        <li>keep the platform secure and detect false reports, abuse and misuse;</li>
+                        <li>understand how the platform is used and improve it, including producing summary figures about reports and disasters.</li>
+                    </ul>
+                    <p>We do not sell personal information and we do not show advertising.</p>
+                </section>
+
+                <section class="legal-section" id="protection">
+                    <h2><span class="legal-num">10.</span> How We Protect Information</h2>
+                    <ul>
+                        <li>Passwords are stored hashed, and password rules are enforced when you register or change your password.</li>
+                        <li>Forms are protected against cross-site request forgery, and access to citizen and administrator areas is controlled by account type.</li>
+                        <li>Uploaded files are checked for permitted types and sizes.</li>
+                        <li>When NDMS runs with its production security settings, connections use HTTPS and cookies are marked secure.</li>
+                        <li>Deactivated accounts are signed out and blocked from signing in.</li>
+                    </ul>
+                    <p>
+                        No website or storage system is completely secure, so we cannot guarantee
+                        absolute security. Please keep your password private and sign out on shared
+                        devices.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="access">
+                    <h2><span class="legal-num">11.</span> Who Can Access Information</h2>
+                    <ul>
+                        <li><strong>You</strong> can see your own account, reports, notifications and support requests.</li>
+                        <li><strong>Authorized NDMS administrators</strong> can see account details (name, username, email, phone, profile photo, join date and status), reports with their locations and photos, feedback, and support requests, so they can manage the platform.</li>
+                        <li><strong>The technical team</strong> that maintains the platform and its database may access data as needed to keep it running.</li>
+                        <li><strong>The public and other citizens</strong> cannot see your account details or your reports. Emergency agencies listed in the directory do not have automatic access to NDMS accounts or reports.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="sharing">
+                    <h2><span class="legal-num">12.</span> Data Sharing</h2>
+                    <p>We do not sell or rent personal information. We may share information only:</p>
+                    <ul>
+                        <li>with responsible authorities or emergency agencies, when it is reasonably necessary to assess or coordinate a response to a reported incident, and limited to what is needed for that purpose;</li>
+                        <li>with the service providers that help us run NDMS, such as Google Maps for map features, and any hosting or email service the operators use, and only so they can provide that service;</li>
+                        <li>when the law requires it, or when it is needed to protect people&rsquo;s safety or NDMS&rsquo;s rights.</li>
+                    </ul>
+                </section>
+
+                <section class="legal-section" id="retention">
+                    <h2><span class="legal-num">13.</span> Data Retention</h2>
+                    <ul>
+                        <li>Account information is kept while your account exists. Deactivating an account does not delete it.</li>
+                        <li>You can delete a report yourself only while it is Pending. Reports that have been processed may be kept as official records.</li>
+                        <li>Information that an administrator has published as part of an official disaster record stays part of that record.</li>
+                        <li>Feedback and support requests are kept as long as needed to follow up and to improve the platform.</li>
+                    </ul>
+                    <p>
+                        NDMS does not currently apply an automatic deletion schedule. You can ask us
+                        to review or delete your information (see <a href="#rights">Section 14</a>).
+                        We will consider each request, taking into account the need to keep official
+                        records and any legal requirements.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="rights">
+                    <h2><span class="legal-num">14.</span> Your Rights and Choices</h2>
+                    <ul>
+                        <li><strong>Correct your details:</strong> edit your name, email, phone number and profile photo in your Profile, and change your password there too.</li>
+                        <li><strong>Manage preferences:</strong> change your date format, time zone and default disaster type in Settings.</li>
+                        <li><strong>Delete a pending report:</strong> you can delete your own report while it is Pending.</li>
+                        <li><strong>Control your device:</strong> you can refuse or withdraw location permission in your browser or device settings, and choose which photos you upload.</li>
+                        <li><strong>Ask us:</strong> you can ask to access, correct or delete your information, or to close your account, by contacting us (see <a href="#contact">Section 18</a>). There is no self-service account deletion at this time.</li>
+                    </ul>
+                    <p>
+                        The law that applies to you may give you further rights, and we will respond
+                        to requests as reasonably as we can.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="cookies">
+                    <h2><span class="legal-num">15.</span> Cookies and Session Information</h2>
+                    <p>
+                        NDMS uses only the cookies and browser storage it needs to work. It does not
+                        use advertising or analytics cookies.
+                    </p>
+                    <ul>
+                        <li><strong>Session cookie:</strong> keeps you signed in. It ends when you close your browser, or lasts longer if you choose &ldquo;Remember me&rdquo;. It stores only a session identifier, never your password.</li>
+                        <li><strong>CSRF cookie:</strong> helps protect forms from being submitted by other websites.</li>
+                        <li><strong>Language preference:</strong> the Awareness &amp; Guidelines page saves your language choice in your browser&rsquo;s local storage. It stays on your device and is not sent to us.</li>
+                        <li><strong>Display theme:</strong> the light/dark theme button saves your choice in your browser&rsquo;s local storage. It stays on your device and is not sent to us.</li>
+                    </ul>
+                    <p>
+                        Pages that show a map load Google Maps, which may use its own cookies or
+                        similar technologies as described in Google&rsquo;s privacy policy. You can
+                        block or clear cookies in your browser settings, but you may not be able to
+                        sign in if you block the session cookie.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="third-parties">
+                    <h2><span class="legal-num">16.</span> Third-Party Services</h2>
+                    <p>
+                        <strong>Google Maps.</strong> NDMS uses the Google Maps Platform (the Maps
+                        JavaScript, Geocoding and Places services) to show maps, convert between
+                        coordinates and addresses, and search for places. These appear when you report
+                        an incident, view a report, or view a disaster page. When a page with a map
+                        loads, your browser connects to Google and Google receives technical
+                        information such as your IP address. Coordinates and search text you enter on
+                        the map are also sent to Google to produce results. Google&rsquo;s use of that
+                        information is governed by the
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>
+                        and the
+                        <a href="https://www.google.com/help/terms_maps/" target="_blank" rel="noopener noreferrer">Google Maps Additional Terms of Service</a>.
+                    </p>
+                    <p>
+                        <strong>Email.</strong> Messages such as password resets are sent through the
+                        email service that the NDMS operators configure.
+                    </p>
+                    <p>
+                        NDMS does not use third-party analytics, advertising, social-media tracking
+                        or payment services.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="changes">
+                    <h2><span class="legal-num">17.</span> Changes to This Policy</h2>
+                    <p>
+                        We may update this Policy when NDMS changes or the law requires it. The
+                        &ldquo;Last Updated&rdquo; date and version at the top show the current revision.
+                        For significant changes we may also tell you through the platform, such as
+                        with a notification.
+                    </p>
+                </section>
+
+                <section class="legal-section" id="contact">
+                    <h2><span class="legal-num">18.</span> Contact and Support</h2>
+                    <p>
+                        For questions about this Policy or requests about your information, email
+                        <a href="mailto:{{ legal_contact_email }}">{{ legal_contact_email }}</a>. Signed-in
+                        citizens can also use <a href="{% url 'help_support' %}">Help &amp; Support</a>.
+                        NDMS is based in Dhangadhi, Nepal.
+                    </p>
+                </section>
+
+                <aside class="legal-review-note" aria-labelledby="review-note-title">
+                    <h2 id="review-note-title">About this document</h2>
+                    <p>
+                        This text was prepared for the NDMS project and describes how the platform
+                        currently works. It is not a substitute for professional legal advice. The
+                        project owner should have it reviewed by a qualified legal professional
+                        before NDMS is used in real-world production.
+                    </p>
+                </aside>
+
+                <p class="legal-related">
+                    See also: <a href="{% url 'terms' %}">Terms &amp; Conditions</a>
+                </p>
+
+            </article>
+        </div>
+
+    </div>
+</main>
+
+<!-- =====================================================
+     PUBLIC FOOTER (shared partial)
+     ===================================================== -->
+{% include 'reports/partials/footer.html' %}
+
+<script src="{% static 'reports/js/public-nav.js' %}" defer></script>
+<script src="{% static 'reports/js/navbar-avatar.js' %}" defer></script>
+
+</body>
+</html>

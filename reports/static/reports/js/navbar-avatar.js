@@ -2,6 +2,10 @@
    NDMS SHARED NAVBAR
    AVATAR DROPDOWN BEHAVIOUR
 
+   Shared by the public navbar and the dashboard-shell topbar.
+   (The public navbar's Disasters / Agencies dropdowns and mobile
+   menu are handled by public-nav.js.)
+
    Self-contained: only touches elements with the "ndmsAvatar*"
    ids/classes added for this feature, so it cannot interfere
    with any other page script (home.js, about.js, etc.).
@@ -57,6 +61,11 @@ document.addEventListener(
 
         let hoverCloseTimer = null;
 
+        // true once the menu was opened/kept by a click or key press.
+        // A menu that only opened because the mouse hovered it closes
+        // again when the mouse leaves; a click pins it open.
+        let pinned = false;
+
 
         function openMenu() {
 
@@ -91,6 +100,8 @@ document.addEventListener(
 
 
         function closeMenu() {
+
+            pinned = false;
 
             if (hoverCloseTimer) {
 
@@ -127,13 +138,22 @@ document.addEventListener(
 
                 event.stopPropagation();
 
-                if (isOpen()) {
+                // Desktop: the pointer already hovered the menu open,
+                // so the first click keeps it open (pinned) instead of
+                // closing it. Touch / keyboard start closed.
+                if (isOpen() && !pinned) {
+
+                    pinned = true;
+
+                } else if (isOpen()) {
 
                     closeMenu();
 
                 } else {
 
                     openMenu();
+
+                    pinned = true;
 
                 }
 
@@ -164,6 +184,12 @@ document.addEventListener(
             wrapper.addEventListener(
                 "mouseleave",
                 function () {
+
+                    if (pinned) {
+
+                        return;
+
+                    }
 
                     hoverCloseTimer =
                         setTimeout(
@@ -233,7 +259,7 @@ document.addEventListener(
 
 
         // Another navbar widget (the public mobile hamburger
-        // menu, the Disasters dropdown) just opened — close this
+        // menu, a Disasters / Agencies dropdown) just opened — close this
         // dropdown so only one shows at a time on mobile.
         document.addEventListener(
             "ndms:menu-opened",
@@ -271,309 +297,6 @@ document.addEventListener(
 
             }
         );
-
-    }
-);
-
-
-/* =========================================================
-   NDMS SHARED NAVBAR
-   "DISASTERS" NAV DROPDOWN BEHAVIOUR
-
-   Self-contained: only touches "disastersDropdown*" ids, so it
-   cannot interfere with home.js / about.js / the avatar script
-   above. Mirrors the avatar dropdown's interaction model (hover
-   + click on desktop, tap-to-toggle on mobile, outside click /
-   Escape always close) so both dropdowns feel identical.
-
-   On mobile the dropdown lives INSIDE the collapsible hamburger
-   panel, so opening it must never broadcast a "close everything
-   else" event while the panel itself is that "everything else" —
-   the broadcast is skipped below 851px for that reason.
-   ========================================================= */
-
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
-
-        const dropdown =
-            document.getElementById(
-                "disastersDropdown"
-            );
-
-        const toggle =
-            document.getElementById(
-                "disastersDropdownToggle"
-            );
-
-        const menu =
-            document.getElementById(
-                "disastersDropdownMenu"
-            );
-
-
-        if (
-            !dropdown ||
-            !toggle ||
-            !menu
-        ) {
-
-            return;
-
-        }
-
-
-        const hoverCapable =
-            window.matchMedia &&
-            window.matchMedia(
-                "(hover: hover) and (pointer: fine)"
-            ).matches;
-
-
-        let hoverCloseTimer = null;
-
-
-        function isMobileLayout() {
-
-            return window.innerWidth <= 850;
-
-        }
-
-
-        function openDropdown() {
-
-            if (hoverCloseTimer) {
-
-                clearTimeout(hoverCloseTimer);
-
-                hoverCloseTimer = null;
-
-            }
-
-            dropdown.classList.add(
-                "open"
-            );
-
-            toggle.setAttribute(
-                "aria-expanded",
-                "true"
-            );
-
-            // Don't ask other widgets to close while this
-            // dropdown is itself living inside the mobile
-            // hamburger panel — see file header note.
-            if (!isMobileLayout()) {
-
-                document.dispatchEvent(
-                    new CustomEvent(
-                        "ndms:menu-opened",
-                        { detail: "disasters" }
-                    )
-                );
-
-            }
-
-        }
-
-
-        function closeDropdown() {
-
-            if (hoverCloseTimer) {
-
-                clearTimeout(hoverCloseTimer);
-
-                hoverCloseTimer = null;
-
-            }
-
-            dropdown.classList.remove(
-                "open"
-            );
-
-            toggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-        }
-
-
-        function isOpen() {
-
-            return dropdown.classList.contains(
-                "open"
-            );
-
-        }
-
-
-        toggle.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                if (isOpen()) {
-
-                    closeDropdown();
-
-                } else {
-
-                    openDropdown();
-
-                }
-
-            }
-        );
-
-
-        if (hoverCapable) {
-
-            dropdown.addEventListener(
-                "mouseenter",
-                function () {
-
-                    if (!isMobileLayout()) {
-
-                        openDropdown();
-
-                    }
-
-                }
-            );
-
-
-            dropdown.addEventListener(
-                "mouseleave",
-                function () {
-
-                    hoverCloseTimer =
-                        setTimeout(
-                            closeDropdown,
-                            150
-                        );
-
-                }
-            );
-
-        }
-
-
-        document.addEventListener(
-            "click",
-            function (event) {
-
-                if (
-                    isOpen() &&
-                    !dropdown.contains(
-                        event.target
-                    )
-                ) {
-
-                    closeDropdown();
-
-                }
-
-            }
-        );
-
-
-        document.addEventListener(
-            "keydown",
-            function (event) {
-
-                if (
-                    event.key === "Escape" &&
-                    isOpen()
-                ) {
-
-                    closeDropdown();
-
-                    toggle.focus();
-
-                }
-
-            }
-        );
-
-
-        window.addEventListener(
-            "resize",
-            function () {
-
-                if (isOpen()) {
-
-                    closeDropdown();
-
-                }
-
-            }
-        );
-
-
-        // Another navbar widget (avatar dropdown, or the mobile
-        // hamburger reopening fresh) just opened — close this one
-        // so only one shows at a time.
-        document.addEventListener(
-            "ndms:menu-opened",
-            function (event) {
-
-                if (
-                    event.detail !== "disasters" &&
-                    isOpen()
-                ) {
-
-                    closeDropdown();
-
-                }
-
-            }
-        );
-
-
-        const menuLinks =
-            menu.querySelectorAll(
-                "a"
-            );
-
-        menuLinks.forEach(
-            function (link) {
-
-                link.addEventListener(
-                    "click",
-                    function () {
-
-                        closeDropdown();
-
-                    }
-                );
-
-            }
-        );
-
-
-        // ---------------------------------------------------
-        // MOBILE: AUTO-EXPAND ON DISASTER-RELATED PAGES
-        //
-        // The toggle's "active" class is already set server-side
-        // (see partials/navbar.html) from the real Django route,
-        // so it's already true exactly when the current page is
-        // /disasters/, /disasters/<id>/ or the report-incident
-        // flow. Reusing that instead of re-deriving the route in
-        // JS means this can never disagree with the active-state
-        // logic. Only applies on mobile: on desktop this class
-        // just drives the underline styling, and the dropdown
-        // itself should stay closed until hovered/tapped.
-        // ---------------------------------------------------
-
-        if (
-            isMobileLayout() &&
-            toggle.classList.contains("active")
-        ) {
-
-            openDropdown();
-
-        }
 
     }
 );

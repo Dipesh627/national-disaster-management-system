@@ -26,7 +26,8 @@ class CitizenSettingsPhase1Test(TestCase):
             email="citizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Test Citizen"
+            first_name="Test",
+            last_name="Citizen"
         )
         self.admin = User.objects.create_superuser(
             username="testadmin",
@@ -131,7 +132,8 @@ class SupportRequestAdminNotificationTest(TestCase):
             email="notifycitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Notify Citizen",
+            first_name="Notify",
+            last_name="Citizen",
         )
 
         self.other_citizen = User.objects.create_user(
@@ -139,7 +141,8 @@ class SupportRequestAdminNotificationTest(TestCase):
             email="othercitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Other Citizen",
+            first_name="Other",
+            last_name="Citizen",
         )
 
         self.admin = User.objects.create_superuser(
@@ -388,7 +391,8 @@ class SupportRequestNotificationTemplateSmokeTest(TestCase):
             email="smokecitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Smoke Citizen",
+            first_name="Smoke",
+            last_name="Citizen",
         )
 
         self.admin = User.objects.create_superuser(
@@ -484,7 +488,8 @@ class DisasterResolvedDateLifecycleTest(TestCase):
             email="lifecyclecitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Lifecycle Citizen",
+            first_name="Lifecycle",
+            last_name="Citizen",
         )
 
         self.disaster_type = DisasterType.objects.create(
@@ -634,7 +639,8 @@ class SupportRequestAdminResponseTest(TestCase):
             email="respondcitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Respond Citizen",
+            first_name="Respond",
+            last_name="Citizen",
         )
 
         self.other_citizen = User.objects.create_user(
@@ -642,7 +648,8 @@ class SupportRequestAdminResponseTest(TestCase):
             email="otherrespondcitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Other Respond Citizen",
+            first_name="Other",
+            last_name="Respond Citizen",
         )
 
         self.admin = User.objects.create_superuser(
@@ -975,7 +982,8 @@ class PhaseARegressionTest(TestCase):
             email="regressioncitizen@example.com",
             password="TestPassword123!",
             role="CITIZEN",
-            full_name="Regression Citizen",
+            first_name="Regression",
+            last_name="Citizen",
         )
 
         self.admin = User.objects.create_superuser(
