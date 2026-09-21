@@ -80,6 +80,59 @@
 }
 
 
+/* ---------- Social links ----------
+   Icon-only circular buttons. Colour comes from the --on-dark
+   tokens only, so there are no brand-coloured icons. */
+
+.footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin: 22px 0 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-social-link {
+    width: 40px;
+    height: 40px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--on-dark-line);
+    border-radius: var(--radius-full);
+
+    color: var(--on-dark-muted);
+    text-decoration: none;
+
+    transition:
+        background-color .16s ease,
+        border-color .16s ease,
+        color .16s ease;
+}
+
+.footer-social-link svg {
+    width: 18px;
+    height: 18px;
+
+    display: block;
+}
+
+.footer-social-link:hover {
+    background: rgba(255, 255, 255, .08);
+    border-color: var(--on-dark-muted);
+    color: var(--on-dark);
+}
+
+.site-footer .footer-social-link:focus-visible {
+    border-radius: var(--radius-full);
+}
+
+
 /* ---------- Link columns ---------- */
 
 .footer-heading {
@@ -210,7 +263,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .footer-col a {
+    .footer-col a,
+    .footer-social-link {
         transition: none;
     }
 }

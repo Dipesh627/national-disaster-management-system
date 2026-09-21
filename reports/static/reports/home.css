@@ -325,26 +325,59 @@
     max-width: 680px;
 }
 
-.hero-eyebrow {
+/* Institutional brand badge: icon + the full system name inside one
+   compact rounded shape. It sizes to its content (never a card) and
+   only wraps, staying tidy, on very narrow screens.
+   The hero is dark in BOTH themes, so the teal below is the fixed
+   light-on-dark Sentinel Teal (same value as --red in dark mode). */
+
+.hero-badge {
+    --badge-teal: #4fb3c4;
+
     display: inline-flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 
-    color: var(--on-dark-muted);
+    max-width: 100%;
+    padding: 5px 16px 5px 6px;
 
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: .14em;
-    text-transform: uppercase;
+    border: 1px solid var(--on-dark-line);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .06);
+
+    color: var(--on-dark);
 }
 
-.hero-eyebrow::before {
-    content: "";
+.hero-badge-icon {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
 
-    width: 28px;
-    height: 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    background: var(--on-dark-muted);
+    border: 1px solid color-mix(in srgb, var(--badge-teal) 38%, transparent);
+    border-radius: 9px;
+    background: color-mix(in srgb, var(--badge-teal) 18%, transparent);
+
+    color: var(--badge-teal);
+}
+
+.hero-badge-icon svg {
+    width: 17px;
+    height: 17px;
+
+    display: block;
+}
+
+.hero-badge-text {
+    min-width: 0;
+
+    font-size: 14px;
+    font-weight: 650;
+    letter-spacing: .005em;
+    line-height: 1.3;
 }
 
 .hero h1 {

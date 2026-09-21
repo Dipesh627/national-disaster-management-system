@@ -231,7 +231,7 @@
                             {% endfor %}
                         </ol>
                     {% else %}
-                        <p style="color: var(--muted); font-size: 13.5px; margin: 0; padding: 12px 0;">
+                        <p class="disaster-empty-note">
                             No response updates available yet.
                         </p>
                     {% endif %}
@@ -311,7 +311,7 @@
                             {% endfor %}
                         </div>
                     {% else %}
-                        <p style="color: var(--muted); font-size: 13.5px; margin: 0; padding: 12px 0;">
+                        <p class="disaster-empty-note">
                             No official photos published for this disaster.
                         </p>
                     {% endif %}
@@ -326,7 +326,7 @@
                         </svg>
                         <div>
                             <strong>{{ linked_reports_count }} verified citizen report{{ linked_reports_count|pluralize }}</strong>
-                            <div style="font-size: 12px; color: var(--muted); margin-top: 2px;">
+                            <div class="disaster-support-note">
                                 Contributed to this official disaster verification and response.
                             </div>
                         </div>

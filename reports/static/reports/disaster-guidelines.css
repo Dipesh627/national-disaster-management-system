@@ -1788,3 +1788,18 @@ span[aria-hidden="true"] > svg:only-child {
 
     vertical-align: -.18em;
 }
+
+/* Checklist tick colours per pillar (theme tokens, so they also
+   pass contrast in dark mode). Replaces former inline colours. */
+.pillar-checklist .check-mark {
+    flex-shrink: 0;
+    font-weight: 700;
+}
+
+.pillar-before .check-mark { color: var(--blue-text); }
+.pillar-during .check-mark { color: var(--red); }
+.pillar-after  .check-mark { color: var(--green-text); }
+
+/* Spacing modifiers that replace former inline margins */
+.guide-report-notice--spaced { margin-top: 20px; }
+.kit-note--spaced { margin-top: 18px; }

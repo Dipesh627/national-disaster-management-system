@@ -1000,3 +1000,35 @@
         padding: 18px;
     }
 }
+
+
+/* Small text helpers that replace former inline styles */
+
+.disaster-empty-note {
+    margin: 0;
+    padding: 12px 0;
+    color: var(--muted);
+    font-size: 13.5px;
+}
+
+.disaster-support-note {
+    margin-top: 2px;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.disaster-support-note--inline {
+    margin-top: 0;
+}
+
+.disaster-filter-reset {
+    color: var(--red);
+    font-size: 12.5px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.disaster-filter-reset:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}

@@ -375,27 +375,6 @@ button.ndms-avatar-menu-item {
    TOPBAR USER
    ========================================================= */
 
-.topbar-user-btn {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-
-    border: none;
-    background: none;
-
-    padding: 0;
-
-    cursor: pointer;
-
-    border-radius: 8px;
-}
-
-.topbar-user-btn:focus-visible {
-    outline: none;
-
-    box-shadow: var(--focus-ring);
-}
-
 .topbar-user.ndms-avatar-wrapper .ndms-avatar-menu {
     top: calc(100% + 12px);
 }

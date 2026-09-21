@@ -56,7 +56,6 @@
 ></div>
 
 
-
 <!-- =====================================================
      SIDEBAR
      ===================================================== -->
@@ -70,7 +69,6 @@
     <!-- BRAND -->
 
     {% include 'reports/partials/sidebar_brand.html' %}
-
 
 
     <!-- SIDEBAR NAVIGATION -->
@@ -322,7 +320,6 @@
     </nav>
 
 
-
     <!-- =================================================
          SIDEBAR FOOTER -- "Back to Website"
          Minimal variant: one arrow + label, no subtitle, no
@@ -358,9 +355,7 @@
     </div>
 
 
-
 </aside>
-
 
 
 <!-- =====================================================
@@ -422,7 +417,6 @@
         </div>
 
 
-
         <div class="topbar-right">
 
 
@@ -433,7 +427,6 @@
             {% include 'reports/partials/theme_toggle.html' %}
 
             {% include 'reports/partials/notification_dropdown.html' %}
-
 
 
             <!-- =================================================
@@ -604,12 +597,10 @@
             </div>
 
 
-
         </div>
 
 
     </header>
-
 
 
     <!-- =================================================
@@ -697,7 +688,6 @@
         </section>
 
 
-
         <!-- =================================================
              SUMMARY STATISTICS
              ================================================= -->
@@ -742,7 +732,6 @@
                 </div>
 
 
-
                 <!-- AWAITING REVIEW (Pending + Under Review) -->
 
                 <div class="stat-card">
@@ -775,7 +764,6 @@
                     </p>
 
                 </div>
-
 
 
                 <!-- VERIFIED -->
@@ -816,7 +804,6 @@
 
 
         </section>
-
 
 
         {% if total_reports == 0 %}
@@ -892,7 +879,6 @@
                 </p>
 
 
-
                 <!-- =============================================
                      TOOLBAR — FILTER + SEARCH
                      ============================================= -->
@@ -913,6 +899,7 @@
                                 type="text"
                                 name="q"
                                 id="mrSearchInput"
+                                aria-label="Search reports"
                                 placeholder="Search reports..."
                                 value="{{ search_query }}"
                                 autocomplete="off"
@@ -1075,7 +1062,6 @@
                     </form>
 
                 </div>
-
 
 
                 <!-- =============================================
@@ -1266,7 +1252,6 @@
                     </div>
 
 
-
                     <!-- =============================================
                          MOBILE CARDS
                          (same report data as the table above, shown
@@ -1432,7 +1417,6 @@
                     </div>
 
 
-
                     <!-- =========================================
                          PAGINATION
                          ========================================= -->
@@ -1505,26 +1489,7 @@
     </main>
 
 
-
-    <!-- =================================================
-         FOOTER
-         ================================================= -->
-
-    <footer class="dashboard-footer">
-
-        <span>
-            © 2026 National Disaster Management System
-        </span>
-
-        <span>
-            NDMS
-        </span>
-
-    </footer>
-
-
 </div>
-
 
 
 <!-- =====================================================
