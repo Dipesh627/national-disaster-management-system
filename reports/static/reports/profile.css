@@ -1572,8 +1572,14 @@
 }
 
 
-.pf-avatar-file-input:focus-visible + .pf-photo-modal-filename,
-.pf-avatar-file-input:focus + ~ .pf-choose-photo-btn {
+/* Keyboard focus ring for the visually hidden file input.
+   The <label> (.pf-choose-photo-btn) comes BEFORE the input in the
+   markup, and CSS sibling combinators only look forward, so the
+   label is targeted with :has(). (This selector used to read
+   "input:focus + ~ .pf-choose-photo-btn": "+ ~" is not valid CSS,
+   so the whole rule was being dropped.) */
+.pf-choose-photo-btn:has(+ .pf-avatar-file-input:focus-visible),
+.pf-avatar-file-input:focus-visible + .pf-photo-modal-filename {
 
     outline: none;
 
