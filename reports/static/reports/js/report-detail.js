@@ -194,7 +194,11 @@
             gestureHandling: "cooperative"
         });
 
-        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(
+        // TOP_LEFT: Google's own fullscreen / camera / zoom /
+        // street-view controls stack down the RIGHT edge, and on
+        // a short phone map they collided with this toggle.
+        // Nothing else lives in the top-left corner.
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(
             createLayerToggleControl(map)
         );
 

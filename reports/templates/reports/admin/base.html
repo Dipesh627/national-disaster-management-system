@@ -15,6 +15,17 @@
     </title>
 
     {% comment %}
+        THEME (shared with the Citizen portal): applies the saved / OS
+        theme to <html data-theme> before first paint, loads the Citizen
+        "Sentinel Teal" tokens (ndms-theme.css) and theme.js. It comes
+        FIRST so every Admin stylesheet below can use those tokens and
+        no Admin file defines its own palette. The theme choice is the
+        same localStorage key the Citizen portal uses ("ndms-theme"); it
+        is never sent to the server.
+    {% endcomment %}
+    {% include 'reports/partials/theme_head.html' %}
+
+    {% comment %}
         CSS load order (see the admin-components.css header):
         shell -> shared components -> shared responsive -> page CSS.
     {% endcomment %}
@@ -54,16 +65,18 @@
             <a
                 href="{% url 'admin_dashboard' %}"
                 class="admin-brand"
+                aria-label="NDMS Administration dashboard"
             >
 
-                <span class="admin-brand-mark">
-                    ND
-                </span>
+                <img
+                    src="{% static 'reports/branding/ndms-logo.png' %}"
+                    alt=""
+                    class="admin-brand-logo"
+                    width="105"
+                    height="30"
+                >
 
-                <span class="admin-brand-text">
-                    <strong>NDMS</strong>
-                    <small>Administration</small>
-                </span>
+                <span class="admin-brand-label">Administration</span>
 
             </a>
 
@@ -508,6 +521,9 @@
 
     <!-- RIGHT -->
     <div class="topbar-right">
+
+        <!-- Theme toggle (shared Citizen partial; behaviour in theme.js) -->
+        {% include 'reports/partials/theme_toggle.html' %}
 
         <!-- Admin Alerts -->
         <div class="admin-alerts">

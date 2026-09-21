@@ -29,7 +29,7 @@
 
 .dr-page-eyebrow {
     margin: 0 0 6px;
-    color: var(--ndms-red);
+    color: var(--red);
     font-size: 10px;
     line-height: 1.2;
     font-weight: 800;
@@ -38,7 +38,7 @@
 
 .dr-page-intro h1 {
     margin: 0;
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-size: 25px;
     line-height: 1.2;
     font-weight: 750;
@@ -79,7 +79,7 @@
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
 
-    background: #fff;
+    background: var(--white);
 
     overflow: hidden;
 
@@ -101,33 +101,33 @@
 
     border-radius: 0 3px 3px 0;
 
-    background: var(--ndms-navy);
+    background: var(--red);
 }
 
 .dr-summary-card:hover {
     transform: translateY(-1px);
-    border-color: #d0d5dd;
-    box-shadow: 0 6px 18px rgba(16, 24, 40, .055);
+    border-color: var(--border-strong);
+    box-shadow: 0 6px 18px color-mix(in srgb, var(--navy-2) 5.5%, transparent);
 }
 
 .dr-summary-total::before {
-    background: var(--ndms-navy);
+    background: var(--red);
 }
 
 .dr-summary-pending::before {
-    background: var(--ndms-orange-light);
+    background: var(--orange);
 }
 
 .dr-summary-review::before {
-    background: #667085;
+    background: var(--muted);
 }
 
 .dr-summary-verified::before {
-    background: var(--ndms-green);
+    background: var(--green);
 }
 
 .dr-summary-rejected::before {
-    background: var(--ndms-red);
+    background: var(--danger);
 }
 
 .dr-summary-label {
@@ -141,7 +141,7 @@
 .dr-summary-value {
     display: block;
     margin-top: 7px;
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-size: 24px;
     line-height: 1;
     font-weight: 750;
@@ -176,7 +176,7 @@
     display: flex;
     align-items: center;
     min-height: 37px;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
 }
@@ -191,8 +191,8 @@
 
 .dr-search-field:focus-within,
 .dr-select-field:focus-within {
-    border-color: #b4bbc6;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .dr-search-field svg {
@@ -250,13 +250,13 @@
 
 .dr-filter-button {
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ndms-navy);
-    border: 1px solid var(--ndms-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .dr-filter-button:hover {
-    background: var(--ndms-navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .dr-reset-button {
@@ -267,8 +267,8 @@
 }
 
 .dr-reset-button:hover {
-    color: var(--ndms-navy);
-    background: #ffffff;
+    color: var(--heading);
+    background: var(--white);
     border-color: var(--ndms-border);
 }
 
@@ -290,7 +290,7 @@
     border: 1px solid var(--ndms-border);
     border-radius: 8px;
 
-    background: #fff;
+    background: var(--white);
     color: var(--ndms-text);
 
     font-family: inherit;
@@ -311,34 +311,34 @@
 
 .dr-btn:hover {
     background: var(--ndms-soft);
-    border-color: #d0d5dd;
+    border-color: var(--border-strong);
 }
 
 .dr-btn-primary {
-    border-color: var(--ndms-navy);
-    background: var(--ndms-navy);
-    color: #fff;
+    border-color: var(--btn-dark);
+    background: var(--btn-dark);
+    color: var(--on-dark);
 }
 
 .dr-btn-primary:hover {
-    border-color: var(--ndms-navy-light);
-    background: var(--ndms-navy-light);
-    color: #fff;
+    border-color: var(--btn-dark-hover);
+    background: var(--btn-dark-hover);
+    color: var(--on-dark);
 }
 
 .dr-btn-outline {
-    background: #fff;
-    color: var(--ndms-navy);
+    background: var(--white);
+    color: var(--heading);
 }
 
 .dr-btn-danger {
-    color: var(--ndms-red);
+    color: var(--danger);
 }
 
 .dr-btn-danger:hover {
-    border-color: #f0b8b3;
-    background: #fef3f2;
-    color: var(--ndms-red);
+    border-color: var(--danger-border);
+    background: var(--danger-bg);
+    color: var(--danger);
 }
 
 .dr-btn-ghost {
@@ -405,46 +405,46 @@
 }
 
 .dr-severity-low {
-    color: var(--ndms-green);
-    background: #ecfdf3;
+    color: var(--green-text);
+    background: var(--green-bg);
 }
 
 .dr-severity-medium {
-    color: var(--ndms-orange);
-    background: #fffaeb;
+    color: var(--orange-text);
+    background: var(--orange-bg);
 }
 
 .dr-severity-high {
-    color: #b93815;
-    background: #fff4ed;
+    color: var(--orange-text);
+    background: var(--orange-bg);
 }
 
 .dr-severity-critical {
-    color: var(--ndms-red);
-    background: #fef3f2;
+    color: var(--danger);
+    background: var(--danger-bg);
 }
 
 .dashboard-table .report-id {
-    color: var(--ndms-red);
+    color: var(--red);
     font-weight: 750;
     text-decoration: none;
 }
 
 .dashboard-table .report-id:hover,
 .dashboard-table .report-id:focus-visible {
-    color: var(--ndms-red);
+    color: var(--red);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
 
 .dashboard-table .table-primary-link {
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-weight: 650;
     text-decoration: none;
 }
 
 .dashboard-table .table-primary-link:hover {
-    color: var(--ndms-red);
+    color: var(--red);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
@@ -498,7 +498,7 @@
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
 
-    background: #fff;
+    background: var(--white);
     color: var(--ndms-text);
 
     font-size: 9px;
@@ -514,13 +514,13 @@
 
 .dr-page-link:hover {
     background: var(--ndms-soft);
-    border-color: #d0d5dd;
+    border-color: var(--border-strong);
 }
 
 .dr-page-link.active {
-    background: var(--ndms-navy);
-    border-color: var(--ndms-navy);
-    color: #fff;
+    background: var(--btn-dark);
+    border-color: var(--btn-dark);
+    color: var(--on-dark);
 }
 
 

@@ -10,26 +10,26 @@
    ========================================================= */
 
 .ru-page {
-    --ru-navy: #172033;
-    --ru-navy-light: #202b40;
+    --ru-navy: var(--heading);
+    --ru-navy-light: var(--btn-dark-hover);
 
-    --ru-red: #b42318;
-    --ru-red-dark: #8f1d16;
-    --ru-red-soft: #fef3f2;
+    --ru-red: var(--red);
+    --ru-red-dark: var(--red-dark);
+    --ru-red-soft: var(--light-red);
 
-    --ru-green: #16794a;
-    --ru-green-soft: #ecfdf3;
+    --ru-green: var(--green-text);
+    --ru-green-soft: var(--green-bg);
 
-    --ru-text: #344054;
-    --ru-muted: #667085;
-    --ru-light-muted: #98a2b3;
+    --ru-text: var(--text);
+    --ru-muted: var(--muted);
+    --ru-light-muted: var(--light-muted);
 
-    --ru-border: #e4e7ec;
-    --ru-border-strong: #d0d5dd;
+    --ru-border: var(--border);
+    --ru-border-strong: var(--border-strong);
 
-    --ru-bg: #f8f9fb;
-    --ru-soft: #f2f4f7;
-    --ru-white: #ffffff;
+    --ru-bg: var(--background);
+    --ru-soft: var(--soft-gray);
+    --ru-white: var(--white);
 
     width: 100%;
     max-width: 1480px;
@@ -57,7 +57,7 @@
 .ru-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--ru-red);
+    color: var(--red);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -66,7 +66,7 @@
 
 .ru-page-header h1 {
     margin: 0;
-    color: var(--ru-navy);
+    color: var(--heading);
     font-size: 25px;
     font-weight: 720;
     line-height: 1.2;
@@ -91,18 +91,18 @@
 .ru-primary-button {
     flex: 0 0 auto;
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ru-navy);
-    border: 1px solid var(--ru-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .ru-primary-button:hover {
-    background: var(--ru-navy-light);
-    border-color: var(--ru-navy-light);
+    background: var(--btn-dark-hover);
+    border-color: var(--btn-dark-hover);
 }
 
 .ru-primary-button:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .10);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -114,14 +114,14 @@
 .ru-secondary-button {
     padding: 0 12px;
     color: var(--ru-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border-strong);
 }
 
 .ru-secondary-button:hover {
-    color: var(--ru-navy);
-    background: #fbfcfd;
-    border-color: #bfc6d0;
+    color: var(--heading);
+    background: var(--background);
+    border-color: var(--c-border-9);
 }
 
 .ru-secondary-button svg {
@@ -146,14 +146,14 @@
     align-items: center;
     min-height: 37px;
     width: min(340px, 100%);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border);
     border-radius: 7px;
 }
 
 .ru-search-field:focus-within {
-    border-color: #b4bbc6;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ru-search-field svg {
@@ -193,7 +193,7 @@
     height: 37px;
     padding: 0 10px;
     color: var(--ru-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border);
     border-radius: 7px;
     outline: none;
@@ -207,19 +207,19 @@
 }
 
 .ru-select:focus {
-    border-color: #b4bbc6;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ru-filter-button {
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ru-navy);
-    border: 1px solid var(--ru-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .ru-filter-button:hover {
-    background: var(--ru-navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .ru-reset-button {
@@ -230,8 +230,8 @@
 }
 
 .ru-reset-button:hover {
-    color: var(--ru-navy);
-    background: #ffffff;
+    color: var(--heading);
+    background: var(--white);
     border-color: var(--ru-border);
 }
 
@@ -242,7 +242,7 @@
 
 .ru-table-panel {
     overflow: visible;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border);
     border-radius: 10px;
 }
@@ -268,7 +268,7 @@
 
 .ru-table-head h2 {
     margin: 0;
-    color: var(--ru-navy);
+    color: var(--heading);
     font-size: 12.5px;
     font-weight: 710;
     line-height: 1.3;
@@ -290,7 +290,7 @@
     padding: 0 6px;
     color: var(--ru-muted);
     background: var(--ru-soft);
-    border: 1px solid #e9ebef;
+    border: 1px solid var(--border);
     border-radius: 5px;
     font-size: 9px;
     font-weight: 720;
@@ -317,7 +317,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--ru-muted);
-    background: #fcfcfd;
+    background: var(--background);
     border-bottom: 1px solid var(--ru-border);
     font-size: 9px;
     font-weight: 720;
@@ -329,7 +329,7 @@
 .ru-table tbody td {
     padding: 11px 17px;
     color: var(--ru-text);
-    border-bottom: 1px solid #f0f1f3;
+    border-bottom: 1px solid var(--border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -344,7 +344,7 @@
 }
 
 .ru-table-row:hover {
-    background: #fcfdfd;
+    background: var(--background);
 }
 
 .ru-col-disaster {
@@ -392,7 +392,7 @@
 }
 
 .ru-disaster-name {
-    color: var(--ru-navy);
+    color: var(--heading);
     font-size: 11px;
     font-weight: 690;
     line-height: 1.35;
@@ -473,15 +473,15 @@
 }
 
 .ru-action-edit:hover {
-    color: var(--ru-navy);
+    color: var(--heading);
 }
 
 .ru-action-delete {
-    color: #8f5a55;
+    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
 }
 
 .ru-action-delete:hover {
-    color: var(--ru-red);
+    color: var(--danger);
 }
 
 .ru-delete-form {
@@ -489,7 +489,7 @@
 }
 
 .ru-action:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .09);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -533,7 +533,7 @@
     height: 27px;
     padding: 0 7px;
     color: var(--ru-muted);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border);
     border-radius: 6px;
     font-size: 9.5px;
@@ -553,15 +553,15 @@
 
 .ru-pagination-number:hover,
 .ru-pagination-button:not(.is-disabled):hover {
-    color: var(--ru-navy);
-    background: #fafbfc;
-    border-color: #c5cbd5;
+    color: var(--heading);
+    background: var(--background);
+    border-color: var(--c-border-9);
 }
 
 .ru-pagination-number.is-current {
-    color: #ffffff;
-    background: var(--ru-navy);
-    border-color: var(--ru-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border-color: var(--btn-dark);
 }
 
 .ru-pagination-button.is-disabled {
@@ -594,7 +594,7 @@
 
 .ru-empty-state h3 {
     margin: 0;
-    color: var(--ru-navy);
+    color: var(--heading);
     font-size: 13px;
     font-weight: 710;
     line-height: 1.35;
@@ -619,7 +619,7 @@
 
 .ru-form-shell {
     width: min(760px, 100%);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border);
     border-radius: 10px;
 }
@@ -635,7 +635,7 @@
 .ru-section-kicker {
     display: block;
     margin-bottom: 5px;
-    color: var(--ru-red);
+    color: var(--red);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -644,7 +644,7 @@
 
 .ru-form-section-heading h2 {
     margin: 0;
-    color: var(--ru-navy);
+    color: var(--heading);
     font-size: 12px;
     font-weight: 710;
     line-height: 1.35;
@@ -673,7 +673,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--ru-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border-strong);
     border-radius: 7px;
     outline: none;
@@ -691,8 +691,8 @@
 }
 
 .ru-form-control:focus {
-    border-color: #9ca5b2;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ru-form-textarea {
@@ -711,7 +711,7 @@ select.ru-form-control {
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--ru-red);
+    color: var(--danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -725,9 +725,9 @@ select.ru-form-control {
 .ru-form-error {
     margin: 0 22px 18px;
     padding: 10px 11px;
-    color: var(--ru-red);
-    background: var(--ru-red-soft);
-    border: 1px solid #f1c9c6;
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -752,7 +752,7 @@ select.ru-form-control {
     justify-content: flex-end;
     gap: 7px;
     padding: 11px 15px;
-    background: #fcfcfd;
+    background: var(--background);
     border-top: 1px solid var(--ru-border);
 }
 
@@ -760,13 +760,13 @@ select.ru-form-control {
     min-width: 67px;
     padding: 0 12px;
     color: var(--ru-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border-strong);
 }
 
 .ru-form-cancel:hover {
-    color: var(--ru-navy);
-    background: #fbfcfd;
+    color: var(--heading);
+    background: var(--background);
 }
 
 .ru-form-submit {
@@ -801,7 +801,7 @@ select.ru-form-control {
 .ru-modal-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 40, .46);
+    background: color-mix(in srgb, var(--navy-2) 46%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -810,12 +810,12 @@ select.ru-form-control {
     width: min(430px, calc(100vw - 32px));
     margin: 12vh auto 0;
     overflow: hidden;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ru-border);
     border-radius: 12px;
     box-shadow:
-        0 22px 48px rgba(16, 24, 40, .15),
-        0 4px 12px rgba(16, 24, 40, .06);
+        0 22px 48px color-mix(in srgb, var(--navy-2) 15%, transparent),
+        0 4px 12px color-mix(in srgb, var(--navy-2) 6%, transparent);
 }
 
 
@@ -835,9 +835,9 @@ select.ru-form-control {
     place-items: center;
     width: 40px;
     height: 40px;
-    color: var(--ru-red);
-    background: #fff7f6;
-    border: 1px solid #f4d7d4;
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
     border-radius: 9px;
 }
 
@@ -864,12 +864,12 @@ select.ru-form-control {
 }
 
 .ru-modal-close:hover {
-    color: var(--ru-navy);
+    color: var(--heading);
     background: var(--ru-soft);
 }
 
 .ru-modal-close:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .09);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
     outline-offset: 1px;
 }
 
@@ -889,7 +889,7 @@ select.ru-form-control {
 
 .ru-modal-content h3 {
     margin: 0;
-    color: var(--ru-navy);
+    color: var(--heading);
     font-size: 15px;
     font-weight: 720;
     line-height: 1.3;
@@ -974,7 +974,7 @@ select.ru-form-control {
 
     padding: 11px 20px;
 
-    background: #fcfcfd;
+    background: var(--background);
     border-top: 1px solid var(--ru-border);
 }
 
@@ -992,7 +992,7 @@ select.ru-form-control {
     padding: 0 12px !important;
 
     color: var(--ru-text) !important;
-    background: #ffffff !important;
+    background: var(--white) !important;
 
     border: 1px solid var(--ru-border-strong) !important;
     border-radius: 7px !important;
@@ -1017,14 +1017,14 @@ select.ru-form-control {
 }
 
 .ru-modal-cancel:hover {
-    color: var(--ru-navy) !important;
-    background: #fafbfc !important;
-    border-color: #c2c8d1 !important;
+    color: var(--heading) !important;
+    background: var(--background) !important;
+    border-color: var(--c-border-9) !important;
 }
 
 .ru-modal-cancel:focus,
 .ru-modal-cancel:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .09);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -1053,11 +1053,11 @@ select.ru-form-control {
     margin: 0 !important;
     padding: 0 13px !important;
 
-    color: #ffffff !important;
-    background-color: #b42318 !important;
+    color: var(--white) !important;
+    background-color: var(--danger) !important;
     background-image: none !important;
 
-    border: 1px solid #b42318 !important;
+    border: 1px solid var(--danger) !important;
     border-radius: 7px !important;
 
     font-family: inherit !important;
@@ -1098,8 +1098,8 @@ select.ru-form-control {
 
     flex: 0 0 13px !important;
 
-    color: #ffffff !important;
-    stroke: #ffffff !important;
+    color: var(--white);
+    stroke: var(--white) !important;
 
     opacity: 1 !important;
     visibility: visible !important;
@@ -1108,7 +1108,7 @@ select.ru-form-control {
 .ru-confirm-delete-button span {
     display: inline-block !important;
 
-    color: #ffffff !important;
+    color: var(--white);
 
     opacity: 1 !important;
     visibility: visible !important;
@@ -1117,11 +1117,11 @@ select.ru-form-control {
 }
 
 .ru-confirm-delete-button:hover {
-    color: #ffffff !important;
+    color: var(--white) !important;
 
-    background-color: #8f1d16 !important;
+    background-color: var(--danger-dark) !important;
 
-    border-color: #8f1d16 !important;
+    border-color: var(--danger-dark) !important;
 }
 
 .ru-confirm-delete-button:active {
@@ -1130,11 +1130,11 @@ select.ru-form-control {
 
 .ru-confirm-delete-button:focus,
 .ru-confirm-delete-button:focus-visible {
-    color: #ffffff !important;
+    color: var(--white) !important;
 
-    background-color: #b42318 !important;
+    background-color: var(--danger) !important;
 
-    outline: 3px solid rgba(180, 35, 24, .16) !important;
+    outline: 3px solid color-mix(in srgb, var(--danger) 16%, transparent) !important;
     outline-offset: 2px !important;
 }
 

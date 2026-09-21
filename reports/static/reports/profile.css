@@ -1827,21 +1827,6 @@
 
 @media (max-width: 640px) {
 
-    .pf-header-card {
-        flex-wrap: wrap;
-    }
-
-    .pf-header-info {
-        flex: 1 1 100%;
-        order: 2;
-    }
-
-    .pf-identity-edit-button {
-        order: 3;
-        width: 100%;
-        margin-top: 4px;
-    }
-
     .pf-view-grid {
         grid-template-columns: 1fr;
     }
@@ -1880,6 +1865,27 @@
     .pf-card,
     .pf-header-card {
         padding: 16px;
+    }
+
+    /* Wrap the header card at the SAME 700px breakpoint where
+       dashboard.css makes every .secondary-action full width.
+       This used to wrap at 640px, so between 641px and 700px the
+       Edit Profile button was width:100% (and flex-shrink:0) inside
+       a non-wrapping row and spilled out over the name and the
+       edge of the card. */
+    .pf-header-card {
+        flex-wrap: wrap;
+    }
+
+    .pf-header-info {
+        flex: 1 1 100%;
+        order: 2;
+    }
+
+    .pf-identity-edit-button {
+        order: 3;
+        width: 100%;
+        margin-top: 4px;
     }
 
     .pf-security-row {

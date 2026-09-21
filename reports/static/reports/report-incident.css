@@ -1552,11 +1552,16 @@
     position: absolute;
 
     top: 14px;
-    left: 14px;
+
+    /* Starts to the right of the Standard / Satellite toggle
+       (top-left corner, ~185px wide) and stops short of Google's
+       controls on the right edge. Below 700px the search bar
+       leaves the map entirely (see the mobile rules). */
+    left: 200px;
 
     z-index: 5;
 
-    width: min(320px, calc(100% - 28px));
+    width: min(320px, calc(100% - 275px));
 }
 
 .ri-map-search-box {
@@ -1645,6 +1650,9 @@
 
     gap: 3px;
 
+    /* Google adds no margin to custom controls */
+    margin: 10px 0 0 10px;
+
     padding: 4px;
 
     background: var(--white);
@@ -1708,6 +1716,20 @@
 
 .ri-layer-btn.active:hover {
     background: var(--btn-dark-hover);
+}
+
+@media (max-width: 700px) {
+
+    .ri-layer-control {
+        margin: 8px 0 0 8px;
+        padding: 3px;
+    }
+
+    .ri-layer-btn {
+        min-width: 68px;
+        height: 34px;
+        padding: 0 10px;
+    }
 }
 
 

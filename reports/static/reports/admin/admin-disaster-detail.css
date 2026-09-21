@@ -89,7 +89,7 @@
 
 .dd-situation-latest-copy strong {
     display: block;
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-size: 12.5px;
     font-weight: 750;
 }
@@ -148,13 +148,13 @@
 }
 
 .dd-lifecycle-step.is-current {
-    background: var(--ndms-navy);
-    color: #fff;
+    background: var(--btn-dark);
+    color: var(--on-dark);
 }
 
 .dd-lifecycle-step.is-done {
     background: var(--ndms-soft);
-    color: var(--ndms-green);
+    color: var(--green-text);
 }
 
 .dd-lifecycle-arrow {
@@ -240,8 +240,8 @@
     height: 19px;
     margin-top: 2px;
     border-radius: 999px;
-    background: #ecfdf3;
-    border: 3px solid var(--ndms-green);
+    background: var(--green-bg);
+    border: 3px solid var(--green);
     box-sizing: border-box;
 }
 
@@ -266,7 +266,7 @@
 }
 
 .dd-timeline-agency {
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-size: 12.5px;
     font-weight: 750;
 }
@@ -319,11 +319,11 @@
 }
 
 .dd-timeline-link:hover {
-    color: var(--ndms-navy);
+    color: var(--heading);
 }
 
 .dd-timeline-link.dd-timeline-link-danger:hover {
-    color: var(--ndms-red);
+    color: var(--danger);
 }
 
 .dd-empty-note {
@@ -377,7 +377,7 @@
 
 .dd-report-id {
     display: block;
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-size: 12px;
     font-weight: 750;
 }

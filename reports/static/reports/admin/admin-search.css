@@ -37,7 +37,7 @@
 
     margin: 0;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: 25px;
 
@@ -63,7 +63,7 @@
 
 
 .search-page-header-copy strong {
-    color: var(--navy);
+    color: var(--heading);
     font-weight: 700;
 }
 
@@ -112,7 +112,7 @@
 
     margin: 0;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: 12px;
     font-weight: 720;
@@ -194,7 +194,7 @@
 
     overflow: hidden;
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: 13px;
     font-weight: 700;
@@ -295,7 +295,7 @@
 
 .search-empty-state strong {
 
-    color: var(--navy);
+    color: var(--heading);
 
     font-size: 14px;
     font-weight: 720;

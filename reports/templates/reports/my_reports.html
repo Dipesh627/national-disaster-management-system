@@ -215,13 +215,6 @@
                 </a>
 
                 <a
-                    href="{% url 'home' %}#disasters"
-                    class="sidebar-sublink"
-                >
-                    Disaster Types
-                </a>
-
-                <a
                     href="{% url 'disaster_guidelines' %}"
                     class="sidebar-sublink{% if request.resolver_match.url_name == 'disaster_guidelines' %} active{% endif %}"
                     {% if request.resolver_match.url_name == 'disaster_guidelines' %}aria-current="page"{% endif %}

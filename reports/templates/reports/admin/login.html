@@ -14,10 +14,17 @@
 
     <meta
         name="theme-color"
-        content="#111827"
+        content="#0d2b31"
     >
 
     <title>NDMS | Administration Login</title>
+
+    {% comment %}
+        Shared Citizen theme: saved / OS light-dark theme applied before
+        first paint + the "Sentinel Teal" tokens (ndms-theme.css). Loaded
+        before the page stylesheet, which defines no palette of its own.
+    {% endcomment %}
+    {% include 'reports/partials/theme_head.html' %}
 
     <link
         rel="stylesheet"
@@ -71,20 +78,18 @@
                 aria-label="NDMS home"
             >
 
-                <span class="admin-logo">
-                    ND
-                </span>
+                <img
+                    src="{% static 'reports/branding/ndms-logo.png' %}"
+                    alt=""
+                    class="admin-logo-image"
+                    width="147"
+                    height="42"
+                >
 
                 <span class="admin-brand-text">
-
-                    <strong>
-                        NDMS
-                    </strong>
-
                     <small>
                         National Disaster Management System
                     </small>
-
                 </span>
 
             </a>
@@ -152,20 +157,18 @@
                 aria-label="NDMS home"
             >
 
-                <span class="mobile-logo">
-                    ND
-                </span>
+                <img
+                    src="{% static 'reports/branding/ndms-logo.png' %}"
+                    alt=""
+                    class="mobile-logo-image"
+                    width="105"
+                    height="30"
+                >
 
                 <span>
-
-                    <strong>
-                        NDMS
-                    </strong>
-
                     <small>
                         Administration
                     </small>
-
                 </span>
 
             </a>

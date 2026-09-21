@@ -1,1008 +1,939 @@
 /* =========================================================
-   NDMS - SHARED PUBLIC BASE + ABOUT PAGE
-   Linked by every public page for the base reset and the
-   .about-* / section styles.
-   ========================================================= */
-
-/* =========================================================
-   DESIGN TOKENS
+   NDMS - ABOUT PAGE
    ---------------------------------------------------------
-   Colours, shadows and radii come from ndms-theme.css
-   (Sentinel Teal, light + dark). The navbar lives in
-   navbar.css / navbar-avatar.css and the footer in footer.css;
-   this file keeps the shared reset and the About page.
+   Sentinel Teal. Colours, radii and easing come only from the
+   ndms-theme.css tokens (light + dark). The navbar and footer
+   have their own stylesheets, and the shared reset / body live
+   in about.css. This file styles the About page and nothing
+   else; every class is prefixed .ab-
+
+   Page rhythm (each block uses a different layout on purpose):
+     Hero (text + photo)  ->  What NDMS does (3 columns)
+     ->  Why (sticky statement + principles, tint)
+     ->  How it works (5-step flow)  ->  Capabilities (joined
+     grid, tint)  ->  Who it is for (2 columns)  ->  CTA (navy)
+
+   Sections
+     1.  Base + container
+     2.  Buttons + links
+     3.  Hero
+     4.  Section + section heading
+     5.  What NDMS does
+     6.  Why NDMS exists
+     7.  How NDMS works
+     8.  Platform capabilities
+     9.  Who NDMS is for
+     10. Final CTA
+     11. Responsive
+     12. Reduced motion
    ========================================================= */
+
 
 /* =========================================================
-   RESET
+   1. BASE + CONTAINER
    ========================================================= */
 
-* {
+.about-page {
+    --ab-max: 1180px;
+    --ab-gutter: 48px;
+    --ab-section-space: clamp(64px, 8vw, 104px);
+    --ab-flow-gap: 28px;
+}
+
+.ab-container {
+    width: min(var(--ab-max), calc(100% - var(--ab-gutter)));
+    margin-inline: auto;
+}
+
+
+/* =========================================================
+   2. BUTTONS + LINKS
+   Same language as the Home page buttons.
+   ========================================================= */
+
+.ab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    min-height: 46px;
+    padding: 0 22px;
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+
+    transition:
+        background-color .18s ease,
+        border-color .18s ease,
+        color .18s ease;
+}
+
+.ab-btn--lg {
+    min-height: 52px;
+    padding: 0 28px;
+
+    font-size: 16px;
+}
+
+.ab-btn--primary {
+    border-color: var(--red);
+
+    background: var(--red);
+    color: var(--white);
+}
+
+.ab-btn--primary:hover {
+    border-color: var(--red-dark);
+
+    background: var(--red-dark);
+}
+
+.ab-btn--secondary {
+    border-color: var(--border);
+
+    background: var(--white);
+    color: var(--heading);
+}
+
+.ab-btn--secondary:hover {
+    border-color: var(--red);
+
+    background: var(--light-red);
+    color: var(--red);
+}
+
+/* Button on the dark CTA panel (dark in both themes). */
+.ab-btn--on-dark {
+    background: var(--on-dark);
+    color: var(--navy);
+}
+
+.ab-btn--on-dark:hover {
+    background: color-mix(in srgb, var(--on-dark) 88%, var(--navy));
+}
+
+.ab-btn-arrow {
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    transition: transform .18s ease;
+}
+
+.ab-btn:hover .ab-btn-arrow {
+    transform: translateX(3px);
+}
+
+.ab-link {
+    color: var(--red);
+
+    font-size: 15px;
+    font-weight: 650;
+    text-decoration: none;
+}
+
+.ab-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.ab-btn:focus-visible,
+.ab-link:focus-visible {
+    outline: 2px solid var(--red);
+    outline-offset: 3px;
+}
+
+.ab-cta .ab-btn:focus-visible {
+    outline-color: var(--on-dark);
+}
+
+
+/* =========================================================
+   3. HERO
+   Text left, photograph right. The photograph is a crop of
+   the Home hero image (about-hero.jpg), framed rather than
+   full-bleed so the page reads as an explanation, not a
+   second landing page.
+   ========================================================= */
+
+.ab-hero {
+    padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
+
+    background: var(--background);
+}
+
+.ab-hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+    align-items: center;
+    gap: clamp(40px, 6vw, 80px);
+}
+
+.ab-hero-copy {
+    max-width: 620px;
+}
+
+.ab-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    color: var(--red);
+
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+.ab-eyebrow::before {
+    content: "";
+
+    width: 24px;
+    height: 2px;
+
+    background: currentColor;
+}
+
+.ab-hero h1 {
+    margin: 20px 0 24px;
+
+    color: var(--heading);
+
+    font-size: clamp(2rem, 1.2rem + 3.2vw, 3.25rem);
+    font-weight: 750;
+    letter-spacing: -.02em;
+    line-height: 1.1;
+    text-wrap: balance;
+}
+
+.ab-lead {
+    max-width: 54ch;
+
+    text-wrap: pretty;
+
+    color: var(--muted);
+
+    font-size: clamp(1rem, .95rem + .25vw, 1.125rem);
+    line-height: 1.75;
+}
+
+.ab-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-top: 32px;
+}
+
+.ab-hero-media {
+    margin: 0;
+
+    aspect-ratio: 5 / 4;
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    background: var(--soft-gray);
+}
+
+.ab-hero-media img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: 50% 72%;
+}
+
+
+/* =========================================================
+   4. SECTION + SECTION HEADING
+   Every section shares one container, one vertical space and
+   one heading pattern: title left, one supporting paragraph
+   right. (The Why section is the deliberate exception.)
+   ========================================================= */
+
+.ab-section {
+    padding: var(--ab-section-space) 0;
+
+    background: var(--background);
+}
+
+.ab-section--tint {
+    background: var(--soft-gray);
+}
+
+.ab-head {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    align-items: end;
+    gap: 16px clamp(32px, 6vw, 80px);
+
+    margin-bottom: clamp(36px, 5vw, 56px);
+}
+
+.ab-head h2,
+.ab-why-intro h2,
+.ab-cta h2 {
+    color: var(--heading);
+
+    font-size: clamp(1.65rem, 3.2vw, 2.25rem);
+    font-weight: 750;
+    letter-spacing: -.012em;
+    line-height: 1.2;
+    text-wrap: balance;
+}
+
+.ab-head p {
+    max-width: 56ch;
+
+    color: var(--muted);
+
+    font-size: 1.0625rem;
+    line-height: 1.7;
+}
+
+
+/* =========================================================
+   5. WHAT NDMS DOES
+   Three stages of one sequence: joined by a shared top rule
+   and numbered, not boxed.
+   ========================================================= */
+
+.ab-stages {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 40px clamp(32px, 4vw, 56px);
 
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
 
+    list-style: none;
 }
 
-html {
+.ab-stage {
+    padding-top: 24px;
 
-    scroll-behavior: smooth;
-    scroll-padding-top: 90px;
-
-}
-
-body {
-
-    font-family:
-        "Segoe UI",
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background:
-        var(--background);
-
-    color:
-        var(--text);
-
-    font-size:
-        calc(16px * var(--ndms-font-scale, 1));
-
-    line-height:
-        1.6;
-
-    -webkit-font-smoothing:
-        antialiased;
-
-    overflow-x:
-        hidden;
-
-}
-
-body.menu-open {
-
-    overflow: hidden;
-
-}
-
-a {
-
-    color: inherit;
-
-}
-
-button {
-
-    font-family: inherit;
-
-}
-
-/* =========================================================
-   MAIN
-   ========================================================= */
-
-.about-main {
-    width: min(1180px, calc(100% - 56px));
-    margin: 0 auto;
-    padding: 38px 0 0;
-}
-
-.about-section {
-    padding: 72px 0;
     border-top: 1px solid var(--border);
 }
 
-.about-section.no-border {
-    border-top: none;
-}
+.ab-stage-num {
+    display: block;
 
-/* =========================================================
-   SECTION HEADING
-   ========================================================= */
-
-.section-heading {
-    max-width: 640px;
-    margin-bottom: 34px;
-}
-
-.section-heading.centered {
-    max-width: 620px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
-.section-eyebrow {
-    display: flex;
-    align-items: center;
-    gap: 8px;
     color: var(--red);
-    font-size: calc(11px * var(--ndms-font-scale, 1));
-    font-weight: 800;
-    letter-spacing: 1.6px;
-    margin-bottom: 10px;
+
+    font-size: .875rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    letter-spacing: .06em;
 }
 
-.section-heading.centered .section-eyebrow {
-    justify-content: center;
-}
+.ab-stage h3 {
+    margin: 14px 0 10px;
 
-.section-eyebrow-line {
-    width: 20px;
-    height: 1.5px;
-    background: var(--red);
-    border-radius: 2px;
-}
-
-.section-heading h2 {
     color: var(--heading);
-    font-size: calc(30px * var(--ndms-font-scale, 1));
+
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
     line-height: 1.25;
-    font-weight: 800;
-    margin-bottom: 10px;
-    letter-spacing: -0.2px;
 }
 
-.section-heading p {
+.ab-stage p {
+    max-width: 38ch;
+
     color: var(--muted);
-    font-size: calc(15px * var(--ndms-font-scale, 1));
+
+    font-size: 1rem;
     line-height: 1.7;
 }
 
-/* =========================================================
-   SHARED NDMS VISUAL (radar / connected-network symbol)
-   Single implementation reused by the Hero and The NDMS
-   System sections — avoids duplicating the animation CSS.
-   ========================================================= */
-
-.ndms-visual {
-    width: 300px;
-    height: 270px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-.ndms-visual-core {
-    width: 300px;
-    height: 260px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    isolation: isolate;
-    background:
-        linear-gradient(
-            35deg,
-            transparent 49.5%,
-            color-mix(in srgb, var(--red) 9%, transparent) 50%,
-            transparent 50.5%
-        )
-        0 0 / 100% 100% no-repeat;
-}
-
-.ndms-visual-core::before {
-    content: "";
-    position: absolute;
-    width: 235px;
-    height: 235px;
-    border-radius: 50%;
-    border: 1px solid rgba(23, 32, 51, .08);
-    animation: ndms-breathe 6s ease-in-out infinite;
-}
-
-.ndms-visual-core::after {
-    content: "";
-    position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    border: 1px dashed color-mix(in srgb, var(--red) 18%, transparent);
-    animation: ndms-drift 18s linear infinite;
-}
-
-.ndms-visual-ring {
-    width: 112px;
-    height: 112px;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--white) 98%, transparent);
-    border: 1px solid rgba(23, 32, 51, .13);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 10;
-    box-shadow:
-        0 14px 35px rgba(23, 32, 51, .10),
-        0 0 0 20px color-mix(in srgb, var(--red) 2%, transparent);
-    animation: ndms-float 5s ease-in-out infinite;
-}
-
-.ndms-visual-ring::before {
-    content: "";
-    position: absolute;
-    inset: 9px;
-    border-radius: 50%;
-    border: 1px solid color-mix(in srgb, var(--red) 25%, transparent);
-    animation: ndms-pulse 3.5s ease-in-out infinite;
-}
-
-.ndms-visual-ring::after {
-    content: "";
-    position: absolute;
-    inset: -15px;
-    border-radius: 50%;
-    border: 2px solid transparent;
-    border-top-color: color-mix(in srgb, var(--red) 42%, transparent);
-    border-right-color: color-mix(in srgb, var(--red) 8%, transparent);
-    animation: ndms-scan 8s linear infinite;
-}
-
-.ndms-visual-ring span {
-    position: relative;
-    z-index: 20;
-    color: var(--heading);
-    font-size: calc(19px * var(--ndms-font-scale, 1));
-    font-weight: 850;
-    letter-spacing: 1.6px;
-}
-
-@keyframes ndms-breathe {
-    0%, 100% { transform: scale(1); opacity: .72; }
-    50% { transform: scale(1.035); opacity: 1; }
-}
-
-@keyframes ndms-drift {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-@keyframes ndms-float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
-}
-
-@keyframes ndms-pulse {
-    0%, 100% { transform: scale(1); opacity: .55; }
-    50% { transform: scale(1.08); opacity: 1; }
-}
-
-@keyframes ndms-scan {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
 
 /* =========================================================
-   ABOUT HERO
+   6. WHY NDMS EXISTS
+   A sticky statement on the left, three principles on the
+   right separated by rules (no cards).
    ========================================================= */
 
-.about-hero {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 40px;
-    padding: 56px 0 64px;
+.ab-why {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: start;
+    gap: clamp(40px, 7vw, 96px);
 }
 
-.about-hero-content {
-    max-width: 620px;
+.ab-why-intro {
+    position: sticky;
+    top: 112px;
 }
 
-.about-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--red);
-    font-size: calc(11px * var(--ndms-font-scale, 1));
-    font-weight: 850;
-    letter-spacing: 1.8px;
-    margin-bottom: 16px;
+.ab-why-intro h2 {
+    margin-bottom: 22px;
 }
 
-.about-label::before {
-    content: "";
-    width: 20px;
-    height: 1.5px;
-    background: var(--red);
-    border-radius: 2px;
-}
+.ab-why-intro p {
+    max-width: 48ch;
 
-.about-hero-content h1 {
-    color: var(--heading);
-    font-size: calc(44px * var(--ndms-font-scale, 1));
-    line-height: 1.16;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-    margin-bottom: 18px;
-}
+    text-wrap: pretty;
 
-.about-hero-content h1 span {
-    color: var(--red);
-}
-
-.about-hero-content > p {
     color: var(--muted);
-    font-size: calc(15.5px * var(--ndms-font-scale, 1));
+
+    font-size: 1.0625rem;
     line-height: 1.75;
-    max-width: 520px;
-    margin-bottom: 28px;
 }
 
-.about-hero-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-}
-
-.ndms-visual-area-wrap {
-    flex-shrink: 0;
-}
-
-/* =========================================================
-   HERO / SECTION BUTTONS
-   (Aligned with Home's .btn-primary / .btn-secondary)
-   ========================================================= */
-
-.about-primary-btn,
-.about-secondary-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    height: 44px;
-    padding: 0 20px;
-    border-radius: 8px;
-    font-size: calc(13.5px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-        transform 200ms ease,
-        background 200ms ease,
-        color 200ms ease,
-        border-color 200ms ease,
-        box-shadow 200ms ease;
-}
-
-.about-primary-btn span,
-.about-secondary-btn span {
-    font-size: calc(15px * var(--ndms-font-scale, 1));
-    line-height: 1;
-    transition: transform 200ms ease;
-}
-
-.about-primary-btn:hover span,
-.about-secondary-btn:hover span {
-    transform: translateX(3px);
-}
-
-.about-primary-btn {
-    background: var(--red);
-    color: var(--white);
-    border: 1px solid var(--red);
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--red) 14%, transparent);
-}
-
-.about-primary-btn:hover {
-    background: var(--red-dark);
-    border-color: var(--red-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px color-mix(in srgb, var(--red) 20%, transparent);
-}
-
-.about-secondary-btn {
-    background: var(--white);
-    color: var(--heading);
-    border: 1px solid var(--border);
-}
-
-.about-secondary-btn:hover {
-    background: var(--light-red);
-    border-color: var(--c-red-230);
-    color: var(--red);
-    transform: translateY(-1px);
-}
-
-/* =========================================================
-   WHAT IS NDMS
-   ========================================================= */
-
-.what-layout {
-    display: grid;
-    grid-template-columns: 1.1fr .9fr;
-    gap: 56px;
-    align-items: center;
-}
-
-.what-copy p {
-    color: var(--text);
-    font-size: calc(15.5px * var(--ndms-font-scale, 1));
-    line-height: 1.8;
-}
-
-.mini-flow {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 26px;
-    background: var(--soft-gray);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-}
-
-.mini-flow-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.mini-flow-node {
-    flex: 1;
-    text-align: center;
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 8px;
-    font-size: calc(12px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    letter-spacing: .4px;
-    color: var(--heading);
-}
-
-.mini-flow-arrow {
-    color: var(--red);
-    font-size: calc(15px * var(--ndms-font-scale, 1));
-    flex-shrink: 0;
-}
-
-.mini-flow-down {
-    align-self: center;
-    color: var(--red);
-    font-size: calc(15px * var(--ndms-font-scale, 1));
-    margin: 2px 0;
-}
-
-.mini-flow-node--result {
-    background: var(--btn-dark);
-    border-color: var(--btn-dark);
-    color: var(--on-dark);
-}
-
-/* =========================================================
-   WHY NDMS — EDITORIAL LIST
-   ========================================================= */
-
-.why-list {
-    display: flex;
-    flex-direction: column;
-}
-
-.why-item {
-    display: grid;
-    grid-template-columns: 70px 1fr;
-    gap: 24px;
-    padding: 26px 0;
+.ab-principles {
     border-bottom: 1px solid var(--border);
 }
 
-.why-item:first-child {
-    padding-top: 0;
-}
+.ab-principle {
+    padding: 28px 0 32px;
 
-.why-item:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-}
-
-.why-number {
-    color: var(--red);
-    font-size: calc(22px * var(--ndms-font-scale, 1));
-    font-weight: 850;
-    letter-spacing: .5px;
-}
-
-.why-body h3 {
-    color: var(--heading);
-    font-size: calc(17px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    margin-bottom: 6px;
-}
-
-.why-body p {
-    color: var(--muted);
-    font-size: calc(14.5px * var(--ndms-font-scale, 1));
-    line-height: 1.75;
-    max-width: 620px;
-}
-
-/* =========================================================
-   HOW NDMS WORKS — TIMELINE
-   ========================================================= */
-
-.process-timeline {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 0;
-}
-
-.process-step {
-    position: relative;
-    padding: 0 14px;
-    text-align: left;
-}
-
-.process-step::before {
-    content: "";
-    position: absolute;
-    top: 13px;
-    left: -14px;
-    right: 14px;
-    height: 1.5px;
-    background: var(--border);
-}
-
-.process-step:first-child::before {
-    left: 0;
-}
-
-.process-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: var(--white);
-    border: 1.5px solid var(--red);
-    color: var(--red);
-    font-size: calc(11px * var(--ndms-font-scale, 1));
-    font-weight: 850;
-    margin-bottom: 16px;
-}
-
-.process-step h3 {
-    color: var(--heading);
-    font-size: calc(16px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    margin-bottom: 6px;
-}
-
-.process-step p {
-    color: var(--muted);
-    font-size: calc(13.5px * var(--ndms-font-scale, 1));
-    line-height: 1.65;
-}
-
-/* =========================================================
-   WHAT NDMS CONNECTS — COMPACT CAPABILITY LIST
-   ========================================================= */
-
-.connects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px 32px;
-}
-
-.connects-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding-top: 18px;
     border-top: 1px solid var(--border);
 }
 
-.connects-mark {
-    flex-shrink: 0;
-    width: 20px;
-    margin-top: 2px;
-    color: var(--red);
-}
-
-.connects-mark svg {
-    display: block;
-    width: 20px;
-    height: 20px;
-}
-
-.connects-item h3 {
-    color: var(--heading);
-    font-size: calc(14.5px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    margin-bottom: 4px;
-}
-
-.connects-item p {
-    color: var(--muted);
-    font-size: calc(13px * var(--ndms-font-scale, 1));
-    line-height: 1.6;
-}
-
-/* =========================================================
-   WHO IS NDMS FOR
-   ========================================================= */
-
-.audience-layout {
-    display: grid;
-    grid-template-columns: .9fr 1.1fr;
-    gap: 56px;
-    align-items: center;
-}
-
-.audience-copy h2 {
-    color: var(--heading);
-    font-size: calc(26px * var(--ndms-font-scale, 1));
-    font-weight: 800;
-    line-height: 1.3;
-    margin-top: 6px;
-}
-
-.audience-copy p {
-    color: var(--muted);
-    font-size: calc(14.5px * var(--ndms-font-scale, 1));
-    line-height: 1.8;
-    margin-top: 8px;
-}
-
-.audience-card {
-    background: var(--white);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 30px 32px;
-}
-
-.audience-tag {
-    display: inline-block;
-    color: var(--red);
-    font-size: calc(11px * var(--ndms-font-scale, 1));
-    font-weight: 850;
-    letter-spacing: 1.4px;
-    margin-bottom: 14px;
-}
-
-.audience-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px 20px;
-}
-
-.audience-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 9px;
-    color: var(--text);
-    font-size: calc(14px * var(--ndms-font-scale, 1));
-    line-height: 1.5;
-}
-
-.audience-list li span {
-    color: var(--red);
-    font-weight: 850;
-    flex-shrink: 0;
-}
-
-/* =========================================================
-   COMMUNITY PARTICIPATION CTA
-   ========================================================= */
-
-.about-cta {
-    margin: 0 0 70px;
-}
-
-.about-cta-inner {
-    background: var(--navy);
-    border-radius: 16px;
-    padding: 52px 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 32px;
-}
-
-.about-cta-copy h2 {
-    color: var(--on-dark);
-    font-size: calc(26px * var(--ndms-font-scale, 1));
-    font-weight: 800;
-    line-height: 1.3;
+.ab-principle h3 {
     margin-bottom: 10px;
+
+    color: var(--heading);
+
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -.005em;
+    line-height: 1.3;
 }
 
-.about-cta-copy p {
-    color: rgba(255, 255, 255, .68);
-    font-size: calc(14px * var(--ndms-font-scale, 1));
+.ab-principle p {
+    max-width: 56ch;
+
+    color: var(--muted);
+
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+
+/* =========================================================
+   7. HOW NDMS WORKS
+   Desktop: five steps in a row, joined by connectors that
+   draw in once (about.js adds .is-visible). Below 1024px the
+   same list stacks vertically with a vertical connector.
+   Without JS the connectors are fully drawn.
+   ========================================================= */
+
+.ab-flow {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    column-gap: var(--ab-flow-gap);
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.ab-step {
+    position: relative;
+}
+
+.ab-step-node {
+    position: relative;
+    z-index: 1;
+
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border: 2px solid var(--red);
+    border-radius: 50%;
+
+    background: var(--background);
+    color: var(--red);
+
+    font-size: .9375rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Administrator steps are filled, citizen / public steps are outlined,
+   so the flow shows who is acting without extra labels. */
+.ab-step--admin .ab-step-node {
+    background: var(--red);
+    color: var(--white);
+}
+
+/* Connector: a base line (::before) and a filled line (::after)
+   from this node to the next one. */
+.ab-step:not(:last-child)::before,
+.ab-step:not(:last-child)::after {
+    content: "";
+
+    position: absolute;
+    top: 19px;
+    left: 50px;
+
+    width: calc(100% + var(--ab-flow-gap) - 60px);
+    height: 2px;
+}
+
+.ab-step:not(:last-child)::before {
+    background: var(--border);
+}
+
+.ab-step:not(:last-child)::after {
+    background: var(--red);
+
+    transform-origin: left center;
+    transition: transform .6s var(--ease);
+}
+
+.js .ab-flow:not(.is-visible) .ab-step::after {
+    transform: scaleX(0);
+}
+
+.ab-step:nth-child(1)::after { transition-delay: .15s; }
+.ab-step:nth-child(2)::after { transition-delay: .6s; }
+.ab-step:nth-child(3)::after { transition-delay: 1.05s; }
+.ab-step:nth-child(4)::after { transition-delay: 1.5s; }
+
+.ab-step-actor {
+    margin: 20px 0 4px;
+
+    color: var(--muted);
+
+    font-size: .8125rem;
+    font-weight: 650;
+    letter-spacing: .01em;
+}
+
+.ab-step h3 {
+    margin-bottom: 8px;
+
+    color: var(--heading);
+
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -.005em;
+    line-height: 1.3;
+}
+
+.ab-step > p:last-child {
+    max-width: 30ch;
+
+    color: var(--muted);
+
+    font-size: .9375rem;
+    line-height: 1.65;
+}
+
+
+/* =========================================================
+   8. PLATFORM CAPABILITIES
+   One bordered surface divided by hairlines into 3 x 2 cells
+   (the 1px gap shows the border colour). Not six cards.
+   ========================================================= */
+
+.ab-capabilities {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    background: var(--border);
+
+    list-style: none;
+}
+
+.ab-capability {
+    padding: 32px 28px 36px;
+
+    background: var(--white);
+}
+
+.ab-capability-icon {
+    display: block;
+
+    width: 26px;
+    height: 26px;
+
+    margin-bottom: 20px;
+
+    color: var(--red);
+}
+
+.ab-capability-icon svg {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+}
+
+.ab-capability h3 {
+    margin-bottom: 8px;
+
+    color: var(--heading);
+
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.ab-capability p {
+    max-width: 34ch;
+
+    color: var(--muted);
+
+    font-size: .9375rem;
     line-height: 1.7;
-    max-width: 460px;
 }
 
-.about-cta-btn {
-    flex-shrink: 0;
-    display: inline-flex;
+
+/* =========================================================
+   9. WHO NDMS IS FOR
+   Two audiences in one bordered surface, split by a rule.
+   The administrator side is tinted so the two read as
+   different roles at a glance.
+   ========================================================= */
+
+.ab-audience {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+
+    background: var(--white);
+}
+
+.ab-audience-col {
+    padding: clamp(28px, 4vw, 48px);
+}
+
+.ab-audience-col--admin {
+    border-left: 1px solid var(--border);
+
+    background: var(--soft-gray);
+}
+
+.ab-audience-col h3 {
+    margin-bottom: 10px;
+
+    color: var(--heading);
+
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    line-height: 1.25;
+}
+
+.ab-audience-note {
+    max-width: 44ch;
+    margin-bottom: 28px;
+
+    color: var(--muted);
+
+    font-size: 1rem;
+    line-height: 1.65;
+}
+
+.ab-audience-list {
+    margin: 0;
+    padding: 0;
+
+    border-bottom: 1px solid var(--border);
+
+    list-style: none;
+}
+
+.ab-audience-list li {
+    padding: 14px 0;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text);
+
+    font-size: .9375rem;
+    line-height: 1.55;
+}
+
+.ab-audience-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+
+    margin-top: 24px;
+}
+
+
+/* =========================================================
+   10. FINAL CTA
+   Same calm navy panel as the Home page report CTA.
+   ========================================================= */
+
+.ab-section--cta {
+    padding-top: 0;
+}
+
+.ab-cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 8px;
-    height: 46px;
-    padding: 0 24px;
-    border-radius: 8px;
-    background: var(--on-dark);
-    color: var(--navy);
-    font-size: calc(13.5px * var(--ndms-font-scale, 1));
-    font-weight: 750;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background 200ms ease, transform 200ms ease, box-shadow 200ms ease;
-    box-shadow: 0 4px 12px color-mix(in srgb, var(--red) 25%, transparent);
+    gap: 32px 56px;
+
+    padding: clamp(28px, 5vw, 56px);
+
+    border: 1px solid var(--navy-soft);
+    border-radius: 18px;
+
+    background: var(--navy-light);
+    color: var(--on-dark);
 }
 
-.about-cta-btn:hover {
-    background: color-mix(in srgb, var(--on-dark) 88%, var(--navy));
-    transform: translateY(-1px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, .28);
+.ab-cta h2 {
+    max-width: 24ch;
+    margin-bottom: 16px;
+
+    color: var(--on-dark);
 }
 
-.about-cta-btn span {
-    transition: transform 200ms ease;
+.ab-cta p {
+    max-width: 64ch;
+
+    color: var(--on-dark-muted);
+
+    font-size: 1.0625rem;
+    line-height: 1.7;
 }
 
-.about-cta-btn:hover span {
-    transform: translateX(3px);
+.ab-cta-action {
+    justify-self: end;
 }
+
 
 /* =========================================================
-   SCROLL REVEAL
+   11. RESPONSIVE
    ========================================================= */
 
-.reveal {
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity .52s cubic-bezier(.22, .61, .36, 1),
-                transform .52s cubic-bezier(.22, .61, .36, 1);
-}
+/* ---- Flow: below 1024px the five steps stack vertically ---- */
+@media (max-width: 1023px) {
 
-.reveal.reveal-visible {
-    opacity: 1;
-    transform: none;
-}
-
-/* =========================================================
-   TABLET (<=1050px)
-   ========================================================= */
-
-@media (max-width: 1050px) {
-    .about-main {
-        width: min(100% - 40px, 1000px);
+    .ab-flow {
+        grid-template-columns: minmax(0, 1fr);
+        max-width: 560px;
     }
 
-    .about-hero-content h1 {
-        font-size: calc(38px * var(--ndms-font-scale, 1));
+    .ab-step {
+        padding: 0 0 36px 64px;
     }
 
-    .what-layout,
-.audience-layout {
-        grid-template-columns: 1fr;
-        gap: 36px;
+    .ab-step:last-child {
+        padding-bottom: 0;
     }
 
-    .process-timeline {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 28px 20px;
-    }
-
-    .process-step::before {
-        display: none;
-    }
-
-    .connects-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* =========================================================
-   MOBILE / SMALL TABLET (<=850px)
-   ========================================================= */
-
-@media (max-width: 850px) {
-    .about-main {
-        width: calc(100% - 30px);
-    }
-
-    .about-hero {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 34px;
-        padding: 40px 0 48px;
-    }
-
-    .about-hero-content {
-        max-width: 100%;
-    }
-
-    .about-hero-content h1 {
-        font-size: calc(34px * var(--ndms-font-scale, 1));
-    }
-
-    .ndms-visual-area-wrap {
-        align-self: center;
-    }
-
-    .about-section {
-        padding: 52px 0;
-    }
-
-    .why-item {
-        grid-template-columns: 44px 1fr;
-        gap: 16px;
-    }
-
-    .process-timeline {
-        grid-template-columns: 1fr;
-        gap: 0;
-    }
-
-    .process-step {
-        padding: 20px 0 20px 30px;
-        border-left: 1.5px solid var(--border);
-    }
-
-    .process-step::before {
-        display: none;
-    }
-
-    .process-number {
+    .ab-step-node {
         position: absolute;
-        left: -13px;
-        top: 20px;
+        top: 0;
+        left: 0;
     }
 
-    /* keeps the number badges (which straddle the line) on-screen */
-    .process-timeline {
-        margin-left: 14px;
+    .ab-step:not(:last-child)::before,
+    .ab-step:not(:last-child)::after {
+        top: 50px;
+        bottom: 10px;
+        left: 19px;
+
+        width: 2px;
+        height: auto;
     }
 
-    .connects-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
+    .ab-step:not(:last-child)::after {
+        transform-origin: center top;
     }
 
-    .audience-list {
-        grid-template-columns: 1fr;
+    .js .ab-flow:not(.is-visible) .ab-step::after {
+        transform: scaleY(0);
     }
 
-    .about-cta-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 36px 28px;
+    .ab-step-actor {
+        min-height: 40px;
+        margin: 0 0 2px;
+
+        display: flex;
+        align-items: center;
     }
 
-    .about-cta-btn {
-        width: 100%;
-        justify-content: center;
+    .ab-step > p:last-child {
+        max-width: 46ch;
     }
 }
 
-/* =========================================================
-   MOBILE (<=600px)
-   ========================================================= */
+/* ---- Tablet ---- */
+@media (max-width: 900px) {
 
+    .ab-hero-grid,
+    .ab-head,
+    .ab-why {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ab-hero-copy {
+        max-width: 640px;
+    }
+
+    .ab-hero-media {
+        aspect-ratio: 4 / 3;
+    }
+
+    .ab-head {
+        align-items: start;
+    }
+
+    .ab-why-intro {
+        position: static;
+    }
+
+    .ab-capabilities {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+
+    .ab-audience {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ab-audience-col--admin {
+        border-top: 1px solid var(--border);
+        border-left: 0;
+    }
+
+    .ab-cta {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ab-cta-action {
+        justify-self: start;
+    }
+}
+
+@media (max-width: 720px) {
+
+    .ab-stages {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+    }
+
+    .ab-stage p {
+        max-width: 52ch;
+    }
+}
+
+/* ---- Mobile ---- */
 @media (max-width: 600px) {
-    .about-main {
-        width: calc(100% - 22px);
+
+    .ab-capabilities {
+        grid-template-columns: minmax(0, 1fr);
     }
 
-    .about-label {
-        font-size: calc(9px * var(--ndms-font-scale, 1));
-        letter-spacing: 1.1px;
-    }
-
-    .about-hero-content h1 {
-        font-size: calc(30px * var(--ndms-font-scale, 1));
-        letter-spacing: -.4px;
-    }
-
-    .about-hero-content > p {
-        font-size: calc(13.5px * var(--ndms-font-scale, 1));
-    }
-
-    .about-hero-actions {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .about-primary-btn,
-.about-secondary-btn {
-        width: 100%;
-    }
-
-    .ndms-visual,
-.ndms-visual-core {
-        transform: scale(.82);
-    }
-
-    .section-heading h2 {
-        font-size: calc(24px * var(--ndms-font-scale, 1));
-    }
-
-    .section-heading p {
-        font-size: calc(13px * var(--ndms-font-scale, 1));
-    }
-
-    .mini-flow-row {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .mini-flow-arrow {
-        transform: rotate(90deg);
-        align-self: center;
-    }
-
-    .connects-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .about-cta-copy h2 {
-        font-size: calc(22px * var(--ndms-font-scale, 1));
+    .ab-capability {
+        padding: 28px 24px 32px;
     }
 }
 
-/* =========================================================
-   VERY SMALL MOBILE (<=380px)
-   ========================================================= */
+@media (max-width: 480px) {
 
-@media (max-width: 380px) {
-    .about-hero-content h1 {
-        font-size: calc(27px * var(--ndms-font-scale, 1));
+    .about-page {
+        --ab-gutter: 40px;
     }
 
-    .ndms-avatar-wrapper {
-        flex-shrink: 0;
+    .ab-actions {
+        flex-direction: column;
     }
 
-    .about-main {
-        width: calc(100% - 18px);
+    .ab-actions .ab-btn,
+    .ab-cta-action,
+    .ab-cta-action .ab-btn {
+        width: 100%;
     }
 
-    .ndms-visual,
-.ndms-visual-core {
-        transform: scale(.72);
+    .ab-hero-media {
+        aspect-ratio: 5 / 4;
     }
 }
 
+
 /* =========================================================
-   REDUCED MOTION ACCESSIBILITY
+   12. REDUCED MOTION
+   The only motion on this page is a short hero entrance and
+   the one-time drawing of the flow connectors. Both are
+   removed, and the connectors are shown fully drawn.
    ========================================================= */
 
-@media (prefers-reduced-motion: reduce) {
-    html {
-        scroll-behavior: auto;
+@media (prefers-reduced-motion: no-preference) {
+
+    .ab-hero-copy > * {
+        animation: abIn .7s var(--ease) both;
     }
 
-    .reveal {
+    .ab-hero-copy > :nth-child(1) { animation-delay: .05s; }
+    .ab-hero-copy > :nth-child(2) { animation-delay: .15s; }
+    .ab-hero-copy > :nth-child(3) { animation-delay: .25s; }
+    .ab-hero-copy > :nth-child(4) { animation-delay: .35s; }
+
+    .ab-hero-media img {
+        animation: abSettle 1.4s var(--ease) both;
+    }
+}
+
+@keyframes abIn {
+    from {
+        opacity: 0;
+        transform: translateY(14px);
+    }
+    to {
         opacity: 1;
         transform: none;
+    }
+}
+
+@keyframes abSettle {
+    from { transform: scale(1.04); }
+    to { transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ab-btn,
+    .ab-btn-arrow,
+    .ab-step:not(:last-child)::after {
         transition: none;
     }
 
-    .ndms-visual-core::before,
-.ndms-visual-core::after,
-.ndms-visual-ring,
-.ndms-visual-ring::before,
-.ndms-visual-ring::after {
-        animation: none;
-    }
-}
-
-/* =========================================================
-   TOUCH DEVICE SAFETY
-   ========================================================= */
-
-@media (hover: none) {
-    .about-primary-btn:hover,
-.about-secondary-btn:hover,
-.about-cta-btn:hover {
+    .js .ab-flow:not(.is-visible) .ab-step::after {
         transform: none;
     }
 }

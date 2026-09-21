@@ -3,25 +3,20 @@
    Clean Enterprise + Existing NDMS Disaster Image
    ========================================================= */
 
+/* Colour tokens come from the Citizen "Sentinel Teal" design system
+   (ndms-theme.css, loaded by login.html through partials/theme_head.html)
+   so the Admin sign-in page is themed like every other NDMS page. Only
+   names that system does not define are declared here, all derived from
+   it. */
 :root {
 
-    --navy: #111827;
-    --navy-deep: #0d1420;
+    --navy-deep: var(--navy-2);
 
-    --red: #b42318;
-    --red-dark: #971d15;
-    --red-light: #fff6f5;
-
-    --text: #344054;
-    --muted: #667085;
-    --placeholder: #98a2b3;
-
-    --border: #e4e7ec;
-    --border-hover: #d0d5dd;
-
-    --white: #ffffff;
-
-    --green: #16804f;
+    --placeholder: color-mix(in srgb, var(--muted) 72%, var(--white));
+    --light-muted: var(--placeholder);
+    --border-hover: var(--c-border-9);
+    --border-strong: color-mix(in srgb, var(--muted) 22%, var(--border));
+    --danger-on-dark: #ffb5ad;
 
     --radius: 9px;
 
@@ -56,7 +51,7 @@ body {
     overflow-x: hidden;
 
     background:
-        #f8f9fb;
+        var(--background);
 
     color:
         var(--text);
@@ -100,7 +95,7 @@ svg {
 ::selection {
 
     background:
-        rgba(180,35,24,.14);
+        color-mix(in srgb, var(--red) 14%, transparent);
 
 }
 
@@ -149,7 +144,7 @@ svg {
         var(--navy-deep);
 
     color:
-        var(--white);
+        var(--on-dark);
 
 }
 
@@ -199,16 +194,16 @@ svg {
 
         linear-gradient(
             90deg,
-            rgba(13,20,32,.97) 0%,
-            rgba(13,20,32,.86) 48%,
-            rgba(13,20,32,.67) 100%
+            color-mix(in srgb, var(--navy-2) 97%, transparent) 0%,
+            color-mix(in srgb, var(--navy-2) 86%, transparent) 48%,
+            color-mix(in srgb, var(--navy-2) 67%, transparent) 100%
         ),
 
         linear-gradient(
             180deg,
-            rgba(13,20,32,.34) 0%,
-            rgba(13,20,32,.12) 48%,
-            rgba(13,20,32,.68) 100%
+            color-mix(in srgb, var(--navy-2) 34%, transparent) 0%,
+            color-mix(in srgb, var(--navy-2) 12%, transparent) 48%,
+            color-mix(in srgb, var(--navy-2) 68%, transparent) 100%
         );
 
 }
@@ -235,7 +230,7 @@ svg {
     background:
         linear-gradient(
             to top,
-            rgba(7,12,20,.45),
+            color-mix(in srgb, var(--navy-2) 45%, transparent),
             transparent
         );
 
@@ -277,10 +272,10 @@ svg {
     width: fit-content;
 
     display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
 
-    align-items: center;
-
-    gap: 12px;
+    gap: 10px;
 
 }
 
@@ -296,33 +291,15 @@ svg {
 }
 
 
-.admin-logo {
+/* Citizen NDMS logo (same asset as the Citizen auth brand panel). */
+.admin-logo-image {
 
-    width: 40px;
-    height: 40px;
+    display: block;
 
-    display: flex;
+    height: 42px;
+    width: auto;
 
-    align-items: center;
-    justify-content: center;
-
-    border-radius: 8px;
-
-    background:
-        var(--red);
-
-    color:
-        #ffffff;
-
-    font-size: 12px;
-
-    font-weight: 800;
-
-    letter-spacing: .2px;
-
-    box-shadow:
-        0 5px 18px
-        rgba(0,0,0,.16);
+    object-fit: contain;
 
 }
 
@@ -338,23 +315,14 @@ svg {
 }
 
 
-.admin-brand-text strong {
-
-    font-size: 17px;
-
-    font-weight: 780;
-
-    line-height: 1;
-
-}
 
 
 .admin-brand-text small {
 
     color:
-        rgba(255,255,255,.48);
+        var(--on-dark-muted);
 
-    font-size: 8px;
+    font-size: 9.5px;
 
     line-height: 1.3;
 
@@ -402,7 +370,7 @@ svg {
     margin: 0;
 
     color:
-        #ffffff;
+        var(--on-dark);
 
     font-size:
         clamp(35px, 4vw, 50px);
@@ -415,7 +383,7 @@ svg {
 
     text-shadow:
         0 2px 18px
-        rgba(0,0,0,.12);
+        color-mix(in srgb, var(--navy-2) 12%, transparent);
 
 }
 
@@ -475,11 +443,11 @@ svg {
     border-radius: 50%;
 
     background:
-        #43b976;
+        var(--green);
 
     box-shadow:
         0 0 0 3px
-        rgba(67,185,118,.10);
+        color-mix(in srgb, var(--green) 10%, transparent);
 
 }
 
@@ -502,7 +470,7 @@ svg {
         48px 70px;
 
     background:
-        #ffffff;
+        var(--white);
 
 }
 
@@ -565,7 +533,7 @@ svg {
     margin: 0;
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size: 30px;
 
@@ -614,16 +582,16 @@ svg {
 
     border:
         1px solid
-        #efd1cd;
+        var(--danger-border);
 
     border-radius:
         var(--radius);
 
     background:
-        var(--red-light);
+        var(--danger-bg);
 
     color:
-        var(--red-dark);
+        var(--danger-dark);
 
     font-size: 11px;
 
@@ -647,10 +615,10 @@ svg {
     border-radius: 50%;
 
     background:
-        var(--red);
+        var(--danger);
 
     color:
-        #ffffff;
+        var(--white);
 
     font-size: 10px;
 
@@ -727,10 +695,10 @@ svg {
     outline: none;
 
     background:
-        #ffffff;
+        var(--white);
 
     color:
-        var(--navy);
+        var(--heading);
 
     font-size: 12px;
 
@@ -764,7 +732,7 @@ svg {
 
     box-shadow:
         0 0 0 3px
-        rgba(180,35,24,.06);
+        color-mix(in srgb, var(--red) 6%, transparent);
 
 }
 
@@ -855,7 +823,7 @@ svg {
         var(--text);
 
     background:
-        #f2f4f7;
+        var(--soft-gray);
 
 }
 
@@ -864,7 +832,7 @@ svg {
 
     outline:
         2px solid
-        rgba(180,35,24,.25);
+        color-mix(in srgb, var(--red) 25%, transparent);
 
     outline-offset: 2px;
 
@@ -926,7 +894,7 @@ svg {
         var(--red);
 
     color:
-        #ffffff;
+        var(--white);
 
     cursor: pointer;
 
@@ -952,7 +920,7 @@ svg {
 
     box-shadow:
         0 7px 18px
-        rgba(180,35,24,.14);
+        color-mix(in srgb, var(--red) 14%, transparent);
 
 }
 
@@ -969,7 +937,7 @@ svg {
 
     outline:
         2px solid
-        rgba(180,35,24,.28);
+        color-mix(in srgb, var(--red) 28%, transparent);
 
     outline-offset: 3px;
 
@@ -1058,7 +1026,7 @@ svg {
         rgba(255,255,255,.35);
 
     border-top-color:
-        #ffffff;
+        var(--white);
 
     border-radius: 50%;
 
@@ -1093,7 +1061,7 @@ svg {
     margin-top: 19px;
 
     color:
-        #98a2b3;
+        var(--light-muted);
 
     font-size: 8.5px;
 
@@ -1129,10 +1097,10 @@ svg {
 
     border-top:
         1px solid
-        #f0f1f3;
+        var(--border);
 
     color:
-        #98a2b3;
+        var(--light-muted);
 
     font-size: 8.5px;
 
@@ -1170,7 +1138,7 @@ svg {
 
     outline:
         2px solid
-        rgba(180,35,24,.25);
+        color-mix(in srgb, var(--red) 25%, transparent);
 
     outline-offset: 4px;
 
@@ -1284,34 +1252,21 @@ svg {
 
         outline:
             2px solid
-            rgba(180,35,24,.25);
+            color-mix(in srgb, var(--red) 25%, transparent);
 
         outline-offset: 5px;
 
     }
 
 
-    .mobile-logo {
+    .mobile-logo-image {
 
-        width: 36px;
-        height: 36px;
+        display: block;
 
-        display: flex;
+        height: 30px;
+        width: auto;
 
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 7px;
-
-        background:
-            var(--red);
-
-        color:
-            #ffffff;
-
-        font-size: 10px;
-
-        font-weight: 800;
+        object-fit: contain;
 
     }
 
@@ -1327,14 +1282,6 @@ svg {
     }
 
 
-    .mobile-brand strong {
-
-        color:
-            var(--navy);
-
-        font-size: 15px;
-
-    }
 
 
     .mobile-brand small {
@@ -1342,7 +1289,9 @@ svg {
         color:
             var(--muted);
 
-        font-size: 8px;
+        font-size: 10.5px;
+
+        font-weight: 600;
 
     }
 

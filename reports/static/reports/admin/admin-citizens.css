@@ -41,7 +41,7 @@
     display: flex;
     align-items: center;
     min-height: 37px;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
 }
@@ -56,8 +56,8 @@
 
 .citizens-search-field:focus-within,
 .citizens-select-field:focus-within {
-    border-color: #b4bbc6;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .citizens-search-field svg {
@@ -109,13 +109,13 @@
 
 .citizens-filter-button {
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ndms-navy);
-    border: 1px solid var(--ndms-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .citizens-filter-button:hover {
-    background: var(--ndms-navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .citizens-reset-button {
@@ -126,8 +126,8 @@
 }
 
 .citizens-reset-button:hover {
-    color: var(--ndms-navy);
-    background: #ffffff;
+    color: var(--heading);
+    background: var(--white);
     border-color: var(--ndms-border);
 }
 
@@ -148,11 +148,11 @@
    their own accent color on top of the same card shell. */
 
 .citizens-summary-active::before {
-    background: var(--ndms-green);
+    background: var(--green);
 }
 
 .citizens-summary-inactive::before {
-    background: var(--ndms-red);
+    background: var(--danger);
 }
 
 
@@ -184,13 +184,13 @@
    ========================================================= */
 
 .citizens-status-active {
-    color: var(--ndms-green);
-    background: #ecfdf3;
+    color: var(--green-text);
+    background: var(--green-bg);
 }
 
 .citizens-status-inactive {
-    color: var(--ndms-red);
-    background: #fef3f2;
+    color: var(--danger);
+    background: var(--danger-bg);
 }
 
 

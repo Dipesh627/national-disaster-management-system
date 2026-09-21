@@ -7,29 +7,29 @@
    ========================================================= */
 
 .ds-page {
-    --ds-navy: #172033;
-    --ds-navy-light: #202b40;
+    --ds-navy: var(--heading);
+    --ds-navy-light: var(--btn-dark-hover);
 
-    --ds-red: #b42318;
-    --ds-red-dark: #8f1d16;
-    --ds-red-soft: #fef3f2;
+    --ds-red: var(--red);
+    --ds-red-dark: var(--red-dark);
+    --ds-red-soft: var(--light-red);
 
-    --ds-green: #16794a;
-    --ds-green-soft: #ecfdf3;
+    --ds-green: var(--green-text);
+    --ds-green-soft: var(--green-bg);
 
-    --ds-orange: #b54708;
-    --ds-orange-soft: #fffaeb;
+    --ds-orange: var(--orange-text);
+    --ds-orange-soft: var(--orange-bg);
 
-    --ds-text: #344054;
-    --ds-muted: #667085;
-    --ds-light-muted: #98a2b3;
+    --ds-text: var(--text);
+    --ds-muted: var(--muted);
+    --ds-light-muted: var(--light-muted);
 
-    --ds-border: #e4e7ec;
-    --ds-border-strong: #d0d5dd;
+    --ds-border: var(--border);
+    --ds-border-strong: var(--border-strong);
 
-    --ds-bg: #f8f9fb;
-    --ds-soft: #f2f4f7;
-    --ds-white: #ffffff;
+    --ds-bg: var(--background);
+    --ds-soft: var(--soft-gray);
+    --ds-white: var(--white);
 
     width: 100%;
     max-width: 1480px;
@@ -64,7 +64,7 @@
 .ds-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--ds-red);
+    color: var(--red);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -73,7 +73,7 @@
 
 .ds-page-header h1 {
     margin: 0;
-    color: var(--ds-navy);
+    color: var(--heading);
     font-size: 25px;
     font-weight: 720;
     line-height: 1.2;
@@ -98,14 +98,14 @@
 .ds-primary-button {
     flex: 0 0 auto;
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ds-navy);
-    border: 1px solid var(--ds-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .ds-primary-button:hover {
-    background: var(--ds-navy-light);
-    border-color: var(--ds-navy-light);
+    background: var(--btn-dark-hover);
+    border-color: var(--btn-dark-hover);
 }
 
 .ds-primary-button svg {
@@ -116,14 +116,14 @@
 .ds-secondary-button {
     padding: 0 12px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
 }
 
 .ds-secondary-button:hover {
-    color: var(--ds-navy);
-    background: #fbfcfd;
-    border-color: #bfc6d0;
+    color: var(--heading);
+    background: var(--background);
+    border-color: var(--c-border-9);
 }
 
 .ds-secondary-button svg {
@@ -141,19 +141,19 @@
    ========================================================= */
 
 .ds-summary-active::before {
-    background: var(--ds-red);
+    background: var(--danger);
 }
 
 .ds-summary-under_control::before {
-    background: #f79009;
+    background: var(--orange);
 }
 
 .ds-summary-resolved::before {
-    background: var(--ds-green);
+    background: var(--green);
 }
 
 .ds-summary-closed::before {
-    background: #667085;
+    background: var(--muted);
 }
 
 
@@ -193,7 +193,7 @@
     min-height: 38px;
     padding: 0 12px 0 33px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
@@ -202,8 +202,8 @@
 }
 
 .ds-search-field input:focus {
-    border-color: #9ca5b2;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ds-select-field {
@@ -214,7 +214,7 @@
     min-height: 38px;
     padding: 0 26px 0 11px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
@@ -236,13 +236,13 @@
 
 .ds-filter-button {
     padding: 0 15px;
-    color: #ffffff;
-    background: var(--ds-navy);
-    border: 1px solid var(--ds-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .ds-filter-button:hover {
-    background: var(--ds-navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .ds-reset-button {
@@ -253,7 +253,7 @@
 }
 
 .ds-reset-button:hover {
-    color: var(--ds-navy);
+    color: var(--heading);
     text-decoration: underline;
 }
 
@@ -264,7 +264,7 @@
 
 .ds-table-panel {
     overflow: visible;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border);
     border-radius: 10px;
 }
@@ -285,7 +285,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--ds-muted);
-    background: #fcfcfd;
+    background: var(--background);
     border-bottom: 1px solid var(--ds-border);
     font-size: 9px;
     font-weight: 720;
@@ -297,7 +297,7 @@
 .ds-table tbody td {
     padding: 11px 17px;
     color: var(--ds-text);
-    border-bottom: 1px solid #f0f1f3;
+    border-bottom: 1px solid var(--border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -312,7 +312,7 @@
 }
 
 .ds-table-row:hover {
-    background: #fcfdfd;
+    background: var(--background);
 }
 
 .ds-col-actions {
@@ -323,7 +323,7 @@
     display: block;
     overflow: hidden;
     max-width: 260px;
-    color: var(--ds-navy);
+    color: var(--heading);
     font-size: 11px;
     font-weight: 690;
     line-height: 1.35;
@@ -362,29 +362,29 @@
     border-radius: 50%;
 }
 
-.ds-severity-low { color: var(--ds-green); background: var(--ds-green-soft); }
-.ds-severity-low > i { background: var(--ds-green); }
+.ds-severity-low { color: var(--green-text); background: var(--ds-green-soft); }
+.ds-severity-low > i { background: var(--green); }
 
-.ds-severity-medium { color: var(--ds-orange); background: var(--ds-orange-soft); }
-.ds-severity-medium > i { background: var(--ds-orange); }
+.ds-severity-medium { color: var(--orange-text); background: var(--ds-orange-soft); }
+.ds-severity-medium > i { background: var(--orange); }
 
-.ds-severity-high { color: #b93815; background: #fff4ed; }
-.ds-severity-high > i { background: #b93815; }
+.ds-severity-high { color: var(--orange-text); background: var(--orange-bg); }
+.ds-severity-high > i { background: var(--orange); }
 
-.ds-severity-critical { color: var(--ds-red); background: var(--ds-red-soft); }
-.ds-severity-critical > i { background: var(--ds-red); }
+.ds-severity-critical { color: var(--danger); background: var(--danger-bg); }
+.ds-severity-critical > i { background: var(--danger); }
 
-.ds-status-active { color: var(--ds-red); background: var(--ds-red-soft); }
-.ds-status-active > i { background: var(--ds-red); }
+.ds-status-active { color: var(--danger); background: var(--danger-bg); }
+.ds-status-active > i { background: var(--danger); }
 
-.ds-status-under_control { color: var(--ds-orange); background: var(--ds-orange-soft); }
-.ds-status-under_control > i { background: var(--ds-orange); }
+.ds-status-under_control { color: var(--orange-text); background: var(--ds-orange-soft); }
+.ds-status-under_control > i { background: var(--orange); }
 
-.ds-status-resolved { color: var(--ds-green); background: var(--ds-green-soft); }
-.ds-status-resolved > i { background: var(--ds-green); }
+.ds-status-resolved { color: var(--green-text); background: var(--ds-green-soft); }
+.ds-status-resolved > i { background: var(--green); }
 
 .ds-status-closed { color: var(--ds-muted); background: var(--ds-soft); }
-.ds-status-closed > i { background: #98a2b3; }
+.ds-status-closed > i { background: var(--light-muted); }
 
 
 /* =========================================================
@@ -430,19 +430,19 @@
 
 .ds-action-edit:hover,
 .ds-action-view:hover {
-    color: var(--ds-navy);
+    color: var(--heading);
 }
 
 .ds-action-close {
-    color: #8f5a55;
+    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
 }
 
 .ds-action-close:hover {
-    color: var(--ds-red);
+    color: var(--danger);
 }
 
 .ds-action:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .09);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -462,7 +462,7 @@
 
 .ds-empty-state h3 {
     margin: 0;
-    color: var(--ds-navy);
+    color: var(--heading);
     font-size: 13px;
     font-weight: 720;
 }
@@ -496,7 +496,7 @@
 }
 
 .ds-pagination-summary strong {
-    color: var(--ds-navy);
+    color: var(--heading);
 }
 
 .ds-pagination-nav {
@@ -515,7 +515,7 @@
     height: 28px;
     padding: 0 6px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 6px;
     font-size: 10px;
@@ -530,14 +530,14 @@
 
 .ds-pagination-number:hover,
 .ds-pagination-button:not(.is-disabled):hover {
-    color: var(--ds-navy);
+    color: var(--heading);
     background: var(--ds-soft);
 }
 
 .ds-pagination-number.is-current {
-    color: #ffffff;
-    background: var(--ds-navy);
-    border-color: var(--ds-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border-color: var(--btn-dark);
 }
 
 .ds-pagination-button.is-disabled {
@@ -581,7 +581,7 @@
 
 .ds-form-shell {
     min-width: 0;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border);
     border-radius: 10px;
     overflow: hidden;
@@ -598,7 +598,7 @@
 .ds-section-kicker {
     display: block;
     margin-bottom: 4px;
-    color: var(--ds-red);
+    color: var(--red);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -606,7 +606,7 @@
 
 .ds-form-section-heading h2 {
     margin: 0;
-    color: var(--ds-navy);
+    color: var(--heading);
     font-size: 14px;
     font-weight: 710;
 }
@@ -656,7 +656,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
@@ -674,8 +674,8 @@
 }
 
 .ds-form-control:focus {
-    border-color: #9ca5b2;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ds-form-control[readonly] {
@@ -698,7 +698,7 @@ textarea.ds-form-textarea {
 }
 
 .ds-field-hint a {
-    color: var(--ds-navy);
+    color: var(--heading);
     font-weight: 700;
 }
 
@@ -707,7 +707,7 @@ textarea.ds-form-textarea {
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--ds-red);
+    color: var(--danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -726,8 +726,8 @@ textarea.ds-form-textarea {
     font-size: 9.5px;
 }
 
-.ds-map-status.ds-status-success { color: var(--ds-green); }
-.ds-map-status.ds-status-error { color: var(--ds-red); }
+.ds-map-status.ds-status-success { color: var(--green-text); }
+.ds-map-status.ds-status-error { color: var(--danger); }
 
 .ds-map-container {
     position: relative;
@@ -788,15 +788,15 @@ textarea.ds-form-textarea {
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
-    background: #ffffff;
+    background: var(--white);
     color: var(--ds-text);
     font-family: inherit;
     font-size: 11px;
-    box-shadow: 0 2px 8px rgba(16, 24, 40, .09);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--navy-2) 9%, transparent);
 }
 
 .ds-map-search-input:focus {
-    border-color: #9ca5b2;
+    border-color: var(--field-focus-border);
 }
 
 
@@ -819,10 +819,10 @@ textarea.ds-form-textarea {
 
     padding: 3px;
 
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(16, 24, 40, .09);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--navy-2) 9%, transparent);
 }
 
 .ds-map-type-btn {
@@ -851,16 +851,16 @@ textarea.ds-form-textarea {
 }
 
 .ds-map-type-btn:hover {
-    color: var(--ds-navy);
+    color: var(--heading);
 }
 
 .ds-map-type-btn.is-active {
-    color: #ffffff;
-    background: var(--ds-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
 }
 
 .ds-map-type-btn.is-active:hover {
-    color: #ffffff;
+    color: var(--on-dark);
 }
 
 
@@ -881,18 +881,18 @@ textarea.ds-form-textarea {
     margin-bottom: 14px;
     background: var(--ds-soft);
     border: 1px solid var(--ds-border);
-    border-left: 3px solid var(--ds-green);
+    border-left: 3px solid var(--green);
     border-radius: 8px;
 }
 
 .ds-source-report-banner-heading {
-    color: var(--ds-navy);
+    color: var(--heading);
     font-size: 11px;
     font-weight: 750;
 }
 
 .ds-source-report-banner-heading a {
-    color: var(--ds-green);
+    color: var(--green-text);
     text-decoration: none;
 }
 
@@ -977,15 +977,15 @@ textarea.ds-form-textarea {
     align-items: flex-end;
     justify-content: flex-end;
     padding: 6px;
-    color: #ffffff;
-    background: rgba(22, 121, 74, .28);
+    color: var(--on-dark);
+    background: color-mix(in srgb, var(--green) 28%, transparent);
 }
 
 .ds-photo-select-check svg {
     width: 16px;
     height: 16px;
     padding: 2px;
-    background: var(--ds-green);
+    background: var(--green);
     border-radius: 50%;
 }
 
@@ -994,11 +994,11 @@ textarea.ds-form-textarea {
 }
 
 .ds-photo-select-item:has(.ds-photo-select-checkbox:checked) {
-    border-color: var(--ds-green);
+    border-color: var(--green);
 }
 
 .ds-photo-select-checkbox:focus-visible {
-    outline: 2px solid var(--ds-green);
+    outline: 2px solid var(--green);
     outline-offset: 2px;
 }
 
@@ -1040,7 +1040,7 @@ textarea.ds-form-textarea {
     height: 37px;
     padding: 0 14px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     font-size: 10.5px;
@@ -1052,12 +1052,12 @@ textarea.ds-form-textarea {
 }
 
 .ds-photo-upload-button:hover {
-    color: var(--ds-navy);
-    border-color: #9ca5b2;
+    color: var(--heading);
+    border-color: var(--field-focus-border);
 }
 
 .ds-photo-upload-input:focus-visible ~ .ds-photo-upload-button {
-    outline: 2px solid var(--ds-navy);
+    outline: 2px solid var(--red);
     outline-offset: 2px;
 }
 
@@ -1112,19 +1112,19 @@ textarea.ds-form-textarea {
     width: 20px;
     height: 20px;
     padding: 0;
-    color: #ffffff;
-    background: rgba(23, 32, 51, .68);
+    color: var(--on-dark);
+    background: color-mix(in srgb, var(--navy-2) 68%, transparent);
     border: 0;
     border-radius: 50%;
     cursor: pointer;
 }
 
 .ds-photo-upload-remove:hover {
-    background: var(--ds-red);
+    background: var(--danger);
 }
 
 .ds-photo-upload-remove:focus-visible {
-    outline: 2px solid #ffffff;
+    outline: 2px solid var(--white);
     outline-offset: 1px;
 }
 
@@ -1141,9 +1141,9 @@ textarea.ds-form-textarea {
 .ds-form-error {
     margin: 14px 0 0;
     padding: 10px 11px;
-    color: var(--ds-red);
-    background: var(--ds-red-soft);
-    border: 1px solid #f1c9c6;
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -1161,13 +1161,13 @@ textarea.ds-form-textarea {
     min-width: 67px;
     padding: 0 12px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
 }
 
 .ds-form-cancel:hover {
-    color: var(--ds-navy);
-    background: #fbfcfd;
+    color: var(--heading);
+    background: var(--background);
 }
 
 .ds-form-submit {
@@ -1192,7 +1192,7 @@ textarea.ds-form-textarea {
 .ds-modal-backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(15, 23, 40, .46);
+    background: color-mix(in srgb, var(--navy-2) 46%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -1201,12 +1201,12 @@ textarea.ds-form-textarea {
     width: min(430px, calc(100vw - 32px));
     margin: 12vh auto 0;
     overflow: hidden;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border);
     border-radius: 12px;
     box-shadow:
-        0 22px 48px rgba(16, 24, 40, .15),
-        0 4px 12px rgba(16, 24, 40, .06);
+        0 22px 48px color-mix(in srgb, var(--navy-2) 15%, transparent),
+        0 4px 12px color-mix(in srgb, var(--navy-2) 6%, transparent);
 }
 
 .ds-modal-top {
@@ -1221,9 +1221,9 @@ textarea.ds-form-textarea {
     place-items: center;
     width: 40px;
     height: 40px;
-    color: var(--ds-red);
-    background: #fff7f6;
-    border: 1px solid #f4d7d4;
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
     border-radius: 9px;
 }
 
@@ -1247,7 +1247,7 @@ textarea.ds-form-textarea {
 }
 
 .ds-modal-close:hover {
-    color: var(--ds-navy);
+    color: var(--heading);
     background: var(--ds-soft);
 }
 
@@ -1262,7 +1262,7 @@ textarea.ds-form-textarea {
 
 .ds-modal-content h3 {
     margin: 0;
-    color: var(--ds-navy);
+    color: var(--heading);
     font-size: 15px;
     font-weight: 720;
     line-height: 1.3;
@@ -1288,7 +1288,7 @@ textarea.ds-form-textarea {
     gap: 8px;
     min-height: 58px;
     padding: 11px 20px;
-    background: #fcfcfd;
+    background: var(--background);
     border-top: 1px solid var(--ds-border);
 }
 
@@ -1300,7 +1300,7 @@ textarea.ds-form-textarea {
     height: 35px;
     padding: 0 12px;
     color: var(--ds-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     font-size: 9.5px;
@@ -1309,8 +1309,8 @@ textarea.ds-form-textarea {
 }
 
 .ds-modal-cancel:hover {
-    color: var(--ds-navy);
-    background: #fafbfc;
+    color: var(--heading);
+    background: var(--background);
 }
 
 .ds-confirm-close-button {
@@ -1321,9 +1321,9 @@ textarea.ds-form-textarea {
     min-width: 130px;
     height: 35px;
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ds-red);
-    border: 1px solid var(--ds-red);
+    color: var(--white);
+    background: var(--danger);
+    border: 1px solid var(--danger);
     border-radius: 7px;
     font-size: 9.5px;
     font-weight: 680;
@@ -1331,8 +1331,8 @@ textarea.ds-form-textarea {
 }
 
 .ds-confirm-close-button:hover {
-    background: var(--ds-red-dark);
-    border-color: var(--ds-red-dark);
+    background: var(--danger-dark);
+    border-color: var(--danger-dark);
 }
 
 .ds-confirm-close-button svg {

@@ -526,6 +526,9 @@
 
     gap: 3px;
 
+    /* Google adds no margin to custom controls */
+    margin: 10px 0 0 10px;
+
     padding: 4px;
 
     background: var(--white);
@@ -595,6 +598,22 @@
 
     outline: 2px solid var(--red);
     outline-offset: 2px;
+}
+
+/* Phones: a slightly more compact toggle, and a map tall enough
+   (see the 560px rule below) for Google's right-hand controls. */
+@media (max-width: 560px) {
+
+    .rd-layer-control {
+        margin: 8px 0 0 8px;
+        padding: 3px;
+    }
+
+    .rd-layer-btn {
+        min-width: 68px;
+        height: 34px;
+        padding: 0 10px;
+    }
 }
 
 
@@ -1447,8 +1466,10 @@
 
     .rd-map-container {
 
+        /* was 230px: too short for Google's fullscreen / zoom /
+           street-view stack, which then crowded the map controls */
         height:
-            230px;
+            320px;
 
     }
 

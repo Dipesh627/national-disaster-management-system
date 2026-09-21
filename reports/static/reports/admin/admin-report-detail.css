@@ -27,7 +27,7 @@
 .rd-admin-eyebrow {
     margin: 0 0 6px;
 
-    color: var(--ndms-red);
+    color: var(--red);
 
     font-size: 10px;
     font-weight: 800;
@@ -37,7 +37,7 @@
 .rd-admin-header h1 {
     margin: 0;
 
-    color: var(--ndms-navy);
+    color: var(--heading);
 
     font-size: 25px;
     line-height: 1.2;
@@ -66,7 +66,7 @@
 
 .rd-header-type {
     font-weight: 750;
-    color: var(--ndms-navy);
+    color: var(--heading);
 }
 
 .rd-header-sep {
@@ -85,7 +85,7 @@
 }
 
 .rd-header-time-item strong {
-    color: var(--ndms-navy);
+    color: var(--heading);
     font-weight: 700;
 }
 
@@ -126,7 +126,7 @@
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
 
-    background: #fff;
+    background: var(--white);
 }
 
 .rd-admin-card-header {
@@ -143,7 +143,7 @@
 .rd-admin-card-header h2 {
     margin: 0;
 
-    color: var(--ndms-navy);
+    color: var(--heading);
 
     font-size: 12px;
     line-height: 1.35;
@@ -177,7 +177,7 @@
 
     padding: 11px 0;
 
-    border-bottom: 1px solid #f0f1f3;
+    border-bottom: 1px solid var(--border);
 }
 
 .rd-admin-info-row:last-child {
@@ -256,23 +256,23 @@
 }
 
 .rd-admin-status-pending {
-    color: var(--ndms-orange);
-    background: #fffaeb;
+    color: var(--orange-text);
+    background: var(--orange-bg);
 }
 
 .rd-admin-status-review {
-    color: #344054;
-    background: #f2f4f7;
+    color: var(--text);
+    background: var(--soft-gray);
 }
 
 .rd-admin-status-verified {
-    color: var(--ndms-green);
-    background: #ecfdf3;
+    color: var(--green-text);
+    background: var(--green-bg);
 }
 
 .rd-admin-status-rejected {
-    color: var(--ndms-red);
-    background: #fef3f2;
+    color: var(--danger);
+    background: var(--danger-bg);
 }
 
 
@@ -316,18 +316,18 @@
 }
 
 .rd-btn-verify {
-    background: var(--ndms-green);
-    border-color: var(--ndms-green);
-    color: #fff;
+    background: var(--green-text);
+    border-color: var(--green);
+    color: var(--white);
     min-height: 38px;
     font-size: 11px;
     font-weight: 750;
 }
 
 .rd-btn-verify:hover {
-    background: #12633d;
-    border-color: #12633d;
-    color: #fff;
+    background: color-mix(in srgb, var(--green-text) 82%, var(--navy-2));
+    border-color: var(--green-text);
+    color: var(--on-dark);
 }
 
 .rd-btn-reject {
@@ -347,31 +347,31 @@
 }
 
 .rd-status-box-verified {
-    background: #ecfdf3;
-    border-color: #a6f4c5;
+    background: var(--green-bg);
+    border-color: var(--green-border);
 }
 
 .rd-status-box-verified .rd-status-resolved-icon {
-    color: var(--ndms-green);
-    background: #d1fadf;
+    color: var(--green-text);
+    background: var(--green-border);
 }
 
 .rd-status-box-verified strong {
-    color: var(--ndms-green);
+    color: var(--green-text);
 }
 
 .rd-status-box-rejected {
-    background: #fef3f2;
-    border-color: #fecdca;
+    background: var(--danger-bg);
+    border-color: var(--danger-border);
 }
 
 .rd-status-box-rejected .rd-status-resolved-icon {
-    color: var(--ndms-red);
-    background: #fee4e2;
+    color: var(--danger);
+    background: var(--danger-bg);
 }
 
 .rd-status-box-rejected strong {
-    color: var(--ndms-red);
+    color: var(--danger);
 }
 
 .rd-status-resolved-icon {
@@ -431,7 +431,7 @@
 .rd-confirm-modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(16, 24, 40, .6);
+    background: color-mix(in srgb, var(--navy-2) 60%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -440,10 +440,10 @@
     z-index: 1;
     width: 100%;
     max-width: 440px;
-    background: #fff;
+    background: var(--white);
     border-radius: 12px;
     border: 1px solid var(--ndms-border);
-    box-shadow: 0 20px 48px rgba(16, 24, 40, .18);
+    box-shadow: 0 20px 48px color-mix(in srgb, var(--navy-2) 18%, transparent);
     padding: 22px 24px 20px;
 }
 
@@ -458,8 +458,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #fee4e2;
-    color: var(--ndms-red);
+    background: var(--danger-bg);
+    color: var(--danger);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -482,7 +482,7 @@
 }
 
 .rd-confirm-modal-close:hover {
-    color: var(--ndms-navy);
+    color: var(--heading);
     background: var(--ndms-soft);
 }
 
@@ -490,7 +490,7 @@
     margin: 0 0 6px;
     font-size: 15px;
     font-weight: 750;
-    color: var(--ndms-navy);
+    color: var(--heading);
 }
 
 .rd-confirm-modal-content p {
@@ -556,8 +556,8 @@
     width: 100%;
     height: 100%;
 
-    color: #fff;
-    background: var(--ndms-red);
+    color: var(--white);
+    background: var(--red);
 
     font-size: 12px;
     font-weight: 800;
@@ -573,7 +573,7 @@
 
     overflow: hidden;
 
-    color: var(--ndms-navy);
+    color: var(--heading);
 
     font-size: 11px;
     font-weight: 750;
@@ -601,7 +601,7 @@
 .rd-admin-citizen-count strong {
     display: block;
 
-    color: var(--ndms-navy);
+    color: var(--heading);
 
     font-size: 18px;
     line-height: 1;
@@ -668,9 +668,9 @@
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
 
-    background: rgba(255,255,255,.96);
+    background: color-mix(in srgb, var(--white) 96%, transparent);
 
-    box-shadow: 0 2px 8px rgba(16,24,40,.08);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--navy-2) 8%, transparent);
 }
 
 .rd-layer-btn {
@@ -693,12 +693,12 @@
 
 .rd-layer-btn:hover {
     background: var(--ndms-soft);
-    color: var(--ndms-navy);
+    color: var(--heading);
 }
 
 .rd-layer-btn.active {
-    background: var(--ndms-navy);
-    color: #fff;
+    background: var(--btn-dark);
+    color: var(--on-dark);
 }
 
 
@@ -776,7 +776,7 @@
 
     padding: 24px;
 
-    background: rgba(16,24,40,.76);
+    background: color-mix(in srgb, var(--navy-2) 76%, transparent);
 
     z-index: 3000;
 }
@@ -800,11 +800,11 @@
 
     border-radius: 8px;
 
-    background: #fff;
+    background: var(--white);
 
     box-shadow:
         0 20px 60px
-        rgba(0,0,0,.25);
+        color-mix(in srgb, var(--navy-2) 25%, transparent);
 }
 
 .rd-photo-modal-close {
@@ -822,7 +822,7 @@
     border-radius: 7px;
 
     background: rgba(255,255,255,.12);
-    color: #fff;
+    color: var(--on-dark);
 
     font-size: 13px;
 

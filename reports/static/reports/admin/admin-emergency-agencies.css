@@ -5,26 +5,26 @@
    ========================================================= */
 
 .ea-page {
-    --ea-navy: #172033;
-    --ea-navy-light: #202b40;
+    --ea-navy: var(--heading);
+    --ea-navy-light: var(--btn-dark-hover);
 
-    --ea-red: #b42318;
-    --ea-red-dark: #8f1d16;
-    --ea-red-soft: #fef3f2;
+    --ea-red: var(--red);
+    --ea-red-dark: var(--red-dark);
+    --ea-red-soft: var(--light-red);
 
-    --ea-green: #16794a;
-    --ea-green-soft: #ecfdf3;
+    --ea-green: var(--green-text);
+    --ea-green-soft: var(--green-bg);
 
-    --ea-text: #344054;
-    --ea-muted: #667085;
-    --ea-light-muted: #98a2b3;
+    --ea-text: var(--text);
+    --ea-muted: var(--muted);
+    --ea-light-muted: var(--light-muted);
 
-    --ea-border: #e4e7ec;
-    --ea-border-strong: #d0d5dd;
+    --ea-border: var(--border);
+    --ea-border-strong: var(--border-strong);
 
-    --ea-bg: #f8f9fb;
-    --ea-soft: #f2f4f7;
-    --ea-white: #ffffff;
+    --ea-bg: var(--background);
+    --ea-soft: var(--soft-gray);
+    --ea-white: var(--white);
 
     width: 100%;
     max-width: 1480px;
@@ -53,7 +53,7 @@
 .ea-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--ea-red);
+    color: var(--red);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -62,7 +62,7 @@
 
 .ea-page-header h1 {
     margin: 0;
-    color: var(--ea-navy);
+    color: var(--heading);
     font-size: 25px;
     font-weight: 720;
     line-height: 1.2;
@@ -87,18 +87,18 @@
 .ea-primary-button {
     flex: 0 0 auto;
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ea-navy);
-    border: 1px solid var(--ea-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .ea-primary-button:hover {
-    background: var(--ea-navy-light);
-    border-color: var(--ea-navy-light);
+    background: var(--btn-dark-hover);
+    border-color: var(--btn-dark-hover);
 }
 
 .ea-primary-button:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .10);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -110,14 +110,14 @@
 .ea-secondary-button {
     padding: 0 12px;
     color: var(--ea-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border-strong);
 }
 
 .ea-secondary-button:hover {
-    color: var(--ea-navy);
-    background: #fbfcfd;
-    border-color: #bfc6d0;
+    color: var(--heading);
+    background: var(--background);
+    border-color: var(--c-border-9);
 }
 
 .ea-secondary-button svg {
@@ -141,7 +141,7 @@
     display: flex;
     align-items: center;
     min-height: 37px;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border);
     border-radius: 7px;
 }
@@ -151,8 +151,8 @@
 }
 
 .ea-search-field:focus-within {
-    border-color: #b4bbc6;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .045);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ea-search-field svg {
@@ -186,13 +186,13 @@
 
 .ea-filter-button {
     padding: 0 13px;
-    color: #ffffff;
-    background: var(--ea-navy);
-    border: 1px solid var(--ea-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
 }
 
 .ea-filter-button:hover {
-    background: var(--ea-navy-light);
+    background: var(--btn-dark-hover);
 }
 
 .ea-reset-button {
@@ -203,8 +203,8 @@
 }
 
 .ea-reset-button:hover {
-    color: var(--ea-navy);
-    background: #ffffff;
+    color: var(--heading);
+    background: var(--white);
     border-color: var(--ea-border);
 }
 
@@ -215,7 +215,7 @@
 
 .ea-table-panel {
     overflow: visible;
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border);
     border-radius: 10px;
 }
@@ -241,7 +241,7 @@
 
 .ea-table-head h2 {
     margin: 0;
-    color: var(--ea-navy);
+    color: var(--heading);
     font-size: 12.5px;
     font-weight: 710;
     line-height: 1.3;
@@ -263,7 +263,7 @@
     padding: 0 6px;
     color: var(--ea-muted);
     background: var(--ea-soft);
-    border: 1px solid #e9ebef;
+    border: 1px solid var(--border);
     border-radius: 5px;
     font-size: 9px;
     font-weight: 720;
@@ -290,7 +290,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--ea-muted);
-    background: #fcfcfd;
+    background: var(--background);
     border-bottom: 1px solid var(--ea-border);
     font-size: 9px;
     font-weight: 720;
@@ -302,7 +302,7 @@
 .ea-table tbody td {
     padding: 11px 17px;
     color: var(--ea-text);
-    border-bottom: 1px solid #f0f1f3;
+    border-bottom: 1px solid var(--border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -317,7 +317,7 @@
 }
 
 .ea-table-row:hover {
-    background: #fcfdfd;
+    background: var(--background);
 }
 
 .ea-col-agency {
@@ -350,7 +350,7 @@
     display: block;
     overflow: hidden;
     max-width: 260px;
-    color: var(--ea-navy);
+    color: var(--heading);
     font-size: 11px;
     font-weight: 690;
     line-height: 1.35;
@@ -394,7 +394,7 @@
 }
 
 .ea-usage-value {
-    color: var(--ea-navy);
+    color: var(--heading);
     font-size: 10.5px;
     font-weight: 700;
 }
@@ -443,15 +443,15 @@
 }
 
 .ea-action-edit:hover {
-    color: var(--ea-navy);
+    color: var(--heading);
 }
 
 .ea-action-delete {
-    color: #8f5a55;
+    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
 }
 
 .ea-action-delete:hover {
-    color: var(--ea-red);
+    color: var(--danger);
 }
 
 .ea-delete-form {
@@ -459,7 +459,7 @@
 }
 
 .ea-action:focus-visible {
-    outline: 3px solid rgba(23, 32, 51, .09);
+    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -503,7 +503,7 @@
     height: 27px;
     padding: 0 7px;
     color: var(--ea-muted);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border);
     border-radius: 6px;
     font-size: 9.5px;
@@ -523,15 +523,15 @@
 
 .ea-pagination-number:hover,
 .ea-pagination-button:not(.is-disabled):hover {
-    color: var(--ea-navy);
-    background: #fafbfc;
-    border-color: #c5cbd5;
+    color: var(--heading);
+    background: var(--background);
+    border-color: var(--c-border-9);
 }
 
 .ea-pagination-number.is-current {
-    color: #ffffff;
-    background: var(--ea-navy);
-    border-color: var(--ea-navy);
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border-color: var(--btn-dark);
 }
 
 .ea-pagination-button.is-disabled {
@@ -564,7 +564,7 @@
 
 .ea-empty-state h3 {
     margin: 0;
-    color: var(--ea-navy);
+    color: var(--heading);
     font-size: 13px;
     font-weight: 710;
     line-height: 1.35;
@@ -589,7 +589,7 @@
 
 .ea-form-shell {
     width: min(760px, 100%);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border);
     border-radius: 10px;
 }
@@ -609,7 +609,7 @@
 .ea-section-kicker {
     display: block;
     margin-bottom: 5px;
-    color: var(--ea-red);
+    color: var(--red);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -618,7 +618,7 @@
 
 .ea-form-section-heading h2 {
     margin: 0;
-    color: var(--ea-navy);
+    color: var(--heading);
     font-size: 12px;
     font-weight: 710;
     line-height: 1.35;
@@ -645,7 +645,7 @@
 .ea-field-label-optional {
     font-weight: 500;
     text-transform: none;
-    color: var(--ea-muted, #667085);
+    color: var(--ea-muted, var(--muted));
     letter-spacing: 0;
 }
 
@@ -654,7 +654,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--ea-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border-strong);
     border-radius: 7px;
     outline: none;
@@ -672,8 +672,8 @@
 }
 
 .ea-form-control:focus {
-    border-color: #9ca5b2;
-    box-shadow: 0 0 0 3px rgba(23, 32, 51, .055);
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
 }
 
 .ea-field-error {
@@ -681,7 +681,7 @@
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--ea-red);
+    color: var(--danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -695,9 +695,9 @@
 .ea-form-error {
     margin: 0 22px 18px;
     padding: 10px 11px;
-    color: var(--ea-red);
-    background: var(--ea-red-soft);
-    border: 1px solid #f1c9c6;
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid var(--danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -722,7 +722,7 @@
     justify-content: flex-end;
     gap: 7px;
     padding: 11px 15px;
-    background: #fcfcfd;
+    background: var(--background);
     border-top: 1px solid var(--ea-border);
 }
 
@@ -730,13 +730,13 @@
     min-width: 67px;
     padding: 0 12px;
     color: var(--ea-text);
-    background: #ffffff;
+    background: var(--white);
     border: 1px solid var(--ea-border-strong);
 }
 
 .ea-form-cancel:hover {
-    color: var(--ea-navy);
-    background: #fbfcfd;
+    color: var(--heading);
+    background: var(--background);
 }
 
 .ea-form-submit {
