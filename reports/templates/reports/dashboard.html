@@ -669,19 +669,29 @@
 
 
             <!-- =================================================
-                 NDMS ANIMATED SYMBOL
+                 HELP PANEL (static)
                  ================================================= -->
 
-           
-    <div class="welcome-symbol">
+            <aside class="welcome-aside" aria-label="Emergency help">
 
-        <div class="symbol-ring">
-            <span>
-                NDMS
-            </span>
-        </div>
+                <p class="welcome-aside-title">
+                    Need urgent help?
+                </p>
 
-    </div>
+                <p class="welcome-aside-text">
+                    Find official emergency response agencies and their
+                    contact information.
+                </p>
+
+                <a
+                    href="{% url 'emergency_agencies' %}"
+                    class="welcome-aside-link"
+                >
+                    View emergency agencies
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </aside>
 
 
         </section>

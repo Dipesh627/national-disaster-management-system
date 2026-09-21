@@ -162,7 +162,6 @@
     let addressInput = null;
     let mapStatusMessage = null;
     let useCurrentLocationBtn = null;
-    let mapSearchInput = null;
 
 
     function cacheSharedElements() {
@@ -194,11 +193,6 @@
         if (!useCurrentLocationBtn) {
             useCurrentLocationBtn =
                 document.getElementById("useCurrentLocationBtn");
-        }
-
-        if (!mapSearchInput) {
-            mapSearchInput =
-                document.getElementById("mapSearchInput");
         }
 
     }
@@ -694,88 +688,6 @@
     }
 
 
-    /* =====================================================
-       "SEARCH GOOGLE MAPS" BOX (Places Autocomplete)
-       Real Google-Maps-style search bar overlaid on the map.
-       Selecting a result runs through the exact same
-       verifyAndSetLocation() pipeline as a manual map click —
-       Nepal validation, marker placement, and reverse-geocoded
-       address auto-fill all stay identical either way.
-       ===================================================== */
-
-    function initMapSearchBox() {
-
-        if (
-            !mapSearchInput ||
-            typeof google.maps.places === "undefined"
-        ) {
-
-            // Places library wasn't loaded (see the
-            // "&libraries=places" param on the Google Maps
-            // script tag in report_incident.html) — the map
-            // and every other feature still work fine without
-            // it, so fail silently rather than block the page.
-            return;
-
-        }
-
-        const autocomplete = new google.maps.places.Autocomplete(
-            mapSearchInput,
-            {
-                fields: ["geometry", "name", "formatted_address"],
-                componentRestrictions: { country: "np" }
-            }
-        );
-
-        // Bias results toward Nepal without hard-blocking
-        // anything Google itself considers a Nepal result.
-        autocomplete.setBounds(
-            new google.maps.LatLngBounds(
-                { lat: NEPAL_BOUNDS.south, lng: NEPAL_BOUNDS.west },
-                { lat: NEPAL_BOUNDS.north, lng: NEPAL_BOUNDS.east }
-            )
-        );
-
-        // Prevent the Enter key inside the search box from
-        // submitting the incident report form.
-        mapSearchInput.addEventListener("keydown", function (event) {
-
-            if (event.key === "Enter") {
-                event.preventDefault();
-            }
-
-        });
-
-        autocomplete.addListener("place_changed", function () {
-
-            const place = autocomplete.getPlace();
-
-            if (!place || !place.geometry || !place.geometry.location) {
-
-                setStatus(
-                    "That location could not be found. Please " +
-                    "try a different search or select it on the " +
-                    "map directly.",
-                    "error"
-                );
-
-                return;
-
-            }
-
-            const lat = place.geometry.location.lat();
-            const lng = place.geometry.location.lng();
-
-            map.setCenter({ lat: lat, lng: lng });
-            map.setZoom(15);
-
-            verifyAndSetLocation(lat, lng);
-
-        });
-
-    }
-
-
     function initReportIncidentMap() {
 
         const mapElement = document.getElementById("incidentMap");
@@ -820,13 +732,9 @@
         // TOP_LEFT: Google's own fullscreen / camera / zoom /
         // street-view controls stack down the RIGHT edge, and on
         // a short phone map they collided with this toggle.
-        // (On desktop the search pill is offset to the right of
-        // the toggle — see .ri-map-search-wrap in the CSS.)
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(
             createLayerToggleControl(map)
         );
-
-        initMapSearchBox();
 
         map.addListener("click", function (event) {
 
@@ -1358,6 +1266,11 @@
 
                 function openPanel() {
 
+                    // Only one dropdown may be open at a time.
+                    document.dispatchEvent(
+                        new CustomEvent("ri-dropdown-open", { detail: dtPicker })
+                    );
+
                     dtPicker.classList.add("ri-select-open");
                     dtTrigger.setAttribute("aria-expanded", "true");
 
@@ -1538,6 +1451,15 @@
 
                 });
 
+                // Another dropdown opened: close this one.
+                document.addEventListener("ri-dropdown-open", function (event) {
+
+                    if (event.detail !== dtPicker) {
+                        closePanel();
+                    }
+
+                });
+
                 document.addEventListener("keydown", function (event) {
 
                     if (
@@ -1655,6 +1577,11 @@
             }
 
             function openDtDropdown() {
+
+                // Only one dropdown may be open at a time.
+                document.dispatchEvent(
+                    new CustomEvent("ri-dropdown-open", { detail: dtSelectWrapper })
+                );
 
                 dtSelectWrapper.classList.add("ri-select-open");
                 dtTrigger.setAttribute("aria-expanded", "true");
@@ -1794,6 +1721,15 @@
             document.addEventListener("click", function (event) {
 
                 if (!dtSelectWrapper.contains(event.target)) {
+                    closeDtDropdown();
+                }
+
+            });
+
+            // Another dropdown opened: close this one.
+            document.addEventListener("ri-dropdown-open", function (event) {
+
+                if (event.detail !== dtSelectWrapper) {
                     closeDtDropdown();
                 }
 
@@ -2068,8 +2004,7 @@
 
                             setStatus(
                                 "Couldn't access your current location. " +
-                                "You can search for a place or choose a " +
-                                "point on the map.",
+                                "You can choose a point on the map.",
                                 "error"
                             );
 

@@ -6,7 +6,17 @@
       Any <button data-password-toggle> inside an
       .auth-input-wrap controls the <input> in that wrapper.
 
-   2. Login form (only on the page that has form[data-auth-login])
+   2. Invalid field focus (any auth form)
+      When the server sends a form back with errors, the first
+      field marked aria-invalid="true" receives focus so the
+      person (and a screen reader) lands on the problem.
+
+   3. Digits-only inputs
+      An <input data-digits-only> accepts only 0-9 (plus one
+      leading "+" for phone numbers). Typing or pasting anything
+      else is removed straight away. The server validates again.
+
+   4. Login form (only on the page that has form[data-auth-login])
       Keeps the login page out of browser history.
 
       Login is only an authentication checkpoint. A plain form
@@ -68,7 +78,42 @@
 
 
     /* -----------------------------------------------------
-       2. LOGIN FORM
+       2. FOCUS THE FIRST INVALID FIELD
+       ----------------------------------------------------- */
+
+    const firstInvalid =
+        document.querySelector('.auth-form [aria-invalid="true"]');
+
+    if (firstInvalid) {
+        firstInvalid.focus();
+    }
+
+
+    /* -----------------------------------------------------
+       3. DIGITS-ONLY INPUTS
+       ----------------------------------------------------- */
+
+    document.querySelectorAll("input[data-digits-only]").forEach(function (input) {
+
+        input.addEventListener("input", function () {
+
+            const raw = input.value;
+
+            const plus = raw.trim().charAt(0) === "+" ? "+" : "";
+
+            const clean = plus + raw.replace(/\D/g, "");
+
+            if (clean !== raw) {
+                input.value = clean;
+            }
+
+        });
+
+    });
+
+
+    /* -----------------------------------------------------
+       4. LOGIN FORM
        ----------------------------------------------------- */
 
     const form = document.querySelector("form[data-auth-login]");

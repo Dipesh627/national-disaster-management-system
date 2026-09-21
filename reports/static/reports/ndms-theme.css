@@ -61,7 +61,7 @@
     --background: #f6f9f9;
     --soft-gray: #eef4f4;
     --white: #ffffff;
-    --border: #dde7e7;
+    --border: #e6ecec;
     --text: #17262a;
     --muted: #55696d;
 
@@ -154,7 +154,7 @@ html[data-theme="dark"] {
     --background: #0a1414;
     --soft-gray: #142726;
     --white: #10201f;
-    --border: #223635;
+    --border: #1c2f2e;
     --text: #e4f0ef;
     --muted: #8fa6a4;
 
@@ -222,8 +222,8 @@ html[data-theme="dark"] {
     --c-border-5: var(--border);
     --c-border-6: var(--border);
     --c-border-8: var(--border);
-    --c-border-9: color-mix(in srgb, var(--muted) 45%, var(--border));
-    --c-border-10: color-mix(in srgb, var(--muted) 45%, var(--border));
+    --c-border-9: color-mix(in srgb, var(--muted) 28%, var(--border));
+    --c-border-10: color-mix(in srgb, var(--muted) 28%, var(--border));
 
     /* secondary text */
     --c-muted-2: var(--muted);

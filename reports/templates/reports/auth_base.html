@@ -14,8 +14,12 @@ Layout
 
 Blocks
   title          the <title>
-  card_modifier  optional extra class for the card, e.g. " auth-card--wide"
-  content        everything inside the white card
+  card_modifier  optional extra class for the card, e.g. " auth-card--flat"
+  body_class     optional extra class(es) for <body>, e.g. " auth-page--register"
+  head_extra     optional extra stylesheet links (page-specific CSS)
+  brand_message  the sentence under the brand title
+  brand_extra    optional extra content at the bottom of the brand panel
+  content        everything inside the card
 
 Styles:  reports/auth.css
 Script:  reports/js/auth.js  (password show/hide + login fetch flow)
@@ -38,6 +42,8 @@ The Admin login is a separate page and does not use this.
     <link rel="stylesheet"
           href="{% static 'reports/auth.css' %}">
 
+    {% block head_extra %}{% endblock %}
+
     {% include 'reports/partials/theme_head.html' %}
 
     <script src="{% static 'reports/js/auth.js' %}"
@@ -45,7 +51,7 @@ The Admin login is a separate page and does not use this.
 </head>
 
 
-<body class="auth-page">
+<body class="auth-page{% block body_class %}{% endblock %}">
 
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
@@ -79,9 +85,11 @@ The Admin login is a separate page and does not use this.
             </p>
 
             <p class="auth-brand__message">
-                Report incidents, follow official alerts, and
-                track the response, all in one place.
+                {% block brand_message %}Report incidents, follow official alerts, and
+                track the response, all in one place.{% endblock %}
             </p>
+
+            {% block brand_extra %}{% endblock %}
 
         </div>
 

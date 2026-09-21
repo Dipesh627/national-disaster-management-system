@@ -1,3 +1,4 @@
+import re
 from datetime import timedelta
 from functools import wraps
 
@@ -16,6 +17,8 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib import messages
 
 from django.core.exceptions import ValidationError
+
+from django.core.validators import validate_email
 
 from django.contrib.auth.password_validation import validate_password
 
@@ -300,6 +303,11 @@ def home(request):
 # REGISTER
 # =========================================================
 
+USERNAME_RE = re.compile(r'[A-Za-z0-9._-]{3,30}')
+
+PHONE_RE = re.compile(r'\+?[0-9]{7,15}')
+
+
 def register(request):
 
     # -----------------------------------------------------
@@ -310,152 +318,108 @@ def register(request):
         return redirect('home')
 
     # -----------------------------------------------------
+    # GET
+    # -----------------------------------------------------
+
+    if request.method != 'POST':
+
+        return render(
+            request,
+            'reports/register.html'
+        )
+
+    # -----------------------------------------------------
     # POST
     # -----------------------------------------------------
 
-    if request.method == 'POST':
-
-        first_name = request.POST.get(
+    values = {
+        field: request.POST.get(field, '').strip()
+        for field in (
             'first_name',
-            ''
-        ).strip()
-
-        last_name = request.POST.get(
             'last_name',
-            ''
-        ).strip()
-
-        username = request.POST.get(
             'username',
-            ''
-        ).strip()
-
-        email = request.POST.get(
             'email',
-            ''
-        ).strip()
-
-        phone = request.POST.get(
             'phone',
-            ''
-        ).strip()
+        )
+    }
 
-        password = request.POST.get(
-            'password',
-            ''
+    first_name = values['first_name']
+    last_name = values['last_name']
+    username = values['username']
+    email = values['email']
+    phone = values['phone']
+
+    password = request.POST.get('password', '')
+
+    confirm_password = request.POST.get('confirm_password', '')
+
+    # -----------------------------------------------------
+    # VALIDATION
+    #
+    # Every problem is collected as {field: [messages]} so the
+    # template can show each one next to its own field, all at
+    # once. Passwords are never sent back to the page.
+    # -----------------------------------------------------
+
+    errors = {}
+
+    def add_error(field, message):
+        errors.setdefault(field, []).append(message)
+
+    # ---- required fields --------------------------------
+
+    if not first_name:
+        add_error('first_name', 'Please enter your first name.')
+
+    if not last_name:
+        add_error('last_name', 'Please enter your last name.')
+
+    if not username:
+
+        add_error('username', 'Please choose a username.')
+
+    elif not USERNAME_RE.fullmatch(username):
+
+        # Letters, numbers, dot, underscore, hyphen only. This also
+        # rejects an email address (it contains "@") being used as
+        # a username.
+        add_error(
+            'username',
+            'Username must be 3-30 characters: letters, numbers, '
+            'dots, underscores or hyphens only (no @ or spaces).'
         )
 
-        confirm_password = request.POST.get(
-            'confirm_password',
-            ''
+    if not email:
+        add_error('email', 'Please enter your email address.')
+
+    else:
+
+        try:
+            validate_email(email)
+
+        except ValidationError:
+            add_error('email', 'Please enter a valid email address.')
+
+    # ---- phone (optional, but if given it must be a real number) --
+
+    if phone and not PHONE_RE.fullmatch(re.sub(r'[\s-]', '', phone)):
+
+        add_error(
+            'phone',
+            'Enter a valid phone number: digits only, 7-15 digits, '
+            'with an optional + at the start.'
         )
 
-        remember_me = (
-            request.POST.get('remember_me') == 'on'
-        )
+    # ---- password + confirmation ------------------------
 
-        # -------------------------------------------------
-        # REQUIRED FIELDS
-        # -------------------------------------------------
+    if not password:
 
-        if not first_name:
+        add_error('password', 'Please create a password.')
 
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Please enter your first name.'
-                }
-            )
-
-        if not last_name:
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Please enter your last name.'
-                }
-            )
-
-        if not username:
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Please choose a username.'
-                }
-            )
-
-        if not email:
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Please enter your email address.'
-                }
-            )
-
-        if not password:
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Please create a password.'
-                }
-            )
-
-        # -------------------------------------------------
-        # PASSWORD CONFIRMATION
-        # -------------------------------------------------
+    else:
 
         if password != confirm_password:
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Passwords do not match.'
-                }
-            )
-
-        # -------------------------------------------------
-        # TERMS & PRIVACY CONSENT (required, server-side)
-        # The HTML `required` attribute is only a convenience;
-        # this check is the real gate. No account is created
-        # unless the box was ticked. The checkbox is never
-        # pre-ticked when the page is shown again, and
-        # passwords are never sent back to the page.
-        # -------------------------------------------------
-
-        if request.POST.get('accept_terms') != 'on':
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Please accept the Terms & Conditions '
-                    'and Privacy Policy to create your account.',
-
-                    'consent_error': True,
-
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'username': username,
-                    'email': email,
-                    'phone': phone,
-                }
-            )
+            add_error('confirm_password', 'Passwords do not match.')
 
         # -------------------------------------------------
         # PASSWORD STRENGTH (project AUTH_PASSWORD_VALIDATORS)
@@ -467,6 +431,22 @@ def register(request):
         # password changes via Django's SetPasswordForm, so this
         # brings registration in line with that same rule.
         # -------------------------------------------------
+
+        # Must not be, or contain, the username, first/last name or
+        # the part of the email before the "@".
+        lowered = password.lower()
+
+        for own in (username, first_name, last_name, email.split('@')[0]):
+
+            if len(own) >= 3 and own.lower() in lowered:
+
+                add_error(
+                    'password',
+                    'Password must not contain your username, name '
+                    'or email.'
+                )
+
+                break
 
         try:
             validate_password(
@@ -481,108 +461,96 @@ def register(request):
 
         except ValidationError as exc:
 
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    ' '.join(exc.messages)
-                }
-            )
+            for message in exc.messages:
+                add_error('password', message)
 
-        # -------------------------------------------------
-        # USERNAME DUPLICATE
-        # -----------------------------------------------------
+    # ---- TERMS & PRIVACY CONSENT (required, server-side) --
+    # The HTML `required` attribute is only a convenience;
+    # this check is the real gate. No account is created
+    # unless the box was ticked. The checkbox is never
+    # pre-ticked when the page is shown again.
 
-        if User.objects.filter(
-            username=username
-        ).exists():
+    if request.POST.get('accept_terms') != 'on':
 
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'Username already exists. Please choose another username.'
-                }
-            )
-
-        # -------------------------------------------------
-        # EMAIL DUPLICATE
-        # -----------------------------------------------------
-
-        if User.objects.filter(
-            email=email
-        ).exists():
-
-            return render(
-                request,
-                'reports/register.html',
-                {
-                    'error':
-                    'An account with this email already exists.'
-                }
-            )
-
-        # -------------------------------------------------
-        # CREATE CITIZEN ACCOUNT
-        # -----------------------------------------------------
-
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-            phone=phone,
-            role='CITIZEN',
-            terms_accepted_at=timezone.now(),
-            terms_version=TERMS_VERSION,
+        add_error(
+            'accept_terms',
+            'Please accept the Terms & Conditions '
+            'and Privacy Policy to create your account.'
         )
 
-        # -------------------------------------------------
-        # REGISTRATION SUCCESSFUL
-        # -----------------------------------------------------
+    # ---- duplicates -------------------------------------
 
-        login(
+    if username and User.objects.filter(
+        username=username
+    ).exists():
+
+        add_error(
+            'username',
+            'Username already exists. Please choose another username.'
+        )
+
+    if email and User.objects.filter(
+        email=email
+    ).exists():
+
+        add_error(
+            'email',
+            'An account with this email already exists.'
+        )
+
+    # ---- show the form again ----------------------------
+
+    if errors:
+
+        return render(
             request,
-            user
+            'reports/register.html',
+            {
+                **values,
+
+                'errors': errors,
+
+                'error':
+                'Please review the highlighted fields and try again.',
+
+            }
         )
 
-        # -------------------------------------------------
-        # REMEMBER ME
-        # (registration logs the user straight in, so the
-        # checkbox on this page controls that same new
-        # session -- same set_expiry() convention as
-        # user_login() below.)
-        #
-        # CHECKED   -> persistent cookie for REMEMBER_ME_SESSION_AGE.
-        # UNCHECKED -> set_expiry(0): a browser-session cookie that
-        #              ends when the browser closes. (None would
-        #              fall back to SESSION_COOKIE_AGE, i.e. a
-        #              2-week persistent cookie, which made the
-        #              checkbox look like it did nothing.)
-        #
-        # Only the session id is stored -- never the password.
-        # -------------------------------------------------
-
-        if remember_me:
-            request.session.set_expiry(
-                settings.REMEMBER_ME_SESSION_AGE
-            )
-        else:
-            request.session.set_expiry(0)
-
-        return redirect('home')
-
     # -----------------------------------------------------
-    # GET
+    # CREATE CITIZEN ACCOUNT
     # -----------------------------------------------------
 
-    return render(
-        request,
-        'reports/register.html'
+    user = User.objects.create_user(
+        username=username,
+        email=email,
+        password=password,
+        first_name=first_name,
+        last_name=last_name,
+        phone=phone,
+        role='CITIZEN',
+        terms_accepted_at=timezone.now(),
+        terms_version=TERMS_VERSION,
     )
+
+    # -----------------------------------------------------
+    # REGISTRATION SUCCESSFUL
+    # -----------------------------------------------------
+
+    login(
+        request,
+        user
+    )
+
+    # -----------------------------------------------------
+    # SESSION
+    # Registration signs the person straight in. The session ends
+    # when the browser closes (no "keep me signed in" option here;
+    # Login still has its own Remember me).
+    # -----------------------------------------------------
+
+    request.session.set_expiry(0)
+
+    return redirect('home')
 
 
 # =========================================================

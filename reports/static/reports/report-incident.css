@@ -1537,107 +1537,6 @@
 
 
 /* =========================================================
-   MAP SEARCH BOX
-   A real "Search Google Maps"-style pill, overlaid on top of
-   the map itself (top-left), matching the real Google Maps
-   product. Bound to the Google Places Autocomplete widget in
-   report-incident.js — selecting a result moves the marker,
-   centers the map, and runs it through the exact same Nepal
-   validation + reverse-geocoding pipeline as a manual map
-   click, so the address field still auto-fills.
-   ========================================================= */
-
-.ri-map-search-wrap {
-
-    position: absolute;
-
-    top: 14px;
-
-    /* Starts to the right of the Standard / Satellite toggle
-       (top-left corner, ~185px wide) and stops short of Google's
-       controls on the right edge. Below 700px the search bar
-       leaves the map entirely (see the mobile rules). */
-    left: 200px;
-
-    z-index: 5;
-
-    width: min(320px, calc(100% - 275px));
-}
-
-.ri-map-search-box {
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-}
-
-.ri-map-search-icon {
-
-    position: absolute;
-
-    left: 14px;
-
-    color: var(--muted);
-
-    font-size: calc(14px * var(--ndms-font-scale, 1));
-
-    pointer-events: none;
-}
-
-.ri-map-search-input {
-
-    width: 100%;
-
-    height: 42px;
-
-    padding: 0 14px 0 38px;
-
-    background: var(--white);
-
-    border: none;
-
-    border-radius: 21px;
-
-    color: var(--text);
-
-    font-family: inherit;
-
-    font-size: calc(13px * var(--ndms-font-scale, 1));
-    font-weight: 500;
-
-    box-shadow:
-        0 1px 4px rgba(16, 24, 40, 0.18),
-        0 1px 2px rgba(16, 24, 40, 0.10);
-
-    outline: none;
-
-    transition: box-shadow .18s ease;
-}
-
-.ri-map-search-input::placeholder {
-    color: var(--muted);
-}
-
-.ri-map-search-input:focus {
-
-    box-shadow:
-        0 0 0 1px var(--red),
-        0 1px 4px rgba(16, 24, 40, 0.18);
-}
-
-/* Google's own Places Autocomplete suggestion dropdown is
-   appended to <body>, outside this page's normal stacking
-   context — forced above the dashboard's sidebar/modal layers
-   (which reach z-index: 1100 elsewhere) so results are never
-   hidden behind them. */
-.pac-container {
-    z-index: 10000 !important;
-}
-
-
-/* =========================================================
    MAP LAYER CONTROL (Standard / Satellite toggle)
    Custom control replacing Google's default blue-highlighted
    map type buttons, so the "active" state matches the NDMS
@@ -2374,11 +2273,6 @@
         border: none;
         box-shadow: none;
         border-radius: 0;
-    }
-
-    .ri-map-search-wrap {
-        position: static;
-        width: 100%;
     }
 
     .ri-map {

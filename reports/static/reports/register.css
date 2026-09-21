@@ -1,0 +1,567 @@
+/* =========================================================
+   NDMS - CITIZEN REGISTRATION
+   ---------------------------------------------------------
+   Loaded only by templates/reports/register.html, AFTER the
+   shared reports/auth.css. Everything here is scoped to
+   body.auth-page--register, so Login and the other auth
+   pages are untouched.
+
+   It reuses the shared auth components (.auth-field,
+   .auth-input, .auth-btn, .auth-check, .auth-alert, ...) and
+   only changes what Register needs to be different: a lighter
+   brand panel, a flat (card-less) form, grouped sections and
+   inline field errors.
+
+   Colour comes only from ndms-theme.css tokens (light + dark).
+
+   Sections
+     1. Tokens
+     2. Layout (shell + form area)
+     3. Brand panel
+     4. Content (heading, entrance)
+     5. Form sections
+     6. Fields
+     7. Validation
+     8. Consent + submit
+     9. Login link
+    10. Responsive
+    11. Reduced motion
+   ========================================================= */
+
+
+/* =========================================================
+   1. TOKENS
+   ========================================================= */
+
+.auth-page--register {
+
+    --reg-input-height: 44px;
+
+    --reg-section-gap: 28px;
+    --reg-field-gap: 16px;
+
+    /* calmer heading than Login's 34px */
+    --auth-fs-h1: clamp(26px, 2.4vw, 30px);
+
+    --reg-icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 7.5v5.5'/%3E%3Cpath d='M12 16.5h.01'/%3E%3C/svg%3E");
+
+    background: var(--background);
+}
+
+
+/* =========================================================
+   2. LAYOUT
+   Desktop: narrower brand panel | form area (no card).
+   <= 900px: auth.css already switches to the compact brand
+   band, so nothing here applies below that width.
+   ========================================================= */
+
+@media (min-width: 901px) {
+
+    .auth-page--register .auth-shell {
+
+        grid-template-columns:
+            minmax(320px, 36%)
+            minmax(0, 1fr);
+    }
+
+}
+
+
+/* Long form: start at the top instead of floating in the
+   middle of the viewport. */
+
+.auth-page--register .auth-main {
+
+    align-items: flex-start;
+
+    padding-top: clamp(32px, 6vh, 64px);
+}
+
+
+/* The form sits directly on the page: no card, no shadow. */
+
+.auth-page--register .auth-card--flat {
+
+    max-width: 560px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    box-shadow: none;
+}
+
+
+/* =========================================================
+   3. BRAND PANEL
+   Solid NDMS navy with the existing photograph faded in along
+   the bottom edge, so it supports the identity instead of
+   covering the panel. (auth.css hides the photograph below
+   900px, so this is desktop only.)
+   ========================================================= */
+
+@media (min-width: 901px) {
+
+    .auth-page--register .auth-brand::before {
+
+        inset: auto 0 0 0;
+
+        height: 46%;
+
+        opacity: .5;
+
+        -webkit-mask-image: linear-gradient(to top, #000 25%, transparent);
+        mask-image: linear-gradient(to top, #000 25%, transparent);
+    }
+
+    .auth-page--register .auth-brand::after {
+
+        display: none;
+    }
+
+    .auth-page--register .auth-brand__inner {
+
+        justify-content: flex-start;
+
+        padding-top: clamp(48px, 12vh, 112px);
+    }
+
+}
+
+
+.auth-page--register .auth-brand__title {
+
+    font-size: clamp(24px, 2.2vw, 30px);
+}
+
+
+.auth-page--register .auth-brand__message {
+
+    font-size: 15px;
+}
+
+
+.auth-brand__points {
+
+    max-width: 22rem;
+
+    margin-top: 36px;
+
+    display: grid;
+
+    list-style: none;
+}
+
+
+.auth-brand__points li {
+
+    display: flex;
+
+    align-items: baseline;
+
+    gap: 16px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid var(--on-dark-line);
+
+    color: var(--on-dark);
+
+    font-size: 14px;
+
+    font-weight: 500;
+}
+
+
+.auth-brand__points li:last-child {
+
+    border-bottom: 1px solid var(--on-dark-line);
+}
+
+
+.auth-brand__points span {
+
+    color: var(--on-dark-muted);
+
+    font-size: 12px;
+
+    font-variant-numeric: tabular-nums;
+
+    letter-spacing: .04em;
+}
+
+
+/* =========================================================
+   4. CONTENT
+   ========================================================= */
+
+.auth-page--register .auth-heading {
+
+    margin-bottom: 32px;
+}
+
+
+.auth-page--register .auth-lead {
+
+    max-width: 44ch;
+}
+
+
+@keyframes reg-enter {
+
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+
+.auth-page--register .auth-card--flat {
+
+    animation: reg-enter .28s ease-out both;
+}
+
+
+/* =========================================================
+   5. FORM SECTIONS
+   ========================================================= */
+
+.auth-page--register .reg-form {
+
+    gap: var(--reg-section-gap);
+}
+
+
+.reg-section {
+
+    min-width: 0;
+}
+
+
+/* "01  Personal information ────────" */
+
+.reg-section__title {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin: 0 0 var(--reg-field-gap);
+
+    color: var(--heading);
+
+    font-size: 13px;
+
+    font-weight: 650;
+
+    letter-spacing: .01em;
+
+    line-height: 1.3;
+}
+
+
+.reg-section__title::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: var(--border);
+}
+
+
+.reg-section__num {
+
+    color: var(--red);
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    font-variant-numeric: tabular-nums;
+}
+
+
+.reg-section__body {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: var(--reg-field-gap);
+}
+
+
+/* =========================================================
+   6. FIELDS
+   ========================================================= */
+
+.auth-page--register .auth-field {
+
+    gap: 6px;
+}
+
+
+/* Two columns only while each one stays at least 220px wide;
+   otherwise the pair stacks. */
+
+.auth-page--register .auth-row {
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+
+    gap: var(--reg-field-gap);
+}
+
+
+.auth-page--register .auth-label {
+
+    font-size: 13.5px;
+}
+
+
+.reg-optional {
+
+    margin-left: 8px;
+
+    color: var(--muted);
+
+    font-size: 12.5px;
+
+    font-weight: 400;
+}
+
+
+.auth-page--register .auth-input {
+
+    height: var(--reg-input-height);
+}
+
+
+.auth-page--register .auth-hint {
+
+    font-size: 12.5px;
+}
+
+
+/* Show/hide button scales with the shorter input on desktop.
+   On touch / narrow screens auth.css keeps its 44px target. */
+
+@media (min-width: 901px) and (pointer: fine) {
+
+    .auth-page--register .auth-toggle {
+
+        width: 36px;
+
+        height: 36px;
+    }
+
+    .auth-page--register .auth-input-wrap .auth-input {
+
+        padding-right: 46px;
+    }
+
+}
+
+
+/* =========================================================
+   7. VALIDATION
+   Inline, next to the field. Icon + text + red outline, so the
+   state is never carried by colour alone.
+   ========================================================= */
+
+.auth-page--register .reg-error {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 6px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.reg-error__icon {
+
+    width: 16px;
+
+    height: 16px;
+
+    flex: 0 0 16px;
+
+    margin-top: 2px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--reg-icon-alert) center / contain no-repeat;
+    mask: var(--reg-icon-alert) center / contain no-repeat;
+}
+
+
+.reg-error__text {
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   8. CONSENT + SUBMIT
+   ========================================================= */
+
+.reg-submit {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+}
+
+
+/* auth.css draws consent as a boxed panel; here it is just a
+   compact line of text. */
+
+.auth-page--register .auth-consent,
+.auth-page--register .auth-consent.has-error {
+
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+}
+
+
+.auth-page--register .auth-consent .reg-error {
+
+    margin: 8px 0 0 28px;
+}
+
+
+.auth-page--register .auth-check {
+
+    font-size: 13.5px;
+}
+
+
+.auth-page--register .auth-check input[type="checkbox"]:focus-visible {
+
+    outline: 2px solid var(--red);
+
+    outline-offset: 2px;
+}
+
+
+.auth-page--register .auth-check input[type="checkbox"][aria-invalid="true"] {
+
+    outline: 2px solid var(--danger);
+
+    outline-offset: 1px;
+
+    border-radius: 3px;
+}
+
+
+.auth-page--register .auth-btn {
+
+    min-height: 46px;
+}
+
+
+/* =========================================================
+   9. LOGIN LINK
+   ========================================================= */
+
+.auth-page--register .auth-switch {
+
+    margin-top: 20px;
+
+    padding-top: 18px;
+}
+
+
+/* =========================================================
+   10. RESPONSIVE
+   Two-column field pairs already collapse by themselves
+   (see Fields). auth.css supplies the compact brand band
+   below 900px.
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    /* the list belongs to the wide brand panel only */
+    .auth-brand__points {
+
+        display: none;
+    }
+
+    .auth-page--register .auth-main {
+
+        padding-top: 24px;
+    }
+
+    .auth-page--register .auth-heading {
+
+        margin-bottom: 28px;
+    }
+
+}
+
+
+@media (max-width: 560px) {
+
+    .auth-page--register {
+
+        --reg-section-gap: 24px;
+    }
+
+    .auth-page--register .auth-card--flat {
+
+        padding: 0;
+    }
+
+    /* keep the tap targets comfortable on phones */
+    .auth-page--register .auth-input {
+
+        height: 46px;
+    }
+
+    .auth-page--register .auth-btn {
+
+        min-height: 48px;
+    }
+
+}
+
+
+/* =========================================================
+   11. REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-page--register .auth-card--flat {
+
+        animation: none;
+    }
+
+}

@@ -1215,30 +1215,6 @@
                             aria-label="Incident location map"
                         ></div>
 
-                        <div class="ri-map-search-wrap">
-
-                            <div class="ri-map-search-box">
-
-                                <span
-                                    class="ri-map-search-icon"
-                                    aria-hidden="true"
-                                >
-                                    ⌕
-                                </span>
-
-                                <input
-                                    type="text"
-                                    id="mapSearchInput"
-                                    aria-label="Search for a place in Nepal"
-                                    class="ri-map-search-input"
-                                    placeholder="Search for a place in Nepal"
-                                    autocomplete="off"
-                                >
-
-                            </div>
-
-                        </div>
-
                     </div>
 
 
@@ -1563,7 +1539,7 @@
 ></script>
 
 <script
-    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&libraries=places&callback=initReportIncidentMap&loading=async"
+    src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initReportIncidentMap&loading=async"
     defer
     onerror="window.ndmsMapsScriptError && window.ndmsMapsScriptError();"
 ></script>

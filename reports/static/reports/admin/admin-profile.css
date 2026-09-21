@@ -207,7 +207,7 @@
     background: var(--white);
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
-    box-shadow: 0 12px 24px -8px color-mix(in srgb, var(--navy-2) 18%, transparent);
+    box-shadow: var(--shadow-md);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -548,8 +548,8 @@ body.ap-edit-mode #apEditForm {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background: color-mix(in srgb, var(--navy-2) 45%, transparent);
+    padding: 24px;
+    background: rgba(23, 32, 51, .82);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -565,12 +565,12 @@ body.ap-edit-mode #apEditForm {
 }
 
 .ap-photo-modal-content {
-    width: min(380px, 100%);
+    width: min(420px, 100%);
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 20px 40px -12px color-mix(in srgb, var(--navy-2) 30%, transparent);
-    padding: 20px;
-    transform: translateY(8px);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 0 24px 24px;
+    transform: translateY(6px);
     transition: transform .18s ease;
 }
 
@@ -583,33 +583,39 @@ body.ap-edit-mode #apEditForm {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 16px;
+    padding: 20px 0 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--ndms-border);
 }
 
 .ap-photo-modal-header h2 {
     margin: 0;
     color: var(--heading);
-    font-size: 14px;
-    font-weight: 740;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -.01em;
 }
 
 .ap-photo-modal-close {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     border: none;
     border-radius: 50%;
     background: var(--ndms-soft);
     color: var(--ndms-muted);
-    font-size: 12px;
+    font-size: 14px;
     cursor: pointer;
-    transition: background-color .15s ease;
+    transition:
+        background-color .15s ease,
+        color .15s ease;
 }
 
 .ap-photo-modal-close:hover {
-    background: var(--soft-gray);
+    background: var(--ndms-border);
+    color: var(--heading);
 }
 
 /* =========================================================
@@ -627,8 +633,8 @@ body.ap-edit-mode #apEditForm {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    background: color-mix(in srgb, var(--navy-2) 72%, transparent);
+    padding: 24px;
+    background: rgba(23, 32, 51, .82);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
@@ -646,11 +652,11 @@ body.ap-edit-mode #apEditForm {
 .ap-photo-view-content {
     display: flex;
     flex-direction: column;
-    width: min(420px, 100%);
-    max-height: calc(100vh - 40px);
+    width: min(480px, 100%);
+    max-height: calc(100vh - 48px);
     background: var(--white);
-    border-radius: 12px;
-    box-shadow: 0 20px 40px -12px color-mix(in srgb, var(--navy-2) 30%, transparent);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
     overflow: hidden;
 }
 
@@ -659,29 +665,30 @@ body.ap-edit-mode #apEditForm {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    padding: 14px 14px 12px 18px;
+    padding: 16px 16px 14px 20px;
     border-bottom: 1px solid var(--ndms-border);
 }
 
 .ap-photo-view-header h2 {
     margin: 0;
     color: var(--heading);
-    font-size: 14px;
-    font-weight: 740;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.01em;
 }
 
 .ap-photo-view-body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 18px;
+    padding: 20px;
     background: var(--ndms-soft);
 }
 
 .ap-photo-view-body img {
     display: block;
     max-width: 100%;
-    max-height: calc(100vh - 140px);
+    max-height: calc(100vh - 160px);
     /* Preserve the original photo's aspect ratio — never
        cropped or distorted here, unlike the circular avatar
        used everywhere else in the app. */
@@ -693,15 +700,15 @@ body.ap-edit-mode #apEditForm {
 @media (max-width: 700px) {
 
     .ap-photo-view-modal {
-        padding: 14px;
+        padding: 16px;
     }
 
     .ap-photo-view-header {
-        padding: 12px 12px 10px 14px;
+        padding: 14px 14px 12px 16px;
     }
 
     .ap-photo-view-body {
-        padding: 12px;
+        padding: 14px;
     }
 
 }
@@ -717,7 +724,7 @@ body.ap-edit-mode #apEditForm {
 .ap-photo-modal-preview {
     display: flex;
     justify-content: center;
-    margin-bottom: 16px;
+    margin: 20px 0 6px;
 }
 
 .ap-photo-modal-avatar {
@@ -730,7 +737,7 @@ body.ap-edit-mode #apEditForm {
     color: var(--white);
     background: var(--red);
     border-radius: 50%;
-    font-size: 32px;
+    font-size: 34px;
     font-weight: 800;
 }
 
@@ -739,6 +746,15 @@ body.ap-edit-mode #apEditForm {
     height: 100%;
     display: block;
     object-fit: cover;
+}
+
+/* Without this, the `display: flex` above wins over the
+   browser's own `[hidden]{display:none}` rule (same-origin
+   author CSS always beats the user-agent stylesheet), so
+   toggling `.hidden` from admin-profile.js would leave this
+   circle visible at the same time as the crop stage below. */
+.ap-photo-modal-avatar[hidden] {
+    display: none;
 }
 
 
@@ -757,22 +773,28 @@ body.ap-edit-mode #apEditForm {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    margin-bottom: 16px;
+    margin: 20px 0 6px;
+}
+
+/* Same `[hidden]` fix as `.ap-photo-modal-avatar` above — keeps
+   the crop stage fully hidden until a photo is actually picked. */
+.ap-crop-shell[hidden] {
+    display: none;
 }
 
 .ap-crop-stage {
     position: relative;
-    width: 220px;
-    height: 220px;
+    width: 224px;
+    height: 224px;
     overflow: hidden;
     background: var(--ndms-soft);
     border-radius: 50%;
     cursor: grab;
     touch-action: none;
     box-shadow:
-        inset 0 0 0 2px var(--white),
+        inset 0 0 0 3px var(--white),
         0 0 0 1px var(--ndms-border),
-        0 6px 16px -8px color-mix(in srgb, var(--navy-2) 25%, transparent);
+        0 10px 22px -10px rgba(16, 24, 40, .3);
 }
 
 .ap-crop-stage.is-dragging {
@@ -798,21 +820,85 @@ body.ap-edit-mode #apEditForm {
 }
 
 .ap-crop-zoom-icon {
-    width: 14px;
-    height: 14px;
+    width: 15px;
+    height: 15px;
     flex-shrink: 0;
-    color: var(--ndms-light-muted);
+    color: var(--ndms-muted);
 }
 
 .ap-crop-zoom-icon-lg {
-    width: 17px;
-    height: 17px;
+    width: 18px;
+    height: 18px;
 }
+
+/* Custom slider — the bare OS control (plain grey track, dark
+   circular thumb) reads as unfinished next to the rest of the
+   NDMS UI, so it's rebuilt per-browser with a thin navy track
+   and a bordered white thumb that matches the app's button/
+   card styling instead of the browser default. */
 
 .ap-crop-zoom-slider {
     flex: 1 1 auto;
+    height: 18px;
+    margin: 0;
+    background: transparent;
     accent-color: var(--red);
     cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.ap-crop-zoom-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--ndms-border);
+}
+
+.ap-crop-zoom-slider::-moz-range-track {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--ndms-border);
+}
+
+.ap-crop-zoom-slider::-moz-range-progress {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--btn-dark);
+}
+
+.ap-crop-zoom-slider::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
+    border: 2px solid var(--red);
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: transform .12s ease;
+}
+
+.ap-crop-zoom-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--red);
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
+    cursor: pointer;
+    transition: transform .12s ease;
+}
+
+.ap-crop-zoom-slider:hover::-webkit-slider-thumb,
+.ap-crop-zoom-slider:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.12);
+}
+
+.ap-crop-zoom-slider:hover::-moz-range-thumb,
+.ap-crop-zoom-slider:focus-visible::-moz-range-thumb {
+    transform: scale(1.12);
 }
 
 .ap-crop-actions-row {
@@ -822,38 +908,47 @@ body.ap-edit-mode #apEditForm {
     gap: 12px;
     width: 100%;
     max-width: 260px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 .ap-crop-hint {
-    color: var(--ndms-light-muted);
-    font-size: 9.5px;
+    color: var(--ndms-muted);
+    font-size: 11px;
+    font-weight: 550;
+    line-height: 1.4;
 }
 
 .ap-crop-reset {
     flex-shrink: 0;
-    padding: 0;
-    border: none;
-    background: none;
+    padding: 5px 10px;
+    border: 1px solid var(--ndms-border);
+    border-radius: 6px;
+    background: var(--white);
     color: var(--heading);
     font-family: inherit;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 700;
-    text-decoration: underline;
     cursor: pointer;
+    transition:
+        border-color .15s ease,
+        background-color .15s ease,
+        color .15s ease;
 }
 
 .ap-crop-reset:hover {
+    border-color: var(--red);
+    background: var(--light-red);
     color: var(--red);
 }
 
 
 .ap-photo-modal-hint {
-    margin: 0 0 14px;
-    color: var(--ndms-muted);
-    font-size: 10.5px;
-    line-height: 1.5;
+    margin-top: 4px;
     text-align: center;
+    color: var(--ndms-muted);
+    font-size: 12px;
+    font-weight: 550;
+    line-height: 1.6;
 }
 
 /* The real file input (rendered by the shared AvatarUploadForm
@@ -876,41 +971,69 @@ body.ap-edit-mode #apEditForm {
 .ap-choose-photo-btn {
     display: block;
     width: 100%;
-    padding: 10px;
-    margin-bottom: 8px;
-    color: var(--heading);
-    background: var(--ndms-soft);
-    border: 1px dashed var(--border-strong);
+    margin-top: 14px;
+    padding: 11px;
+    border: 1px solid var(--ndms-border);
     border-radius: 8px;
-    font-size: 10.5px;
-    font-weight: 680;
+    background: var(--white);
+    color: var(--heading);
     text-align: center;
+    font-size: 13px;
+    font-weight: 700;
     cursor: pointer;
-    transition: background-color .15s ease;
+    transition:
+        border-color .18s ease,
+        background-color .18s ease;
 }
 
 .ap-choose-photo-btn:hover {
-    background: var(--soft-gray);
+    border-color: var(--red);
+    background: var(--light-red);
+    color: var(--red);
+}
+
+/* Same `[hidden]` fix as the elements above. */
+.ap-choose-photo-btn[hidden] {
+    display: none;
+}
+
+/* Keyboard focus ring for the visually hidden file input.
+   The <label> (.ap-choose-photo-btn) comes BEFORE the input in
+   the markup, and CSS sibling combinators only look forward, so
+   the label is targeted with :has(). */
+.ap-choose-photo-btn:has(+ .pf-avatar-file-input:focus-visible),
+.pf-avatar-file-input:focus-visible + .ap-photo-modal-filename {
+    outline: none;
+    box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--red) 15%, transparent);
 }
 
 .ap-photo-modal-filename {
     display: block;
-    margin-bottom: 6px;
+    margin-top: 8px;
     color: var(--ndms-muted);
-    font-size: 9.5px;
+    font-size: 12px;
+    font-weight: 600;
     text-align: center;
-    overflow-wrap: anywhere;
+    word-break: break-all;
 }
 
 .ap-photo-modal-actions {
     display: flex;
+    align-items: center;
     gap: 10px;
-    margin-top: 16px;
+    margin-top: 18px;
 }
 
 .ap-photo-modal-actions .ap-primary-button,
 .ap-photo-modal-actions .ap-secondary-button {
     flex: 1 1 0;
+    justify-content: center;
+}
+
+.ap-photo-modal-actions .ap-primary-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
 }
 
 
@@ -1005,12 +1128,7 @@ body.ap-edit-mode #apEditForm {
     }
 
     .ap-photo-modal-content {
-        padding: 16px;
-    }
-
-    .ap-crop-stage {
-        width: 190px;
-        height: 190px;
+        padding: 0 16px 16px;
     }
 
     .ap-crop-zoom-row,

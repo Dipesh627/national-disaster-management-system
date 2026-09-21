@@ -15,7 +15,7 @@
     --placeholder: color-mix(in srgb, var(--muted) 72%, var(--white));
     --light-muted: var(--placeholder);
     --border-hover: var(--c-border-9);
-    --border-strong: color-mix(in srgb, var(--muted) 22%, var(--border));
+    --border-strong: color-mix(in srgb, var(--muted) 13%, var(--border));
     --danger-on-dark: #ffb5ad;
 
     --radius: 9px;
