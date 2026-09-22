@@ -108,6 +108,30 @@ The Admin login is a separate page and does not use this.
 
             <div class="auth-card{% block card_modifier %}{% endblock %}">
 
+                <!-- Mobile-only brand lockup (hidden on desktop; the
+                     sticky .auth-brand panel is used there instead).
+                     Same treatment as the Admin login's mobile-brand:
+                     a centered navy-gradient card so the NDMS identity
+                     still reads once the side panel is hidden. -->
+
+                <a href="{% url 'home' %}"
+                   class="auth-mobile-brand"
+                   aria-label="NDMS home">
+
+                    <img
+                        src="{% static 'reports/branding/ndms-logo.png' %}"
+                        alt=""
+                        width="105"
+                        height="30"
+                        class="auth-mobile-brand__logo"
+                    >
+
+                    <span class="auth-mobile-brand__caption">
+                        National Disaster Management System
+                    </span>
+
+                </a>
+
                 {% block content %}{% endblock %}
 
             </div>

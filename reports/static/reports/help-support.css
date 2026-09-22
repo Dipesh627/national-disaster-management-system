@@ -1817,6 +1817,42 @@
 }
 
 
+/* Native <select> chrome (the OS-drawn popup list, the plain
+   arrow) doesn't follow the app's own styling at all — same
+   chevron-in-background technique already used for
+   .disaster-filter-select, so this dropdown reads as part of
+   the NDMS UI instead of a bare browser control. The list of
+   options themselves still opens in the OS's native popup
+   (no CSS can restyle that part), but the closed field now
+   matches every other input on this form. */
+.hs-select {
+
+    padding-right:
+        34px;
+
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+
+    background-repeat:
+        no-repeat;
+
+    background-position:
+        calc(100% - 11px) center;
+
+    cursor:
+        pointer;
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    -moz-appearance:
+        none;
+}
+
+
 .hs-select:focus,
 .hs-input:focus,
 .hs-textarea:focus {
@@ -1826,6 +1862,125 @@
 
     box-shadow:
         0 0 0 3px color-mix(in srgb, var(--red) 10%, transparent);
+}
+
+
+/* =========================================================
+   ISSUE TYPE — CUSTOM DROPDOWN (progressive enhancement)
+
+   The real <select id="id_issue_type"> above still exists and
+   still submits the form as normal — this is only a styled
+   stand-in on top of it, built by help-support.js reading that
+   select's own <option> list. A native <select>'s open popup
+   (the actual list of choices) is drawn by the OS/browser, not
+   the page, so no CSS can reskin it — on mobile especially it
+   always shows the platform's own list style regardless of the
+   .hs-select styling above. This custom listbox replaces that
+   popup entirely so the open menu matches the rest of the NDMS
+   UI on every device.
+
+   Hidden by default: if JS never runs, the trigger/menu stay
+   hidden and the real <select> above is simply used as-is, so
+   the field is never left non-functional.
+   ========================================================= */
+
+.hs-select-wrap {
+    position: relative;
+}
+
+.hs-select-wrap.is-enhanced select.hs-select {
+    /* The real select is still present (and still what actually
+       gets submitted) — just handed off visually to the trigger
+       button below once JS has taken over. */
+    display: none;
+}
+
+.hs-select-trigger {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.hs-select-trigger-label {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.hs-select-menu {
+    position: absolute;
+
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+
+    max-height: 240px;
+
+    overflow-y: auto;
+
+    background: var(--white);
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    box-shadow: var(--shadow-md);
+
+    padding: 6px;
+
+    z-index: 20;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-6px);
+
+    transition:
+        opacity 180ms ease,
+        transform 180ms ease,
+        visibility 180ms ease;
+}
+
+.hs-select-wrap.open .hs-select-menu {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+.hs-select-wrap.open .hs-select-trigger {
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--red) 10%, transparent);
+}
+
+.hs-select-option {
+    padding: 9px 12px;
+
+    border-radius: 8px;
+
+    color: var(--text);
+
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.hs-select-option:hover,
+.hs-select-option.is-active {
+    background: var(--background);
+    color: var(--heading);
+}
+
+.hs-select-option[aria-selected="true"] {
+    background: var(--light-red);
+    color: var(--red);
+    font-weight: 700;
 }
 
 
@@ -2118,6 +2273,8 @@
     color:
         var(--text);
 
+    overflow-wrap:
+        anywhere;
 }
 
 

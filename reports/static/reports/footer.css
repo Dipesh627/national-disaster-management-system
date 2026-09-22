@@ -29,9 +29,15 @@
     gap: 48px;
 }
 
-/* Admin accounts see only two link columns; keep the layout tidy. */
+/* Admin accounts see only two link columns ("For Citizens" is
+   citizen-only). Brand keeps the flexible track (1fr) so it
+   still hugs the left edge; the two remaining link columns are
+   sized to their own content (auto) so they sit snug against
+   each other and land together at the right edge instead of
+   spreading out across the row. */
 .footer-grid:has(> .footer-col:nth-child(3):last-child) {
-    grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    justify-content: end;
 }
 
 

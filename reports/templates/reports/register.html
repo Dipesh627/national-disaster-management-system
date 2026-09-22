@@ -32,7 +32,7 @@ Field names, the CSRF token and the POST target are unchanged.
           href="{% static 'reports/register.css' %}">
 {% endblock %}
 
-{% block card_modifier %} auth-card--flat{% endblock %}
+{% block card_modifier %} auth-card--wide{% endblock %}
 
 
 {% block brand_message %}A structured platform for reporting and accessing
@@ -63,6 +63,37 @@ Field names, the CSRF token and the POST target are unchanged.
     </header>
 
 
+    <!-- =================================================
+         STEP NAV
+         Jump-links to the 3 sections below. No JS: the form
+         is still a single page/POST, this is just an anchor
+         nav (see register.css §12).
+         ================================================= -->
+
+    <nav class="reg-progress" aria-label="Registration sections">
+
+        <a href="#reg-personal" class="reg-progress__step">
+            <span class="reg-progress__num">1</span>
+            <span class="reg-progress__label">Personal</span>
+        </a>
+
+        <span class="reg-progress__line" aria-hidden="true"></span>
+
+        <a href="#reg-account" class="reg-progress__step">
+            <span class="reg-progress__num">2</span>
+            <span class="reg-progress__label">Account</span>
+        </a>
+
+        <span class="reg-progress__line" aria-hidden="true"></span>
+
+        <a href="#reg-security" class="reg-progress__step">
+            <span class="reg-progress__num">3</span>
+            <span class="reg-progress__label">Security</span>
+        </a>
+
+    </nav>
+
+
     {% if errors or error %}
 
     <div class="auth-alert" role="alert">
@@ -83,13 +114,12 @@ Field names, the CSRF token and the POST target are unchanged.
 
 
         <!-- =============================================
-             01  PERSONAL INFORMATION
+             PERSONAL INFORMATION
              ============================================= -->
 
         <section class="reg-section" aria-labelledby="reg-personal">
 
             <h2 class="reg-section__title" id="reg-personal">
-                <span class="reg-section__num" aria-hidden="true">01</span>
                 Personal information
             </h2>
 
@@ -101,19 +131,30 @@ Field names, the CSRF token and the POST target are unchanged.
 
                         <label class="auth-label" for="first_name">First name</label>
 
-                        <input
-                            type="text"
-                            id="first_name"
-                            name="first_name"
-                            class="auth-input"
-                            value="{{ first_name|default:'' }}"
-                            autocomplete="given-name"
-                            required
-                            {% if errors.first_name %}
-                            aria-invalid="true"
-                            aria-describedby="first_name_error"
-                            {% endif %}
-                        >
+                        <div class="auth-input-wrap">
+
+                            <span class="auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <circle cx="12" cy="8" r="3.2" />
+                                    <path d="M5.5 20c.8-3.6 3-5.5 6.5-5.5s5.7 1.9 6.5 5.5" />
+                                </svg>
+                            </span>
+
+                            <input
+                                type="text"
+                                id="first_name"
+                                name="first_name"
+                                class="auth-input"
+                                value="{{ first_name|default:'' }}"
+                                autocomplete="given-name"
+                                required
+                                {% if errors.first_name %}
+                                aria-invalid="true"
+                                aria-describedby="first_name_error"
+                                {% endif %}
+                            >
+
+                        </div>
 
                         {% if errors.first_name %}
                         <p class="auth-field-error reg-error" id="first_name_error">
@@ -128,19 +169,30 @@ Field names, the CSRF token and the POST target are unchanged.
 
                         <label class="auth-label" for="last_name">Last name</label>
 
-                        <input
-                            type="text"
-                            id="last_name"
-                            name="last_name"
-                            class="auth-input"
-                            value="{{ last_name|default:'' }}"
-                            autocomplete="family-name"
-                            required
-                            {% if errors.last_name %}
-                            aria-invalid="true"
-                            aria-describedby="last_name_error"
-                            {% endif %}
-                        >
+                        <div class="auth-input-wrap">
+
+                            <span class="auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <circle cx="12" cy="8" r="3.2" />
+                                    <path d="M5.5 20c.8-3.6 3-5.5 6.5-5.5s5.7 1.9 6.5 5.5" />
+                                </svg>
+                            </span>
+
+                            <input
+                                type="text"
+                                id="last_name"
+                                name="last_name"
+                                class="auth-input"
+                                value="{{ last_name|default:'' }}"
+                                autocomplete="family-name"
+                                required
+                                {% if errors.last_name %}
+                                aria-invalid="true"
+                                aria-describedby="last_name_error"
+                                {% endif %}
+                            >
+
+                        </div>
 
                         {% if errors.last_name %}
                         <p class="auth-field-error reg-error" id="last_name_error">
@@ -159,13 +211,12 @@ Field names, the CSRF token and the POST target are unchanged.
 
 
         <!-- =============================================
-             02  ACCOUNT DETAILS
+             ACCOUNT DETAILS
              ============================================= -->
 
         <section class="reg-section" aria-labelledby="reg-account">
 
             <h2 class="reg-section__title" id="reg-account">
-                <span class="reg-section__num" aria-hidden="true">02</span>
                 Account details
             </h2>
 
@@ -175,23 +226,34 @@ Field names, the CSRF token and the POST target are unchanged.
 
                     <label class="auth-label" for="username">Username</label>
 
-                    <input
-                        type="text"
-                        id="username"
-                        name="username"
-                        class="auth-input"
-                        value="{{ username|default:'' }}"
-                        autocomplete="username"
-                        autocapitalize="none"
-                        spellcheck="false"
-                        minlength="3"
-                        maxlength="30"
-                        pattern="[A-Za-z0-9._\-]{3,30}"
-                        title="3-30 characters: letters, numbers, dots, underscores or hyphens. No @ or spaces."
-                        required
-                        aria-describedby="username_hint{% if errors.username %} username_error{% endif %}"
-                        {% if errors.username %}aria-invalid="true"{% endif %}
-                    >
+                    <div class="auth-input-wrap">
+
+                        <span class="auth-input-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="8" r="3.2" />
+                                <path d="M5.5 20c.8-3.6 3-5.5 6.5-5.5s5.7 1.9 6.5 5.5" />
+                            </svg>
+                        </span>
+
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="auth-input"
+                            value="{{ username|default:'' }}"
+                            autocomplete="username"
+                            autocapitalize="none"
+                            spellcheck="false"
+                            minlength="3"
+                            maxlength="30"
+                            pattern="[A-Za-z0-9._\-]{3,30}"
+                            title="3-30 characters: letters, numbers, dots, underscores or hyphens. No @ or spaces."
+                            required
+                            aria-describedby="username_hint{% if errors.username %} username_error{% endif %}"
+                            {% if errors.username %}aria-invalid="true"{% endif %}
+                        >
+
+                    </div>
 
                     {% if errors.username %}
                     <p class="auth-field-error reg-error" id="username_error">
@@ -213,20 +275,31 @@ Field names, the CSRF token and the POST target are unchanged.
 
                         <label class="auth-label" for="email">Email</label>
 
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            class="auth-input"
-                            placeholder="name@example.com"
-                            value="{{ email|default:'' }}"
-                            autocomplete="email"
-                            required
-                            {% if errors.email %}
-                            aria-invalid="true"
-                            aria-describedby="email_error"
-                            {% endif %}
-                        >
+                        <div class="auth-input-wrap">
+
+                            <span class="auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
+                                    <path d="M4 7l8 6 8-6" />
+                                </svg>
+                            </span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                class="auth-input"
+                                placeholder="name@example.com"
+                                value="{{ email|default:'' }}"
+                                autocomplete="email"
+                                required
+                                {% if errors.email %}
+                                aria-invalid="true"
+                                aria-describedby="email_error"
+                                {% endif %}
+                            >
+
+                        </div>
 
                         {% if errors.email %}
                         <p class="auth-field-error reg-error" id="email_error">
@@ -243,23 +316,33 @@ Field names, the CSRF token and the POST target are unchanged.
                             Phone<span class="reg-optional">Optional</span>
                         </label>
 
-                        <input
-                            type="tel"
-                            id="phone"
-                            name="phone"
-                            class="auth-input"
-                            value="{{ phone|default:'' }}"
-                            autocomplete="tel"
-                            inputmode="tel"
-                            maxlength="16"
-                            pattern="\+?[0-9]{7,15}"
-                            title="Digits only (7-15), with an optional + at the start."
-                            data-digits-only
-                            {% if errors.phone %}
-                            aria-invalid="true"
-                            aria-describedby="phone_error"
-                            {% endif %}
-                        >
+                        <div class="auth-input-wrap">
+
+                            <span class="auth-input-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                    <path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3a2 2 0 01-2.2 2A17.5 17.5 0 014.5 5.7 2 2 0 016.5 3.5z" />
+                                </svg>
+                            </span>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                class="auth-input"
+                                value="{{ phone|default:'' }}"
+                                autocomplete="tel"
+                                inputmode="tel"
+                                maxlength="16"
+                                pattern="\+?[0-9]{7,15}"
+                                title="Digits only (7-15), with an optional + at the start."
+                                data-digits-only
+                                {% if errors.phone %}
+                                aria-invalid="true"
+                                aria-describedby="phone_error"
+                                {% endif %}
+                            >
+
+                        </div>
 
                         {% if errors.phone %}
                         <p class="auth-field-error reg-error" id="phone_error">
@@ -278,13 +361,12 @@ Field names, the CSRF token and the POST target are unchanged.
 
 
         <!-- =============================================
-             03  SECURITY
+             SECURITY
              ============================================= -->
 
         <section class="reg-section" aria-labelledby="reg-security">
 
             <h2 class="reg-section__title" id="reg-security">
-                <span class="reg-section__num" aria-hidden="true">03</span>
                 Security
             </h2>
 
@@ -295,6 +377,14 @@ Field names, the CSRF token and the POST target are unchanged.
                     <label class="auth-label" for="password">Password</label>
 
                     <div class="auth-input-wrap">
+
+                        <span class="auth-input-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <rect x="5" y="10" width="14" height="10" rx="2" />
+                                <path d="M8 10V7.5a4 4 0 018 0V10" />
+                                <path d="M12 14v2.5" />
+                            </svg>
+                        </span>
 
                         <input
                             type="password"

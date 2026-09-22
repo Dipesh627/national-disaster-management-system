@@ -265,21 +265,23 @@ input[type="password"]::-ms-clear {
 
 .auth-brand__title {
 
-    max-width: 12em;
+    max-width: 100%;
 
-    margin-top: 30px;
+    margin-top: 14px;
 
-    color: var(--on-dark);
+    color: var(--on-dark-muted);
 
-    font-size: clamp(26px, 2.6vw, 34px);
+    font-size: clamp(10.5px, .55vw + 8px, 12.5px);
 
-    font-weight: 650;
+    font-weight: 600;
 
-    line-height: 1.15;
+    line-height: 1.4;
 
-    letter-spacing: -.02em;
+    letter-spacing: .03em;
 
-    text-wrap: balance;
+    text-transform: uppercase;
+
+    white-space: nowrap;
 }
 
 
@@ -351,11 +353,16 @@ input[type="password"]::-ms-clear {
 
     border: 1px solid var(--border);
 
-    border-radius: var(--radius-lg);
+    /* Same 20px radius + layered elevation as the Admin login's
+       .admin-form-container, so the Citizen card reads as the
+       same enterprise component. */
+    border-radius: 20px;
 
     padding: clamp(24px, 5vw, 40px);
 
-    box-shadow: var(--shadow-md);
+    box-shadow:
+        0 28px 60px -24px color-mix(in srgb, var(--navy-2) 24%, transparent),
+        0 2px 10px color-mix(in srgb, var(--navy-2) 5%, transparent);
 }
 
 
@@ -364,6 +371,21 @@ input[type="password"]::-ms-clear {
 .auth-card--wide {
 
     max-width: 560px;
+}
+
+
+/* =========================================================
+   5b. MOBILE BRAND LOCKUP
+   Hidden on desktop (the sticky .auth-brand side panel is used
+   there). Shown only <= 900px, matching the Admin login's
+   .mobile-brand treatment exactly: a centered navy-gradient
+   card with the logo + caption, so the NDMS identity still
+   reads once the side panel is hidden.
+   ========================================================= */
+
+.auth-mobile-brand {
+
+    display: none;
 }
 
 
@@ -611,7 +633,8 @@ input[type="password"]::-ms-clear {
 
     min-width: 0;
 
-    height: 48px;
+    /* Same as the Admin login's .input-container input */
+    height: 44px;
 
     padding: 0 14px;
 
@@ -676,7 +699,11 @@ input[type="password"]::-ms-clear {
 }
 
 
-/* ---------- Password show / hide ---------- */
+/* ---------- Leading field icon + password show/hide ----------
+   One wrapper handles both: a leading icon (Admin-login style,
+   person / envelope / phone / lock) and, on password fields
+   only, the trailing show/hide toggle. Padding for each is
+   added only when that part is actually present, via :has(). */
 
 .auth-input-wrap {
 
@@ -684,10 +711,53 @@ input[type="password"]::-ms-clear {
 }
 
 
-.auth-input-wrap .auth-input {
+.auth-input-wrap:has(.auth-toggle) .auth-input {
 
     /* room for the toggle so text never runs under it */
     padding-right: 50px;
+}
+
+
+.auth-input-icon {
+
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    width: 16px;
+    height: 16px;
+
+    transform: translateY(-50%);
+
+    display: flex;
+
+    color: var(--auth-placeholder);
+
+    pointer-events: none;
+
+    transition: color .18s ease;
+}
+
+
+.auth-input-icon svg {
+
+    width: 16px;
+    height: 16px;
+
+    display: block;
+}
+
+
+.auth-input-wrap:has(.auth-input-icon) .auth-input {
+
+    padding-left: 42px;
+}
+
+
+.auth-input-wrap:focus-within .auth-input-icon {
+
+    color: var(--red);
 }
 
 
@@ -908,7 +978,8 @@ input[type="password"]::-ms-clear {
 
     width: 100%;
 
-    min-height: 48px;
+    /* Same as the Admin login's .login-button */
+    min-height: 44px;
 
     display: inline-flex;
 
@@ -1060,10 +1131,6 @@ input[type="password"]::-ms-clear {
 .auth-link:hover {
 
     color: var(--red-dark);
-
-    text-decoration: underline;
-
-    text-underline-offset: 3px;
 }
 
 
@@ -1079,9 +1146,7 @@ input[type="password"]::-ms-clear {
 
 .auth-check .auth-link {
 
-    text-decoration: underline;
-
-    text-underline-offset: 2px;
+    font-weight: 600;
 }
 
 
@@ -1237,79 +1302,104 @@ input[type="password"]::-ms-clear {
 
     .auth-panel {
 
-        min-height: 0;
+        min-height: 100vh;
+        min-height: 100dvh;
     }
+
+    /* The wide sticky side panel is Admin-login's desktop-only
+       treatment too: hidden below the stacking breakpoint, in
+       favour of the centered .auth-mobile-brand lockup inside
+       the card. */
 
     .auth-brand {
-
-        position: static;
-
-        height: auto;
-    }
-
-    /* no photograph, no wash: a plain deep-teal band */
-
-    .auth-brand::before,
-    .auth-brand::after {
-
-        display: none;
-    }
-
-    .auth-brand__inner {
-
-        height: auto;
-
-        flex-direction: row;
-
-        align-items: center;
-
-        gap: 14px;
-
-        padding: 14px 20px;
-    }
-
-    .auth-brand__logo img {
-
-        height: 32px;
-    }
-
-    .auth-brand__title {
-
-        max-width: none;
-
-        margin: 0;
-
-        padding-left: 14px;
-
-        border-left: 1px solid var(--on-dark-line);
-
-        font-size: 13px;
-
-        font-weight: 600;
-
-        line-height: 1.3;
-
-        letter-spacing: 0;
-    }
-
-    .auth-brand__message {
 
         display: none;
     }
 
     .auth-main {
 
-        align-items: flex-start;
+        /* Was flex-start with a forced min-height band above:
+           on a typical phone the form is shorter than the
+           viewport, so content stayed pinned to the top and
+           left a dead gap below. Centering it (same fix as the
+           Admin login) makes the page look composed instead of
+           unfinished; taller content (Register) still scrolls
+           normally. */
+        align-items: center;
 
         padding: 28px 16px 24px;
     }
 
-    /* the band is short, so the form panel fills the rest */
+    /* Centered navy-gradient lockup, same recipe as the Admin
+       login's .mobile-brand. */
 
-    .auth-panel {
+    .auth-mobile-brand {
 
-        min-height: calc(100vh - 64px);
-        min-height: calc(100dvh - 64px);
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 12px;
+
+        width: 100%;
+
+        margin-bottom: 28px;
+
+        padding: 28px 20px;
+
+        border-radius: 16px;
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--navy) 0%,
+                var(--navy-light) 100%
+            );
+
+        box-shadow:
+            0 16px 32px -12px
+            color-mix(in srgb, var(--navy-2) 45%, transparent);
+    }
+
+    .auth-mobile-brand:focus-visible {
+
+        outline: 2px solid rgba(255, 255, 255, .65);
+
+        outline-offset: 4px;
+    }
+
+    .auth-mobile-brand__logo {
+
+        display: block;
+
+        height: 34px;
+        width: auto;
+
+        object-fit: contain;
+    }
+
+    .auth-mobile-brand__caption {
+
+        max-width: 100%;
+
+        color: rgba(255, 255, 255, .70);
+
+        font-size: 9.5px;
+
+        font-weight: 750;
+
+        letter-spacing: .6px;
+
+        line-height: 1.4;
+
+        text-align: center;
+
+        text-transform: uppercase;
+
+        white-space: nowrap;
     }
 }
 
@@ -1378,6 +1468,8 @@ input[type="password"]::-ms-clear {
     .auth-card {
 
         padding: 24px 20px;
+
+        border-radius: 16px;
     }
 
     .auth-heading {
@@ -1385,9 +1477,11 @@ input[type="password"]::-ms-clear {
         margin-bottom: 24px;
     }
 
-    .auth-brand__title {
+    .auth-mobile-brand {
 
-        font-size: 12.5px;
+        margin-bottom: 22px;
+
+        padding: 20px 16px;
     }
 }
 
@@ -1415,5 +1509,154 @@ input[type="password"]::-ms-clear {
     .auth-btn.is-loading::after {
 
         animation-duration: 1.6s;
+    }
+
+    .auth-card {
+
+        animation: none;
+    }
+
+    body.auth-page {
+
+        scroll-behavior: auto;
+    }
+}
+
+
+/* =========================================================
+   15. ENHANCEMENTS
+   Additive visual polish for Login + Register. No new colour
+   tokens - everything below reuses the palette from
+   ndms-theme.css. Safe to ignore in older browsers
+   (progressive enhancement only).
+   ========================================================= */
+
+/* 15.4 Card entrance - a small settle-in rather than a hard cut
+   when the page paints. */
+
+@media (prefers-reduced-motion: no-preference) {
+
+    .auth-card {
+
+        animation: auth-card-in .5s var(--ease) both;
+    }
+
+
+    @keyframes auth-card-in {
+
+        from {
+
+            opacity: 0;
+
+            transform: translateY(10px);
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform: translateY(0);
+        }
+    }
+}
+
+
+/* 15.5 Primary button - a slight lift on hover to back up the
+   existing colour-shift + arrow-slide. */
+
+.auth-btn {
+
+    transition:
+        background-color .18s ease,
+        box-shadow .18s ease,
+        transform .18s ease;
+}
+
+
+.auth-btn:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow: var(--shadow-md);
+}
+
+
+/* 15.6 Register: smooth-scroll for the step nav's #anchor links
+   (see .reg-progress in register.css). */
+
+body.auth-page {
+
+    scroll-behavior: smooth;
+}
+
+
+/* =========================================================
+   16. LOGIN - ONE-SCREEN LAYOUT
+   Login (unlike Register) should never need scrolling: the
+   form is short, so it must always fit inside the viewport.
+   Scoped to .auth-page--login (see login.html body_class).
+   Padding/margins below use vh, so they shrink automatically
+   on short windows instead of pushing the card past the fold.
+   ========================================================= */
+
+.auth-page--login .auth-main {
+
+    padding:
+        clamp(16px, 4vh, 48px)
+        clamp(16px, 4vw, 48px)
+        clamp(12px, 2vh, 24px);
+}
+
+
+.auth-page--login .auth-card {
+
+    padding: clamp(20px, 4vh, 40px);
+}
+
+
+.auth-page--login .auth-heading {
+
+    margin-bottom: clamp(16px, 3vh, 28px);
+}
+
+
+.auth-page--login .auth-form {
+
+    gap: clamp(14px, 2.4vh, 20px);
+}
+
+
+/* One row for "Remember me" + "Forgot password?" instead of
+   two, so the form reads cleaner and takes less height. */
+
+.auth-form-row {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+
+@media (max-height: 700px) {
+
+    .auth-page--login .auth-eyebrow {
+
+        margin-bottom: 6px;
+    }
+
+    .auth-page--login .auth-lead {
+
+        display: none;
+    }
+
+    .auth-page--login .auth-footer {
+
+        padding-bottom: 14px;
     }
 }

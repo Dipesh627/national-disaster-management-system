@@ -55,6 +55,16 @@
     min-height: 62px;
 }
 
+/* Admin accounts only get 3 plain links (Home / About / Dashboard,
+   no dropdowns) instead of the full citizen menu. Detect that shape
+   structurally and let the brand keep the flexible track (1fr) so
+   it hugs the left edge, while the nav + auth area size to their
+   own content (auto) and sit snug together at the right edge. */
+.public-navbar-inner:has(.public-nav > a:nth-child(3):last-child) {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    justify-content: end;
+}
+
 
 /* =========================================================
    2. BRAND

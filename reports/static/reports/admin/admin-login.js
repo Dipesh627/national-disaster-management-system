@@ -72,61 +72,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     /* =====================================================
-       FORM VALIDATION + LOADING
+       LOADING STATE
+       Both fields already carry the native `required` attribute
+       (see admin/login.html), so the browser blocks submission
+       and focuses the empty field on its own - this handler no
+       longer duplicates that check. It only shows the loading
+       state once the browser has allowed the submit through,
+       and it does not stop the normal Django POST.
        ===================================================== */
 
     if (form && submitButton) {
 
         form.addEventListener(
             "submit",
-            function (event) {
-
-                const usernameValue =
-                    username
-                        ? username.value.trim()
-                        : "";
-
-
-                const passwordValue =
-                    password
-                        ? password.value
-                        : "";
-
-
-                /* Username validation */
-
-                if (!usernameValue) {
-
-                    event.preventDefault();
-
-                    if (username) {
-                        username.focus();
-                    }
-
-                    return;
-
-                }
-
-
-                /* Password validation */
-
-                if (!passwordValue) {
-
-                    event.preventDefault();
-
-                    if (password) {
-                        password.focus();
-                    }
-
-                    return;
-
-                }
-
-
-                /*
-                 * Do not stop the normal Django POST.
-                 * Only show loading state.
-                 */
+            function () {
 
                 submitButton.classList.add(
                     "is-loading"

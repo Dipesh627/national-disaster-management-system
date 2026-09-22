@@ -35,10 +35,10 @@
 
 .auth-page--register {
 
-    --reg-input-height: 44px;
+    --reg-input-height: 40px;
 
-    --reg-section-gap: 28px;
-    --reg-field-gap: 16px;
+    --reg-section-gap: 18px;
+    --reg-field-gap: 12px;
 
     /* calmer heading than Login's 34px */
     --auth-fs-h1: clamp(26px, 2.4vw, 30px);
@@ -79,22 +79,11 @@
 }
 
 
-/* The form sits directly on the page: no card, no shadow. */
-
-.auth-page--register .auth-card--flat {
-
-    max-width: 560px;
-
-    padding: 0;
-
-    border: 0;
-
-    border-radius: 0;
-
-    background: transparent;
-
-    box-shadow: none;
-}
+/* Register now sits in the same elevated white card as Login /
+   the Admin login (auth.css .auth-card), just a little wider to
+   fit the two-column rows. No card-specific override needed
+   here any more - .auth-card--wide in auth.css already supplies
+   the shared radius / shadow / padding. */
 
 
 /* =========================================================
@@ -202,7 +191,7 @@
 
 .auth-page--register .auth-heading {
 
-    margin-bottom: 32px;
+    margin-bottom: 22px;
 }
 
 
@@ -226,7 +215,7 @@
 }
 
 
-.auth-page--register .auth-card--flat {
+.auth-page--register .auth-card--wide {
 
     animation: reg-enter .28s ease-out both;
 }
@@ -242,57 +231,47 @@
 }
 
 
+/* Sections now live inside the single elevated .auth-card (same
+   card Login and the Admin login use), so each one is a plain
+   grouping rather than its own boxed card: a small uppercase
+   label (matching .auth-eyebrow's scale) above the fields, and
+   a hairline divider from the section before it. */
+
 .reg-section {
 
     min-width: 0;
+
+    padding-top: var(--reg-section-gap);
 }
 
 
-/* "01  Personal information ────────" */
+.reg-section:first-child {
+
+    padding-top: 0;
+}
+
+
+.reg-section + .reg-section {
+
+    border-top: 1px solid var(--border);
+}
+
 
 .reg-section__title {
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin: 0 0 var(--reg-field-gap);
-
-    color: var(--heading);
-
-    font-size: 13px;
-
-    font-weight: 650;
-
-    letter-spacing: .01em;
-
-    line-height: 1.3;
-}
-
-
-.reg-section__title::after {
-
-    content: "";
-
-    flex: 1;
-
-    height: 1px;
-
-    background: var(--border);
-}
-
-
-.reg-section__num {
+    margin: 0 0 14px;
 
     color: var(--red);
 
-    font-size: 12px;
+    font-size: 11px;
 
-    font-weight: 700;
+    font-weight: 750;
 
-    font-variant-numeric: tabular-nums;
+    letter-spacing: .1em;
+
+    line-height: 1.3;
+
+    text-transform: uppercase;
 }
 
 
@@ -312,7 +291,7 @@
 
 .auth-page--register .auth-field {
 
-    gap: 6px;
+    gap: 5px;
 }
 
 
@@ -516,12 +495,12 @@
 
     .auth-page--register .auth-main {
 
-        padding-top: 24px;
+        padding-top: 20px;
     }
 
     .auth-page--register .auth-heading {
 
-        margin-bottom: 28px;
+        margin-bottom: 20px;
     }
 
 }
@@ -531,23 +510,19 @@
 
     .auth-page--register {
 
-        --reg-section-gap: 24px;
+        --reg-section-gap: 16px;
     }
 
-    .auth-page--register .auth-card--flat {
-
-        padding: 0;
-    }
-
-    /* keep the tap targets comfortable on phones */
+    /* keep the tap targets comfortable on phones - inputs stay
+       taller here even though the desktop scale is lighter */
     .auth-page--register .auth-input {
 
-        height: 46px;
+        height: 44px;
     }
 
     .auth-page--register .auth-btn {
 
-        min-height: 48px;
+        min-height: 46px;
     }
 
 }
@@ -559,9 +534,127 @@
 
 @media (prefers-reduced-motion: reduce) {
 
-    .auth-page--register .auth-card--flat {
+    .auth-page--register .auth-card--wide {
 
         animation: none;
+    }
+
+}
+
+
+/* =========================================================
+   12. STEP NAV
+   Jump-links to the 3 sections above (#reg-personal,
+   #reg-account, #reg-security - the h2 ids already used for
+   aria-labelledby). Pure navigation, no JS: the whole form is
+   still one page and one POST, this just gives a long form a
+   sense of place. Smooth-scroll comes from auth.css (15.6).
+   ========================================================= */
+
+.reg-progress {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    margin-bottom: 26px;
+}
+
+
+.reg-progress__step {
+
+    display: flex;
+
+    flex: none;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 0;
+
+    background: none;
+
+    border: none;
+
+    color: var(--muted);
+
+    font-family: inherit;
+
+    font-size: 12.5px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+
+.reg-progress__step:hover,
+.reg-progress__step:focus-visible {
+
+    color: var(--heading);
+}
+
+
+.reg-progress__num {
+
+    display: flex;
+
+    flex: none;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 22px;
+    height: 22px;
+
+    border: 1.5px solid var(--border);
+    border-radius: 50%;
+
+    color: var(--muted);
+
+    font-size: 11.5px;
+
+    transition: border-color .18s ease, background-color .18s ease, color .18s ease;
+}
+
+
+.reg-progress__step:hover .reg-progress__num,
+.reg-progress__step:focus-visible .reg-progress__num {
+
+    border-color: var(--red);
+
+    color: var(--red);
+}
+
+
+.reg-progress__line {
+
+    flex: 1 1 auto;
+
+    height: 1px;
+
+    min-width: 12px;
+
+    background: var(--border);
+}
+
+
+@media (max-width: 480px) {
+
+    /* Numbers + connecting lines only; labels would wrap and
+       fight the 3-way layout on a narrow phone. */
+
+    .reg-progress__label {
+
+        display: none;
     }
 
 }

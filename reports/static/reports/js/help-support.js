@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initAttachmentPreview();
     initMessageDismiss();
     initSupportFormSubmit();
+    initIssueTypeSelect();
 
 
     /* =====================================================
@@ -895,6 +896,259 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
         });
+
+    }
+
+
+    /* =====================================================
+       ISSUE TYPE — CUSTOM DROPDOWN
+       Builds a styled listbox on top of the real
+       <select id="id_issue_type"> so the OPEN menu matches
+       the NDMS UI on every device (a native <select>'s popup
+       is drawn by the OS/browser and can't be restyled via
+       CSS — this replaces it with our own). The real select
+       stays in the DOM and is what actually submits with the
+       form; this only keeps it in sync.
+       ===================================================== */
+
+    function initIssueTypeSelect() {
+
+        const nativeSelect =
+            document.getElementById("id_issue_type");
+
+        const wrap =
+            nativeSelect
+                ? nativeSelect.closest(".hs-select-wrap")
+                : null;
+
+        const trigger =
+            document.getElementById("hsIssueTypeTrigger");
+
+        const triggerLabel =
+            trigger
+                ? trigger.querySelector(
+                    ".hs-select-trigger-label"
+                  )
+                : null;
+
+        const menu =
+            document.getElementById("hsIssueTypeMenu");
+
+        if (
+            !nativeSelect ||
+            !wrap ||
+            !trigger ||
+            !triggerLabel ||
+            !menu
+        ) {
+            return;
+        }
+
+
+        let options = [];
+        let activeIndex = -1;
+
+
+        function buildOptions() {
+
+            options = [];
+            menu.innerHTML = "";
+
+            Array.prototype.forEach.call(
+                nativeSelect.options,
+                function (opt, index) {
+
+                    const item =
+                        document.createElement("div");
+
+                    item.className = "hs-select-option";
+                    item.setAttribute("role", "option");
+                    item.setAttribute("id", "hsIssueTypeOpt" + index);
+                    item.setAttribute(
+                        "aria-selected",
+                        opt.selected ? "true" : "false"
+                    );
+                    item.textContent = opt.textContent;
+
+                    item.addEventListener("click", function () {
+                        selectIndex(index);
+                        closeMenu();
+                        trigger.focus();
+                    });
+
+                    menu.appendChild(item);
+                    options.push(item);
+
+                }
+            );
+
+            syncLabel();
+
+        }
+
+
+        function syncLabel() {
+
+            const selectedOption =
+                nativeSelect.options[nativeSelect.selectedIndex];
+
+            triggerLabel.textContent =
+                selectedOption ? selectedOption.textContent : "";
+
+        }
+
+
+        function selectIndex(index) {
+
+            if (index < 0 || index >= nativeSelect.options.length) {
+                return;
+            }
+
+            nativeSelect.selectedIndex = index;
+
+            nativeSelect.dispatchEvent(
+                new Event("change", { bubbles: true })
+            );
+
+            options.forEach(function (item, i) {
+                item.setAttribute(
+                    "aria-selected",
+                    i === index ? "true" : "false"
+                );
+            });
+
+            syncLabel();
+
+        }
+
+
+        function setActive(index) {
+
+            if (activeIndex >= 0 && options[activeIndex]) {
+                options[activeIndex].classList.remove("is-active");
+            }
+
+            activeIndex = index;
+
+            if (activeIndex >= 0 && options[activeIndex]) {
+
+                options[activeIndex].classList.add("is-active");
+
+                options[activeIndex].scrollIntoView({
+                    block: "nearest"
+                });
+
+            }
+
+        }
+
+
+        function openMenu() {
+
+            wrap.classList.add("open");
+            trigger.setAttribute("aria-expanded", "true");
+            menu.hidden = false;
+
+            setActive(
+                nativeSelect.selectedIndex >= 0
+                    ? nativeSelect.selectedIndex
+                    : 0
+            );
+
+        }
+
+
+        function closeMenu() {
+
+            wrap.classList.remove("open");
+            trigger.setAttribute("aria-expanded", "false");
+
+            // Wait for the fade-out transition (see .hs-select-menu
+            // in help-support.css) before actually hiding it, same
+            // as the open state relies on `hidden` being cleared
+            // before the "open" class triggers the transition.
+            window.setTimeout(function () {
+
+                if (!wrap.classList.contains("open")) {
+                    menu.hidden = true;
+                }
+
+            }, 180);
+
+            setActive(-1);
+
+        }
+
+
+        trigger.addEventListener("click", function () {
+
+            if (wrap.classList.contains("open")) {
+                closeMenu();
+            } else {
+                openMenu();
+            }
+
+        });
+
+
+        trigger.addEventListener("keydown", function (event) {
+
+            if (event.key === "ArrowDown") {
+
+                event.preventDefault();
+
+                if (!wrap.classList.contains("open")) {
+                    openMenu();
+                } else {
+                    setActive(
+                        Math.min(activeIndex + 1, options.length - 1)
+                    );
+                }
+
+            } else if (event.key === "ArrowUp") {
+
+                event.preventDefault();
+
+                if (wrap.classList.contains("open")) {
+                    setActive(Math.max(activeIndex - 1, 0));
+                }
+
+            } else if (event.key === "Enter" || event.key === " ") {
+
+                event.preventDefault();
+
+                if (!wrap.classList.contains("open")) {
+                    openMenu();
+                } else if (activeIndex >= 0) {
+                    selectIndex(activeIndex);
+                    closeMenu();
+                }
+
+            } else if (event.key === "Escape") {
+
+                closeMenu();
+
+            }
+
+        });
+
+
+        document.addEventListener("click", function (event) {
+
+            if (
+                wrap.classList.contains("open") &&
+                !wrap.contains(event.target)
+            ) {
+                closeMenu();
+            }
+
+        });
+
+
+        buildOptions();
+
+        wrap.classList.add("is-enhanced");
+        trigger.hidden = false;
 
     }
 

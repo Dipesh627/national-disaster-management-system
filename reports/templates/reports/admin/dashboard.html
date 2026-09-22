@@ -13,8 +13,6 @@
 {% block content %}
 <div class="ndms-dashboard">
 
-    <div class="dashboard-body">
-
     <!-- =====================================================
          DASHBOARD INTRO
          ===================================================== -->
@@ -27,9 +25,14 @@
             </p>
         </div>
 
-        <div class="dashboard-intro-meta" aria-label="Dashboard update time">
-            <span>System overview</span>
-            <strong>{{ dashboard_generated_at|date:"M d, Y · h:i A" }}</strong>
+        <div class="dashboard-intro-actions">
+            <div class="dashboard-intro-meta" aria-label="Dashboard update time">
+                <span>Last updated</span>
+                <strong>{{ dashboard_generated_at|date:"M d, Y · h:i A" }}</strong>
+            </div>
+            <a href="{% url 'admin_reports' %}" class="dashboard-intro-cta">
+                Review Reports <span aria-hidden="true">›</span>
+            </a>
         </div>
     </header>
 
@@ -103,32 +106,43 @@
     </section>
 
     <!-- =====================================================
-         CURRENT SITUATION
+         NEEDS ATTENTION
          ===================================================== -->
-    <section class="situation-strip" aria-label="Current situation">
-        <div class="situation-heading">
-            <span class="dashboard-eyebrow">CURRENT SITUATION</span>
-            <strong>Operational snapshot</strong>
+    <section class="attention-panel dashboard-panel">
+        <div class="panel-header">
+            <div>
+                <h2>Needs Attention</h2>
+                <p>Items that may require an admin action.</p>
+            </div>
         </div>
 
-        <div class="situation-stat">
-            <span>Active incidents</span>
-            <strong>{{ active_disasters_count }}</strong>
-        </div>
+        <div class="attention-grid">
+            <a href="{% url 'admin_reports' %}" class="attention-item">
+                <span class="attention-icon attention-icon-orange" aria-hidden="true">!</span>
+                <div>
+                    <strong>{{ pending_reports }} reports awaiting review</strong>
+                    <span>Open report management</span>
+                </div>
+                <b aria-hidden="true">›</b>
+            </a>
 
-        <div class="situation-stat situation-alert">
-            <span>Critical</span>
-            <strong>{{ critical_active_count|default:0 }}</strong>
-        </div>
+            <a href="{% url 'admin_disasters' %}" class="attention-item">
+                <span class="attention-icon attention-icon-red" aria-hidden="true">!</span>
+                <div>
+                    <strong>{{ critical_active_count|default:0 }} critical incidents active</strong>
+                    <span>Review active disasters</span>
+                </div>
+                <b aria-hidden="true">›</b>
+            </a>
 
-        <div class="situation-stat">
-            <span>Awaiting review</span>
-            <strong>{{ pending_reports }}</strong>
-        </div>
-
-        <div class="situation-stat">
-            <span>Response updates</span>
-            <strong>{{ recent_response_updates|length }}</strong>
+            <a href="{% url 'admin_response_updates' %}" class="attention-item">
+                <span class="attention-icon attention-icon-gray" aria-hidden="true">↗</span>
+                <div>
+                    <strong>{{ recent_response_updates|length }} recent response updates</strong>
+                    <span>Monitor agency activity</span>
+                </div>
+                <b aria-hidden="true">›</b>
+            </a>
         </div>
     </section>
 
@@ -136,6 +150,42 @@
          PRIMARY PANELS
          ===================================================== -->
     <section class="dashboard-grid dashboard-grid-primary">
+
+        <article class="dashboard-panel">
+            <div class="panel-header">
+                <div>
+                    <h2>Active Disaster Situation</h2>
+                    <p>Incidents currently requiring operational attention.</p>
+                </div>
+                <a href="{% url 'admin_disasters' %}" class="panel-link">View all <span aria-hidden="true">›</span></a>
+            </div>
+
+            {% if active_disasters %}
+                <div class="disaster-list">
+                    {% for disaster in active_disasters %}
+                        <a href="{% url 'admin_disasters' %}" class="disaster-row">
+                            <div class="disaster-main">
+                                <span class="disaster-severity severity-{{ disaster.severity|lower }}">
+                                    {{ disaster.get_severity_display }}
+                                </span>
+                                <strong>{{ disaster.title }}</strong>
+                                <span>{{ disaster.disaster_type.name }}</span>
+                            </div>
+                            <div class="disaster-date">
+                                {{ disaster.start_date|date:"M d, Y" }}
+                                <span aria-hidden="true">›</span>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <span class="empty-state-icon" aria-hidden="true">✓</span>
+                    <strong>No active disasters</strong>
+                    <span>The current system has no active incidents.</span>
+                </div>
+            {% endif %}
+        </article>
 
         <article class="dashboard-panel status-panel">
             <div class="panel-header">
@@ -147,18 +197,6 @@
             </div>
 
             <div class="status-content">
-                <div
-                    class="status-ring"
-                    data-total="{{ total_reports }}"
-                    role="img"
-                    aria-label="{{ verified_reports }} of {{ total_reports }} reports verified"
-                >
-                    <div>
-                        <strong>{{ total_reports }}</strong>
-                        <span>Reports</span>
-                    </div>
-                </div>
-
                 <div class="status-list">
                     <div class="status-row">
                         <div class="status-row-top">
@@ -203,158 +241,6 @@
             </div>
         </article>
 
-        <article class="dashboard-panel">
-            <div class="panel-header">
-                <div>
-                    <h2>Active Disasters</h2>
-                    <p>Incidents currently requiring operational attention.</p>
-                </div>
-                <a href="{% url 'admin_disasters' %}" class="panel-link">View all <span aria-hidden="true">›</span></a>
-            </div>
-
-            {% if active_disasters %}
-                <div class="disaster-list">
-                    {% for disaster in active_disasters %}
-                        <a href="{% url 'admin_disasters' %}" class="disaster-row">
-                            <div class="disaster-main">
-                                <span class="disaster-severity severity-{{ disaster.severity|lower }}">
-                                    {{ disaster.get_severity_display }}
-                                </span>
-                                <strong>{{ disaster.title }}</strong>
-                                <span>{{ disaster.disaster_type.name }}</span>
-                            </div>
-                            <div class="disaster-date">
-                                {{ disaster.start_date|date:"M d, Y" }}
-                                <span aria-hidden="true">›</span>
-                            </div>
-                        </a>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-state">
-                    <span class="empty-state-icon" aria-hidden="true">✓</span>
-                    <strong>No active disasters</strong>
-                    <span>The current system has no active incidents.</span>
-                </div>
-            {% endif %}
-        </article>
-
-    </section>
-
-    <!-- =====================================================
-         ACTIVITY PANELS
-         ===================================================== -->
-    <section class="dashboard-grid dashboard-grid-secondary">
-
-        <article class="dashboard-panel">
-            <div class="panel-header">
-                <div>
-                    <h2>Recent Activity</h2>
-                    <p>Latest events recorded across NDMS.</p>
-                </div>
-            </div>
-
-            {% if recent_activity %}
-                <div class="activity-list">
-                    {% for activity in recent_activity %}
-                        <div class="activity-row">
-                            <span class="activity-marker activity-{{ activity.kind }}" aria-hidden="true"></span>
-                            <div class="activity-body">
-                                <p>{{ activity.text }}</p>
-                                <time datetime="{{ activity.timestamp|date:'c' }}">
-                                    {{ activity.timestamp|date:"M d, Y · h:i A" }}
-                                </time>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-state">
-                    <span class="empty-state-icon" aria-hidden="true">•</span>
-                    <strong>No recent activity</strong>
-                    <span>New system activity will appear here.</span>
-                </div>
-            {% endif %}
-        </article>
-
-        <article class="dashboard-panel">
-            <div class="panel-header">
-                <div>
-                    <h2>Response Updates</h2>
-                    <p>Latest updates from response agencies.</p>
-                </div>
-                <a href="{% url 'admin_response_updates' %}" class="panel-link">View all <span aria-hidden="true">›</span></a>
-            </div>
-
-            {% if recent_response_updates %}
-                <div class="response-list">
-                    {% for update in recent_response_updates %}
-                        <div class="response-row">
-                            <div class="response-body">
-                                <strong>{{ update.disaster.title }}</strong>
-                                <span>{{ update.agency.agency_name }}</span>
-                            </div>
-                            <div class="response-side">
-                                <span class="response-status response-{{ update.response_status|lower }}">
-                                    {{ update.get_response_status_display }}
-                                </span>
-                                <time datetime="{{ update.update_date|date:'c' }}">
-                                    {{ update.update_date|date:"M d" }}
-                                </time>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% else %}
-                <div class="empty-state">
-                    <span class="empty-state-icon" aria-hidden="true">•</span>
-                    <strong>No response updates</strong>
-                    <span>Agency updates will appear here.</span>
-                </div>
-            {% endif %}
-        </article>
-
-    </section>
-
-    <!-- =====================================================
-         NEEDS ATTENTION
-         ===================================================== -->
-    <section class="attention-panel dashboard-panel">
-        <div class="panel-header">
-            <div>
-                <h2>Needs Attention</h2>
-                <p>Items that may require an admin action.</p>
-            </div>
-        </div>
-
-        <div class="attention-grid">
-            <a href="{% url 'admin_reports' %}" class="attention-item">
-                <span class="attention-icon attention-icon-orange" aria-hidden="true">!</span>
-                <div>
-                    <strong>{{ pending_reports }} reports awaiting review</strong>
-                    <span>Open report management</span>
-                </div>
-                <b aria-hidden="true">›</b>
-            </a>
-
-            <a href="{% url 'admin_disasters' %}" class="attention-item">
-                <span class="attention-icon attention-icon-red" aria-hidden="true">!</span>
-                <div>
-                    <strong>{{ critical_active_count|default:0 }} critical incidents active</strong>
-                    <span>Review active disasters</span>
-                </div>
-                <b aria-hidden="true">›</b>
-            </a>
-
-            <a href="{% url 'admin_response_updates' %}" class="attention-item">
-                <span class="attention-icon attention-icon-gray" aria-hidden="true">↗</span>
-                <div>
-                    <strong>{{ recent_response_updates|length }} recent response updates</strong>
-                    <span>Monitor agency activity</span>
-                </div>
-                <b aria-hidden="true">›</b>
-            </a>
-        </div>
     </section>
 
     <!-- =====================================================
@@ -448,25 +334,33 @@
         {% endif %}
     </section>
 
-    </div>
-
     <!-- =====================================================
-         FOOTER
+         RECENT ACTIVITY
          ===================================================== -->
-    <footer class="dashboard-admin-footer">
-
-        <div class="dashboard-admin-footer-brand">
-            <div class="dashboard-admin-footer-brand-text">
-                <strong>NDMS Administration</strong>
-                <span>National Disaster Management System</span>
+    {% if recent_activity %}
+        <section class="dashboard-panel dashboard-panel-activity">
+            <div class="panel-header">
+                <div>
+                    <h2>Recent Activity</h2>
+                    <p>Latest events recorded across NDMS.</p>
+                </div>
             </div>
-        </div>
 
-        <div class="dashboard-admin-footer-meta">
-            <span>© {{ dashboard_generated_at|date:"Y" }} National Disaster Management System. All rights reserved.</span>
-        </div>
-
-    </footer>
+            <div class="activity-list">
+                {% for activity in recent_activity %}
+                    <div class="activity-row">
+                        <span class="activity-marker activity-{{ activity.kind }}" aria-hidden="true"></span>
+                        <div class="activity-body">
+                            <p>{{ activity.text }}</p>
+                            <time datetime="{{ activity.timestamp|date:'c' }}">
+                                {{ activity.timestamp|date:"M d, Y · h:i A" }}
+                            </time>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
 
 </div>
 {% endblock %}

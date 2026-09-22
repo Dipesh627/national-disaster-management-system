@@ -555,7 +555,7 @@
                         </a>
 
                         <a
-                            href="{% url 'home' %}#feedback-section-title"
+                            href="{% url 'home' %}#feedback"
                             class="ndms-avatar-menu-item"
                             role="menuitem"
                         >
@@ -1453,7 +1453,32 @@
                         <span class="hs-required">*</span>
                     </label>
 
-                    {{ form.issue_type }}
+                    <div class="hs-select-wrap">
+
+                        {{ form.issue_type }}
+
+                        <button
+                            type="button"
+                            class="hs-select hs-select-trigger"
+                            id="hsIssueTypeTrigger"
+                            aria-haspopup="listbox"
+                            aria-expanded="false"
+                            aria-controls="hsIssueTypeMenu"
+                            hidden
+                        >
+                            <span class="hs-select-trigger-label"></span>
+                        </button>
+
+                        <div
+                            class="hs-select-menu"
+                            id="hsIssueTypeMenu"
+                            role="listbox"
+                            aria-labelledby="id_issue_type"
+                            tabindex="-1"
+                            hidden
+                        ></div>
+
+                    </div>
 
                     {% if form.issue_type.errors %}
 
