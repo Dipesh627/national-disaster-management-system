@@ -26,7 +26,7 @@
 .ap-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -91,7 +91,7 @@
 }
 
 .ap-primary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -102,18 +102,18 @@
 
 .ap-secondary-button {
     color: var(--ndms-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
 }
 
 .ap-secondary-button:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
 .ap-secondary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 8%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 8%, transparent);
     outline-offset: 2px;
 }
 
@@ -129,10 +129,10 @@
     width: min(760px, 100%);
     margin-bottom: 14px;
     padding: 18px 20px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
-    box-shadow: 0 1px 2px color-mix(in srgb, var(--navy-2) 4%, transparent);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--color-navy-deep) 4%, transparent);
 }
 
 .ap-avatar-edit-wrapper {
@@ -148,8 +148,8 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: var(--white);
-    background: var(--red);
+    color: var(--color-white);
+    background: var(--color-primary);
     border-radius: 50%;
     font-size: 22px;
     font-weight: 800;
@@ -171,12 +171,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid var(--white);
+    border: 2px solid var(--color-white);
     border-radius: 50%;
     background: var(--btn-dark);
     color: var(--on-dark);
     cursor: pointer;
-    box-shadow: 0 1px 3px color-mix(in srgb, var(--navy-2) 18%, transparent);
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-navy-deep) 18%, transparent);
     transition:
         background-color .18s ease,
         transform .18s ease;
@@ -188,13 +188,13 @@
 }
 
 .ap-avatar-edit-badge:hover {
-    background: var(--red);
+    background: var(--color-primary);
     transform: scale(1.05);
 }
 
 .ap-avatar-edit-badge:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 18%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
 .ap-avatar-popover {
@@ -204,7 +204,7 @@
     z-index: 40;
     width: 200px;
     padding: 6px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
     box-shadow: var(--shadow-md);
@@ -255,15 +255,15 @@
 }
 
 .ap-avatar-popover-item-danger {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ap-avatar-popover-item-danger .ap-avatar-popover-icon {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ap-avatar-popover-item-danger:hover {
-    background: var(--danger-bg);
+    background: var(--color-danger-bg);
 }
 
 .ap-avatar-popover-divider {
@@ -315,11 +315,11 @@
     height: 7px;
     flex-shrink: 0;
     border-radius: 50%;
-    background: var(--green);
+    background: var(--color-success);
 }
 
 .ap-status-dot.is-inactive {
-    background: var(--danger);
+    background: var(--color-danger);
 }
 
 .ap-identity-edit-button {
@@ -334,7 +334,7 @@
 .ap-card {
     width: min(760px, 100%);
     margin-bottom: 14px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
     overflow: hidden;
@@ -385,7 +385,7 @@
     gap: 14px;
     min-height: 42px;
     padding: 8px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .ap-view-field:nth-last-child(-n+2) {
@@ -419,13 +419,13 @@
 }
 
 .ap-status-pill-active {
-    color: var(--green-text);
-    background: var(--green-bg);
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
 }
 
 .ap-status-pill-inactive {
-    color: var(--danger);
-    background: var(--danger-bg);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
 }
 
 
@@ -468,7 +468,7 @@ body.ap-edit-mode #apEditForm {
 }
 
 .ap-required {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ap-form-group input[type="text"],
@@ -478,7 +478,7 @@ body.ap-edit-mode #apEditForm {
     min-height: 39px;
     padding: 0 11px;
     color: var(--ndms-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--border-strong);
     border-radius: 7px;
     outline: none;
@@ -524,7 +524,7 @@ body.ap-edit-mode #apEditForm {
 .ap-field-error {
     display: block;
     margin-top: 2px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9.5px;
     font-weight: 650;
     line-height: 1.35;
@@ -566,7 +566,7 @@ body.ap-edit-mode #apEditForm {
 
 .ap-photo-modal-content {
     width: min(420px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border-radius: 16px;
     box-shadow: var(--shadow-md);
     padding: 0 24px 24px;
@@ -654,7 +654,7 @@ body.ap-edit-mode #apEditForm {
     flex-direction: column;
     width: min(480px, 100%);
     max-height: calc(100vh - 48px);
-    background: var(--white);
+    background: var(--color-white);
     border-radius: 16px;
     box-shadow: var(--shadow-md);
     overflow: hidden;
@@ -734,8 +734,8 @@ body.ap-edit-mode #apEditForm {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    color: var(--white);
-    background: var(--red);
+    color: var(--color-white);
+    background: var(--color-primary);
     border-radius: 50%;
     font-size: 34px;
     font-weight: 800;
@@ -792,7 +792,7 @@ body.ap-edit-mode #apEditForm {
     cursor: grab;
     touch-action: none;
     box-shadow:
-        inset 0 0 0 3px var(--white),
+        inset 0 0 0 3px var(--color-white),
         0 0 0 1px var(--ndms-border),
         0 10px 22px -10px rgba(16, 24, 40, .3);
 }
@@ -842,7 +842,7 @@ body.ap-edit-mode #apEditForm {
     height: 18px;
     margin: 0;
     background: transparent;
-    accent-color: var(--red);
+    accent-color: var(--color-primary);
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
@@ -870,9 +870,9 @@ body.ap-edit-mode #apEditForm {
     width: 16px;
     height: 16px;
     margin-top: -6px;
-    border: 2px solid var(--red);
+    border: 2px solid var(--color-primary);
     border-radius: 50%;
-    background: var(--white);
+    background: var(--color-white);
     box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
     cursor: pointer;
     -webkit-appearance: none;
@@ -883,9 +883,9 @@ body.ap-edit-mode #apEditForm {
 .ap-crop-zoom-slider::-moz-range-thumb {
     width: 16px;
     height: 16px;
-    border: 2px solid var(--red);
+    border: 2px solid var(--color-primary);
     border-radius: 50%;
-    background: var(--white);
+    background: var(--color-white);
     box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
     cursor: pointer;
     transition: transform .12s ease;
@@ -923,7 +923,7 @@ body.ap-edit-mode #apEditForm {
     padding: 5px 10px;
     border: 1px solid var(--ndms-border);
     border-radius: 6px;
-    background: var(--white);
+    background: var(--color-white);
     color: var(--heading);
     font-family: inherit;
     font-size: 11px;
@@ -936,9 +936,9 @@ body.ap-edit-mode #apEditForm {
 }
 
 .ap-crop-reset:hover {
-    border-color: var(--red);
-    background: var(--light-red);
-    color: var(--red);
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
 }
 
 
@@ -975,7 +975,7 @@ body.ap-edit-mode #apEditForm {
     padding: 11px;
     border: 1px solid var(--ndms-border);
     border-radius: 8px;
-    background: var(--white);
+    background: var(--color-white);
     color: var(--heading);
     text-align: center;
     font-size: 13px;
@@ -987,9 +987,9 @@ body.ap-edit-mode #apEditForm {
 }
 
 .ap-choose-photo-btn:hover {
-    border-color: var(--red);
-    background: var(--light-red);
-    color: var(--red);
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
 }
 
 /* Same `[hidden]` fix as the elements above. */
@@ -1005,7 +1005,7 @@ body.ap-edit-mode #apEditForm {
 .pf-avatar-file-input:focus-visible + .ap-photo-modal-filename {
     outline: none;
     box-shadow:
-        0 0 0 3px color-mix(in srgb, var(--red) 15%, transparent);
+        0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
 }
 
 .ap-photo-modal-filename {
@@ -1078,7 +1078,7 @@ body.ap-edit-mode #apEditForm {
     }
 
     .ap-view-field:nth-last-child(-n+2) {
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-border);
     }
 
     .ap-view-field:last-child {

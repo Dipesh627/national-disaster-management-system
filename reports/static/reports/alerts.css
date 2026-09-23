@@ -7,8 +7,8 @@
    navbar-avatar.css, both loaded before this file, and is
    NOT duplicated here.
 
-   Uses only the existing shared design tokens (--white,
-   --text, --muted, --navy, --red, --border, --background,
+   Uses only the existing shared design tokens (--color-white,
+   --color-text, --color-muted, --color-navy, --color-primary, --color-border, --color-background,
    --shadow-*, --c-*) defined in dashboard.css, so nothing
    page-specific is duplicated here.
    ========================================================= */
@@ -43,7 +43,7 @@
 
     max-width: 620px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(13px * var(--ndms-font-scale, 1));
     line-height: 1.55;
@@ -75,9 +75,9 @@
 
     padding: 16px 18px;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
 
     box-shadow: var(--shadow-xs);
@@ -123,8 +123,8 @@
 
 .alerts-stat-card-danger .alerts-stat-icon {
 
-    background: var(--danger-bg);
-    color: var(--danger);
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
 
 }
 
@@ -147,7 +147,7 @@
 
     margin-top: 3px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
     font-weight: 700;
@@ -173,9 +173,9 @@
 
 .alerts-content-card {
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 14px;
 
     box-shadow: var(--shadow-xs);
@@ -202,7 +202,7 @@
 
     margin-bottom: 4px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: calc(9.5px * var(--ndms-font-scale, 1));
     font-weight: 800;
@@ -223,7 +223,7 @@
 
 .alerts-content-head p {
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
 
@@ -240,9 +240,9 @@
     display: inline-flex;
     align-items: center;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
 
     color: var(--heading);
@@ -261,14 +261,14 @@
 
 .alerts-mark-all:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
     border-color: var(--c-border-5);
 
 }
 
 .alerts-mark-all:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 
 }
@@ -299,7 +299,7 @@
 
     overflow-x: auto;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -323,7 +323,7 @@
     padding: 9px 4px 11px;
     margin-right: 18px;
 
-    color: var(--muted);
+    color: var(--color-muted);
     text-decoration: none;
 
     font-size: calc(12px * var(--ndms-font-scale, 1));
@@ -345,7 +345,7 @@
 
 .alerts-filter-tab:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 3px;
 
@@ -353,8 +353,8 @@
 
 .alerts-filter-tab.active {
 
-    color: var(--red);
-    border-bottom-color: var(--red);
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
 
 }
 
@@ -370,8 +370,8 @@
 
     border-radius: 999px;
 
-    background: var(--soft-gray);
-    color: var(--muted);
+    background: var(--color-section);
+    color: var(--color-muted);
 
     font-size: calc(9.5px * var(--ndms-font-scale, 1));
     font-weight: 800;
@@ -380,8 +380,8 @@
 
 .alerts-filter-tab.active span {
 
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
 
 }
 
@@ -442,19 +442,19 @@
 
 .alert-item:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 
 }
 
 .alert-item-unread {
 
-    background: var(--c-red-20);
+    background: var(--c-primary-20);
 
 }
 
 .alert-item-unread:hover {
 
-    background: var(--c-red-30);
+    background: var(--c-primary-30);
 
 }
 
@@ -489,7 +489,7 @@
     border-radius: 10px;
 
     background: var(--c-surface-6);
-    color: var(--muted);
+    color: var(--color-muted);
 
 }
 
@@ -502,43 +502,43 @@
 
 .alert-icon-disaster-alert {
 
-    background: var(--orange-bg);
-    color: var(--orange-text);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
 
 }
 
 .alert-icon-under-review {
 
-    background: var(--amber-bg);
-    color: var(--amber-dark);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
 
 }
 
 .alert-icon-verified {
 
-    background: var(--green-bg);
-    color: var(--green-text);
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
 
 }
 
 .alert-icon-rejected {
 
-    background: var(--danger-bg);
-    color: var(--danger-dark);
+    background: var(--color-danger-bg);
+    color: var(--color-danger-dark);
 
 }
 
 .alert-icon-received {
 
-    background: var(--soft-gray);
-    color: var(--muted);
+    background: var(--color-section);
+    color: var(--color-muted);
 
 }
 
 .alert-icon-general {
 
-    background: var(--blue-bg);
-    color: var(--blue-text);
+    background: var(--color-info-bg);
+    color: var(--color-info-text);
 
 }
 
@@ -578,7 +578,7 @@
 .alert-item-read .alert-item-title-row strong {
 
     font-weight: 650;
-    color: var(--text);
+    color: var(--color-text);
 
 }
 
@@ -591,7 +591,7 @@
 
     border-radius: 999px;
 
-    background: var(--red);
+    background: var(--color-primary);
 
 }
 
@@ -599,10 +599,11 @@
 
     display: -webkit-box;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
     line-height: 1.45;
@@ -660,29 +661,29 @@
 
 .alert-severity-low {
 
-    background: var(--soft-gray);
-    color: var(--muted);
+    background: var(--color-section);
+    color: var(--color-muted);
 
 }
 
 .alert-severity-medium {
 
-    background: var(--amber-bg);
-    color: var(--amber-dark);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
 
 }
 
 .alert-severity-high {
 
-    background: var(--c-orange-bg-2);
-    color: var(--c-orange-600);
+    background: var(--c-warning-bg-2);
+    color: var(--c-warning-600);
 
 }
 
 .alert-severity-critical {
 
-    background: var(--danger-bg);
-    color: var(--danger);
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
 
 }
 
@@ -702,7 +703,7 @@
 
     padding-top: 1px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
     font-weight: 800;
@@ -721,14 +722,14 @@
 
 .alert-action-read {
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-weight: 700;
 
 }
 
 .alert-view-details-link {
 
-    color: var(--red);
+    color: var(--color-primary);
     text-decoration: none;
 
     font-size: calc(10px * var(--ndms-font-scale, 1));
@@ -740,14 +741,14 @@
 
 .alert-view-details-link:hover {
 
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
     text-decoration: underline;
 
 }
 
 .alert-view-details-link:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 3px;
 
@@ -783,8 +784,8 @@
 
     border-radius: 999px;
 
-    background: var(--soft-gray);
-    color: var(--muted);
+    background: var(--color-section);
+    color: var(--color-muted);
 
 }
 
@@ -810,7 +811,7 @@
 
     max-width: 320px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
     line-height: 1.5;
@@ -823,7 +824,7 @@
 
     margin-top: 12px;
 
-    color: var(--red);
+    color: var(--color-primary);
     text-decoration: none;
 
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
@@ -839,7 +840,7 @@
 
 .alerts-empty a:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
     border-radius: 3px;
 
@@ -877,7 +878,7 @@
     font-size: calc(11px * var(--ndms-font-scale, 1));
     font-weight: 700;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 8px;
 
     transition:
@@ -888,13 +889,13 @@
 
 .alerts-page-link:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 
 }
 
 .alerts-page-link:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 
 }
@@ -927,7 +928,7 @@
 
     padding: 0 4px;
 
-    color: var(--muted);
+    color: var(--color-muted);
     text-decoration: none;
 
     font-size: calc(11px * var(--ndms-font-scale, 1));
@@ -943,22 +944,22 @@
 
 .alerts-page-number:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
     color: var(--heading);
 
 }
 
 .alerts-page-number:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 
 }
 
 .alerts-page-number.active {
 
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
 
 }
 

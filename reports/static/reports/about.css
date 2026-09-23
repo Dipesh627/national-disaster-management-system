@@ -30,6 +30,31 @@
 
 
 /* =========================================================
+   0. GLOBAL RESET (shared body font)
+   ---------------------------------------------------------
+   about.css loads first on every public page (Home, About,
+   Disaster List/Detail/Guidelines, Emergency Agencies, Privacy,
+   Terms) and is where their shared reset lives. Without a
+   font-family here, `body` never gets one on those pages, so
+   the navbar and footer (whose own stylesheets only set
+   `font-family: inherit` on a couple of elements) fall back to
+   the browser's default font instead of NDMS's. Same stack as
+   the Citizen dashboard, Admin panel and auth pages.
+   ========================================================= */
+
+body {
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* =========================================================
    1. BASE + CONTAINER
    ========================================================= */
 
@@ -84,40 +109,40 @@
 }
 
 .ab-btn--primary {
-    border-color: var(--red);
+    border-color: var(--color-primary);
 
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
 }
 
 .ab-btn--primary:hover {
-    border-color: var(--red-dark);
+    border-color: var(--color-primary-dark);
 
-    background: var(--red-dark);
+    background: var(--color-primary-dark);
 }
 
 .ab-btn--secondary {
-    border-color: var(--border);
+    border-color: var(--color-border);
 
-    background: var(--white);
+    background: var(--color-white);
     color: var(--heading);
 }
 
 .ab-btn--secondary:hover {
-    border-color: var(--red);
+    border-color: var(--color-primary);
 
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
 }
 
 /* Button on the dark CTA panel (dark in both themes). */
 .ab-btn--on-dark {
     background: var(--on-dark);
-    color: var(--navy);
+    color: var(--color-navy);
 }
 
 .ab-btn--on-dark:hover {
-    background: color-mix(in srgb, var(--on-dark) 88%, var(--navy));
+    background: color-mix(in srgb, var(--on-dark) 88%, var(--color-navy));
 }
 
 .ab-btn-arrow {
@@ -134,7 +159,7 @@
 }
 
 .ab-link {
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: 15px;
     font-weight: 650;
@@ -148,7 +173,7 @@
 
 .ab-btn:focus-visible,
 .ab-link:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 3px;
 }
 
@@ -168,7 +193,7 @@
 .ab-hero {
     padding: clamp(40px, 6vw, 80px) 0 clamp(56px, 7vw, 96px);
 
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ab-hero-grid {
@@ -187,7 +212,7 @@
     align-items: center;
     gap: 10px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: 12px;
     font-weight: 700;
@@ -221,7 +246,7 @@
 
     text-wrap: pretty;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: clamp(1rem, .95rem + .25vw, 1.125rem);
     line-height: 1.75;
@@ -241,10 +266,10 @@
     aspect-ratio: 5 / 4;
     overflow: hidden;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 }
 
 .ab-hero-media img {
@@ -268,11 +293,11 @@
 .ab-section {
     padding: var(--ab-section-space) 0;
 
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ab-section--tint {
-    background: var(--soft-gray);
+    background: var(--color-section);
 }
 
 .ab-head {
@@ -299,7 +324,7 @@
 .ab-head p {
     max-width: 56ch;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 1.0625rem;
     line-height: 1.7;
@@ -326,13 +351,13 @@
 .ab-stage {
     padding-top: 24px;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 }
 
 .ab-stage-num {
     display: block;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: .875rem;
     font-variant-numeric: tabular-nums;
@@ -354,7 +379,7 @@
 .ab-stage p {
     max-width: 38ch;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 1rem;
     line-height: 1.7;
@@ -388,20 +413,20 @@
 
     text-wrap: pretty;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 1.0625rem;
     line-height: 1.75;
 }
 
 .ab-principles {
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .ab-principle {
     padding: 28px 0 32px;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 }
 
 .ab-principle h3 {
@@ -418,7 +443,7 @@
 .ab-principle p {
     max-width: 56ch;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 1rem;
     line-height: 1.75;
@@ -458,11 +483,11 @@
     display: grid;
     place-items: center;
 
-    border: 2px solid var(--red);
+    border: 2px solid var(--color-primary);
     border-radius: 50%;
 
-    background: var(--background);
-    color: var(--red);
+    background: var(--color-background);
+    color: var(--color-primary);
 
     font-size: .9375rem;
     font-variant-numeric: tabular-nums;
@@ -473,8 +498,8 @@
 /* Administrator steps are filled, citizen / public steps are outlined,
    so the flow shows who is acting without extra labels. */
 .ab-step--admin .ab-step-node {
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
 }
 
 /* Connector: a base line (::before) and a filled line (::after)
@@ -492,11 +517,11 @@
 }
 
 .ab-step:not(:last-child)::before {
-    background: var(--border);
+    background: var(--color-border);
 }
 
 .ab-step:not(:last-child)::after {
-    background: var(--red);
+    background: var(--color-primary);
 
     transform-origin: left center;
     transition: transform .6s var(--ease);
@@ -514,7 +539,7 @@
 .ab-step-actor {
     margin: 20px 0 4px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: .8125rem;
     font-weight: 650;
@@ -535,7 +560,7 @@
 .ab-step > p:last-child {
     max-width: 30ch;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: .9375rem;
     line-height: 1.65;
@@ -557,10 +582,10 @@
     padding: 0;
     overflow: hidden;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
 
-    background: var(--border);
+    background: var(--color-border);
 
     list-style: none;
 }
@@ -568,7 +593,7 @@
 .ab-capability {
     padding: 32px 28px 36px;
 
-    background: var(--white);
+    background: var(--color-white);
 }
 
 .ab-capability-icon {
@@ -579,7 +604,7 @@
 
     margin-bottom: 20px;
 
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 .ab-capability-icon svg {
@@ -602,7 +627,7 @@
 .ab-capability p {
     max-width: 34ch;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: .9375rem;
     line-height: 1.7;
@@ -622,10 +647,10 @@
 
     overflow: hidden;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
 
-    background: var(--white);
+    background: var(--color-white);
 }
 
 .ab-audience-col {
@@ -633,9 +658,9 @@
 }
 
 .ab-audience-col--admin {
-    border-left: 1px solid var(--border);
+    border-left: 1px solid var(--color-border);
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 }
 
 .ab-audience-col h3 {
@@ -653,7 +678,7 @@
     max-width: 44ch;
     margin-bottom: 28px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 1rem;
     line-height: 1.65;
@@ -663,7 +688,7 @@
     margin: 0;
     padding: 0;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 
     list-style: none;
 }
@@ -671,9 +696,9 @@
 .ab-audience-list li {
     padding: 14px 0;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-size: .9375rem;
     line-height: 1.55;
@@ -705,10 +730,10 @@
 
     padding: clamp(28px, 5vw, 56px);
 
-    border: 1px solid var(--navy-soft);
+    border: 1px solid var(--color-navy-mid);
     border-radius: 18px;
 
-    background: var(--navy-light);
+    background: var(--color-navy-mid);
     color: var(--on-dark);
 }
 
@@ -827,7 +852,7 @@
     }
 
     .ab-audience-col--admin {
-        border-top: 1px solid var(--border);
+        border-top: 1px solid var(--color-border);
         border-left: 0;
     }
 

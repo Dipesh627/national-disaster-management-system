@@ -2,18 +2,18 @@
    NDMS - GLOBAL PUBLIC FOOTER
    ---------------------------------------------------------
    Markup: templates/reports/partials/footer.html
-   A dark structural band (--navy-2) in BOTH themes, so all
-   text uses --on-dark tokens (never --white, which flips to a
+   A dark structural band (--color-navy-deep) in BOTH themes, so all
+   text uses --on-dark tokens (never --color-white, which flips to a
    dark surface colour in dark mode).
    ========================================================= */
 
 .site-footer {
     margin-top: auto;
 
-    background: var(--navy-2);
+    background: var(--color-navy-deep);
     color: var(--on-dark-muted);
 
-    border-top: 1px solid var(--navy-soft);
+    border-top: 1px solid var(--color-navy-mid);
 }
 
 .site-footer-inner {
@@ -23,21 +23,16 @@
     padding: 64px 0 28px;
 }
 
+/* Always brand + exactly two link columns (Quick Links,
+   Legal & Support), for both citizen and admin accounts.
+   The link columns are sized to their own content (auto) so
+   they sit snug against each other and land together at the
+   right edge instead of spreading out across the row. */
 .footer-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr));
-    gap: 48px;
-}
-
-/* Admin accounts see only two link columns ("For Citizens" is
-   citizen-only). Brand keeps the flexible track (1fr) so it
-   still hugs the left edge; the two remaining link columns are
-   sized to their own content (auto) so they sit snug against
-   each other and land together at the right edge instead of
-   spreading out across the row. */
-.footer-grid:has(> .footer-col:nth-child(3):last-child) {
     grid-template-columns: minmax(0, 1fr) auto auto;
-    justify-content: end;
+    justify-content: space-between;
+    gap: 48px;
 }
 
 
@@ -93,7 +88,7 @@
 .footer-social {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
 
     margin: 22px 0 0;
     padding: 0;
@@ -102,35 +97,32 @@
 }
 
 .footer-social-link {
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
 
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    border: 1px solid var(--on-dark-line);
     border-radius: var(--radius-full);
 
     color: var(--on-dark-muted);
     text-decoration: none;
 
     transition:
-        background-color .16s ease,
-        border-color .16s ease,
-        color .16s ease;
+        background-color .15s ease,
+        color .15s ease;
 }
 
 .footer-social-link svg {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
 
     display: block;
 }
 
 .footer-social-link:hover {
-    background: rgba(255, 255, 255, .08);
-    border-color: var(--on-dark-muted);
+    background: rgba(255, 255, 255, .1);
     color: var(--on-dark);
 }
 
@@ -151,8 +143,7 @@
     line-height: 1.3;
 }
 
-.footer-col ul,
-.footer-bottom-links {
+.footer-col ul {
     display: grid;
     gap: 4px;
 
@@ -175,8 +166,7 @@
     transition: color .16s ease;
 }
 
-.footer-col a:hover,
-.footer-bottom a:hover {
+.footer-col a:hover {
     color: var(--on-dark);
     text-decoration: underline;
     text-underline-offset: 4px;
@@ -214,6 +204,11 @@
     display: flex;
     flex-wrap: wrap;
     gap: 6px 22px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
 }
 
 .footer-bottom a {
@@ -221,6 +216,12 @@
 
     font-size: calc(13px * var(--ndms-font-scale, 1));
     text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    color: var(--on-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
 }
 
 
@@ -232,9 +233,9 @@
         padding: 52px 0 24px;
     }
 
-    .footer-grid,
-    .footer-grid:has(> .footer-col:nth-child(3):last-child) {
+    .footer-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-content: normal;
         gap: 36px 32px;
     }
 
@@ -250,8 +251,7 @@
         padding: 44px 0 22px;
     }
 
-    .footer-grid,
-    .footer-grid:has(> .footer-col:nth-child(3):last-child) {
+    .footer-grid {
         grid-template-columns: minmax(0, 1fr);
         gap: 30px;
     }

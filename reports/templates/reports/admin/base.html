@@ -15,13 +15,12 @@
     </title>
 
     {% comment %}
-        THEME (shared with the Citizen portal): applies the saved / OS
-        theme to <html data-theme> before first paint, loads the Citizen
-        "Sentinel Teal" tokens (ndms-theme.css) and theme.js. It comes
-        FIRST so every Admin stylesheet below can use those tokens and
-        no Admin file defines its own palette. The theme choice is the
-        same localStorage key the Citizen portal uses ("ndms-theme"); it
-        is never sent to the server.
+        DESIGN TOKENS (shared with the Citizen portal): loads the
+        Citizen "Sentinel Teal" tokens (ndms-theme.css). It comes FIRST
+        so every Admin stylesheet below can use those tokens and no
+        Admin file defines its own palette. The project uses one
+        permanent Light Theme; there is no dark mode and nothing is
+        stored in the browser for this.
     {% endcomment %}
     {% include 'reports/partials/theme_head.html' %}
 
@@ -521,9 +520,6 @@
 
     <!-- RIGHT -->
     <div class="topbar-right">
-
-        <!-- Theme toggle (shared Citizen partial; behaviour in theme.js) -->
-        {% include 'reports/partials/theme_toggle.html' %}
 
         <!-- Admin Alerts -->
         <div class="admin-alerts">

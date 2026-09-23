@@ -34,8 +34,8 @@
 
     border-radius: 12px;
 
-    background: var(--white);
-    border: 1px solid var(--border);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
 
     box-shadow: var(--shadow-md);
 
@@ -43,13 +43,13 @@
 
 .django-message-success {
 
-    border-left: 4px solid var(--green);
+    border-left: 4px solid var(--color-success);
 
 }
 
 .django-message-error {
 
-    border-left: 4px solid var(--danger);
+    border-left: 4px solid var(--color-danger);
 
 }
 
@@ -66,8 +66,8 @@
 
     border-radius: 50%;
 
-    background: var(--green-bg);
-    color: var(--green-text);
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
 
     font-weight: 800;
 
@@ -81,7 +81,7 @@
     line-height: 1.5;
     font-weight: 600;
 
-    color: var(--text);
+    color: var(--color-text);
 
 }
 
@@ -90,7 +90,7 @@
     border: none;
     background: transparent;
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: calc(20px * var(--ndms-font-scale, 1));
     line-height: 1;
 
@@ -179,7 +179,7 @@
         block;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(8px * var(--ndms-font-scale, 1));
@@ -222,7 +222,7 @@
         520px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -260,7 +260,7 @@
         center;
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -280,10 +280,10 @@
 .stat-icon.pending {
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
 }
 
@@ -291,7 +291,7 @@
 .stat-icon.review {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -302,10 +302,10 @@
 .stat-icon.verified {
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
 }
 
@@ -313,10 +313,10 @@
 .stat-icon.rejected {
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
     color:
-        var(--danger);
+        var(--color-danger);
 
 }
 
@@ -341,7 +341,7 @@
 .stat-status {
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -380,7 +380,7 @@
 .my-reports-page .stats-grid .stat-card:nth-child(2)::before {
 
     background:
-        var(--orange);
+        var(--color-warning);
 
 }
 
@@ -388,7 +388,7 @@
 .my-reports-page .stats-grid .stat-card:nth-child(3)::before {
 
     background:
-        var(--green);
+        var(--color-success);
 
 }
 
@@ -517,7 +517,7 @@
         -9px 0 15px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -598,16 +598,16 @@
         9px 13px 9px 30px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         8px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-family:
         inherit;
@@ -639,7 +639,7 @@
 .mr-search-box input[type="text"]:focus {
 
     border-color:
-        var(--red);
+        var(--color-primary);
 
     box-shadow: var(--field-focus-ring);
 
@@ -655,7 +655,7 @@
         10px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -669,7 +669,7 @@
 .mr-search-clear {
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10.5px * var(--ndms-font-scale, 1));
@@ -686,7 +686,7 @@
 .mr-search-clear:hover {
 
     color:
-        var(--red);
+        var(--color-primary);
 
 }
 
@@ -723,16 +723,16 @@
         0 14px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         8px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-family:
         inherit;
@@ -765,7 +765,7 @@
         14px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
 }
 
@@ -784,7 +784,7 @@
 .mr-filters-toggle[aria-expanded="true"] {
 
     border-color:
-        var(--red);
+        var(--color-primary);
 
     color:
         var(--heading);
@@ -804,7 +804,7 @@
         999px;
 
     background:
-        var(--red);
+        var(--color-primary);
 
 }
 
@@ -830,10 +830,10 @@
         16px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         11px;
@@ -891,7 +891,7 @@
 .mr-filters-field label {
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9.5px * var(--ndms-font-scale, 1));
@@ -923,7 +923,7 @@
         0 28px 0 12px;
 
     background:
-        var(--white)
+        var(--color-white)
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")
         no-repeat right 8px center;
 
@@ -931,13 +931,13 @@
         13px;
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         8px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-family:
         inherit;
@@ -975,7 +975,7 @@
 .mr-filters-field select:focus {
 
     border-color:
-        var(--red);
+        var(--color-primary);
 
     box-shadow: var(--field-focus-ring);
 
@@ -1017,7 +1017,7 @@
         7px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-family:
         inherit;
@@ -1037,7 +1037,7 @@
 .mr-filters-clear:hover {
 
     color:
-        var(--red);
+        var(--color-primary);
 
 }
 
@@ -1088,7 +1088,7 @@
 .mr-clear-filters-link {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(10.5px * var(--ndms-font-scale, 1));
@@ -1105,7 +1105,7 @@
 .mr-clear-filters-link:hover {
 
     color:
-        var(--red-dark);
+        var(--color-primary-dark);
 
 }
 
@@ -1131,14 +1131,14 @@
    ========================================================= */
 
 .reports-table .report-id {
-    color: var(--red);
+    color: var(--color-primary);
     font-weight: 750;
     text-decoration: none;
 }
 
 .reports-table .report-id:hover,
 .reports-table .report-id:focus-visible {
-    color: var(--red);
+    color: var(--color-primary);
     text-decoration: underline;
     text-underline-offset: 3px;
 }
@@ -1156,7 +1156,7 @@
 
     margin-top: 2px;
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
 }
 
@@ -1171,7 +1171,7 @@
     align-items: center;
     gap: 5px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-family: inherit;
     font-size: calc(12px * var(--ndms-font-scale, 1));
@@ -1190,7 +1190,7 @@
 
 .mr-view-details-link:hover,
 .mr-view-details-link:focus-visible {
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
 }
 
 .mr-view-details-link:hover span,
@@ -1199,7 +1199,7 @@
 }
 
 .mr-view-details-link:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 3px;
     border-radius: 4px;
 }
@@ -1230,10 +1230,10 @@
         60px 24px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         11px;
@@ -1256,10 +1256,10 @@
         12px;
 
     background:
-        var(--light-red);
+        var(--color-primary-tint);
 
     color:
-        var(--red);
+        var(--color-primary);
 
     display:
         flex;
@@ -1302,7 +1302,7 @@
         320px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(11.5px * var(--ndms-font-scale, 1));
@@ -1342,7 +1342,7 @@
         10px;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(9.5px * var(--ndms-font-scale, 1));
@@ -1356,7 +1356,7 @@
 .mr-no-results .mr-reset-link:hover {
 
     color:
-        var(--red-dark);
+        var(--color-primary-dark);
 
 }
 
@@ -1383,7 +1383,7 @@
         16px;
 
     border-top:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
 }
 
@@ -1409,13 +1409,13 @@
         0 8px;
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         7px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size:
         calc(10.5px * var(--ndms-font-scale, 1));
@@ -1424,7 +1424,7 @@
         700;
 
     background:
-        var(--white);
+        var(--color-white);
 
     transition:
         border-color .18s ease,
@@ -1631,7 +1631,7 @@
 
     margin-top: 10px;
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: calc(11px * var(--ndms-font-scale, 1));
 
 }
@@ -1671,7 +1671,7 @@
 
 .mr-report-card-row > span:first-child {
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-weight: 550;
 
 }
@@ -1691,7 +1691,7 @@
 
     margin-top: 12px;
 
-    color: var(--red);
+    color: var(--color-primary);
     font-size: calc(10.5px * var(--ndms-font-scale, 1));
     font-weight: 750;
 
@@ -1699,7 +1699,7 @@
 
 .mr-report-card-link:hover {
 
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
 
 }
 

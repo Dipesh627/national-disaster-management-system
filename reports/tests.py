@@ -12,7 +12,7 @@ from .models import (
     NotificationRead,
     SupportRequest,
 )
-from .forms import CitizenSettingsForm, AdminSettingsForm
+from .forms import CitizenSettingsForm
 
 User = get_user_model()
 

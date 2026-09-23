@@ -10,9 +10,9 @@
    it. */
 :root {
 
-    --navy-deep: var(--navy-2);
+    --navy-deep: var(--color-navy-deep);
 
-    --placeholder: color-mix(in srgb, var(--muted) 72%, var(--white));
+    --placeholder: color-mix(in srgb, var(--color-muted) 72%, var(--color-white));
     --light-muted: var(--placeholder);
     --border-hover: var(--c-border-9);
 
@@ -50,10 +50,10 @@ body {
     overflow-x: hidden;
 
     background:
-        var(--background);
+        var(--color-background);
 
     color:
-        var(--text);
+        var(--color-text);
 
     /* Same stack as the Citizen auth pages (auth.css body.auth-page).
        "Inter" was declared here previously but never loaded anywhere
@@ -95,7 +95,7 @@ svg {
 ::selection {
 
     background:
-        color-mix(in srgb, var(--red) 14%, transparent);
+        color-mix(in srgb, var(--color-primary) 14%, transparent);
 
 }
 
@@ -151,7 +151,7 @@ svg {
        stacked rectangles. */
     box-shadow:
         10px 0 30px -12px
-        color-mix(in srgb, var(--navy-2) 35%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 35%, transparent);
 
 }
 
@@ -205,16 +205,16 @@ svg {
 
         linear-gradient(
             90deg,
-            color-mix(in srgb, var(--navy-2) 97%, transparent) 0%,
-            color-mix(in srgb, var(--navy-2) 86%, transparent) 48%,
-            color-mix(in srgb, var(--navy-2) 67%, transparent) 100%
+            color-mix(in srgb, var(--color-navy-deep) 97%, transparent) 0%,
+            color-mix(in srgb, var(--color-navy-deep) 86%, transparent) 48%,
+            color-mix(in srgb, var(--color-navy-deep) 67%, transparent) 100%
         ),
 
         linear-gradient(
             180deg,
-            color-mix(in srgb, var(--navy-2) 34%, transparent) 0%,
-            color-mix(in srgb, var(--navy-2) 12%, transparent) 48%,
-            color-mix(in srgb, var(--navy-2) 68%, transparent) 100%
+            color-mix(in srgb, var(--color-navy-deep) 34%, transparent) 0%,
+            color-mix(in srgb, var(--color-navy-deep) 12%, transparent) 48%,
+            color-mix(in srgb, var(--color-navy-deep) 68%, transparent) 100%
         );
 
 }
@@ -241,7 +241,7 @@ svg {
     background:
         linear-gradient(
             to top,
-            color-mix(in srgb, var(--navy-2) 45%, transparent),
+            color-mix(in srgb, var(--color-navy-deep) 45%, transparent),
             transparent
         );
 
@@ -398,7 +398,7 @@ svg {
 
     text-shadow:
         0 2px 18px
-        color-mix(in srgb, var(--navy-2) 12%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 12%, transparent);
 
 }
 
@@ -458,11 +458,11 @@ svg {
     border-radius: 50%;
 
     background:
-        var(--green);
+        var(--color-success);
 
     box-shadow:
         0 0 0 3px
-        color-mix(in srgb, var(--green) 10%, transparent);
+        color-mix(in srgb, var(--color-success) 10%, transparent);
 
 }
 
@@ -488,7 +488,7 @@ svg {
        elevated white card below rather than blending into the
        panel background. */
     background:
-        var(--background);
+        var(--color-background);
 
 }
 
@@ -507,21 +507,21 @@ svg {
 
     border:
         1px solid
-        var(--border);
+        var(--color-border);
 
     border-radius: 20px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     /* Elevated card look instead of the form floating directly on
        the panel background - the main enterprise-login cue that
        was missing on both desktop and mobile. */
     box-shadow:
         0 28px 60px -24px
-        color-mix(in srgb, var(--navy-2) 24%, transparent),
+        color-mix(in srgb, var(--color-navy-deep) 24%, transparent),
         0 2px 10px
-        color-mix(in srgb, var(--navy-2) 5%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 5%, transparent);
 
 }
 
@@ -555,7 +555,7 @@ svg {
     margin-bottom: 12px;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     /* Same scale as Citizen's .auth-eyebrow (11px) */
     font-size: 11px;
@@ -596,7 +596,7 @@ svg {
         9px 0 0;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     /* Slightly reined in from 15px */
     font-size: 14px;
@@ -625,16 +625,16 @@ svg {
 
     border:
         1px solid
-        var(--danger-border);
+        var(--color-danger-border);
 
     border-radius:
         var(--radius);
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
     color:
-        var(--danger-dark);
+        var(--color-danger-dark);
 
     /* Same scale as Citizen's .auth-alert (14px) */
     font-size: 14px;
@@ -661,10 +661,10 @@ svg {
     border-radius: 50%;
 
     background:
-        var(--danger);
+        var(--color-danger);
 
     color:
-        var(--white);
+        var(--color-white);
 
     font-size: 12px;
 
@@ -702,7 +702,7 @@ svg {
 .field label {
 
     color:
-        var(--text);
+        var(--color-text);
 
     /* Slightly reined in from 14px */
     font-size: 13px;
@@ -735,7 +735,7 @@ svg {
 
     border:
         1px solid
-        var(--border);
+        var(--color-border);
 
     border-radius:
         var(--radius);
@@ -743,7 +743,7 @@ svg {
     outline: none;
 
     background:
-        var(--white);
+        var(--color-white);
 
     color:
         var(--heading);
@@ -792,11 +792,11 @@ svg {
 .input-container input:focus {
 
     border-color:
-        var(--red);
+        var(--color-primary);
 
     box-shadow:
         0 0 0 3px
-        color-mix(in srgb, var(--red) 6%, transparent);
+        color-mix(in srgb, var(--color-primary) 6%, transparent);
 
 }
 
@@ -837,7 +837,7 @@ svg {
 .input-icon {
 
     color:
-        var(--red);
+        var(--color-primary);
 
 }
 
@@ -887,10 +887,10 @@ svg {
 .password-toggle:hover {
 
     color:
-        var(--text);
+        var(--color-text);
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 }
 
@@ -899,7 +899,7 @@ svg {
 
     outline:
         2px solid
-        color-mix(in srgb, var(--red) 25%, transparent);
+        color-mix(in srgb, var(--color-primary) 25%, transparent);
 
     outline-offset: 2px;
 
@@ -959,10 +959,10 @@ svg {
         var(--radius);
 
     background:
-        var(--red);
+        var(--color-primary);
 
     color:
-        var(--white);
+        var(--color-white);
 
     cursor: pointer;
 
@@ -984,14 +984,14 @@ svg {
 .login-button:hover {
 
     background:
-        var(--red-dark);
+        var(--color-primary-dark);
 
     transform:
         translateY(-1px);
 
     box-shadow:
         0 7px 18px
-        color-mix(in srgb, var(--red) 14%, transparent);
+        color-mix(in srgb, var(--color-primary) 14%, transparent);
 
 }
 
@@ -1008,7 +1008,7 @@ svg {
 
     outline:
         2px solid
-        color-mix(in srgb, var(--red) 28%, transparent);
+        color-mix(in srgb, var(--color-primary) 28%, transparent);
 
     outline-offset: 3px;
 
@@ -1097,7 +1097,7 @@ svg {
         rgba(255,255,255,.35);
 
     border-top-color:
-        var(--white);
+        var(--color-white);
 
     border-radius: 50%;
 
@@ -1132,7 +1132,7 @@ svg {
     margin-top: 20px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     /* Slightly reined in from 13px */
     font-size: 12px;
@@ -1169,10 +1169,10 @@ svg {
 
     border-top:
         1px solid
-        var(--border);
+        var(--color-border);
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     /* Slightly reined in from 13px */
     font-size: 12px;
@@ -1189,7 +1189,7 @@ svg {
     gap: 5px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     /* Was 650 (near-bold) - read as a second call-to-action
        competing with "Sign in". A plain secondary footer link
@@ -1205,7 +1205,7 @@ svg {
 .return-home:hover {
 
     color:
-        var(--red);
+        var(--color-primary);
 
 }
 
@@ -1214,7 +1214,7 @@ svg {
 
     outline:
         2px solid
-        color-mix(in srgb, var(--red) 25%, transparent);
+        color-mix(in srgb, var(--color-primary) 25%, transparent);
 
     outline-offset: 4px;
 
@@ -1351,12 +1351,12 @@ svg {
             linear-gradient(
                 135deg,
                 var(--navy-deep) 0%,
-                var(--navy) 100%
+                var(--color-navy) 100%
             );
 
         box-shadow:
             0 16px 32px -12px
-            color-mix(in srgb, var(--navy-2) 45%, transparent);
+            color-mix(in srgb, var(--color-navy-deep) 45%, transparent);
 
     }
 

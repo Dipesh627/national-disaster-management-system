@@ -24,7 +24,7 @@
 
     border-radius: 50%;
 
-    background: var(--blue-dark);
+    background: var(--color-info);
 }
 
 /* =========================================================
@@ -57,13 +57,13 @@
 }
 
 .ndms-avatar-btn:hover {
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ndms-avatar-btn:focus-visible {
     outline: none;
 
-    border-color: var(--red);
+    border-color: var(--color-primary);
 
     box-shadow: var(--focus-ring);
 }
@@ -82,8 +82,8 @@
 
     border-radius: 50%;
 
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
 
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 750;
@@ -99,7 +99,7 @@
 
 .ndms-avatar-btn:hover .ndms-avatar-circle,
 .ndms-avatar-wrapper.open .ndms-avatar-circle {
-    background: var(--red-dark);
+    background: var(--color-primary-dark);
 
     transform: translateY(-1px);
 
@@ -112,7 +112,7 @@
 
     flex-shrink: 0;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     transition: transform 220ms ease;
 }
@@ -147,9 +147,9 @@
 
     width: 280px;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 12px;
 
     box-shadow: var(--shadow-md);
@@ -200,8 +200,8 @@
 
     border-radius: 50%;
 
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
 
     font-size: calc(13px * var(--ndms-font-scale, 1));
     font-weight: 750;
@@ -227,7 +227,7 @@
 }
 
 .ndms-avatar-menu-email {
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(12px * var(--ndms-font-scale, 1));
 
@@ -245,7 +245,7 @@
 
     margin: 6px 4px;
 
-    background: var(--border);
+    background: var(--color-border);
 }
 
 .ndms-avatar-menu-list {
@@ -267,7 +267,7 @@
 
     border-radius: 8px;
 
-    color: var(--text);
+    color: var(--color-text);
 
     text-decoration: none;
 
@@ -282,14 +282,14 @@
 
 .ndms-avatar-menu-item:hover,
 .ndms-avatar-menu-item:focus-visible {
-    background: var(--background);
+    background: var(--color-background);
     color: var(--heading);
 
     transform: translateX(3px);
 }
 
 .ndms-avatar-menu-item:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: -2px;
 }
 
@@ -319,14 +319,14 @@ button.ndms-avatar-menu-item {
 
     flex-shrink: 0;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     transition: color 220ms ease;
 }
 
 .ndms-avatar-menu-item:hover .ndms-avatar-menu-item-icon,
 .ndms-avatar-menu-item:focus-visible .ndms-avatar-menu-item-icon {
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 /* =========================================================
@@ -334,15 +334,15 @@ button.ndms-avatar-menu-item {
    ========================================================= */
 
 .ndms-avatar-menu-item.active {
-    background: var(--light-red);
+    background: var(--color-primary-tint);
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-weight: 700;
 }
 
 .ndms-avatar-menu-item.active .ndms-avatar-menu-item-icon {
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 /* =========================================================
@@ -350,25 +350,25 @@ button.ndms-avatar-menu-item {
    ========================================================= */
 
 .ndms-avatar-menu-logout {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ndms-avatar-menu-logout .ndms-avatar-menu-item-icon {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ndms-avatar-menu-logout:hover,
 .ndms-avatar-menu-logout:focus-visible {
-    background: var(--danger-bg);
+    background: var(--color-danger-bg);
 
-    color: var(--danger-dark);
+    color: var(--color-danger-dark);
 
     transform: translateX(3px);
 }
 
 .ndms-avatar-menu-logout:hover .ndms-avatar-menu-item-icon,
 .ndms-avatar-menu-logout:focus-visible .ndms-avatar-menu-item-icon {
-    color: var(--danger-dark);
+    color: var(--color-danger-dark);
 }
 
 /* =========================================================

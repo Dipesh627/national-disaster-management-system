@@ -11,7 +11,7 @@ This text describes what the NDMS code actually does today:
   - the only third-party service is Google Maps
   - no analytics, advertising or social-media trackers
   - cookies: Django session + CSRF; browser storage: a language key
-    (Guidelines page) and a display-theme key (light/dark toggle)
+    (Guidelines page)
 
 If you add a new feature that collects data, or a new third-party
 service, update this page too.
@@ -323,7 +323,6 @@ To revise this text:
                         <li><strong>Session cookie:</strong> keeps you signed in. It ends when you close your browser, or lasts longer if you choose &ldquo;Remember me&rdquo;. It stores only a session identifier, never your password.</li>
                         <li><strong>CSRF cookie:</strong> helps protect forms from being submitted by other websites.</li>
                         <li><strong>Language preference:</strong> the Awareness &amp; Guidelines page saves your language choice in your browser&rsquo;s local storage. It stays on your device and is not sent to us.</li>
-                        <li><strong>Display theme:</strong> the light/dark theme button saves your choice in your browser&rsquo;s local storage. It stays on your device and is not sent to us.</li>
                     </ul>
                     <p>
                         Pages that show a map load Google Maps, which may use its own cookies or

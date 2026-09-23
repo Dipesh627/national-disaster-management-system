@@ -8,16 +8,18 @@
 
    It reuses the shared auth components (.auth-field,
    .auth-input, .auth-btn, .auth-check, .auth-alert, ...) and
-   only changes what Register needs to be different: a lighter
-   brand panel, a flat (card-less) form, grouped sections and
-   inline field errors.
+   only changes what Register needs to be different: grouped
+   sections and inline field errors. The brand panel (left side
+   on desktop) is intentionally left untouched here so it renders
+   exactly like Login's.
 
    Colour comes only from ndms-theme.css tokens (light + dark).
 
    Sections
      1. Tokens
      2. Layout (shell + form area)
-     3. Brand panel
+     3. Brand panel (title size + bullet list only - background
+        is shared with Login, see auth.css)
      4. Content (heading, entrance)
      5. Form sections
      6. Fields
@@ -45,27 +47,37 @@
 
     --reg-icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 7.5v5.5'/%3E%3Cpath d='M12 16.5h.01'/%3E%3C/svg%3E");
 
-    background: var(--background);
+    background: var(--color-background);
+}
+
+
+/* Desktop only: the 3-section form is tall, and a mouse/trackpad
+   user feels every extra pixel of scroll far more than a phone's
+   swipe does. Tighter vertical rhythm here keeps most or all of
+   the form on one screen without shrinking anything on mobile
+   (which has its own, more generous, touch-sized overrides in
+   §10 below). */
+
+@media (min-width: 901px) {
+
+    .auth-page--register {
+
+        --reg-input-height: 36px;
+
+        --reg-section-gap: 12px;
+        --reg-field-gap: 7px;
+    }
+
 }
 
 
 /* =========================================================
    2. LAYOUT
-   Desktop: narrower brand panel | form area (no card).
-   <= 900px: auth.css already switches to the compact brand
-   band, so nothing here applies below that width.
+   Desktop: same split as Login (auth.css §3, .auth-shell) -
+   no override here. <= 900px: auth.css already switches to
+   the compact brand band, so nothing here applies below that
+   width either.
    ========================================================= */
-
-@media (min-width: 901px) {
-
-    .auth-page--register .auth-shell {
-
-        grid-template-columns:
-            minmax(320px, 36%)
-            minmax(0, 1fr);
-    }
-
-}
 
 
 /* Long form: start at the top instead of floating in the
@@ -75,7 +87,21 @@
 
     align-items: flex-start;
 
-    padding-top: clamp(32px, 6vh, 64px);
+    padding-top: clamp(20px, 3vh, 40px);
+}
+
+
+/* Desktop: a smaller, fixed card padding (instead of auth.css's
+   up-to-40px clamp) buys back more of the vertical rhythm the
+   form needs. */
+
+@media (min-width: 901px) {
+
+    .auth-page--register .auth-card--wide {
+
+        padding: 26px 30px;
+    }
+
 }
 
 
@@ -88,51 +114,12 @@
 
 /* =========================================================
    3. BRAND PANEL
-   Solid NDMS navy with the existing photograph faded in along
-   the bottom edge, so it supports the identity instead of
-   covering the panel. (auth.css hides the photograph below
-   900px, so this is desktop only.)
+   Register's left panel is intentionally IDENTICAL to Login's
+   in every visual respect - same photo, gradient, logo size,
+   title size/colour, message size (auth.css §4). Only the
+   words themselves (message text) and the extra bullet list
+   below are Register-specific content.
    ========================================================= */
-
-@media (min-width: 901px) {
-
-    .auth-page--register .auth-brand::before {
-
-        inset: auto 0 0 0;
-
-        height: 46%;
-
-        opacity: .5;
-
-        -webkit-mask-image: linear-gradient(to top, #000 25%, transparent);
-        mask-image: linear-gradient(to top, #000 25%, transparent);
-    }
-
-    .auth-page--register .auth-brand::after {
-
-        display: none;
-    }
-
-    .auth-page--register .auth-brand__inner {
-
-        justify-content: flex-start;
-
-        padding-top: clamp(48px, 12vh, 112px);
-    }
-
-}
-
-
-.auth-page--register .auth-brand__title {
-
-    font-size: clamp(24px, 2.2vw, 30px);
-}
-
-
-.auth-page--register .auth-brand__message {
-
-    font-size: 15px;
-}
 
 
 .auth-brand__points {
@@ -195,6 +182,16 @@
 }
 
 
+@media (min-width: 901px) {
+
+    .auth-page--register .auth-heading {
+
+        margin-bottom: 14px;
+    }
+
+}
+
+
 .auth-page--register .auth-lead {
 
     max-width: 44ch;
@@ -253,7 +250,7 @@
 
 .reg-section + .reg-section {
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 }
 
 
@@ -261,7 +258,7 @@
 
     margin: 0 0 14px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: 11px;
 
@@ -272,6 +269,16 @@
     line-height: 1.3;
 
     text-transform: uppercase;
+}
+
+
+@media (min-width: 901px) {
+
+    .reg-section__title {
+
+        margin-bottom: 10px;
+    }
+
 }
 
 
@@ -301,7 +308,7 @@
 .auth-page--register .auth-row {
 
     grid-template-columns:
-        repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+        repeat(auto-fit, minmax(min(100%, 196px), 1fr));
 
     gap: var(--reg-field-gap);
 }
@@ -317,7 +324,7 @@
 
     margin-left: 8px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 12.5px;
 
@@ -416,6 +423,16 @@
 }
 
 
+@media (min-width: 901px) {
+
+    .reg-submit {
+
+        gap: 12px;
+    }
+
+}
+
+
 /* auth.css draws consent as a boxed panel; here it is just a
    compact line of text. */
 
@@ -444,7 +461,7 @@
 
 .auth-page--register .auth-check input[type="checkbox"]:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 2px;
 }
@@ -452,7 +469,7 @@
 
 .auth-page--register .auth-check input[type="checkbox"][aria-invalid="true"] {
 
-    outline: 2px solid var(--danger);
+    outline: 2px solid var(--color-danger);
 
     outline-offset: 1px;
 
@@ -466,6 +483,16 @@
 }
 
 
+@media (min-width: 901px) {
+
+    .auth-page--register .auth-btn {
+
+        min-height: 40px;
+    }
+
+}
+
+
 /* =========================================================
    9. LOGIN LINK
    ========================================================= */
@@ -475,6 +502,18 @@
     margin-top: 20px;
 
     padding-top: 18px;
+}
+
+
+@media (min-width: 901px) {
+
+    .auth-page--register .auth-switch {
+
+        margin-top: 14px;
+
+        padding-top: 14px;
+    }
+
 }
 
 
@@ -537,124 +576,6 @@
     .auth-page--register .auth-card--wide {
 
         animation: none;
-    }
-
-}
-
-
-/* =========================================================
-   12. STEP NAV
-   Jump-links to the 3 sections above (#reg-personal,
-   #reg-account, #reg-security - the h2 ids already used for
-   aria-labelledby). Pure navigation, no JS: the whole form is
-   still one page and one POST, this just gives a long form a
-   sense of place. Smooth-scroll comes from auth.css (15.6).
-   ========================================================= */
-
-.reg-progress {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 8px;
-
-    margin-bottom: 26px;
-}
-
-
-.reg-progress__step {
-
-    display: flex;
-
-    flex: none;
-
-    align-items: center;
-
-    gap: 8px;
-
-    padding: 0;
-
-    background: none;
-
-    border: none;
-
-    color: var(--muted);
-
-    font-family: inherit;
-
-    font-size: 12.5px;
-
-    font-weight: 600;
-
-    line-height: 1;
-
-    text-decoration: none;
-
-    cursor: pointer;
-}
-
-
-.reg-progress__step:hover,
-.reg-progress__step:focus-visible {
-
-    color: var(--heading);
-}
-
-
-.reg-progress__num {
-
-    display: flex;
-
-    flex: none;
-
-    align-items: center;
-
-    justify-content: center;
-
-    width: 22px;
-    height: 22px;
-
-    border: 1.5px solid var(--border);
-    border-radius: 50%;
-
-    color: var(--muted);
-
-    font-size: 11.5px;
-
-    transition: border-color .18s ease, background-color .18s ease, color .18s ease;
-}
-
-
-.reg-progress__step:hover .reg-progress__num,
-.reg-progress__step:focus-visible .reg-progress__num {
-
-    border-color: var(--red);
-
-    color: var(--red);
-}
-
-
-.reg-progress__line {
-
-    flex: 1 1 auto;
-
-    height: 1px;
-
-    min-width: 12px;
-
-    background: var(--border);
-}
-
-
-@media (max-width: 480px) {
-
-    /* Numbers + connecting lines only; labels would wrap and
-       fight the 3-way layout on a narrow phone. */
-
-    .reg-progress__label {
-
-        display: none;
     }
 
 }

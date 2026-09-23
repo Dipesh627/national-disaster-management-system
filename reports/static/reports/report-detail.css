@@ -34,8 +34,8 @@
 
     border-radius: 12px;
 
-    background: var(--white);
-    border: 1px solid var(--border);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
 
     box-shadow: var(--shadow-md);
 
@@ -43,13 +43,13 @@
 
 .django-message-success {
 
-    border-left: 4px solid var(--green);
+    border-left: 4px solid var(--color-success);
 
 }
 
 .django-message-error {
 
-    border-left: 4px solid var(--danger);
+    border-left: 4px solid var(--color-danger);
 
 }
 
@@ -66,8 +66,8 @@
 
     border-radius: 50%;
 
-    background: var(--green-bg);
-    color: var(--green-text);
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
 
     font-weight: 800;
 
@@ -81,7 +81,7 @@
     line-height: 1.5;
     font-weight: 600;
 
-    color: var(--text);
+    color: var(--color-text);
 
 }
 
@@ -90,7 +90,7 @@
     border: none;
     background: transparent;
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: calc(20px * var(--ndms-font-scale, 1));
     line-height: 1;
 
@@ -145,7 +145,7 @@
         block;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(8px * var(--ndms-font-scale, 1));
@@ -185,7 +185,7 @@
         4px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -229,10 +229,10 @@
 .rd-status-pill.pending {
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
 }
 
@@ -240,7 +240,7 @@
 .rd-status-pill.review {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -251,10 +251,10 @@
 .rd-status-pill.verified {
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
 }
 
@@ -262,10 +262,10 @@
 .rd-status-pill.rejected {
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
     color:
-        var(--danger);
+        var(--color-danger);
 
 }
 
@@ -277,10 +277,10 @@
 .rd-card {
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         11px;
@@ -311,7 +311,7 @@
         block;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(8px * var(--ndms-font-scale, 1));
@@ -377,7 +377,7 @@
 .rd-info-label {
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -415,7 +415,7 @@
 .rd-description-text {
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));
@@ -459,7 +459,7 @@
         300px;
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         10px;
@@ -496,7 +496,7 @@
         100%;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -531,9 +531,9 @@
 
     padding: 4px;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     border-radius: 9px;
 
@@ -556,7 +556,7 @@
 
     border-radius: 6px;
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-family: inherit;
 
@@ -574,7 +574,7 @@
 }
 
 .rd-layer-btn:hover {
-    background: var(--soft-gray);
+    background: var(--color-section);
 }
 
 .rd-layer-btn:active {
@@ -596,7 +596,7 @@
 
 .rd-layer-btn:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
@@ -658,7 +658,7 @@
         1 / 1;
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         9px;
@@ -667,7 +667,7 @@
         hidden;
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     cursor:
         pointer;
@@ -721,7 +721,7 @@
         90px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
@@ -780,7 +780,7 @@
         0;
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -791,10 +791,10 @@
 .rd-status-icon.pending {
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
 }
 
@@ -802,7 +802,7 @@
 .rd-status-icon.review {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -813,10 +813,10 @@
 .rd-status-icon.verified {
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
 }
 
@@ -824,10 +824,10 @@
 .rd-status-icon.rejected {
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
     color:
-        var(--danger);
+        var(--color-danger);
 
 }
 
@@ -858,7 +858,7 @@
         5px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -939,7 +939,7 @@
         1px;
 
     background:
-        var(--border);
+        var(--color-border);
 
 }
 
@@ -976,10 +976,10 @@
         999px;
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
     border:
-        3px solid var(--green);
+        3px solid var(--color-success);
 
     box-sizing:
         border-box;
@@ -1013,7 +1013,7 @@
         2px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10.5px * var(--ndms-font-scale, 1));
@@ -1027,7 +1027,7 @@
         6px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -1072,11 +1072,11 @@
 
     padding: 11px 20px;
 
-    border: 1px solid var(--danger);
+    border: 1px solid var(--color-danger);
     border-radius: 9px;
 
-    background: var(--white);
-    color: var(--danger);
+    background: var(--color-white);
+    color: var(--color-danger);
 
     font-family: inherit;
     font-size: calc(12.5px * var(--ndms-font-scale, 1));
@@ -1093,21 +1093,21 @@
 .rd-delete-action:hover,
 .rd-delete-action:focus-visible {
 
-    background: var(--danger);
-    color: var(--white);
+    background: var(--color-danger);
+    color: var(--color-white);
 
 }
 
 .rd-delete-action:focus-visible {
 
-    outline: 2px solid var(--danger);
+    outline: 2px solid var(--color-danger);
     outline-offset: 3px;
 
 }
 
 .rd-delete-disabled-note {
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: calc(11.5px * var(--ndms-font-scale, 1));
     line-height: 1.6;
 
@@ -1146,8 +1146,8 @@
 
     padding: 28px;
 
-    background: var(--white);
-    border: 1px solid var(--border);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
     border-radius: 14px;
 
     box-shadow: var(--shadow-md);
@@ -1172,7 +1172,7 @@
 
     max-width: 360px;
 
-    color: var(--muted);
+    color: var(--color-muted);
     font-size: calc(13px * var(--ndms-font-scale, 1));
     line-height: 1.6;
 
@@ -1213,23 +1213,23 @@
 
 .rd-delete-cancel {
 
-    border: 1px solid var(--border);
-    background: var(--white);
-    color: var(--text);
+    border: 1px solid var(--color-border);
+    background: var(--color-white);
+    color: var(--color-text);
 
 }
 
 .rd-delete-cancel:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 
 }
 
 .rd-delete-confirm {
 
-    border: 1px solid var(--danger);
-    background: var(--danger);
-    color: var(--white);
+    border: 1px solid var(--color-danger);
+    background: var(--color-danger);
+    color: var(--color-white);
 
 }
 
@@ -1241,7 +1241,7 @@
 
 .rd-delete-modal-actions button:focus-visible {
 
-    outline: 2px solid var(--danger);
+    outline: 2px solid var(--color-danger);
     outline-offset: 2px;
 
 }
@@ -1392,7 +1392,7 @@
         50%;
 
     background:
-        var(--white);
+        var(--color-white);
 
     color:
         var(--heading);
@@ -1590,10 +1590,10 @@
         6px;
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -1627,46 +1627,46 @@
 /* DISASTER STATUS */
 
 .rd-official-status-active {
-    color: var(--orange-text);
-    background: var(--orange-bg);
+    color: var(--color-warning-text);
+    background: var(--color-warning-bg);
 }
 
 .rd-official-status-under_control {
-    color: var(--orange-text);
-    background: var(--orange-bg);
+    color: var(--color-warning-text);
+    background: var(--color-warning-bg);
 }
 
 .rd-official-status-resolved {
-    color: var(--green-text);
-    background: var(--green-bg);
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
 }
 
 .rd-official-status-closed {
-    color: var(--muted);
-    background: var(--soft-gray);
+    color: var(--color-muted);
+    background: var(--color-section);
 }
 
 
 /* SEVERITY */
 
 .rd-official-severity-low {
-    color: var(--green-text);
-    background: var(--green-bg);
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
 }
 
 .rd-official-severity-medium {
-    color: var(--orange-text);
-    background: var(--orange-bg);
+    color: var(--color-warning-text);
+    background: var(--color-warning-bg);
 }
 
 .rd-official-severity-high {
-    color: var(--c-orange-600);
-    background: var(--c-orange-bg-2);
+    color: var(--c-warning-600);
+    background: var(--c-warning-bg-2);
 }
 
 .rd-official-severity-critical {
-    color: var(--danger);
-    background: var(--danger-bg);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
 }
 
 
@@ -1676,7 +1676,7 @@
         18px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size:
         calc(12.5px * var(--ndms-font-scale, 1));
@@ -1699,7 +1699,7 @@
         16px;
 
     border-top:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
 }
 
@@ -1730,7 +1730,7 @@
         6px;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -1750,7 +1750,7 @@
         16px;
 
     border-top:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
 }
 

@@ -63,37 +63,6 @@ Field names, the CSRF token and the POST target are unchanged.
     </header>
 
 
-    <!-- =================================================
-         STEP NAV
-         Jump-links to the 3 sections below. No JS: the form
-         is still a single page/POST, this is just an anchor
-         nav (see register.css §12).
-         ================================================= -->
-
-    <nav class="reg-progress" aria-label="Registration sections">
-
-        <a href="#reg-personal" class="reg-progress__step">
-            <span class="reg-progress__num">1</span>
-            <span class="reg-progress__label">Personal</span>
-        </a>
-
-        <span class="reg-progress__line" aria-hidden="true"></span>
-
-        <a href="#reg-account" class="reg-progress__step">
-            <span class="reg-progress__num">2</span>
-            <span class="reg-progress__label">Account</span>
-        </a>
-
-        <span class="reg-progress__line" aria-hidden="true"></span>
-
-        <a href="#reg-security" class="reg-progress__step">
-            <span class="reg-progress__num">3</span>
-            <span class="reg-progress__label">Security</span>
-        </a>
-
-    </nav>
-
-
     {% if errors or error %}
 
     <div class="auth-alert" role="alert">
@@ -249,8 +218,10 @@ Field names, the CSRF token and the POST target are unchanged.
                             pattern="[A-Za-z0-9._\-]{3,30}"
                             title="3-30 characters: letters, numbers, dots, underscores or hyphens. No @ or spaces."
                             required
-                            aria-describedby="username_hint{% if errors.username %} username_error{% endif %}"
-                            {% if errors.username %}aria-invalid="true"{% endif %}
+                            {% if errors.username %}
+                            aria-invalid="true"
+                            aria-describedby="username_error"
+                            {% endif %}
                         >
 
                     </div>
@@ -261,11 +232,6 @@ Field names, the CSRF token and the POST target are unchanged.
                         <span class="reg-error__text">{% for message in errors.username %}{{ message }} {% endfor %}</span>
                     </p>
                     {% endif %}
-
-                    <p class="auth-hint" id="username_hint">
-                        3-30 characters: letters, numbers, dots, underscores
-                        or hyphens. Not your email address.
-                    </p>
 
                 </div>
 
@@ -393,8 +359,10 @@ Field names, the CSRF token and the POST target are unchanged.
                             class="auth-input"
                             autocomplete="new-password"
                             required
-                            aria-describedby="password_hint{% if errors.password %} password_error{% endif %}"
-                            {% if errors.password %}aria-invalid="true"{% endif %}
+                            {% if errors.password %}
+                            aria-invalid="true"
+                            aria-describedby="password_error"
+                            {% endif %}
                         >
 
                         <button
@@ -413,12 +381,6 @@ Field names, the CSRF token and the POST target are unchanged.
                         <span class="reg-error__text">{% for message in errors.password %}{{ message }} {% endfor %}</span>
                     </p>
                     {% endif %}
-
-                    <p class="auth-hint" id="password_hint">
-                        Use at least 8 characters. Do not include your
-                        username, name or email, and avoid common or
-                        numbers-only passwords.
-                    </p>
 
                 </div>
 

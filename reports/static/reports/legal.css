@@ -4,7 +4,7 @@
    (privacy.html).
 
    Loaded AFTER about.css and navbar-avatar.css, so the colour
-   tokens (--navy, --red, --muted, --border ...), the Segoe UI
+   tokens (--color-navy, --color-primary, --color-muted, --color-border ...), the Segoe UI
    font stack, the public navbar and the shared footer all come
    from the existing NDMS stylesheets. This file only adds the
    document layout.
@@ -23,9 +23,9 @@
 
     flex-direction: column;
 
-    background-color: var(--background);
+    background-color: var(--color-background);
 
-    color: var(--text);
+    color: var(--color-text);
 }
 
 
@@ -59,7 +59,7 @@
 
     margin-bottom: 18px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(14px * var(--ndms-font-scale, 1));
 
@@ -71,7 +71,7 @@
 
 .legal-back:hover {
 
-    color: var(--red);
+    color: var(--color-primary);
 
     text-decoration: underline;
 }
@@ -83,7 +83,7 @@
 
     padding-bottom: 24px;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 
@@ -109,7 +109,7 @@
 
     margin: 0 0 16px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(17px * var(--ndms-font-scale, 1));
 
@@ -141,7 +141,7 @@
 
 .legal-meta dt {
 
-    color: var(--muted);
+    color: var(--color-muted);
 }
 
 
@@ -187,9 +187,9 @@
 
     padding: 18px 18px 14px;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     border-radius: 10px;
 
@@ -223,7 +223,7 @@
 
     padding-left: 2px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
 
@@ -237,7 +237,7 @@
 
     padding: 3px 0;
 
-    color: var(--text);
+    color: var(--color-text);
 
     text-decoration: none;
 }
@@ -245,7 +245,7 @@
 
 .legal-toc a:hover {
 
-    color: var(--red);
+    color: var(--color-primary);
 
     text-decoration: underline;
 }
@@ -294,7 +294,7 @@
 
 .legal-content a {
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-weight: 600;
 
@@ -308,7 +308,7 @@
 
 .legal-content a:hover {
 
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
 }
 
 
@@ -316,7 +316,7 @@
 
 .legal-page a:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 2px;
 
@@ -334,7 +334,7 @@
 
     margin-top: 30px;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 }
 
 
@@ -358,7 +358,7 @@
 
     min-width: 1.8em;
 
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 
@@ -393,11 +393,11 @@
 
 .legal-summary {
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
-    border-left: 4px solid var(--red);
+    border-left: 4px solid var(--color-primary);
 
     box-shadow: var(--shadow-xs);
 }
@@ -407,11 +407,11 @@
 
     margin-top: 16px;
 
-    background: var(--light-red);
+    background: var(--color-primary-tint);
 
-    border: 1px solid color-mix(in srgb, var(--red) 22%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 22%, transparent);
 
-    border-left: 4px solid var(--red);
+    border-left: 4px solid var(--color-primary);
 }
 
 
@@ -444,13 +444,13 @@
 
     padding: 16px 20px 4px;
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 
     border: 1px dashed var(--c-border-9);
 
     border-radius: 10px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(14px * var(--ndms-font-scale, 1));
 
@@ -476,7 +476,7 @@
 
     padding-top: 18px;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 
     font-size: calc(15px * var(--ndms-font-scale, 1));
 }

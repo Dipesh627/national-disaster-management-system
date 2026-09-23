@@ -10,26 +10,26 @@
     --ds-navy: var(--heading);
     --ds-navy-light: var(--btn-dark-hover);
 
-    --ds-red: var(--red);
-    --ds-red-dark: var(--red-dark);
-    --ds-red-soft: var(--light-red);
+    --ds-red: var(--color-primary);
+    --ds-red-dark: var(--color-primary-dark);
+    --ds-red-soft: var(--color-primary-tint);
 
-    --ds-green: var(--green-text);
-    --ds-green-soft: var(--green-bg);
+    --ds-green: var(--color-success-text);
+    --ds-green-soft: var(--color-success-bg);
 
-    --ds-orange: var(--orange-text);
-    --ds-orange-soft: var(--orange-bg);
+    --ds-orange: var(--color-warning-text);
+    --ds-orange-soft: var(--color-warning-bg);
 
-    --ds-text: var(--text);
-    --ds-muted: var(--muted);
+    --ds-text: var(--color-text);
+    --ds-muted: var(--color-muted);
     --ds-light-muted: var(--light-muted);
 
-    --ds-border: var(--border);
+    --ds-border: var(--color-border);
     --ds-border-strong: var(--border-strong);
 
-    --ds-bg: var(--background);
-    --ds-soft: var(--soft-gray);
-    --ds-white: var(--white);
+    --ds-bg: var(--color-background);
+    --ds-soft: var(--color-section);
+    --ds-white: var(--color-white);
 
     width: 100%;
     max-width: 1480px;
@@ -64,7 +64,7 @@
 .ds-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -116,13 +116,13 @@
 .ds-secondary-button {
     padding: 0 12px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
 }
 
 .ds-secondary-button:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -141,19 +141,19 @@
    ========================================================= */
 
 .ds-summary-active::before {
-    background: var(--danger);
+    background: var(--color-danger);
 }
 
 .ds-summary-under_control::before {
-    background: var(--orange);
+    background: var(--color-warning);
 }
 
 .ds-summary-resolved::before {
-    background: var(--green);
+    background: var(--color-success);
 }
 
 .ds-summary-closed::before {
-    background: var(--muted);
+    background: var(--color-muted);
 }
 
 
@@ -193,7 +193,7 @@
     min-height: 38px;
     padding: 0 12px 0 33px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
@@ -214,7 +214,7 @@
     min-height: 38px;
     padding: 0 26px 0 11px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
@@ -264,7 +264,7 @@
 
 .ds-table-panel {
     overflow: visible;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border);
     border-radius: 10px;
 }
@@ -285,7 +285,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--ds-muted);
-    background: var(--background);
+    background: var(--color-background);
     border-bottom: 1px solid var(--ds-border);
     font-size: 9px;
     font-weight: 720;
@@ -297,7 +297,7 @@
 .ds-table tbody td {
     padding: 11px 17px;
     color: var(--ds-text);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -312,7 +312,7 @@
 }
 
 .ds-table-row:hover {
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ds-col-actions {
@@ -362,26 +362,26 @@
     border-radius: 50%;
 }
 
-.ds-severity-low { color: var(--green-text); background: var(--ds-green-soft); }
-.ds-severity-low > i { background: var(--green); }
+.ds-severity-low { color: var(--color-success-text); background: var(--ds-green-soft); }
+.ds-severity-low > i { background: var(--color-success); }
 
-.ds-severity-medium { color: var(--orange-text); background: var(--ds-orange-soft); }
-.ds-severity-medium > i { background: var(--orange); }
+.ds-severity-medium { color: var(--color-warning-text); background: var(--ds-orange-soft); }
+.ds-severity-medium > i { background: var(--color-warning); }
 
-.ds-severity-high { color: var(--orange-text); background: var(--orange-bg); }
-.ds-severity-high > i { background: var(--orange); }
+.ds-severity-high { color: var(--color-warning-text); background: var(--color-warning-bg); }
+.ds-severity-high > i { background: var(--color-warning); }
 
-.ds-severity-critical { color: var(--danger); background: var(--danger-bg); }
-.ds-severity-critical > i { background: var(--danger); }
+.ds-severity-critical { color: var(--color-danger); background: var(--color-danger-bg); }
+.ds-severity-critical > i { background: var(--color-danger); }
 
-.ds-status-active { color: var(--danger); background: var(--danger-bg); }
-.ds-status-active > i { background: var(--danger); }
+.ds-status-active { color: var(--color-danger); background: var(--color-danger-bg); }
+.ds-status-active > i { background: var(--color-danger); }
 
-.ds-status-under_control { color: var(--orange-text); background: var(--ds-orange-soft); }
-.ds-status-under_control > i { background: var(--orange); }
+.ds-status-under_control { color: var(--color-warning-text); background: var(--ds-orange-soft); }
+.ds-status-under_control > i { background: var(--color-warning); }
 
-.ds-status-resolved { color: var(--green-text); background: var(--ds-green-soft); }
-.ds-status-resolved > i { background: var(--green); }
+.ds-status-resolved { color: var(--color-success-text); background: var(--ds-green-soft); }
+.ds-status-resolved > i { background: var(--color-success); }
 
 .ds-status-closed { color: var(--ds-muted); background: var(--ds-soft); }
 .ds-status-closed > i { background: var(--light-muted); }
@@ -434,15 +434,15 @@
 }
 
 .ds-action-close {
-    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
+    color: color-mix(in srgb, var(--color-danger) 55%, var(--color-muted));
 }
 
 .ds-action-close:hover {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ds-action:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -515,7 +515,7 @@
     height: 28px;
     padding: 0 6px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 6px;
     font-size: 10px;
@@ -581,7 +581,7 @@
 
 .ds-form-shell {
     min-width: 0;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border);
     border-radius: 10px;
     overflow: hidden;
@@ -598,7 +598,7 @@
 .ds-section-kicker {
     display: block;
     margin-bottom: 4px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -656,7 +656,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
@@ -707,7 +707,7 @@ textarea.ds-form-textarea {
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -726,8 +726,8 @@ textarea.ds-form-textarea {
     font-size: 9.5px;
 }
 
-.ds-map-status.ds-status-success { color: var(--green-text); }
-.ds-map-status.ds-status-error { color: var(--danger); }
+.ds-map-status.ds-status-success { color: var(--color-success-text); }
+.ds-map-status.ds-status-error { color: var(--color-danger); }
 
 .ds-map-container {
     position: relative;
@@ -788,11 +788,11 @@ textarea.ds-form-textarea {
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     outline: none;
-    background: var(--white);
+    background: var(--color-white);
     color: var(--ds-text);
     font-family: inherit;
     font-size: 11px;
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--navy-2) 9%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
 }
 
 .ds-map-search-input:focus {
@@ -819,10 +819,10 @@ textarea.ds-form-textarea {
 
     padding: 3px;
 
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 8px;
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--navy-2) 9%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
 }
 
 .ds-map-type-btn {
@@ -881,7 +881,7 @@ textarea.ds-form-textarea {
     margin-bottom: 14px;
     background: var(--ds-soft);
     border: 1px solid var(--ds-border);
-    border-left: 3px solid var(--green);
+    border-left: 3px solid var(--color-success);
     border-radius: 8px;
 }
 
@@ -892,7 +892,7 @@ textarea.ds-form-textarea {
 }
 
 .ds-source-report-banner-heading a {
-    color: var(--green-text);
+    color: var(--color-success-text);
     text-decoration: none;
 }
 
@@ -978,14 +978,14 @@ textarea.ds-form-textarea {
     justify-content: flex-end;
     padding: 6px;
     color: var(--on-dark);
-    background: color-mix(in srgb, var(--green) 28%, transparent);
+    background: color-mix(in srgb, var(--color-success) 28%, transparent);
 }
 
 .ds-photo-select-check svg {
     width: 16px;
     height: 16px;
     padding: 2px;
-    background: var(--green);
+    background: var(--color-success);
     border-radius: 50%;
 }
 
@@ -994,11 +994,11 @@ textarea.ds-form-textarea {
 }
 
 .ds-photo-select-item:has(.ds-photo-select-checkbox:checked) {
-    border-color: var(--green);
+    border-color: var(--color-success);
 }
 
 .ds-photo-select-checkbox:focus-visible {
-    outline: 2px solid var(--green);
+    outline: 2px solid var(--color-success);
     outline-offset: 2px;
 }
 
@@ -1040,7 +1040,7 @@ textarea.ds-form-textarea {
     height: 37px;
     padding: 0 14px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     font-size: 10.5px;
@@ -1057,7 +1057,7 @@ textarea.ds-form-textarea {
 }
 
 .ds-photo-upload-input:focus-visible ~ .ds-photo-upload-button {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
@@ -1113,18 +1113,18 @@ textarea.ds-form-textarea {
     height: 20px;
     padding: 0;
     color: var(--on-dark);
-    background: color-mix(in srgb, var(--navy-2) 68%, transparent);
+    background: color-mix(in srgb, var(--color-navy-deep) 68%, transparent);
     border: 0;
     border-radius: 50%;
     cursor: pointer;
 }
 
 .ds-photo-upload-remove:hover {
-    background: var(--danger);
+    background: var(--color-danger);
 }
 
 .ds-photo-upload-remove:focus-visible {
-    outline: 2px solid var(--white);
+    outline: 2px solid var(--color-white);
     outline-offset: 1px;
 }
 
@@ -1141,9 +1141,9 @@ textarea.ds-form-textarea {
 .ds-form-error {
     margin: 14px 0 0;
     padding: 10px 11px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -1161,13 +1161,13 @@ textarea.ds-form-textarea {
     min-width: 67px;
     padding: 0 12px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
 }
 
 .ds-form-cancel:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ds-form-submit {
@@ -1192,7 +1192,7 @@ textarea.ds-form-textarea {
 .ds-modal-backdrop {
     position: absolute;
     inset: 0;
-    background: color-mix(in srgb, var(--navy-2) 46%, transparent);
+    background: color-mix(in srgb, var(--color-navy-deep) 46%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -1201,12 +1201,12 @@ textarea.ds-form-textarea {
     width: min(430px, calc(100vw - 32px));
     margin: 12vh auto 0;
     overflow: hidden;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border);
     border-radius: 12px;
     box-shadow:
-        0 22px 48px color-mix(in srgb, var(--navy-2) 15%, transparent),
-        0 4px 12px color-mix(in srgb, var(--navy-2) 6%, transparent);
+        0 22px 48px color-mix(in srgb, var(--color-navy-deep) 15%, transparent),
+        0 4px 12px color-mix(in srgb, var(--color-navy-deep) 6%, transparent);
 }
 
 .ds-modal-top {
@@ -1221,9 +1221,9 @@ textarea.ds-form-textarea {
     place-items: center;
     width: 40px;
     height: 40px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 9px;
 }
 
@@ -1288,7 +1288,7 @@ textarea.ds-form-textarea {
     gap: 8px;
     min-height: 58px;
     padding: 11px 20px;
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--ds-border);
 }
 
@@ -1300,7 +1300,7 @@ textarea.ds-form-textarea {
     height: 35px;
     padding: 0 12px;
     color: var(--ds-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ds-border-strong);
     border-radius: 7px;
     font-size: 9.5px;
@@ -1310,7 +1310,7 @@ textarea.ds-form-textarea {
 
 .ds-modal-cancel:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ds-confirm-close-button {
@@ -1321,9 +1321,9 @@ textarea.ds-form-textarea {
     min-width: 130px;
     height: 35px;
     padding: 0 13px;
-    color: var(--white);
-    background: var(--danger);
-    border: 1px solid var(--danger);
+    color: var(--color-white);
+    background: var(--color-danger);
+    border: 1px solid var(--color-danger);
     border-radius: 7px;
     font-size: 9.5px;
     font-weight: 680;
@@ -1331,8 +1331,8 @@ textarea.ds-form-textarea {
 }
 
 .ds-confirm-close-button:hover {
-    background: var(--danger-dark);
-    border-color: var(--danger-dark);
+    background: var(--color-danger-dark);
+    border-color: var(--color-danger-dark);
 }
 
 .ds-confirm-close-button svg {

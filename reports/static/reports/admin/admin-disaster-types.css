@@ -32,23 +32,23 @@
     --dt-navy: var(--heading);
     --dt-navy-light: var(--btn-dark-hover);
 
-    --dt-red: var(--red);
-    --dt-red-dark: var(--red-dark);
-    --dt-red-soft: var(--light-red);
+    --dt-red: var(--color-primary);
+    --dt-red-dark: var(--color-primary-dark);
+    --dt-red-soft: var(--color-primary-tint);
 
-    --dt-green: var(--green-text);
-    --dt-green-soft: var(--green-bg);
+    --dt-green: var(--color-success-text);
+    --dt-green-soft: var(--color-success-bg);
 
-    --dt-text: var(--text);
-    --dt-muted: var(--muted);
+    --dt-text: var(--color-text);
+    --dt-muted: var(--color-muted);
     --dt-light-muted: var(--light-muted);
 
-    --dt-border: var(--border);
+    --dt-border: var(--color-border);
     --dt-border-strong: var(--border-strong);
 
-    --dt-bg: var(--background);
-    --dt-soft: var(--soft-gray);
-    --dt-white: var(--white);
+    --dt-bg: var(--color-background);
+    --dt-soft: var(--color-section);
+    --dt-white: var(--color-white);
 
     width: 100%;
     max-width: 1480px;
@@ -77,7 +77,7 @@
 .dt-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -122,7 +122,7 @@
 }
 
 .dt-primary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -134,13 +134,13 @@
 .dt-secondary-button {
     padding: 0 12px;
     color: var(--dt-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border-strong);
 }
 
 .dt-secondary-button:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -166,7 +166,7 @@
     display: flex;
     align-items: center;
     min-height: 37px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border);
     border-radius: 7px;
 }
@@ -250,7 +250,7 @@
 
 .dt-reset-button:hover {
     color: var(--heading);
-    background: var(--white);
+    background: var(--color-white);
     border-color: var(--dt-border);
 }
 
@@ -261,7 +261,7 @@
 
 .dt-table-panel {
     overflow: visible;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border);
     border-radius: 10px;
 }
@@ -309,7 +309,7 @@
     padding: 0 6px;
     color: var(--dt-muted);
     background: var(--dt-soft);
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 5px;
     font-size: 9px;
     font-weight: 720;
@@ -340,7 +340,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--dt-muted);
-    background: var(--background);
+    background: var(--color-background);
     border-bottom: 1px solid var(--dt-border);
     font-size: 9px;
     font-weight: 720;
@@ -352,7 +352,7 @@
 .dt-table tbody td {
     padding: 11px 17px;
     color: var(--dt-text);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -367,7 +367,7 @@
 }
 
 .dt-table-row:hover {
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .dt-col-type {
@@ -487,12 +487,12 @@
 }
 
 .dt-status-active {
-    color: var(--green-text);
+    color: var(--color-success-text);
     background: var(--dt-green-soft);
 }
 
 .dt-status-active > i {
-    background: var(--green);
+    background: var(--color-success);
 }
 
 .dt-status-inactive {
@@ -547,11 +547,11 @@
 }
 
 .dt-action-delete {
-    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
+    color: color-mix(in srgb, var(--color-danger) 55%, var(--color-muted));
 }
 
 .dt-action-delete:hover {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .dt-delete-form {
@@ -559,7 +559,7 @@
 }
 
 .dt-action:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -603,7 +603,7 @@
     height: 27px;
     padding: 0 7px;
     color: var(--dt-muted);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border);
     border-radius: 6px;
     font-size: 9.5px;
@@ -624,7 +624,7 @@
 .dt-pagination-number:hover,
 .dt-pagination-button:not(.is-disabled):hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -689,7 +689,7 @@
 
 .dt-form-shell {
     width: min(760px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border);
     border-radius: 10px;
 }
@@ -709,7 +709,7 @@
 .dt-section-kicker {
     display: block;
     margin-bottom: 5px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -747,7 +747,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--dt-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border-strong);
     border-radius: 7px;
     outline: none;
@@ -790,7 +790,7 @@ textarea.dt-form-control {
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -829,7 +829,7 @@ textarea.dt-form-control {
     height: 15px;
     flex: 0 0 15px;
     color: var(--on-dark);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border-strong);
     border-radius: 3px;
     transition:
@@ -858,7 +858,7 @@ textarea.dt-form-control {
 }
 
 .dt-toggle-input:focus-visible + .dt-checkbox-box {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -874,9 +874,9 @@ textarea.dt-form-control {
 .dt-form-error {
     margin: 0 22px 18px;
     padding: 10px 11px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -901,7 +901,7 @@ textarea.dt-form-control {
     justify-content: flex-end;
     gap: 7px;
     padding: 11px 15px;
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--dt-border);
 }
 
@@ -909,13 +909,13 @@ textarea.dt-form-control {
     min-width: 67px;
     padding: 0 12px;
     color: var(--dt-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--dt-border-strong);
 }
 
 .dt-form-cancel:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .dt-form-submit {

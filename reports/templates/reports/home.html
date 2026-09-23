@@ -101,15 +101,14 @@ Everything that was dynamic stays dynamic:
             </p>
 
             <h1 id="hero-title">
-                <span>Report Faster.</span>
-                <span>Stay Informed.</span>
+                <span>Report Faster. Stay Informed.</span>
                 <span class="hero-title-soft">Support Safer Communities.</span>
             </h1>
 
             <p class="hero-lead">
-                NDMS lets citizens report disaster incidents with structured details
-                and precise location information, explore disaster awareness guidance,
-                and keep information moving to the responsible authorities.
+                Report disaster incidents with accurate location details,
+                explore safety guidance, and stay informed — all in one
+                place built for communities across Nepal.
             </p>
 
             <div class="hero-actions">
@@ -133,7 +132,7 @@ Everything that was dynamic stays dynamic:
 
             <p class="hero-note">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.6v.1"/></svg>
-                <span>NDMS supports reporting, review and public awareness. Emergency response dispatch remains with the designated authorities.</span>
+                <span>NDMS supports reporting and public awareness. Emergency dispatch stays with the designated authorities.</span>
             </p>
 
         </div>
@@ -396,7 +395,7 @@ Everything that was dynamic stays dynamic:
 
                     <p>
                         {% if dt.description %}
-                            {{ dt.description|truncatewords:20 }}
+                            {{ dt.description|truncatewords:12 }}
                         {% else %}
                             Report {{ dt.name|lower }} incidents quickly so reviewers can act on accurate information.
                         {% endif %}

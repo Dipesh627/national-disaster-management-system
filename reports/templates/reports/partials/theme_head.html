@@ -1,36 +1,34 @@
 {% load static %}
 {% comment %}
 =========================================================
-NDMS - THEME BOOTSTRAP (shared <head> partial)
+NDMS - SHARED DESIGN TOKENS (shared <head> partial)
 =========================================================
 Include ONCE at the very END of <head>, after the page's own
 stylesheets, on every Citizen / public page:
 
     {% include 'reports/partials/theme_head.html' %}
 
-  1. Applies the saved theme (or the OS preference on a first
-     visit) to <html data-theme="..."> BEFORE the body paints,
-     so there is no light/dark flash.
-  2. Loads the Sentinel Teal design tokens (ndms-theme.css).
-  3. Loads theme.js, which wires every [data-theme-toggle]
-     button and remembers the choice (localStorage key
-     "ndms-theme"; nothing is sent to the server).
+Loads the Sentinel Teal design tokens (ndms-theme.css), which is
+the single source of truth for colour across the site.
 
-The custom Admin panel does not use this partial.
+DARK THEME REMOVAL (Step 1: Citizen, Step 2: Admin):
+  This partial used to also bootstrap the Dark Theme system: an
+  inline script that read a saved choice (or the OS preference)
+  from localStorage and set <html data-theme="..."> before first
+  paint, plus a <script> tag loading reports/js/theme.js (the
+  toggle-button wiring / persistence script). Both were removed in
+  Step 1 so the project renders Light Theme only, with no runtime
+  theme detection or switching left anywhere in <head>.
+
+  This file is shared with the Admin panel (admin/base.html and
+  admin/login.html include it too). Step 2 finished the job: the
+  toggle button (partials/theme_toggle.html), its script
+  (reports/js/theme.js), and the dark token block + .theme-toggle
+  CSS in ndms-theme.css have all been deleted/removed, since
+  nothing referenced them any more.
+
+The Admin panel does not use this partial for anything else.
 =========================================================
 {% endcomment %}
-<meta name="color-scheme" content="light dark">
-<script>
-(function () {
-    var root = document.documentElement;
-    var theme = null;
-    try { theme = localStorage.getItem('ndms-theme'); } catch (e) {}
-    if (theme !== 'light' && theme !== 'dark') {
-        theme = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-    }
-    root.setAttribute('data-theme', theme);
-    root.classList.add('js');
-})();
-</script>
+<meta name="color-scheme" content="light">
 <link rel="stylesheet" href="{% static 'reports/ndms-theme.css' %}">
-<script src="{% static 'reports/js/theme.js' %}" defer></script>

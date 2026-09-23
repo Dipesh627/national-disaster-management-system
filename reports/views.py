@@ -47,8 +47,6 @@ from .models import (
     Disaster,
     DisasterReport,
     DisasterType,
-    DisasterUpdate,
-    DisasterPhoto,
     EmergencyAgency,
     Feedback,
     Notification,

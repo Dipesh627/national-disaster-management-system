@@ -6,6 +6,9 @@
    that includes the partial. It handles:
 
      - scroll state        (.is-scrolled, via IntersectionObserver)
+     - scroll direction    (.nav-hidden - tucks the bar away on
+                            the way down, brings it straight back
+                            on the way up)
      - mobile hamburger    (#mobileMenuToggle / #publicMobileMenu)
      - dropdowns           ([data-nav-dropdown]: Disasters, Agencies)
 
@@ -85,6 +88,50 @@
                 });
             }, { passive: true });
         }
+
+
+        /* -------------------------------------------------
+           SCROLL DIRECTION (auto-hide / reveal)
+           Scrolling down past REVEAL_AFTER tucks the bar away;
+           scrolling back up - by even a few pixels - brings it
+           straight back. Off entirely while a menu/dropdown is
+           open, near the very top of the page, or when the
+           person has asked for reduced motion.
+           ------------------------------------------------- */
+
+        var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        var REVEAL_AFTER = 120;
+        var lastY = window.scrollY || 0;
+        var hideTicking = false;
+
+        function menuIsOpen() {
+            return isPanelOpen() || dropdowns.some(isOpen);
+        }
+
+        function onDirectionScroll() {
+            if (hideTicking || reduceMotion.matches) {
+                return;
+            }
+            hideTicking = true;
+
+            window.requestAnimationFrame(function () {
+                var y = window.scrollY || 0;
+                var goingDown = y > lastY;
+
+                if (menuIsOpen() || y < REVEAL_AFTER) {
+                    header.classList.remove("nav-hidden");
+                } else if (goingDown) {
+                    header.classList.add("nav-hidden");
+                } else if (y < lastY) {
+                    header.classList.remove("nav-hidden");
+                }
+
+                lastY = y;
+                hideTicking = false;
+            });
+        }
+
+        window.addEventListener("scroll", onDirectionScroll, { passive: true });
 
 
         /* -------------------------------------------------
@@ -219,6 +266,7 @@
             }
 
             panel.classList.toggle("open", open);
+            document.documentElement.classList.toggle("menu-open", open);
             document.body.classList.toggle("menu-open", open);
 
             toggle.setAttribute("aria-expanded", open ? "true" : "false");

@@ -1,110 +1,131 @@
 /* =========================================================
-   NDMS — SENTINEL TEAL DESIGN SYSTEM
-   Shared design tokens (light + dark), theme toggle, and a few
-   accessibility helpers for every Citizen / public page.
+   NDMS — INSTITUTIONAL BLUE DESIGN SYSTEM
+   Shared design tokens (one permanent Light Theme) and a few
+   accessibility helpers for every Citizen / public page, and
+   for the Admin panel.
 
    Loaded LAST in <head> by partials/theme_head.html so the
    tokens below are the single source of truth for colour.
    (Page stylesheets no longer declare their own palette.)
 
-   IMPORTANT NAMING NOTE
-   ---------------------
-   --red is the PRIMARY SENTINEL TEAL brand colour. The name is
-   kept only for compatibility with the existing stylesheets.
-   Do not rename it and do not use it for error states -
-   use --danger for those.
+   MIGRATION NOTE
+   --------------
+   This file previously shipped a "Sentinel Teal" palette in
+   which brand/status colours were stored under historical,
+   sometimes misleading names (e.g. --red held a teal brand
+   colour, not red). That palette and every one of those names
+   has been fully replaced below with a flat, institutional,
+   WFP-inspired blue system, named for what each token is FOR
+   rather than what hue it happens to be. Every consumer in the
+   project (CSS, templates) was migrated to the new names in the
+   same change; nothing in this project should still reference
+   the old --red / --navy / --green / --orange / --blue-dark /
+   --background / --soft-gray / --border / --text / --muted
+   names or the old hex values.
 
    Sections
-     1. Light tokens        (:root)
-     2. Dark tokens         (html[data-theme="dark"])
-     3. Legacy aliases      (names older stylesheets still use)
-     4. Theme toggle button
-     5. Accessibility helpers
+     1. Canonical tokens     (:root)  — SINGLE SOURCE OF TRUTH
+     2. Derived utility scale (numbered helpers some page
+                                stylesheets consume for fine-
+                                grained tints/borders)
+     3. Accessibility helpers
+
+   STEP 2 NOTE (Admin Dark Theme removal):
+     This file used to also define a Dark Theme token set under
+     html[data-theme="dark"], plus the .theme-toggle button (the
+     shared sun/moon control). Both were removed here: nothing
+     ever sets data-theme any more (see theme_head.html), and the
+     toggle markup (partials/theme_toggle.html) and its behaviour
+     script (js/theme.js) were deleted in this same step. The
+     project now has exactly one Light Theme, used by Citizen and
+     Admin alike.
    ========================================================= */
 
 
 /* =========================================================
-   1. LIGHT THEME
+   1. CANONICAL TOKENS — FINAL PALETTE, SINGLE SOURCE OF TRUTH
    ========================================================= */
 
 :root {
 
     color-scheme: light;
 
-    /* ---- Brand (Sentinel Teal) ---- */
-    --red: #0f4c5c;
-    --red-dark: #0a3540;
-    --light-red: #e7f1f2;
+    /* ---- Brand / Trust (primary action colour) ---- */
+    --color-primary: #1F6EBC;
+    --color-primary-dark: #14508A;
+    --color-primary-tint: #DCEBFB;
+    --color-primary-chip: #B2D8FE;
 
-    /* ---- Structure ---- */
-    --navy: #0d2b31;
-    --navy-2: #081e22;
-    --navy-light: #163f47;
-    --navy-soft: #1c4a52;
+    /* ---- Structural (header, nav, hero, footer) ---- */
+    --color-navy: #0B2A4D;
+    --color-navy-deep: #061A30;
+    --color-navy-mid: #14477A;
 
-    /* ---- Status: success / resolved ---- */
-    --green: #2d9c6a;
-    --green-bg: #e7f6ee;
-    --green-border: #bfe6d6;
+    /* ---- Semantic status ---- */
+    --color-danger: #B42318;
+    --color-warning: #E8A33D;
+    --color-success: #2D9C6A;
+    --color-info: #4B6478;
 
-    /* ---- Status: warning / pending ---- */
-    --orange: #e8a33d;
-    --orange-bg: #fdf2e3;
-    --amber-border: #f4d9a8;
-
-    /* ---- Status: information / notifications ---- */
-    --blue-dark: #2e86ab;
-    --blue-bg: #eaf4f9;
-    --blue-border: #bcdbe8;
-
-    /* ---- Surfaces & text ---- */
-    --background: #f6f9f9;
-    --soft-gray: #eef4f4;
-    --white: #ffffff;
-    --border: #e6ecec;
-    --text: #17262a;
-    --muted: #55696d;
+    /* ---- Neutrals / surfaces ---- */
+    --color-background: #F6F9FB;
+    --color-section: #EEF3F8;
+    --color-white: #FFFFFF;
+    --color-border: #E1E8EF;
+    --color-text: #17262A;
+    --color-muted: #55696D;
 
     /* ---------------------------------------------------------
        DERIVED HELPER TOKENS
-       No new brand colours: darker shades of the status hues
-       above so status TEXT reaches WCAG AA on its tinted
-       background, plus the semantic tokens the palette lacks.
+       No new brand colours: tints/shades of the tokens above so
+       status TEXT/backgrounds reach WCAG AA, plus a few semantic
+       tokens (headings, on-dark text, dark buttons) the flat
+       palette above doesn't name directly.
        --------------------------------------------------------- */
 
-    /* Strong headings. Light: the structural navy. */
-    --heading: var(--navy);
+    /* Strong headings: the structural navy. */
+    --heading: var(--color-navy);
 
-    /* Status text shades (AA on the matching -bg / white) */
-    --green-text: #227550;
-    --orange-text: #805a22;
-    --blue-text: #226480;
+    /* Status backgrounds/borders (very light tints, for supporting
+       surfaces only — see the high-emphasis callout rule, which
+       uses solid --color-primary + white text instead). */
+    --color-success-bg: #E7F6EE;
+    --color-success-border: #BFE6D6;
+    --color-success-text: #227550;
 
-    /* Error / destructive. Not part of the Sentinel palette; the
-       project's existing error red is kept for this one job. */
-    --danger: #b42318;
-    --danger-dark: #912018;
-    --danger-bg: #fef3f2;
-    --danger-border: #fecdca;
+    --color-warning-bg: #FDF2E3;
+    --color-warning-border: #F4D9A8;
+    --color-warning-text: #805A22;
 
-    /* Text/lines that must stay light on dark bands (hero,
-       footer, CTA) in BOTH themes. --white flips to a dark
-       surface in dark mode, so it cannot be used for that. */
-    --on-dark: #ffffff;
+    --color-danger-bg: #FEF3F2;
+    --color-danger-border: #FECDCA;
+    --color-danger-dark: #912018;
+
+    /* Info intentionally has no separate tinted background/border:
+       the info colour is already the slate text tone itself (see
+       the alert rules), so it is used directly rather than via a
+       lighter derived shade. */
+    --color-info-bg: #EAF0F3;
+    --color-info-border: #C7D3DA;
+    --color-info-text: var(--color-info);
+
+    /* Text/lines that must stay light on the site's own dark
+       surfaces (hero, footer, CTA bands). --color-white is a light
+       surface colour itself, so it cannot be used for that. */
+    --on-dark: #FFFFFF;
     --on-dark-muted: rgba(255, 255, 255, .74);
     --on-dark-line: rgba(255, 255, 255, .16);
 
     /* Solid dark buttons / active pills (search, apply, active
-       filter). --navy is near-black in dark mode, so the dark
-       theme lifts them one step to stay visible on dark cards. */
-    --btn-dark: var(--navy);
-    --btn-dark-hover: var(--navy-light);
+       filter), for contrast against light cards. */
+    --btn-dark: var(--color-navy);
+    --btn-dark-hover: var(--color-navy-mid);
 
     /* Elevation, radius, motion */
-    --shadow-xs: 0 1px 2px rgba(13, 43, 49, .05);
-    --shadow-sm: 0 2px 8px rgba(13, 43, 49, .07);
-    --shadow-md: 0 8px 24px rgba(13, 43, 49, .10);
-    --shadow-lg: 0 16px 40px rgba(13, 43, 49, .14);
+    --shadow-xs: 0 1px 2px rgba(11, 42, 77, .05);
+    --shadow-sm: 0 2px 8px rgba(11, 42, 77, .07);
+    --shadow-md: 0 8px 24px rgba(11, 42, 77, .10);
+    --shadow-lg: 0 16px 40px rgba(11, 42, 77, .14);
 
     --radius-sm: 6px;
     --radius-md: 10px;
@@ -112,220 +133,79 @@
     --radius-full: 9999px;
 
     --ease: cubic-bezier(.22, .61, .36, 1);
-    --focus-ring: 0 0 0 3px color-mix(in srgb, var(--red) 28%, transparent);
+    --focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 28%, transparent);
 
-    /* Text fields / selects / search boxes: a plain teal border with a
-       barely-there halo. (--focus-ring above is for buttons and other
-       controls that have no border to recolour.) */
-    --field-focus-border: var(--red);
-    --field-focus-ring: 0 0 0 3px color-mix(in srgb, var(--red) 10%, transparent);
+    /* Text fields / selects / search boxes: a plain primary-blue border
+       with a barely-there halo. (--focus-ring above is for buttons and
+       other controls that have no border to recolour.) */
+    --field-focus-border: var(--color-primary);
+    --field-focus-ring: 0 0 0 3px color-mix(in srgb, var(--color-primary) 10%, transparent);
 }
 
 
 /* =========================================================
-   2. DARK THEME
-   ========================================================= */
-
-html[data-theme="dark"] {
-
-    color-scheme: dark;
-
-    --red: #4fb3c4;
-    --red-dark: #3b94a3;
-    --light-red: #122023;
-
-    --navy: #0a1f22;
-    --navy-2: #061415;
-    --navy-light: #123138;
-    --navy-soft: #1c3a3d;
-
-    --green: #4fd19b;
-    --green-bg: #0f241c;
-    --green-border: #1f5a4a;
-
-    --orange: #f0bb6a;
-    --orange-bg: #291f11;
-    --amber-border: #5c4a1f;
-
-    --blue-dark: #6fc1e0;
-    --blue-bg: #0f232c;
-    --blue-border: #1e424c;
-
-    --background: #0a1414;
-    --soft-gray: #142726;
-    --white: #10201f;
-    --border: #1c2f2e;
-    --text: #e4f0ef;
-    --muted: #8fa6a4;
-
-    /* Navy is a dark structural colour in this theme, so
-       headings switch to the body text colour. */
-    --heading: var(--text);
-
-    --btn-dark: var(--navy-soft);
-    --btn-dark-hover: color-mix(in srgb, var(--navy-soft) 72%, var(--on-dark));
-
-    /* Status hues are already light enough in dark mode. */
-    --green-text: var(--green);
-    --orange-text: var(--orange);
-    --blue-text: var(--blue-dark);
-
-    --danger: #f97066;
-    --danger-dark: #fda29b;
-    --danger-bg: #2a1414;
-    --danger-border: #5b2521;
-
-    --shadow-xs: 0 1px 2px rgba(0, 0, 0, .35);
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, .38);
-    --shadow-md: 0 8px 24px rgba(0, 0, 0, .42);
-    --shadow-lg: 0 16px 40px rgba(0, 0, 0, .5);
-
-    --focus-ring: 0 0 0 3px color-mix(in srgb, var(--red) 40%, transparent);
-    --field-focus-ring: 0 0 0 3px color-mix(in srgb, var(--red) 16%, transparent);
-}
-
-
-/* =========================================================
-   3. LEGACY ALIASES
+   2. DERIVED UTILITY SCALE
    ---------------------------------------------------------
-   Older stylesheets use a few extra names. They are mapped
-   onto the tokens above so nothing has to guess a colour.
+   A handful of page stylesheets consume a numbered scale for
+   fine-grained surface/border/tint intensities rather than a
+   single flat token. They are defined here, once, from the
+   canonical tokens above, under names that describe what each
+   number is a shade OF (primary / warning / success / info)
+   rather than a raw hue name.
 
-   The --c-* family was referenced ~250 times across the
-   Citizen stylesheets but was never defined anywhere (the
-   old theming layer that defined it had been removed), so
-   those borders, hovers and text colours silently did not
-   render. They are defined here, once, from the palette.
+   Only variants that are actually consumed by a stylesheet are
+   kept; unused numbered variants from the old palette were
+   removed as dead code.
    ========================================================= */
 
-:root,
-html[data-theme="dark"] {
-
-    --green-dark: var(--green-text);
-    --amber-dark: var(--orange-text);
-    --amber-bg: var(--orange-bg);
+:root {
 
     /* surfaces / tints */
-    --c-surface-1: var(--background);
-    --c-surface-2: var(--soft-gray);
-    --c-surface-3: var(--background);
-    --c-surface-4: var(--soft-gray);
-    --c-surface-5: var(--soft-gray);
-    --c-surface-6: var(--soft-gray);
-    --c-surface-7: var(--background);
-    --c-surface-8: var(--border);
+    --c-surface-1: var(--color-background);
+    --c-surface-2: var(--color-section);
+    --c-surface-3: var(--color-background);
+    --c-surface-4: var(--color-section);
+    --c-surface-5: var(--color-section);
+    --c-surface-6: var(--color-section);
+    --c-surface-7: var(--color-background);
+    --c-surface-8: var(--color-border);
 
     /* borders */
-    --c-border-2: var(--border);
-    --c-border-3: var(--border);
-    --c-border-4: color-mix(in srgb, var(--red) 30%, var(--border));
-    --c-border-5: var(--border);
-    --c-border-6: var(--border);
-    --c-border-8: var(--border);
-    --c-border-9: color-mix(in srgb, var(--muted) 28%, var(--border));
-    --c-border-10: color-mix(in srgb, var(--muted) 28%, var(--border));
+    --c-border-2: var(--color-border);
+    --c-border-3: var(--color-border);
+    --c-border-4: color-mix(in srgb, var(--color-primary) 30%, var(--color-border));
+    --c-border-5: var(--color-border);
+    --c-border-6: var(--color-border);
+    --c-border-9: color-mix(in srgb, var(--color-muted) 28%, var(--color-border));
+    --c-border-10: color-mix(in srgb, var(--color-muted) 28%, var(--color-border));
 
     /* secondary text */
-    --c-muted-2: var(--muted);
-    --c-muted-3: var(--muted);
-    --c-muted-4: var(--muted);
-    --c-muted-5: var(--muted);
-    --c-ink-2: var(--text);
-    --c-text-2: var(--text);
+    --c-muted-2: var(--color-muted);
+    --c-muted-3: var(--color-muted);
+    --c-ink-2: var(--color-text);
+    --c-text-2: var(--color-text);
 
-    /* brand tints (formerly the "red" family) */
-    --c-red-10: var(--light-red);
-    --c-red-20: var(--light-red);
-    --c-red-25: var(--light-red);
-    --c-red-30: color-mix(in srgb, var(--red) 14%, var(--white));
-    --c-red-50: var(--light-red);
-    --c-red-150: color-mix(in srgb, var(--red) 22%, var(--border));
-    --c-red-160: var(--danger-border);
-    --c-red-200: color-mix(in srgb, var(--red) 24%, var(--border));
-    --c-red-210: color-mix(in srgb, var(--red) 26%, var(--border));
-    --c-red-220: var(--danger-border);
-    --c-red-230: color-mix(in srgb, var(--red) 28%, var(--border));
-    --c-red-300: var(--red);
-    --c-red-900: var(--danger);
+    /* primary-blue tints (fine-grained intensities of the brand tint) */
+    --c-primary-10: var(--color-primary-tint);
+    --c-primary-20: var(--color-primary-tint);
+    --c-primary-25: var(--color-primary-tint);
+    --c-primary-30: color-mix(in srgb, var(--color-primary) 14%, var(--color-white));
+    --c-primary-210: color-mix(in srgb, var(--color-primary) 26%, var(--color-border));
+    --c-primary-300: var(--color-primary);
 
     /* status shades */
-    --c-orange-500: var(--orange);
-    --c-orange-600: var(--orange-text);
-    --c-orange-700: var(--orange-text);
-    --c-orange-bg-2: var(--orange-bg);
-    --c-green-400: var(--green);
-    --c-green-500: var(--green);
-    --c-green-600: var(--green);
-    --c-green-800: var(--green-text);
-    --c-green-900: var(--green-text);
-    --c-blue-500: var(--blue-dark);
+    --c-warning-600: var(--color-warning-text);
+    --c-warning-700: var(--color-warning-text);
+    --c-warning-bg-2: var(--color-warning-bg);
+    --c-success-400: var(--color-success);
+    --c-success-600: var(--color-success);
+    --c-success-900: var(--color-success-text);
+    --c-info-500: var(--color-info);
 }
 
 
 /* =========================================================
-   4. THEME TOGGLE (shared button)
-   Compact circular icon button, keyboard usable. The icon shows
-   the CURRENT theme (sun = light, moon = dark) and the state is
-   also exposed through aria-pressed. The same button is used in
-   the public navbar and the citizen dashboard topbar.
-   Markup: partials/theme_toggle.html
-   ========================================================= */
-
-.theme-toggle {
-    width: 40px;
-    height: 40px;
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-full);
-    background: var(--white);
-    color: var(--muted);
-    cursor: pointer;
-    transition: background-color .18s ease, color .18s ease, border-color .18s ease;
-}
-
-.theme-toggle:hover {
-    background: var(--light-red);
-    border-color: color-mix(in srgb, var(--red) 35%, var(--border));
-    color: var(--red);
-}
-
-.theme-toggle:focus-visible {
-    outline: 2px solid var(--red);
-    outline-offset: 2px;
-}
-
-.theme-toggle svg {
-    width: 18px;
-    height: 18px;
-    display: block;
-}
-
-/* Light theme shows the sun, dark theme shows the moon. */
-.theme-toggle .theme-icon-moon { display: none; }
-html[data-theme="dark"] .theme-toggle .theme-icon-moon { display: block; }
-html[data-theme="dark"] .theme-toggle .theme-icon-sun { display: none; }
-
-/* Brief, subtle cross-fade while the theme flips. theme.js adds
-   the class for ~250ms and never adds it under reduced motion. */
-html.theme-switching,
-html.theme-switching *,
-html.theme-switching *::before,
-html.theme-switching *::after {
-    transition:
-        background-color .22s ease,
-        border-color .22s ease,
-        color .22s ease,
-        fill .22s ease,
-        stroke .22s ease !important;
-}
-
-
-/* =========================================================
-   5. ACCESSIBILITY HELPERS
+   3. ACCESSIBILITY HELPERS
    ========================================================= */
 
 /* Visually hidden, still read by screen readers. */
@@ -349,8 +229,8 @@ html.theme-switching *::after {
     z-index: 2000;
     padding: 10px 16px;
     border-radius: var(--radius-md);
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
     font-weight: 700;
     text-decoration: none;
     transform: translateY(-160%);
@@ -366,11 +246,11 @@ html.theme-switching *::after {
 /* Fallback focus ring (zero specificity) for any interactive
    element whose own stylesheet does not define one. */
 :where(a, button, summary, [tabindex], input[type="checkbox"], input[type="radio"]):focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
-/* Text fields, selects and textareas show focus with a simple teal
+/* Text fields, selects and textareas show focus with a simple primary-blue
    border + soft halo (never a heavy double ring). Zero specificity, so
    any page stylesheet can still refine it. */
 :where(input:not([type="checkbox"], [type="radio"], [type="submit"], [type="button"], [type="range"], [type="file"]), select, textarea):focus {
@@ -383,10 +263,5 @@ html.theme-switching *::after {
 
     html {
         scroll-behavior: auto !important;
-    }
-
-    html.theme-switching,
-    html.theme-switching * {
-        transition: none !important;
     }
 }

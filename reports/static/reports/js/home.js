@@ -2,8 +2,7 @@
    NDMS HOME PAGE - BEHAVIOUR
    ---------------------------------------------------------
    The navbar (menu, dropdowns, scroll state) is handled by
-   public-nav.js and the theme by theme.js. This file only
-   drives the Home page:
+   public-nav.js. This file only drives the Home page:
 
      - in-page anchor scrolling (offset for the sticky header)
      - scroll reveal + timeline draw   (IntersectionObserver)

@@ -154,7 +154,7 @@
 
 .dd-lifecycle-step.is-done {
     background: var(--ndms-soft);
-    color: var(--green-text);
+    color: var(--color-success-text);
 }
 
 .dd-lifecycle-arrow {
@@ -240,8 +240,8 @@
     height: 19px;
     margin-top: 2px;
     border-radius: 999px;
-    background: var(--green-bg);
-    border: 3px solid var(--green);
+    background: var(--color-success-bg);
+    border: 3px solid var(--color-success);
     box-sizing: border-box;
 }
 
@@ -323,7 +323,7 @@
 }
 
 .dd-timeline-link.dd-timeline-link-danger:hover {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .dd-empty-note {

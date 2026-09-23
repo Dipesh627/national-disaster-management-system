@@ -24,18 +24,42 @@
 .public-navbar {
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 1300;
 
-    background: var(--white);
-    border-bottom: 1px solid var(--border);
+    background: var(--color-white);
+    border-bottom: 1px solid transparent;
 
     transition:
-        box-shadow .2s ease,
-        background-color .2s ease;
+        transform .32s var(--ease),
+        box-shadow .3s var(--ease),
+        background-color .3s var(--ease),
+        border-color .3s var(--ease);
 }
 
+/* Frosted-glass elevation once the page has scrolled past the
+   sentinel: the bar lifts off the page instead of just gaining
+   a hairline shadow. Falls back to a solid card on browsers
+   without backdrop-filter support. */
 .public-navbar.is-scrolled {
-    box-shadow: var(--shadow-sm);
+    background: color-mix(in srgb, var(--color-white) 86%, transparent);
+    border-bottom-color: var(--color-border);
+    box-shadow: var(--shadow-md);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    backdrop-filter: saturate(180%) blur(14px);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .public-navbar.is-scrolled {
+        background: var(--color-white);
+    }
+}
+
+/* Scroll-direction hide/reveal, driven by .nav-hidden from
+   public-nav.js. Scrolling down past the threshold tucks the
+   bar away; scrolling back up brings it straight back. */
+.public-navbar.nav-hidden {
+    transform: translateY(-100%);
+    box-shadow: none;
 }
 
 .public-navbar-inner {
@@ -48,11 +72,11 @@
     align-items: center;
     column-gap: 24px;
 
-    transition: min-height .2s ease;
+    transition: min-height .3s var(--ease);
 }
 
 .public-navbar.is-scrolled .public-navbar-inner {
-    min-height: 62px;
+    min-height: 60px;
 }
 
 /* Admin accounts only get 3 plain links (Home / About / Dashboard,
@@ -81,7 +105,7 @@
 }
 
 .public-brand:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 4px;
     border-radius: var(--radius-md);
 }
@@ -93,6 +117,13 @@
 
     display: block;
     object-fit: contain;
+    transform-origin: left center;
+
+    transition: transform .3s var(--ease);
+}
+
+.public-navbar.is-scrolled .public-logo {
+    transform: scale(.92);
 }
 
 
@@ -125,9 +156,10 @@
     padding: 0 12px;
 
     border: 0;
+    border-radius: var(--radius-sm);
     background: none;
 
-    color: var(--text);
+    color: var(--color-text);
     font-family: inherit;
     font-size: calc(14.5px * var(--ndms-font-scale, 1));
     font-weight: 600;
@@ -137,7 +169,25 @@
 
     cursor: pointer;
 
-    transition: color .18s ease;
+    /* Staggered fade/drop-in on first paint, skipped entirely
+       under reduced motion (see section 9). */
+    opacity: 0;
+    animation: navItemIn .5s var(--ease) both;
+    animation-delay: calc(var(--nav-i, 0) * 45ms + 60ms);
+
+    transition: color .2s var(--ease), background-color .2s var(--ease);
+}
+
+.public-nav > a:nth-child(1) { --nav-i: 1; }
+.public-nav > a:nth-child(2) { --nav-i: 2; }
+.public-nav > :nth-child(3) { --nav-i: 3; }
+.public-nav > :nth-child(4) { --nav-i: 4; }
+.public-nav > :nth-child(5) { --nav-i: 5; }
+.public-nav > :nth-child(6) { --nav-i: 6; }
+
+@keyframes navItemIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: none; }
 }
 
 /* Active / hover indicator: a 2px bar on the header's bottom edge. */
@@ -151,29 +201,30 @@
     bottom: -1px;
 
     height: 2px;
+    border-radius: var(--radius-full);
 
-    background: var(--red);
+    background: var(--color-primary);
 
     transform: scaleX(0);
     transform-origin: center;
 
-    transition: transform .2s var(--ease);
+    transition: transform .28s var(--ease);
 }
 
 .public-nav > a:hover,
 .public-nav-dropdown-toggle:hover,
 .public-nav-dropdown.open .public-nav-dropdown-toggle {
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 .public-nav > a:hover::after,
 .public-nav-dropdown-toggle:hover::after {
-    transform: scaleX(.5);
+    transform: scaleX(.6);
 }
 
 .public-nav > a.active,
 .public-nav-dropdown-toggle.active {
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 .public-nav > a.active::after,
@@ -183,7 +234,7 @@
 
 .public-nav > a:focus-visible,
 .public-nav-dropdown-toggle:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: -4px;
     border-radius: var(--radius-md);
 }
@@ -200,7 +251,7 @@
 
     flex-shrink: 0;
 
-    transition: transform .2s ease;
+    transition: transform .28s var(--ease);
 }
 
 .public-nav-dropdown.open .public-nav-dropdown-caret {
@@ -231,19 +282,20 @@
 
     padding: 8px;
 
-    background: var(--white);
-    border: 1px solid var(--border);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-lg);
 
     opacity: 0;
     visibility: hidden;
-    transform: translate(-50%, 6px);
+    transform: translate(-50%, 4px) scale(.97);
+    transform-origin: top center;
 
     transition:
-        opacity .16s ease,
-        transform .16s ease,
-        visibility .16s ease;
+        opacity .2s var(--ease),
+        transform .22s var(--ease),
+        visibility .2s var(--ease);
 }
 
 .public-nav-dropdown-menu--compact {
@@ -253,7 +305,7 @@
 .public-nav-dropdown.open .public-nav-dropdown-menu {
     opacity: 1;
     visibility: visible;
-    transform: translate(-50%, 0);
+    transform: translate(-50%, 0) scale(1);
 }
 
 .nav-menu-list {
@@ -276,19 +328,20 @@
 
     border-radius: var(--radius-md);
 
-    color: var(--text);
+    color: var(--color-text);
     text-decoration: none;
 
-    transition: background-color .16s ease;
+    transition: background-color .2s var(--ease), transform .2s var(--ease);
 }
 
 .nav-menu-item:hover,
 .nav-menu-item:focus-visible {
-    background: var(--light-red);
+    background: var(--color-primary-tint);
+    transform: translateX(2px);
 }
 
 .nav-menu-item:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: -2px;
 }
 
@@ -301,15 +354,16 @@
 
     border-radius: var(--radius-md);
 
-    background: var(--light-red);
-    color: var(--red);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
 
-    transition: background-color .16s ease;
+    transition: background-color .2s var(--ease), transform .2s var(--ease);
 }
 
 .nav-menu-item:hover .nav-menu-icon,
 .nav-menu-item:focus-visible .nav-menu-icon {
-    background: var(--white);
+    background: var(--color-white);
+    transform: scale(1.06);
 }
 
 .nav-menu-icon svg {
@@ -332,7 +386,7 @@
 
     margin-top: 2px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(12.5px * var(--ndms-font-scale, 1));
     line-height: 1.45;
@@ -341,7 +395,7 @@
 .nav-menu-empty {
     padding: 12px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(13px * var(--ndms-font-scale, 1));
     line-height: 1.5;
@@ -350,7 +404,7 @@
 .nav-menu-heading {
     margin: 12px 12px 8px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(11px * var(--ndms-font-scale, 1));
     font-weight: 700;
@@ -374,11 +428,11 @@
 
     padding: 5px 12px;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-full);
 
-    background: var(--white);
-    color: var(--text);
+    background: var(--color-white);
+    color: var(--color-text);
 
     font-size: calc(12.5px * var(--ndms-font-scale, 1));
     font-weight: 600;
@@ -392,9 +446,9 @@
 
 .nav-menu-chips a:hover,
 .nav-menu-chips a:focus-visible {
-    border-color: var(--red);
-    background: var(--light-red);
-    color: var(--red);
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
 }
 
 .nav-menu-footer {
@@ -405,9 +459,9 @@
     margin-top: 6px;
     padding: 12px 14px 8px;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: calc(13.5px * var(--ndms-font-scale, 1));
     font-weight: 650;
@@ -427,7 +481,7 @@
 }
 
 .nav-menu-footer:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: -2px;
     border-radius: var(--radius-md);
 }
@@ -454,7 +508,7 @@
     min-height: 40px;
     padding: 0 16px;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
 
     background: transparent;
@@ -466,15 +520,21 @@
     white-space: nowrap;
 
     transition:
-        border-color .18s ease,
-        color .18s ease,
-        background-color .18s ease;
+        border-color .2s var(--ease),
+        color .2s var(--ease),
+        background-color .2s var(--ease),
+        transform .2s var(--ease);
 }
 
 .public-login-btn:hover {
-    border-color: var(--red);
-    background: var(--light-red);
-    color: var(--red);
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+}
+
+.public-login-btn:active {
+    transform: translateY(0);
 }
 
 /* Get Started / Report Incident: the single primary action. */
@@ -486,11 +546,11 @@
     min-height: 40px;
     padding: 0 18px;
 
-    border: 1px solid var(--red);
+    border: 1px solid var(--color-primary);
     border-radius: var(--radius-md);
 
-    background: var(--red);
-    color: var(--white);
+    background: var(--color-primary);
+    color: var(--color-white);
 
     font-size: calc(14px * var(--ndms-font-scale, 1));
     font-weight: 650;
@@ -498,18 +558,27 @@
     white-space: nowrap;
 
     transition:
-        background-color .18s ease,
-        border-color .18s ease;
+        background-color .2s var(--ease),
+        border-color .2s var(--ease),
+        transform .2s var(--ease),
+        box-shadow .2s var(--ease);
 }
 
 .public-register-btn:hover {
-    border-color: var(--red-dark);
-    background: var(--red-dark);
+    border-color: var(--color-primary-dark);
+    background: var(--color-primary-dark);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+}
+
+.public-register-btn:active {
+    transform: translateY(0);
+    box-shadow: none;
 }
 
 .public-login-btn:focus-visible,
 .public-register-btn:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
@@ -537,10 +606,10 @@
 
     padding: 0;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
 
-    background: var(--white);
+    background: var(--color-white);
 
     cursor: pointer;
 
@@ -550,12 +619,12 @@
 }
 
 .mobile-menu-toggle:hover {
-    background: var(--light-red);
-    border-color: color-mix(in srgb, var(--red) 35%, var(--border));
+    background: var(--color-primary-tint);
+    border-color: color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
 }
 
 .mobile-menu-toggle:focus-visible {
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 }
 
@@ -631,6 +700,7 @@
         top: 100%;
         left: 0;
         right: 0;
+        z-index: 5;
 
         display: none;
         flex-direction: column;
@@ -644,14 +714,26 @@
 
         padding: 4px max(16px, calc((100% - 1240px) / 2)) 20px;
 
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
+        background: var(--color-white);
+        border-bottom: 1px solid var(--color-border);
         box-shadow: var(--shadow-md);
     }
 
     .public-mobile-menu.open {
         display: flex;
-        animation: navPanelIn .18s ease-out;
+        animation: navPanelIn .26s var(--ease) both;
+    }
+
+    /* While the panel is open on mobile, the page behind it must
+       not scroll: without this, scrolling the guidelines page's
+       own sticky toolbar (or any other sticky/positioned section)
+       could climb back over the open menu. The panel keeps its
+       own overflow-y: auto above, so its content still scrolls
+       normally. */
+    html.menu-open,
+    body.menu-open {
+        overflow: hidden;
+        height: 100%;
     }
 
     .public-nav {
@@ -668,7 +750,7 @@
         min-height: 50px;
         padding: 14px 4px;
 
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-border);
 
         font-size: calc(16px * var(--ndms-font-scale, 1));
         text-align: left;
@@ -709,7 +791,7 @@
         padding: 4px 0 8px 6px;
 
         border: 0;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-border);
         border-radius: 0;
         box-shadow: none;
 
@@ -801,7 +883,6 @@
         height: 28px;
     }
 
-    .public-auth .theme-toggle,
     .mobile-menu-toggle {
         width: 40px;
         height: 40px;
@@ -831,6 +912,7 @@
 
     .public-navbar,
     .public-navbar-inner,
+    .public-logo,
     .public-nav > a,
     .public-nav > a::after,
     .public-nav-dropdown-toggle,
@@ -845,6 +927,27 @@
     .mobile-menu-toggle,
     .mobile-menu-toggle span {
         transition: none;
+    }
+
+    /* No entrance stagger, no lift-on-hover, no auto-hide on
+       scroll - the bar simply stays put and gains/loses its
+       scrolled styling instantly. */
+    .public-nav > a,
+    .public-nav-dropdown-toggle {
+        animation: none;
+        opacity: 1;
+    }
+
+    .public-navbar.nav-hidden {
+        transform: none;
+    }
+
+    .public-login-btn:hover,
+    .public-register-btn:hover,
+    .nav-menu-item:hover,
+    .nav-menu-icon,
+    .public-navbar.is-scrolled .public-logo {
+        transform: none;
     }
 
     .public-mobile-menu.open {

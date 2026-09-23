@@ -14,12 +14,12 @@ Requires (linked by the including page):
     reports/navbar-avatar.css     avatar / account dropdown
     reports/js/public-nav.js      mobile menu, dropdowns, scroll state
     reports/js/navbar-avatar.js   account dropdown
-    partials/theme_head.html      tokens + theme toggle script
+    partials/theme_head.html      shared design tokens (Sentinel Teal)
 and an element with id="main-content" for the skip link.
 
 Layout
-  Desktop  [Logo]      Home  About  Disasters v  Agencies v  Guidelines  Help & Support      [Theme] [Login] [Get Started]
-  Mobile   [Logo]                                                                             [Theme] [Account] [Menu]
+  Desktop  [Logo]      Home  About  Disasters v  Agencies v  Guidelines  Help & Support      [Login] [Get Started]
+  Mobile   [Logo]                                                                             [Account] [Menu]
 
 Role rules (see AdminCitizenPortalIsolationMiddleware)
   * Citizens / visitors: full navigation.
@@ -220,11 +220,9 @@ Dropdown contents come from the database via {% nav_menu_data %}
         </div>
 
 
-        <!-- THEME + ACCOUNT (always visible) -->
+        <!-- ACCOUNT (always visible) -->
 
         <div class="public-auth{% if user.is_authenticated %} is-authenticated{% endif %}">
-
-            {% include 'reports/partials/theme_toggle.html' %}
 
             {% if user.is_authenticated %}
 

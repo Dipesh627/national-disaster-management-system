@@ -258,6 +258,25 @@ document.addEventListener(
         );
 
 
+        // Scrolling the page (mobile especially, where the menu
+        // floats over the content instead of pushing it down)
+        // should dismiss an open dropdown instead of leaving it
+        // hanging over content that has moved past it.
+        window.addEventListener(
+            "scroll",
+            function () {
+
+                if (isOpen()) {
+
+                    closeMenu();
+
+                }
+
+            },
+            { passive: true }
+        );
+
+
         // Another navbar widget (the public mobile hamburger
         // menu, a Disasters / Agencies dropdown) just opened — close this
         // dropdown so only one shows at a time on mobile.

@@ -1,10 +1,10 @@
 :root {
     /* Colour, shadow and radius tokens are NOT defined here any more:
-       the Admin uses the Citizen "Sentinel Teal" design system
+       the Admin uses the Citizen institutional-blue design system
        (ndms-theme.css, loaded first by base.html through
        partials/theme_head.html), so both portals share one palette and
-       one light/dark theme. --red is the TEAL brand colour there;
-       destructive / error states use --danger. */
+       one light theme. --color-primary is the primary brand colour there;
+       destructive / error states use --color-danger. */
 
     --sidebar-width: 252px;
     --topbar-height: 76px;
@@ -18,9 +18,8 @@
 
     /* Tokens the Citizen palette does not name, derived from it so they
        follow the light / dark theme automatically. */
-    --light-muted: color-mix(in srgb, var(--muted) 72%, var(--white));
-    --border-strong: color-mix(in srgb, var(--muted) 13%, var(--border));
-    --danger-on-dark: #ffb5ad;
+    --light-muted: color-mix(in srgb, var(--color-muted) 72%, var(--color-white));
+    --border-strong: color-mix(in srgb, var(--color-muted) 13%, var(--color-border));
 }
 
 
@@ -74,8 +73,8 @@ body {
 
     overflow-x: clip;
 
-    background: var(--background);
-    color: var(--text);
+    background: var(--color-background);
+    color: var(--color-text);
 
     /* Citizen typeface stack (see the Citizen body rule in dashboard.css). */
     font-family:
@@ -156,7 +155,7 @@ svg {
     min-height: 0;
     overflow: hidden;
 
-    background: var(--navy-light);
+    background: var(--color-navy-mid);
     border-right: 1px solid rgba(255,255,255,.045);
 
     color: var(--on-dark);
@@ -389,7 +388,7 @@ svg {
 
     /* Same marker colour as the Citizen dashboard sidebar. */
     background:
-        var(--blue-dark);
+        var(--color-info);
 }
 
 
@@ -455,7 +454,7 @@ svg {
     /* Citizen .sidebar-badge treatment: light pill, dark figure. */
     background: var(--on-dark);
 
-    color: var(--navy);
+    color: var(--color-navy);
 
     font-size: 11px;
 
@@ -615,13 +614,13 @@ svg {
         0 26px;
 
     background:
-        color-mix(in srgb, var(--white) 96%, transparent);
+        color-mix(in srgb, var(--color-white) 96%, transparent);
 
     border-bottom:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     box-shadow:
-        0 1px 0 color-mix(in srgb, var(--navy-2) 2%, transparent);
+        0 1px 0 color-mix(in srgb, var(--color-navy-deep) 2%, transparent);
 
     backdrop-filter: blur(10px);
 
@@ -661,7 +660,7 @@ svg {
 
     background: transparent;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     cursor: pointer;
 
@@ -674,7 +673,7 @@ svg {
 .sidebar-toggle:hover {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -716,7 +715,7 @@ svg {
 
     min-width: 0;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 10px;
     line-height: 1.2;
@@ -800,7 +799,7 @@ svg {
     background: transparent;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     cursor: pointer;
 
@@ -814,7 +813,7 @@ svg {
 .search-trigger:hover {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -863,16 +862,16 @@ svg {
         0 8px 0 12px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius: 10px;
 
     box-shadow:
         0 12px 30px
-        color-mix(in srgb, var(--navy-2) 9%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
 
     animation:
         searchOpen .16s ease;
@@ -911,7 +910,7 @@ svg {
     fill: none;
 
     stroke:
-        var(--muted);
+        var(--color-muted);
 
     stroke-width: 1.8;
 
@@ -932,7 +931,7 @@ svg {
     background: transparent;
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size: 12px;
 }
@@ -958,7 +957,7 @@ svg {
     background: transparent;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     cursor: pointer;
 
@@ -971,7 +970,7 @@ svg {
 .search-clear:hover {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -1013,15 +1012,6 @@ svg {
    NOTIFICATION
    ========================================================= */
 
-/* Shared Citizen theme toggle (ndms-theme.css .theme-toggle), sized to
-   sit level with the other 38px topbar controls. */
-.topbar-right .theme-toggle {
-
-    width: 38px;
-    height: 38px;
-}
-
-
 .topbar-icon-button {
 
     /* Explicit, like the Citizen .notification-button: without it the
@@ -1040,7 +1030,7 @@ svg {
     border-radius: 9px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     transition:
         background var(--ease),
@@ -1051,7 +1041,7 @@ svg {
 .topbar-icon-button:hover {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -1087,7 +1077,7 @@ svg {
         0 2px;
 
     background:
-        var(--border);
+        var(--color-border);
 }
 
 
@@ -1115,13 +1105,13 @@ svg {
     border-radius: 50%;
 
     background:
-        var(--red);
+        var(--color-primary);
 
     color:
-        var(--white);
+        var(--color-white);
 
     border:
-        2px solid var(--white);
+        2px solid var(--color-white);
 
     font-size: 8px;
 
@@ -1149,17 +1139,17 @@ svg {
 
     max-width: calc(100vw - 24px);
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     border-radius: 12px;
 
     box-shadow:
         0 18px 44px
-        color-mix(in srgb, var(--navy-2) 12%, transparent),
+        color-mix(in srgb, var(--color-navy-deep) 12%, transparent),
         0 3px 8px
-        color-mix(in srgb, var(--navy-2) 3.5%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 3.5%, transparent);
 
     overflow: hidden;
 
@@ -1194,7 +1184,7 @@ svg {
 
     padding: 13px 15px;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 
     color: var(--heading);
 
@@ -1208,7 +1198,7 @@ svg {
 
 .admin-alert-header a {
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: 11px;
     font-weight: 650;
@@ -1219,7 +1209,7 @@ svg {
 
 
 .admin-alert-header a:hover {
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
 }
 
 
@@ -1240,9 +1230,9 @@ svg {
 
     padding: 12px 15px;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 
-    color: var(--text);
+    color: var(--color-text);
 
     transition:
         background var(--ease);
@@ -1255,7 +1245,7 @@ svg {
 
 
 .admin-alert-item:hover {
-    background: var(--soft-gray);
+    background: var(--color-section);
 }
 
 
@@ -1270,7 +1260,7 @@ svg {
 
     border-radius: 50%;
 
-    background: var(--red);
+    background: var(--color-primary);
 }
 
 
@@ -1300,7 +1290,7 @@ svg {
 
     overflow: hidden;
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-size: 11px;
     font-weight: 500;
@@ -1312,7 +1302,7 @@ svg {
 
 .admin-alert-time {
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 10px;
     font-weight: 500;
@@ -1330,7 +1320,7 @@ svg {
 
     fill: none;
 
-    stroke: var(--muted);
+    stroke: var(--color-muted);
 
     stroke-width: 2;
 
@@ -1345,7 +1335,7 @@ svg {
 
     text-align: center;
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 }
 
 
@@ -1359,7 +1349,7 @@ svg {
 
 
 .admin-alert-footer a:hover {
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 
@@ -1389,9 +1379,9 @@ svg {
 
     border-radius: 50%;
 
-    background: var(--green-bg);
+    background: var(--color-success-bg);
 
-    color: var(--green-text);
+    color: var(--color-success-text);
 
     font-size: 15px;
     font-weight: 700;
@@ -1411,7 +1401,7 @@ svg {
 
     max-width: 240px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 11px;
     font-weight: 500;
@@ -1458,13 +1448,13 @@ svg {
 .admin-profile-button:hover,
 .admin-profile-button[aria-expanded="true"] {
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border-color: var(--border);
+    border-color: var(--color-border);
 
     box-shadow:
         0 3px 12px
-        color-mix(in srgb, var(--navy-2) 5.5%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 5.5%, transparent);
 }
 
 
@@ -1483,14 +1473,14 @@ svg {
 
     border-radius: 50%;
 
-    background: var(--red);
+    background: var(--color-primary);
 
-    color: var(--white);
+    color: var(--color-white);
 
-    border: 2px solid var(--white);
+    border: 2px solid var(--color-white);
 
     box-shadow:
-        0 0 0 2px color-mix(in srgb, var(--red) 14%, transparent);
+        0 0 0 2px color-mix(in srgb, var(--color-primary) 14%, transparent);
 
     font-size: 13px;
     font-weight: 800;
@@ -1507,11 +1497,11 @@ svg {
 .admin-profile-button:hover .admin-avatar,
 .admin-profile-button[aria-expanded="true"] .admin-avatar {
 
-    background: var(--red-dark);
+    background: var(--color-primary-dark);
 
     box-shadow:
-        0 0 0 2px color-mix(in srgb, var(--red) 18%, transparent),
-        0 5px 12px color-mix(in srgb, var(--red) 12%, transparent);
+        0 0 0 2px color-mix(in srgb, var(--color-primary) 18%, transparent),
+        0 5px 12px color-mix(in srgb, var(--color-primary) 12%, transparent);
 }
 
 
@@ -1521,8 +1511,8 @@ svg {
     align-items: center;
     justify-content: center;
 
-    color: var(--white) !important;
-    background: var(--red);
+    color: var(--color-white) !important;
+    background: var(--color-primary);
 
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
@@ -1568,7 +1558,7 @@ svg {
 
     margin-top: 4px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 9.5px;
     font-weight: 520;
@@ -1587,16 +1577,16 @@ svg {
 
     border-radius: 50%;
 
-    background: var(--green);
+    background: var(--color-success);
 
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--green) 9%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-success) 9%, transparent);
 }
 
 
 .admin-profile-status-dot.is-inactive,
 .profile-menu-status-dot.is-inactive {
     background: var(--light-muted);
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--muted) 12%, transparent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-muted) 12%, transparent);
 }
 
 
@@ -1607,7 +1597,7 @@ svg {
 
     flex: 0 0 14px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     fill: none;
     stroke: currentColor;
@@ -1648,9 +1638,9 @@ svg {
 
     padding: 8px;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     border-radius: 12px;
 
@@ -1701,9 +1691,9 @@ svg {
 
     border-radius: 50%;
 
-    background: var(--red);
+    background: var(--color-primary);
 
-    color: var(--white) !important;
+    color: var(--color-white) !important;
 
     object-fit: cover;
 
@@ -1716,8 +1706,8 @@ svg {
 
 
 .profile-menu-avatar-fallback {
-    color: var(--white) !important;
-    background: var(--red);
+    color: var(--color-white) !important;
+    background: var(--color-primary);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
 }
@@ -1762,7 +1752,7 @@ svg {
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 12px;
     font-weight: 500;
@@ -1777,7 +1767,7 @@ svg {
 
     margin-top: 3px;
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-size: 9px;
     font-weight: 600;
@@ -1790,7 +1780,7 @@ svg {
 
     margin: 6px 4px;
 
-    background: var(--border);
+    background: var(--color-border);
 }
 
 
@@ -1805,7 +1795,7 @@ svg {
 
     border-radius: 8px;
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-size: 13px;
     font-weight: 600;
@@ -1827,12 +1817,12 @@ svg {
     display: grid;
     place-items: center;
 
-    color: var(--muted);
+    color: var(--color-muted);
 }
 
 
 .profile-menu-item:hover .profile-menu-icon {
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 
@@ -1854,14 +1844,14 @@ svg {
 
 .profile-menu-item:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
     color: var(--heading);
     transform: translateX(3px);
 }
 
 
 .profile-menu-danger {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 
@@ -1871,13 +1861,13 @@ svg {
 
 
 .profile-menu-danger:hover {
-    background: var(--danger-bg);
-    color: var(--danger-dark);
+    background: var(--color-danger-bg);
+    color: var(--color-danger-dark);
 }
 
 
 .profile-menu-danger:hover .profile-menu-icon {
-    color: var(--danger-dark);
+    color: var(--color-danger-dark);
 }
 
 
@@ -1951,15 +1941,15 @@ svg {
         11px 14px;
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius: 6px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size: 12px;
 }
@@ -1968,26 +1958,26 @@ svg {
 .admin-message.success {
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
     border-color:
-        var(--green-border);
+        var(--color-success-border);
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 }
 
 
 .admin-message.error {
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
     border-color:
-        var(--danger-border);
+        var(--color-danger-border);
 
     color:
-        var(--danger-dark);
+        var(--color-danger-dark);
 }
 
 
@@ -2004,7 +1994,7 @@ svg {
     inset: 0;
 
     background:
-        color-mix(in srgb, var(--navy-2) 38%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 38%, transparent);
 
     z-index: 950;
 }
@@ -2044,6 +2034,17 @@ svg {
 
 @media (max-width: 820px) {
 
+    /* .sidebar-brand shrinks to 60px on mobile (see "MOBILE DRAWER
+       REFINEMENT" below). Redeclaring --topbar-height here instead
+       of hand-copying 60px onto .admin-topbar keeps every rule that
+       reads the variable (the topbar's own height, and .admin-main's
+       padding-top while the drawer is locked open) in sync from one
+       place, so the hairline under the sidebar logo and the hairline
+       under the topbar always sit on the same row. */
+    :root {
+        --topbar-height: 60px;
+    }
+
     .admin-sidebar {
         /* No explicit height here either -- see the base .admin-sidebar
            rule above for why; top:0/bottom:0 already anchor it. */
@@ -2068,8 +2069,8 @@ svg {
         position: relative;
         z-index: 20;
         padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-        background: var(--navy-light);
-        box-shadow: 0 -7px 18px color-mix(in srgb, var(--navy-2) 13%, transparent);
+        background: var(--color-navy-mid);
+        box-shadow: 0 -7px 18px color-mix(in srgb, var(--color-navy-deep) 13%, transparent);
     }
 
     /* Hamburger ONLY here */
@@ -2086,7 +2087,7 @@ svg {
 
         box-shadow:
             12px 0 30px
-            color-mix(in srgb, var(--navy-2) 14%, transparent);
+            color-mix(in srgb, var(--color-navy-deep) 14%, transparent);
     }
 
 
@@ -2114,7 +2115,7 @@ svg {
 
     .admin-topbar {
 
-        min-height: 76px;
+        min-height: var(--topbar-height);
 
         padding:
             10px 15px;
@@ -2131,7 +2132,7 @@ svg {
         position: fixed;
 
         top:
-            76px;
+            var(--topbar-height);
 
         left: 15px;
         right: 15px;
@@ -2180,11 +2181,10 @@ svg {
 
 @media (max-width: 520px) {
 
-    .sidebar-brand {
-        height: 72px;
-        flex: 0 0 72px;
-    }
-
+    /* .sidebar-brand's height at this width is 60px, set once by
+       the "MOBILE DRAWER REFINEMENT" rule further down (which also
+       applies below 820px) -- not redeclared here, so there's a
+       single source of truth for the mobile brand height. */
 
     .topbar-right {
         gap: 3px;
@@ -2220,7 +2220,7 @@ svg {
 
         position: fixed;
 
-        top: 70px;
+        top: 66px;
         right: 12px;
 
         width:
@@ -2232,7 +2232,7 @@ svg {
 
         position: fixed;
 
-        top: 70px;
+        top: 66px;
         right: 12px;
 
         width:
@@ -2256,7 +2256,7 @@ svg {
 .topbar-icon-button:focus-visible,
 .admin-profile-button:focus-visible,
 .profile-menu-item:focus-visible {
-    outline: 2px solid color-mix(in srgb, var(--red) 55%, transparent);
+    outline: 2px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
     outline-offset: 2px;
 }
 
@@ -2284,7 +2284,7 @@ svg {
     }
 
     .admin-shell.sidebar-open .admin-sidebar {
-        box-shadow: 18px 0 45px color-mix(in srgb, var(--navy-2) 18%, transparent);
+        box-shadow: 18px 0 45px color-mix(in srgb, var(--color-navy-deep) 18%, transparent);
     }
 
     .sidebar-overlay {
@@ -2371,7 +2371,10 @@ svg {
     }
 
 
-    /* ---------- brand ---------- */
+    /* ---------- brand ----------
+       60px, matching --topbar-height (redeclared to 60px at the
+       top of the "MOBILE" query above) so the line under the logo
+       and the line under the topbar sit on the same row. */
 
     .sidebar-brand {
 

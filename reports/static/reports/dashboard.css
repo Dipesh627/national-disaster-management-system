@@ -38,10 +38,10 @@ body {
         sans-serif;
 
     background:
-        var(--background);
+        var(--color-background);
 
     color:
-        var(--text);
+        var(--color-text);
 
     line-height:
         1.6;
@@ -132,7 +132,7 @@ button {
         hidden;
 
     background:
-        var(--navy-light);
+        var(--color-navy-mid);
 
     color:
         var(--on-dark);
@@ -396,7 +396,7 @@ button {
         0 3px 3px 0;
 
     background:
-        var(--blue-dark);
+        var(--color-info);
 
 }
 
@@ -445,7 +445,7 @@ button {
 
     background: var(--on-dark);
 
-    color: var(--navy);
+    color: var(--color-navy);
 
     display:
         flex;
@@ -542,7 +542,7 @@ button {
 
 .sidebar-footer-link:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
 
 }
@@ -714,10 +714,10 @@ button {
     padding:
         0 30px;
 
-    background: color-mix(in srgb, var(--white) 97%, transparent);
+    background: color-mix(in srgb, var(--color-white) 97%, transparent);
 
     border-bottom:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     display:
         flex;
@@ -760,7 +760,7 @@ button {
         block;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(8px * var(--ndms-font-scale, 1));
@@ -804,13 +804,13 @@ button {
         40px;
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         8px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     align-items:
         center;
@@ -902,7 +902,7 @@ button {
         transparent;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     cursor:
         pointer;
@@ -926,7 +926,7 @@ button {
 .notification-button:hover {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
     color:
         var(--heading);
@@ -936,7 +936,7 @@ button {
 
 .notification-button:focus-visible {
 
-    outline: 2px solid color-mix(in srgb, var(--red) 55%, transparent);
+    outline: 2px solid color-mix(in srgb, var(--color-primary) 55%, transparent);
     outline-offset: 2px;
 
 }
@@ -976,16 +976,16 @@ button {
         0 4px;
 
     border:
-        2px solid var(--white);
+        2px solid var(--color-white);
 
     border-radius:
         50px;
 
     background:
-        var(--red);
+        var(--color-primary);
 
     color:
-        var(--white);
+        var(--color-white);
 
     display:
         flex;
@@ -1025,10 +1025,10 @@ button {
         380px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         12px;
@@ -1092,7 +1092,7 @@ button {
         space-between;
 
     border-bottom:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
 }
 
@@ -1120,7 +1120,7 @@ button {
         2px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -1140,10 +1140,10 @@ button {
         20px;
 
     background:
-        var(--light-red);
+        var(--color-primary-tint);
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -1242,7 +1242,7 @@ button {
         2px 0;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -1285,7 +1285,7 @@ button {
         50%;
 
     background:
-        var(--red);
+        var(--color-primary);
 
 }
 
@@ -1331,10 +1331,10 @@ button {
         50%;
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
     display:
         flex;
@@ -1371,7 +1371,7 @@ button {
         2px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -1397,7 +1397,7 @@ button {
         7px;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -1406,7 +1406,7 @@ button {
         750;
 
     background:
-        var(--c-red-20);
+        var(--c-primary-20);
 
 }
 
@@ -1414,7 +1414,7 @@ button {
 .view-all-notifications:hover {
 
     background:
-        var(--light-red);
+        var(--color-primary-tint);
 
 }
 
@@ -1438,7 +1438,7 @@ button {
         16px;
 
     border-left:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
 }
 
@@ -1458,10 +1458,10 @@ button {
         hidden;
 
     background:
-        var(--red);
+        var(--color-primary);
 
     color:
-        var(--white);
+        var(--color-white);
 
     display:
         flex;
@@ -1530,7 +1530,7 @@ button {
         1px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -1582,10 +1582,10 @@ button {
     /* Flat fill, not a gradient -- matches the NDMS design
        system's existing flat-card language. */
     background:
-        var(--c-red-20);
+        var(--c-primary-20);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         15px;
@@ -1635,7 +1635,7 @@ button {
         5px;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -1675,7 +1675,7 @@ button {
         560px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(12px * var(--ndms-font-scale, 1));
@@ -1744,14 +1744,14 @@ button {
 .primary-action {
 
     color:
-        var(--white);
+        var(--color-white);
 
     background:
-        var(--red);
+        var(--color-primary);
 
     box-shadow:
         0 5px 14px
-        color-mix(in srgb, var(--red) 14%, transparent);
+        color-mix(in srgb, var(--color-primary) 14%, transparent);
 
 }
 
@@ -1759,12 +1759,12 @@ button {
 .primary-action:hover {
 
     background:
-        var(--red-dark);
+        var(--color-primary-dark);
 
 
     box-shadow:
         0 7px 18px
-        color-mix(in srgb, var(--red) 20%, transparent);
+        color-mix(in srgb, var(--color-primary) 20%, transparent);
 
 }
 
@@ -1775,10 +1775,10 @@ button {
         var(--heading);
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
 }
 
@@ -1786,7 +1786,7 @@ button {
 .secondary-action:hover {
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 
 }
@@ -1810,9 +1810,9 @@ button {
 
     padding: 14px 16px;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     border-radius: 12px;
 }
@@ -1832,7 +1832,7 @@ button {
 
     margin-top: 4px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(12px * var(--ndms-font-scale, 1));
 
@@ -1849,7 +1849,7 @@ button {
 
     margin-top: 10px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: calc(12px * var(--ndms-font-scale, 1));
 
@@ -1860,7 +1860,7 @@ button {
 
 .welcome-aside-link:hover {
 
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
 
     text-decoration: underline;
 
@@ -1869,7 +1869,7 @@ button {
 
 .welcome-aside-link:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 3px;
 }
@@ -1914,7 +1914,7 @@ button {
         block;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(8px * var(--ndms-font-scale, 1));
@@ -1951,7 +1951,7 @@ button {
 .section-view-link {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -1968,7 +1968,7 @@ button {
 .section-view-link:hover {
 
     color:
-        var(--red-dark);
+        var(--color-primary-dark);
 
 }
 
@@ -2011,9 +2011,9 @@ button {
     flex-direction: column;
     justify-content: center;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 10px;
 
     overflow: hidden;
@@ -2048,21 +2048,21 @@ button {
 
 .stats-grid .stat-card:nth-child(2)::before {
 
-    background: var(--orange);
+    background: var(--color-warning);
 
 }
 
 
 .stats-grid .stat-card:nth-child(3)::before {
 
-    background: var(--navy-light);
+    background: var(--color-navy-mid);
 
 }
 
 
 .stats-grid .stat-card:nth-child(4)::before {
 
-    background: var(--green);
+    background: var(--color-success);
 
 }
 
@@ -2081,7 +2081,7 @@ button {
 
     display: block;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(10px * var(--ndms-font-scale, 1));
     font-weight: 700;
@@ -2112,7 +2112,7 @@ button {
 
     margin-top: 5px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(9px * var(--ndms-font-scale, 1));
 
@@ -2146,10 +2146,10 @@ button {
         19px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         11px;
@@ -2219,10 +2219,10 @@ button {
 .service-icon.red {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     background:
-        var(--light-red);
+        var(--color-primary-tint);
 
 }
 
@@ -2233,7 +2233,7 @@ button {
         var(--heading);
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 }
 
@@ -2241,10 +2241,10 @@ button {
 .service-icon.soft {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     background:
-        var(--c-red-20);
+        var(--c-primary-20);
 
 }
 
@@ -2252,10 +2252,10 @@ button {
 .service-icon.gray {
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 }
 
@@ -2288,7 +2288,7 @@ button {
         5px 0 8px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -2302,7 +2302,7 @@ button {
 .service-content span {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -2320,10 +2320,10 @@ button {
 .reports-card {
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-radius:
         11px;
@@ -2377,10 +2377,10 @@ button {
         var(--c-surface-4);
 
     border-bottom:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -2409,7 +2409,7 @@ button {
         1px solid var(--c-surface-8);
 
     color:
-        var(--text);
+        var(--color-text);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -2489,7 +2489,7 @@ button {
 .report-id:hover {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     text-decoration:
         underline;
@@ -2500,7 +2500,7 @@ button {
 .mr-date-unset {
 
     color:
-        var(--muted);
+        var(--color-muted);
 
 }
 
@@ -2534,10 +2534,10 @@ button {
 .status.verified {
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
 }
 
@@ -2545,10 +2545,10 @@ button {
 .status.pending {
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
 }
 
@@ -2556,10 +2556,10 @@ button {
 .status.rejected {
 
     color:
-        var(--danger);
+        var(--color-danger);
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
 }
 
@@ -2567,10 +2567,10 @@ button {
 .status.under-review {
 
     color:
-        var(--blue-text);
+        var(--color-info-text);
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 }
 
@@ -2615,10 +2615,10 @@ button {
 .severity-badge.low {
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
 }
 
@@ -2626,10 +2626,10 @@ button {
 .severity-badge.medium {
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
 }
 
@@ -2637,10 +2637,10 @@ button {
 .severity-badge.high {
 
     color:
-        var(--c-orange-600);
+        var(--c-warning-600);
 
     background:
-        var(--c-orange-bg-2);
+        var(--c-warning-bg-2);
 
 }
 
@@ -2648,10 +2648,10 @@ button {
 .severity-badge.critical {
 
     color:
-        var(--danger);
+        var(--color-danger);
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
 }
 
@@ -2696,7 +2696,7 @@ button {
         3px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(9px * var(--ndms-font-scale, 1));
@@ -2737,13 +2737,13 @@ button {
         inherit;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     border-left:
-        4px solid var(--red);
+        4px solid var(--color-primary);
 
     border-radius:
         10px;
@@ -2779,7 +2779,7 @@ button {
 .alert-card.alert-unread {
 
     background:
-        var(--c-red-10);
+        var(--c-primary-10);
 
 }
 
@@ -2819,10 +2819,10 @@ button {
 .alert-card-icon.danger {
 
     color:
-        var(--danger);
+        var(--color-danger);
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
 }
 
@@ -2833,7 +2833,7 @@ button {
         var(--heading);
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 }
 
@@ -2897,7 +2897,7 @@ button {
         4px;
 
     color:
-        var(--muted);
+        var(--color-muted);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -2911,7 +2911,7 @@ button {
 .alert-arrow {
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(15px * var(--ndms-font-scale, 1));
@@ -2928,10 +2928,10 @@ button {
         20px;
 
     background:
-        var(--light-red);
+        var(--color-primary-tint);
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(7px * var(--ndms-font-scale, 1));
@@ -2998,12 +2998,12 @@ button {
         14px;
 
     background:
-        var(--white);
+        var(--color-white);
 
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
     border-left:
-        4px solid var(--red);
+        4px solid var(--color-primary);
 
     border-radius:
         10px;
@@ -3057,9 +3057,9 @@ button {
 .ad-severity-low {
 
     color:
-        var(--green-text);
+        var(--color-success-text);
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
 }
 
@@ -3068,9 +3068,9 @@ button {
 .ad-severity-high {
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
 }
 
@@ -3078,9 +3078,9 @@ button {
 .ad-severity-critical {
 
     color:
-        var(--danger);
+        var(--color-danger);
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
 }
 
@@ -3132,7 +3132,7 @@ button {
         3px 10px;
 
     color:
-        var(--muted);
+        var(--color-muted);
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
 
@@ -3145,7 +3145,7 @@ button {
         0;
 
     color:
-        var(--red);
+        var(--color-primary);
     font-size:
         calc(14px * var(--ndms-font-scale, 1));
 
@@ -3165,9 +3165,9 @@ button {
         4px;
 
     background:
-        var(--white);
+        var(--color-white);
     border:
-        1px solid var(--border);
+        1px solid var(--color-border);
     border-radius:
         10px;
 
@@ -3190,7 +3190,7 @@ button {
 .active-disasters-empty span {
 
     color:
-        var(--muted);
+        var(--color-muted);
     font-size:
         calc(11px * var(--ndms-font-scale, 1));
 
@@ -3322,85 +3322,17 @@ button {
 
     }
 
+    /* .dashboard-topbar's height is set to match .dashboard-brand
+       (see the "MOBILE SIDEBAR BRAND" rule further down) so the
+       hairline under the logo and the hairline under the topbar
+       sit on the exact same row on every mobile width. */
     .dashboard-topbar {
+
+        height:
+            60px;
 
         padding:
             0 18px;
-
-    }
-
-
-    /* =====================================================
-       MOBILE SIDEBAR
-       Mobile-only (this whole block sits inside the existing
-       max-width:850px query, so desktop is untouched). Gives
-       the nav links comfortable breathing room (bigger touch
-       targets, clearer section grouping) rather than squeezing
-       everything onto one screen — .sidebar-navigation's
-       overflow-y:auto lets the drawer scroll if the full list
-       doesn't fit, which is expected and fine.
-       ===================================================== */
-
-    .dashboard-brand {
-
-        height:
-            68px;
-
-        padding:
-            0 20px;
-
-    }
-
-    .dashboard-logo {
-
-        height:
-            32px;
-
-    }
-
-    .sidebar-navigation {
-
-        padding:
-            10px 12px;
-
-        gap:
-            3px;
-
-    }
-
-    .sidebar-link {
-
-        min-height:
-            38px;
-
-    }
-
-    .sidebar-section-title {
-
-        margin:
-            10px 0 6px;
-
-    }
-
-    .sidebar-divider {
-
-        margin:
-            6px 12px;
-
-    }
-
-    .sidebar-footer {
-
-        padding:
-            10px 12px
-            calc(10px + env(safe-area-inset-bottom, 0px));
-
-    }
-
-    .sidebar-footer-link {
-
-        padding:
-            7px 10px;
 
     }
 
@@ -3416,13 +3348,6 @@ button {
 
         padding:
             20px 0 40px;
-
-    }
-
-    .dashboard-topbar {
-
-        height:
-            68px;
 
     }
 
@@ -3457,7 +3382,7 @@ button {
             fixed;
 
         top:
-            75px;
+            66px;
 
         left:
             14px;
@@ -3812,10 +3737,10 @@ button {
 .notification-item-icon.verified {
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
 }
 
@@ -3823,10 +3748,10 @@ button {
 .notification-item-icon.rejected {
 
     color:
-        var(--danger);
+        var(--color-danger);
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
 }
 
@@ -3834,10 +3759,10 @@ button {
 .notification-item-icon.under-review {
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
 }
 
@@ -3845,10 +3770,10 @@ button {
 .notification-item-icon.disaster-alert {
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
 }
 
@@ -3860,7 +3785,7 @@ button {
         var(--heading);
 
     background:
-        var(--soft-gray);
+        var(--color-section);
 
 }
 
@@ -3919,10 +3844,10 @@ button.notification-item {
         9px 16px;
 
     border-bottom:
-        1px solid var(--border);
+        1px solid var(--color-border);
 
     background:
-        var(--background);
+        var(--color-background);
 
     display:
         flex;
@@ -3942,7 +3867,7 @@ button.notification-item {
         none;
 
     color:
-        var(--red);
+        var(--color-primary);
 
     font-size:
         calc(10px * var(--ndms-font-scale, 1));
@@ -3965,7 +3890,7 @@ button.notification-item {
 .notification-mark-all:hover {
 
     color:
-        var(--red-dark);
+        var(--color-primary-dark);
 
 }
 
@@ -4000,10 +3925,10 @@ button.notification-item {
 .alert-card-icon.verified {
 
     color:
-        var(--green-text);
+        var(--color-success-text);
 
     background:
-        var(--green-bg);
+        var(--color-success-bg);
 
 }
 
@@ -4011,10 +3936,10 @@ button.notification-item {
 .alert-card-icon.rejected {
 
     color:
-        var(--danger);
+        var(--color-danger);
 
     background:
-        var(--danger-bg);
+        var(--color-danger-bg);
 
 }
 
@@ -4022,10 +3947,10 @@ button.notification-item {
 .alert-card-icon.under-review {
 
     color:
-        var(--orange-text);
+        var(--color-warning-text);
 
     background:
-        var(--orange-bg);
+        var(--color-warning-bg);
 
 }
 
@@ -4066,7 +3991,7 @@ button.notification-item {
 
     min-width: 0;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: calc(10px * var(--ndms-font-scale, 1));
     font-weight: 500;
@@ -4093,7 +4018,7 @@ button.notification-item {
 
 .page-breadcrumb .breadcrumb-separator {
     flex: 0 0 auto;
-    color: var(--muted);
+    color: var(--color-muted);
     font-weight: 400;
 }
 
@@ -4180,7 +4105,7 @@ button.notification-item {
 
     border-radius: 0 3px 3px 0;
 
-    background: var(--blue-dark);
+    background: var(--color-info);
 
 }
 
@@ -4273,7 +4198,7 @@ button.notification-item {
 }
 
 .sidebar-sublink.active::before {
-    background: var(--blue-dark);
+    background: var(--color-info);
 }
 
 
@@ -4282,7 +4207,7 @@ button.notification-item {
    Same small, non-animated dot as the public navbar (see
    navbar-avatar.css) -- reused here beside the sidebar
    "Disasters" group and its "View Disasters" submenu item.
-   Uses --blue-dark (information), matching navbar-avatar.css.
+   Uses --color-info (information), matching navbar-avatar.css.
    --------------------------------------------------------- */
 
 .disaster-unread-dot {
@@ -4294,7 +4219,7 @@ button.notification-item {
 
     border-radius: 50%;
 
-    background: var(--blue-dark);
+    background: var(--color-info);
 }
 
 /* .sidebar-group-toggle already lays its children out with
@@ -4323,7 +4248,7 @@ button.notification-item {
 .sidebar-sublink:focus-visible,
 .mobile-sidebar-toggle:focus-visible {
 
-    outline: 2px solid color-mix(in srgb, var(--red) 70%, transparent);
+    outline: 2px solid color-mix(in srgb, var(--color-primary) 70%, transparent);
     outline-offset: 2px;
 
 }
@@ -4383,11 +4308,6 @@ html[data-motion="reduced"] .sidebar-submenu {
     .topbar-right {
         gap: 4px;
     }
-
-    .topbar-right .theme-toggle {
-        width: 38px;
-        height: 38px;
-    }
 }
 
 
@@ -4437,7 +4357,10 @@ html[data-motion="reduced"] .sidebar-submenu {
     }
 
 
-    /* ---------- brand ---------- */
+    /* ---------- brand ----------
+       height matches .dashboard-topbar's mobile height (see the
+       RESPONSIVE section above) so the line under the logo and
+       the line under the topbar sit on the same row. */
 
     .dashboard-brand {
 

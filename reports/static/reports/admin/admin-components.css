@@ -81,13 +81,13 @@
 
 .admin-modal {
     --admin-modal-navy: var(--heading);
-    --admin-modal-red: var(--red);
-    --admin-modal-text: var(--text);
-    --admin-modal-muted: var(--muted);
+    --admin-modal-red: var(--color-primary);
+    --admin-modal-text: var(--color-text);
+    --admin-modal-muted: var(--color-muted);
     --admin-modal-light-muted: var(--light-muted);
-    --admin-modal-border: var(--border);
+    --admin-modal-border: var(--color-border);
     --admin-modal-border-strong: var(--border-strong);
-    --admin-modal-soft: var(--soft-gray);
+    --admin-modal-soft: var(--color-section);
 
     position: fixed;
     inset: 0;
@@ -97,7 +97,7 @@
 .admin-modal-backdrop {
     position: absolute;
     inset: 0;
-    background: color-mix(in srgb, var(--navy-2) 46%, transparent);
+    background: color-mix(in srgb, var(--color-navy-deep) 46%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -106,10 +106,10 @@
     width: min(430px, calc(100vw - 32px));
     margin: 12vh auto 0;
     overflow: hidden;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--admin-modal-border);
     border-radius: 12px;
-    box-shadow: 0 22px 48px color-mix(in srgb, var(--navy-2) 15%, transparent), 0 4px 12px color-mix(in srgb, var(--navy-2) 6%, transparent);
+    box-shadow: 0 22px 48px color-mix(in srgb, var(--color-navy-deep) 15%, transparent), 0 4px 12px color-mix(in srgb, var(--color-navy-deep) 6%, transparent);
 }
 
 .admin-modal-top {
@@ -124,9 +124,9 @@
     place-items: center;
     width: 40px;
     height: 40px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 9px;
 }
 
@@ -156,7 +156,7 @@
 }
 
 .admin-modal-close:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 1px;
 }
 
@@ -197,8 +197,8 @@
     gap: 9px;
     margin-top: 15px;
     padding: 10px 11px;
-    background: var(--orange-bg);
-    border: 1px solid var(--amber-border);
+    background: var(--color-warning-bg);
+    border: 1px solid var(--color-warning-border);
     border-radius: 8px;
 }
 
@@ -214,8 +214,8 @@
     width: 27px;
     height: 27px;
     flex: 0 0 27px;
-    color: var(--red);
-    background: var(--orange-bg);
+    color: var(--color-primary);
+    background: var(--color-warning-bg);
     border-radius: 6px;
 }
 
@@ -271,7 +271,7 @@
     gap: 8px !important;
     min-height: 58px;
     padding: 11px 20px;
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--admin-modal-border);
 }
 
@@ -286,7 +286,7 @@
     margin: 0 !important;
     padding: 0 12px !important;
     color: var(--admin-modal-text) !important;
-    background: var(--white) !important;
+    background: var(--color-white) !important;
     border: 1px solid var(--admin-modal-border-strong) !important;
     border-radius: 7px !important;
     font-family: inherit;
@@ -303,13 +303,13 @@
 
 .admin-modal-cancel:hover {
     color: var(--heading) !important;
-    background: var(--background) !important;
+    background: var(--color-background) !important;
     border-color: var(--c-border-9) !important;
 }
 
 .admin-modal-cancel:focus,
 .admin-modal-cancel:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -326,10 +326,10 @@
     min-height: 35px !important;
     margin: 0 !important;
     padding: 0 13px !important;
-    color: var(--white) !important;
-    background-color: var(--danger) !important;
+    color: var(--color-white) !important;
+    background-color: var(--color-danger) !important;
     background-image: none !important;
-    border: 1px solid var(--danger) !important;
+    border: 1px solid var(--color-danger) !important;
     border-radius: 7px !important;
     font-family: inherit !important;
     font-size: 9.5px !important;
@@ -356,24 +356,24 @@
     min-width: 13px !important;
     min-height: 13px !important;
     flex: 0 0 13px !important;
-    color: var(--white);
-    stroke: var(--white) !important;
+    color: var(--color-white);
+    stroke: var(--color-white) !important;
     opacity: 1 !important;
     visibility: visible !important;
 }
 
 .admin-modal-confirm span {
     display: inline-block !important;
-    color: var(--white);
+    color: var(--color-white);
     opacity: 1 !important;
     visibility: visible !important;
     white-space: nowrap !important;
 }
 
 .admin-modal-confirm:hover {
-    color: var(--white) !important;
-    background-color: var(--danger-dark) !important;
-    border-color: var(--danger-dark) !important;
+    color: var(--color-white) !important;
+    background-color: var(--color-danger-dark) !important;
+    border-color: var(--color-danger-dark) !important;
 }
 
 .admin-modal-confirm:active {
@@ -382,9 +382,9 @@
 
 .admin-modal-confirm:focus,
 .admin-modal-confirm:focus-visible {
-    color: var(--white) !important;
-    background-color: var(--danger) !important;
-    outline: 3px solid color-mix(in srgb, var(--danger) 16%, transparent) !important;
+    color: var(--color-white) !important;
+    background-color: var(--color-danger) !important;
+    outline: 3px solid color-mix(in srgb, var(--color-danger) 16%, transparent) !important;
     outline-offset: 2px !important;
 }
 

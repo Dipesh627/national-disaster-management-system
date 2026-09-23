@@ -6,10 +6,14 @@ NDMS - GLOBAL PUBLIC FOOTER (shared partial)
 Used by every public page (Home, About, Disasters, Guidelines,
 Agencies, Privacy, Terms). Style: reports/footer.css
 
-Only routes that exist are linked. Admin (staff/superuser)
-accounts only see Home / About / Dashboard plus the legal
-links, because the citizen routes would redirect them back to
-the Admin Dashboard (see AdminCitizenPortalIsolationMiddleware).
+Deliberately trimmed to a brand column plus two link columns
+(Quick Links, Legal & Support) with only the essential routes
+— the bottom bar keeps the same Privacy/Terms links layout as
+before. Only routes that exist are linked. Admin (staff/
+superuser) accounts only see Home / About / Dashboard in the
+first column, because the citizen routes would redirect them
+back to the Admin Dashboard (see
+AdminCitizenPortalIsolationMiddleware).
 
 Keep the literal double-quoted hrefs for Privacy and Terms:
 reports/test_legal.py asserts on them.
@@ -37,50 +41,38 @@ reports/test_legal.py asserts on them.
                 </a>
 
                 <p>
-                    A connected platform for reporting disaster incidents,
-                    keeping information organised, and helping communities
-                    across Nepal stay informed.
+                    A connected platform for reporting disaster incidents
+                    and helping communities across Nepal stay informed.
                 </p>
 
                 {% comment %}
                 Social links. NDMS has no official account URLs in the
                 project yet, so each link points to the platform's public
-                site. Replace the four href values below with the real
-                NDMS account URLs when they exist (or delete an <li> for
-                a platform NDMS does not use).
+                site. Replace the href values below with the real NDMS
+                account URLs when they exist (or delete an <li> for a
+                platform NDMS does not use).
                 {% endcomment %}
                 <ul class="footer-social" aria-label="NDMS on social media">
 
                     <li>
-                        <a href="https://www.facebook.com/ma.he.bhandari.2025"
+                        <a href="https://www.facebook.com/"
                            class="footer-social-link"
                            target="_blank"
                            rel="noopener noreferrer"
                            aria-label="NDMS on Facebook (opens in a new tab)"
                            title="Facebook">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M22.68 0H1.32C.59 0 0 .59 0 1.32v21.35c0 .74.59 1.33 1.32 1.33h11.5v-9.3H9.7v-3.62h3.12V8.09c0-3.1 1.89-4.79 4.66-4.79 1.32 0 2.46.1 2.79.14v3.24h-1.92c-1.5 0-1.79.72-1.79 1.76v2.31h3.59l-.47 3.62h-3.12V24h6.12c.73 0 1.32-.59 1.32-1.33V1.32C24 .59 23.41 0 22.68 0Z"/></svg>
                         </a>
                     </li>
 
                     <li>
-                        <a href="https://www.instagram.com/_212.m6_?stkn=MXg1ZHdma3IwMWxtYg=="
+                        <a href="https://www.instagram.com/"
                            class="footer-social-link"
                            target="_blank"
                            rel="noopener noreferrer"
                            aria-label="NDMS on Instagram (opens in a new tab)"
                            title="Instagram">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><path d="M17.5 6.5h.01"/></svg>
-                        </a>
-                    </li>
-
-                    <li>
-                        <a href="https://www.youtube.com/"
-                           class="footer-social-link"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                           aria-label="NDMS on YouTube (opens in a new tab)"
-                           title="YouTube">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M22.5 6.4a2.8 2.8 0 0 0-2-2C18.9 4 12 4 12 4s-6.9 0-8.5.4a2.8 2.8 0 0 0-2 2A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.6 2.8 2.8 0 0 0 2 2c1.6.4 8.5.4 8.5.4s6.9 0 8.5-.4a2.8 2.8 0 0 0 2-2A29 29 0 0 0 23 12a29 29 0 0 0-.5-5.6z"/><path d="m9.75 15.02 5.75-3.27-5.75-3.27z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.43.16-1.06.36-2.23.41-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.43-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.81.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.43-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16ZM12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.3-1.46.71-2.13 1.38C1.34 2.68.93 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.3.79.71 1.46 1.38 2.13.67.67 1.34 1.08 2.13 1.38.76.3 1.64.5 2.91.56 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.3 1.46-.71 2.13-1.38.67-.67 1.08-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91-.3-.79-.71-1.46-1.38-2.13C20.32 1.34 19.65.93 18.86.63c-.76-.3-1.64-.5-2.91-.56C14.67.01 14.26 0 12 0Zm0 5.84A6.16 6.16 0 1 0 18.16 12 6.16 6.16 0 0 0 12 5.84ZM12 16a4 4 0 1 1 4-4 4 4 0 0 1-4 4Zm7.85-10.41a1.44 1.44 0 1 1-1.44-1.44 1.44 1.44 0 0 1 1.44 1.44Z"/></svg>
                         </a>
                     </li>
 
@@ -91,7 +83,18 @@ reports/test_legal.py asserts on them.
                            rel="noopener noreferrer"
                            aria-label="NDMS on X (opens in a new tab)"
                            title="X">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 4l11.7 16H20L8.3 4z"/><path d="M4.5 20 10.6 13.4M13.4 10.6 19.5 4"/></svg>
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M18.24 2.25h3.31l-7.23 8.26 8.5 11.24h-6.66l-5.21-6.82-5.96 6.82H1.68l7.73-8.84L1.25 2.25h6.83l4.71 6.23Zm-1.16 17.52h1.83L7.08 4.13H5.12Z"/></svg>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="https://wa.me/"
+                           class="footer-social-link"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           aria-label="NDMS on WhatsApp (opens in a new tab)"
+                           title="WhatsApp">
+                            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M12.01 0C5.45 0 .14 5.3.14 11.86c0 2.09.55 4.13 1.6 5.93L.05 24l6.36-1.66a11.9 11.9 0 0 0 5.6 1.42h.01c6.55 0 11.87-5.3 11.87-11.87C23.89 5.3 18.57 0 12.01 0Zm0 21.7h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.77.99 1-3.67-.24-.38a9.83 9.83 0 0 1-1.51-5.19c0-5.44 4.44-9.87 9.9-9.87a9.83 9.83 0 0 1 6.99 2.9 9.79 9.79 0 0 1 2.9 6.98c0 5.44-4.44 9.83-9.87 9.83Zm5.42-7.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.24-.46-2.36-1.46-.87-.78-1.46-1.73-1.63-2.03-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.06 2.88 1.21 3.08c.15.2 2.08 3.18 5.05 4.46.71.3 1.26.49 1.69.62.71.23 1.35.2 1.86.12.57-.08 1.76-.72 2-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35Z"/></svg>
                         </a>
                     </li>
 
@@ -111,33 +114,14 @@ reports/test_legal.py asserts on them.
                     <li><a href="{% url 'about' %}">About</a></li>
                     {% if not user.is_staff and not user.is_superuser %}
                     <li><a href="{% url 'disaster_list' %}">Disasters</a></li>
-                    <li><a href="{% url 'disaster_guidelines' %}">Guidelines</a></li>
-                    <li><a href="{% url 'emergency_agencies' %}">Agencies</a></li>
-                    <li><a href="{% url 'help_support' %}">Help &amp; Support</a></li>
+                    <li><a href="{% url 'create_disaster_report' %}">Report a Disaster</a></li>
+                    <li><a href="{% url 'emergency_agencies' %}">Emergency Agencies</a></li>
                     {% elif user.is_authenticated %}
                     <li><a href="{% url 'admin_dashboard' %}">Dashboard</a></li>
                     {% endif %}
                 </ul>
 
             </nav>
-
-
-            <!-- FOR CITIZENS (citizen routes only) -->
-
-            {% if not user.is_staff and not user.is_superuser %}
-            <nav class="footer-col" aria-labelledby="footerCitizens">
-
-                <h2 class="footer-heading" id="footerCitizens">For Citizens</h2>
-
-                <ul>
-                    <li><a href="{% url 'create_disaster_report' %}">Report a Disaster</a></li>
-                    <li><a href="{% url 'my_reports' %}">My Reports</a></li>
-                    <li><a href="{% url 'disaster_guidelines' %}">Disaster Awareness</a></li>
-                    <li><a href="{% url 'emergency_agencies' %}">Emergency Contacts</a></li>
-                </ul>
-
-            </nav>
-            {% endif %}
 
 
             <!-- LEGAL & SUPPORT -->
@@ -149,8 +133,7 @@ reports/test_legal.py asserts on them.
                 <ul>
                     <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
                     <li><a href="{% url 'terms' %}">Terms &amp; Conditions</a></li>
-                    <li><a href="{% url 'home' %}#contact">Contact</a></li>
-                    <li><a href="{% url 'home' %}#feedback">Feedback</a></li>
+                    <li><a href="{% url 'help_support' %}">Help &amp; Support</a></li>
                 </ul>
 
             </nav>
@@ -160,7 +143,7 @@ reports/test_legal.py asserts on them.
 
         <div class="footer-bottom">
 
-            <p>&copy; {% now "Y" %} NDMS</p>
+            <p>&copy; {% now "Y" %} National Disaster Management System</p>
 
             <ul class="footer-bottom-links">
                 <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>

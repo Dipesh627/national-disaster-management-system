@@ -26,7 +26,7 @@
 .as-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -91,7 +91,7 @@
 }
 
 .as-primary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -102,18 +102,18 @@
 
 .as-secondary-button {
     color: var(--ndms-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
 }
 
 .as-secondary-button:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
 .as-secondary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 8%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 8%, transparent);
     outline-offset: 2px;
 }
 
@@ -125,7 +125,7 @@
 .as-card {
     width: min(760px, 100%);
     margin-bottom: 14px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
     overflow: hidden;
@@ -192,7 +192,7 @@
 .as-field-error {
     display: block;
     margin-top: 2px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9.5px;
     font-weight: 650;
     line-height: 1.35;
@@ -212,7 +212,7 @@
     box-sizing: border-box;
     min-height: 40px;
     padding: 0 12px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--border-strong);
     border-radius: 7px;
     color: var(--ndms-text);
@@ -249,7 +249,7 @@
     box-sizing: border-box;
     min-height: 40px;
     padding: 0 12px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--border-strong);
     border-radius: 7px;
     color: var(--ndms-text);
@@ -309,7 +309,7 @@
 .as-password-form {
     display: none;
     padding-top: 4px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 }
 
 .as-security.as-security-open .as-password-form {

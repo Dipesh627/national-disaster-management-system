@@ -48,7 +48,7 @@
 .ud-card-kicker,
 .ud-section-kicker {
     margin: 0;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9px;
     font-weight: 800;
     letter-spacing: .1em;
@@ -76,7 +76,7 @@
     border: 1px solid var(--ndms-border);
     border-radius: 50%;
     background: var(--ndms-soft);
-    box-shadow: 0 1px 2px color-mix(in srgb, var(--navy-2) 4%, transparent);
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--color-navy-deep) 4%, transparent);
 }
 
 .ud-admin-avatar img {
@@ -92,8 +92,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--white);
-    background: var(--red);
+    color: var(--color-white);
+    background: var(--color-primary);
     font-size: 15px;
     font-weight: 800;
 }
@@ -151,14 +151,14 @@
 
 .ud-header-status-active,
 .ud-account-active {
-    color: var(--green-text);
-    background: var(--green-bg);
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
 }
 
 .ud-header-status-inactive,
 .ud-account-inactive {
-    color: var(--danger);
-    background: var(--danger-bg);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
 }
 
 /* Top cards */
@@ -175,7 +175,7 @@
     overflow: hidden;
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
-    background: var(--white);
+    background: var(--color-white);
 }
 
 .ud-admin-card-header {
@@ -220,7 +220,7 @@
     align-items: center;
     min-height: 45px;
     padding: 9px 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .ud-admin-info-row:last-child {
@@ -254,8 +254,8 @@
     display: flex;
     justify-content: flex-end;
     padding: 12px 16px 14px;
-    border-top: 1px solid var(--border);
-    background: var(--background);
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background);
 }
 
 .ud-account-action form {
@@ -276,14 +276,14 @@
 }
 
 .ud-account-action-danger {
-    color: var(--danger);
-    background: var(--white);
-    border-color: var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-white);
+    border-color: var(--color-danger-border);
 }
 
 .ud-account-action-danger:hover {
-    background: var(--danger-bg);
-    border-color: var(--danger-border);
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
 }
 
 .ud-account-action-primary {
@@ -307,7 +307,7 @@
     align-items: baseline;
     gap: 8px;
     padding-bottom: 14px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .ud-report-total strong {
@@ -336,7 +336,7 @@
     padding: 9px 10px;
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
-    background: var(--white);
+    background: var(--color-white);
 }
 
 .ud-report-stat strong {
@@ -356,19 +356,19 @@
 }
 
 .ud-report-stat-pending {
-    border-left: 3px solid var(--orange);
+    border-left: 3px solid var(--color-warning);
 }
 
 .ud-report-stat-review {
-    border-left: 3px solid var(--muted);
+    border-left: 3px solid var(--color-muted);
 }
 
 .ud-report-stat-verified {
-    border-left: 3px solid var(--green);
+    border-left: 3px solid var(--color-success);
 }
 
 .ud-report-stat-rejected {
-    border-left: 3px solid var(--danger);
+    border-left: 3px solid var(--color-danger);
 }
 
 /* Recent reports */

@@ -8,23 +8,23 @@
     --nt-navy: var(--heading);
     --nt-navy-light: var(--btn-dark-hover);
 
-    --nt-red: var(--red);
-    --nt-red-soft: var(--light-red);
+    --nt-red: var(--color-primary);
+    --nt-red-soft: var(--color-primary-tint);
 
-    --nt-green: var(--green-text);
-    --nt-green-soft: var(--green-bg);
+    --nt-green: var(--color-success-text);
+    --nt-green-soft: var(--color-success-bg);
 
-    --nt-blue: var(--blue-text);
-    --nt-blue-soft: var(--blue-bg);
+    --nt-blue: var(--color-info-text);
+    --nt-blue-soft: var(--color-info-bg);
 
-    --nt-text: var(--text);
-    --nt-muted: var(--muted);
+    --nt-text: var(--color-text);
+    --nt-muted: var(--color-muted);
     --nt-light-muted: var(--light-muted);
 
-    --nt-border: var(--border);
+    --nt-border: var(--color-border);
     --nt-border-strong: var(--border-strong);
 
-    --nt-soft: var(--soft-gray);
+    --nt-soft: var(--color-section);
 
     width: 100%;
     max-width: 1480px;
@@ -53,7 +53,7 @@
 .nt-section-kicker,
 .nt-detail-kicker {
     display: block;
-    color: var(--red);
+    color: var(--color-primary);
     font-weight: 750;
     letter-spacing: .085em;
     line-height: 1.2;
@@ -112,14 +112,14 @@
 .nt-form-cancel {
     padding: 0 12px;
     color: var(--nt-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border-strong);
 }
 
 .nt-secondary-button:hover,
 .nt-form-cancel:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -131,7 +131,7 @@
 .nt-action:focus-visible,
 .nt-pagination-button:focus-visible,
 .nt-pagination-number:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -152,7 +152,7 @@
     align-items: center;
     width: min(360px, 100%);
     min-height: 37px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border);
     border-radius: 7px;
 }
@@ -203,7 +203,7 @@
     height: 37px;
     padding: 0 9px;
     color: var(--nt-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border);
     border-radius: 7px;
     outline: 0;
@@ -238,7 +238,7 @@
 
 .nt-reset-button:hover {
     color: var(--heading);
-    background: var(--white);
+    background: var(--color-white);
     border-color: var(--nt-border);
 }
 
@@ -249,7 +249,7 @@
 
 .nt-table-panel {
     overflow: hidden;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border);
     border-radius: 10px;
 }
@@ -297,7 +297,7 @@
     padding: 0 6px;
     color: var(--nt-muted);
     background: var(--nt-soft);
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 5px;
     font-size: 9px;
     font-weight: 720;
@@ -324,7 +324,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--nt-muted);
-    background: var(--background);
+    background: var(--color-background);
     border-bottom: 1px solid var(--nt-border);
     font-size: 9px;
     font-weight: 720;
@@ -336,7 +336,7 @@
 .nt-table tbody td {
     padding: 11px 17px;
     color: var(--nt-text);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -351,7 +351,7 @@
 }
 
 .nt-table-row:hover {
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .nt-col-title {
@@ -435,15 +435,15 @@
 }
 
 .nt-recipient-broadcast {
-    color: var(--green-text);
+    color: var(--color-success-text);
     background: var(--nt-green-soft);
-    border: 1px solid var(--green-border);
+    border: 1px solid var(--color-success-border);
 }
 
 .nt-recipient-personal {
-    color: var(--blue-text);
-    background: var(--blue-bg);
-    border: 1px solid var(--blue-border);
+    color: var(--color-info-text);
+    background: var(--color-info-bg);
+    border: 1px solid var(--color-info-border);
 }
 
 .nt-date-cell time {
@@ -529,7 +529,7 @@
     height: 27px;
     padding: 0 7px;
     color: var(--nt-muted);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border);
     border-radius: 6px;
     font-size: 9.5px;
@@ -550,7 +550,7 @@
 .nt-pagination-number:hover,
 .nt-pagination-button:not(.is-disabled):hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -615,7 +615,7 @@
 
 .nt-form-shell {
     width: min(760px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border);
     border-radius: 10px;
 }
@@ -672,7 +672,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--nt-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border-strong);
     border-radius: 7px;
     outline: 0;
@@ -718,7 +718,7 @@ select.nt-form-control {
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -727,9 +727,9 @@ select.nt-form-control {
 .nt-form-error {
     margin: 0 22px 18px;
     padding: 10px 11px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -745,7 +745,7 @@ select.nt-form-control {
     justify-content: flex-end;
     gap: 7px;
     padding: 11px 15px;
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--nt-border);
 }
 
@@ -781,7 +781,7 @@ select.nt-form-control {
 
 .nt-detail-shell {
     width: min(820px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--nt-border);
     border-radius: 10px;
 }
@@ -823,11 +823,11 @@ select.nt-form-control {
 .nt-detail-meta-item {
     min-width: 0;
     padding: 14px 22px;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .nt-detail-meta-item:nth-child(odd) {
-    border-right: 1px solid var(--border);
+    border-right: 1px solid var(--color-border);
 }
 
 .nt-detail-meta-item:nth-last-child(-n + 2) {
@@ -956,7 +956,7 @@ select.nt-form-control {
     .nt-detail-meta-item,
     .nt-detail-meta-item:nth-child(odd) {
         border-right: 0;
-        border-bottom: 1px solid var(--border);
+        border-bottom: 1px solid var(--color-border);
     }
 
     .nt-detail-meta-item:last-child {

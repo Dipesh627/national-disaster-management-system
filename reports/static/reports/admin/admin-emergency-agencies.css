@@ -8,23 +8,23 @@
     --ea-navy: var(--heading);
     --ea-navy-light: var(--btn-dark-hover);
 
-    --ea-red: var(--red);
-    --ea-red-dark: var(--red-dark);
-    --ea-red-soft: var(--light-red);
+    --ea-red: var(--color-primary);
+    --ea-red-dark: var(--color-primary-dark);
+    --ea-red-soft: var(--color-primary-tint);
 
-    --ea-green: var(--green-text);
-    --ea-green-soft: var(--green-bg);
+    --ea-green: var(--color-success-text);
+    --ea-green-soft: var(--color-success-bg);
 
-    --ea-text: var(--text);
-    --ea-muted: var(--muted);
+    --ea-text: var(--color-text);
+    --ea-muted: var(--color-muted);
     --ea-light-muted: var(--light-muted);
 
-    --ea-border: var(--border);
+    --ea-border: var(--color-border);
     --ea-border-strong: var(--border-strong);
 
-    --ea-bg: var(--background);
-    --ea-soft: var(--soft-gray);
-    --ea-white: var(--white);
+    --ea-bg: var(--color-background);
+    --ea-soft: var(--color-section);
+    --ea-white: var(--color-white);
 
     width: 100%;
     max-width: 1480px;
@@ -53,7 +53,7 @@
 .ea-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -98,7 +98,7 @@
 }
 
 .ea-primary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -110,13 +110,13 @@
 .ea-secondary-button {
     padding: 0 12px;
     color: var(--ea-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border-strong);
 }
 
 .ea-secondary-button:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -141,7 +141,7 @@
     display: flex;
     align-items: center;
     min-height: 37px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border);
     border-radius: 7px;
 }
@@ -204,7 +204,7 @@
 
 .ea-reset-button:hover {
     color: var(--heading);
-    background: var(--white);
+    background: var(--color-white);
     border-color: var(--ea-border);
 }
 
@@ -215,7 +215,7 @@
 
 .ea-table-panel {
     overflow: visible;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border);
     border-radius: 10px;
 }
@@ -263,7 +263,7 @@
     padding: 0 6px;
     color: var(--ea-muted);
     background: var(--ea-soft);
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 5px;
     font-size: 9px;
     font-weight: 720;
@@ -290,7 +290,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--ea-muted);
-    background: var(--background);
+    background: var(--color-background);
     border-bottom: 1px solid var(--ea-border);
     font-size: 9px;
     font-weight: 720;
@@ -302,7 +302,7 @@
 .ea-table tbody td {
     padding: 11px 17px;
     color: var(--ea-text);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -317,7 +317,7 @@
 }
 
 .ea-table-row:hover {
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ea-col-agency {
@@ -447,11 +447,11 @@
 }
 
 .ea-action-delete {
-    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
+    color: color-mix(in srgb, var(--color-danger) 55%, var(--color-muted));
 }
 
 .ea-action-delete:hover {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ea-delete-form {
@@ -459,7 +459,7 @@
 }
 
 .ea-action:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -503,7 +503,7 @@
     height: 27px;
     padding: 0 7px;
     color: var(--ea-muted);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border);
     border-radius: 6px;
     font-size: 9.5px;
@@ -524,7 +524,7 @@
 .ea-pagination-number:hover,
 .ea-pagination-button:not(.is-disabled):hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -589,7 +589,7 @@
 
 .ea-form-shell {
     width: min(760px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border);
     border-radius: 10px;
 }
@@ -609,7 +609,7 @@
 .ea-section-kicker {
     display: block;
     margin-bottom: 5px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -645,7 +645,7 @@
 .ea-field-label-optional {
     font-weight: 500;
     text-transform: none;
-    color: var(--ea-muted, var(--muted));
+    color: var(--ea-muted, var(--color-muted));
     letter-spacing: 0;
 }
 
@@ -654,7 +654,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--ea-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border-strong);
     border-radius: 7px;
     outline: none;
@@ -681,7 +681,7 @@
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -695,9 +695,9 @@
 .ea-form-error {
     margin: 0 22px 18px;
     padding: 10px 11px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -722,7 +722,7 @@
     justify-content: flex-end;
     gap: 7px;
     padding: 11px 15px;
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--ea-border);
 }
 
@@ -730,13 +730,13 @@
     min-width: 67px;
     padding: 0 12px;
     color: var(--ea-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ea-border-strong);
 }
 
 .ea-form-cancel:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ea-form-submit {

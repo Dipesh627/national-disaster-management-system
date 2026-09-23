@@ -27,7 +27,7 @@
 .rd-admin-eyebrow {
     margin: 0 0 6px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: 10px;
     font-weight: 800;
@@ -126,7 +126,7 @@
     border: 1px solid var(--ndms-border);
     border-radius: 10px;
 
-    background: var(--white);
+    background: var(--color-white);
 }
 
 .rd-admin-card-header {
@@ -177,7 +177,7 @@
 
     padding: 11px 0;
 
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .rd-admin-info-row:last-child {
@@ -256,23 +256,23 @@
 }
 
 .rd-admin-status-pending {
-    color: var(--orange-text);
-    background: var(--orange-bg);
+    color: var(--color-warning-text);
+    background: var(--color-warning-bg);
 }
 
 .rd-admin-status-review {
-    color: var(--text);
-    background: var(--soft-gray);
+    color: var(--color-text);
+    background: var(--color-section);
 }
 
 .rd-admin-status-verified {
-    color: var(--green-text);
-    background: var(--green-bg);
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
 }
 
 .rd-admin-status-rejected {
-    color: var(--danger);
-    background: var(--danger-bg);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
 }
 
 
@@ -316,17 +316,17 @@
 }
 
 .rd-btn-verify {
-    background: var(--green-text);
-    border-color: var(--green);
-    color: var(--white);
+    background: var(--color-success-text);
+    border-color: var(--color-success);
+    color: var(--color-white);
     min-height: 38px;
     font-size: 11px;
     font-weight: 750;
 }
 
 .rd-btn-verify:hover {
-    background: color-mix(in srgb, var(--green-text) 82%, var(--navy-2));
-    border-color: var(--green-text);
+    background: color-mix(in srgb, var(--color-success-text) 82%, var(--color-navy-deep));
+    border-color: var(--color-success-text);
     color: var(--on-dark);
 }
 
@@ -347,31 +347,31 @@
 }
 
 .rd-status-box-verified {
-    background: var(--green-bg);
-    border-color: var(--green-border);
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
 }
 
 .rd-status-box-verified .rd-status-resolved-icon {
-    color: var(--green-text);
-    background: var(--green-border);
+    color: var(--color-success-text);
+    background: var(--color-success-border);
 }
 
 .rd-status-box-verified strong {
-    color: var(--green-text);
+    color: var(--color-success-text);
 }
 
 .rd-status-box-rejected {
-    background: var(--danger-bg);
-    border-color: var(--danger-border);
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
 }
 
 .rd-status-box-rejected .rd-status-resolved-icon {
-    color: var(--danger);
-    background: var(--danger-bg);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
 }
 
 .rd-status-box-rejected strong {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .rd-status-resolved-icon {
@@ -431,7 +431,7 @@
 .rd-confirm-modal-backdrop {
     position: fixed;
     inset: 0;
-    background: color-mix(in srgb, var(--navy-2) 60%, transparent);
+    background: color-mix(in srgb, var(--color-navy-deep) 60%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -440,10 +440,10 @@
     z-index: 1;
     width: 100%;
     max-width: 440px;
-    background: var(--white);
+    background: var(--color-white);
     border-radius: 12px;
     border: 1px solid var(--ndms-border);
-    box-shadow: 0 20px 48px color-mix(in srgb, var(--navy-2) 18%, transparent);
+    box-shadow: 0 20px 48px color-mix(in srgb, var(--color-navy-deep) 18%, transparent);
     padding: 22px 24px 20px;
 }
 
@@ -458,8 +458,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: var(--danger-bg);
-    color: var(--danger);
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -556,8 +556,8 @@
     width: 100%;
     height: 100%;
 
-    color: var(--white);
-    background: var(--red);
+    color: var(--color-white);
+    background: var(--color-primary);
 
     font-size: 12px;
     font-weight: 800;
@@ -668,9 +668,9 @@
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
 
-    background: color-mix(in srgb, var(--white) 96%, transparent);
+    background: color-mix(in srgb, var(--color-white) 96%, transparent);
 
-    box-shadow: 0 2px 8px color-mix(in srgb, var(--navy-2) 8%, transparent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--color-navy-deep) 8%, transparent);
 }
 
 .rd-layer-btn {
@@ -776,7 +776,7 @@
 
     padding: 24px;
 
-    background: color-mix(in srgb, var(--navy-2) 76%, transparent);
+    background: color-mix(in srgb, var(--color-navy-deep) 76%, transparent);
 
     z-index: 3000;
 }
@@ -800,11 +800,11 @@
 
     border-radius: 8px;
 
-    background: var(--white);
+    background: var(--color-white);
 
     box-shadow:
         0 20px 60px
-        color-mix(in srgb, var(--navy-2) 25%, transparent);
+        color-mix(in srgb, var(--color-navy-deep) 25%, transparent);
 }
 
 .rd-photo-modal-close {

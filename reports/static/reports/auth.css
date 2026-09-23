@@ -18,9 +18,9 @@
    The logged-in "Change password" page is NOT an auth page: it
    stays inside the Citizen Dashboard shell (see profile.css).
 
-   Colour comes only from ndms-theme.css. Reminder: --red is the
+   Colour comes only from ndms-theme.css. Reminder: --color-primary is the
    Sentinel TEAL primary (the name is historical). Real errors use
-   --danger, success uses --green-*, warnings use --orange-*.
+   --color-danger, success uses --green-*, warnings use --orange-*.
 
    Sections
      1. Tokens
@@ -48,16 +48,23 @@
 .auth-page {
 
     /* Page behind the white card: a whisper of teal. */
-    --auth-page-bg: color-mix(in srgb, var(--red) 5%, var(--background));
+    --auth-page-bg: color-mix(in srgb, var(--color-primary) 5%, var(--color-background));
 
     /* Input outline strong enough to be seen (WCAG 1.4.11),
-       still calmer than the text colour. */
-    --auth-field-border: color-mix(in srgb, var(--muted) 70%, var(--border));
+       but light and thin rather than a heavy outline - a
+       hairline, not a box. A soft shadow (below, on .auth-input)
+       carries the rest of the definition in both themes. */
+    --auth-field-border: color-mix(in srgb, var(--color-muted) 34%, var(--color-border));
+    --auth-field-border-hover: color-mix(in srgb, var(--color-muted) 55%, var(--color-border));
 
-    --auth-placeholder: color-mix(in srgb, var(--muted) 88%, var(--white));
+    --auth-placeholder: color-mix(in srgb, var(--color-muted) 88%, var(--color-white));
 
-    --auth-focus-ring: 0 0 0 3px color-mix(in srgb, var(--red) 20%, transparent);
-    --auth-danger-ring: 0 0 0 3px color-mix(in srgb, var(--danger) 18%, transparent);
+    /* Focus: a calm, muted slate rather than the full brand
+       teal - subtle and professional, not a loud accent colour.
+       Ring stays thin (2px) and faint. */
+    --auth-focus-color: color-mix(in srgb, var(--color-navy) 35%, var(--color-muted) 65%);
+    --auth-focus-ring: 0 0 0 2px color-mix(in srgb, var(--auth-focus-color) 16%, transparent);
+    --auth-danger-ring: 0 0 0 3px color-mix(in srgb, var(--color-danger) 18%, transparent);
 
     --auth-radius: 10px;
 
@@ -109,7 +116,7 @@ body.auth-page {
 
     background: var(--auth-page-bg);
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-family:
         "Segoe UI",
@@ -174,7 +181,7 @@ input[type="password"]::-ms-clear {
 
     isolation: isolate;
 
-    background-color: var(--navy);
+    background-color: var(--color-navy);
 
     color: var(--on-dark);
 }
@@ -197,8 +204,11 @@ input[type="password"]::-ms-clear {
 }
 
 
-/* Deep teal wash: solid where the text sits, lighter toward the
-   bottom so the photograph stays faintly visible. */
+/* Deep teal wash over the photograph: solid enough near the top
+   for the logo/heading text to stay legible, but opening up well
+   before halfway down so the photograph itself is clearly
+   visible (not just a sliver at the very bottom). Same treatment
+   for every auth page - Login and Register included. */
 
 .auth-brand::after {
 
@@ -213,9 +223,10 @@ input[type="password"]::-ms-clear {
     background:
         linear-gradient(
             180deg,
-            color-mix(in srgb, var(--navy) 96%, transparent) 0%,
-            color-mix(in srgb, var(--navy) 88%, transparent) 55%,
-            color-mix(in srgb, var(--navy) 74%, transparent) 100%
+            color-mix(in srgb, var(--color-navy) 95%, transparent) 0%,
+            color-mix(in srgb, var(--color-navy) 82%, transparent) 32%,
+            color-mix(in srgb, var(--color-navy) 50%, transparent) 68%,
+            color-mix(in srgb, var(--color-navy) 32%, transparent) 100%
         );
 }
 
@@ -349,9 +360,9 @@ input[type="password"]::-ms-clear {
 
     min-width: 0;
 
-    background: var(--white);
+    background: var(--color-white);
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     /* Same 20px radius + layered elevation as the Admin login's
        .admin-form-container, so the Citizen card reads as the
@@ -361,8 +372,8 @@ input[type="password"]::-ms-clear {
     padding: clamp(24px, 5vw, 40px);
 
     box-shadow:
-        0 28px 60px -24px color-mix(in srgb, var(--navy-2) 24%, transparent),
-        0 2px 10px color-mix(in srgb, var(--navy-2) 5%, transparent);
+        0 28px 60px -24px color-mix(in srgb, var(--color-navy-deep) 24%, transparent),
+        0 2px 10px color-mix(in srgb, var(--color-navy-deep) 5%, transparent);
 }
 
 
@@ -370,7 +381,11 @@ input[type="password"]::-ms-clear {
 
 .auth-card--wide {
 
-    max-width: 560px;
+    /* Register has two-column rows (name, email/phone) so it
+       needs more room than Login's single-column card, but not
+       dramatically more - this keeps the two cards feeling like
+       the same family instead of two different sizes. */
+    max-width: 480px;
 }
 
 
@@ -386,6 +401,10 @@ input[type="password"]::-ms-clear {
 .auth-mobile-brand {
 
     display: none;
+
+    /* It's an <a>, but reads as a brand lockup, not a text
+       link - no underline on the caption. */
+    text-decoration: none;
 }
 
 
@@ -405,7 +424,7 @@ input[type="password"]::-ms-clear {
 
     margin-bottom: 10px;
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-size: var(--auth-fs-eyebrow);
 
@@ -439,7 +458,7 @@ input[type="password"]::-ms-clear {
 
     margin-top: 10px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: var(--auth-fs-body);
 
@@ -483,25 +502,25 @@ input[type="password"]::-ms-clear {
 
 .auth-status--info {
 
-    --_status-fg: var(--red);
-    --_status-bg: var(--light-red);
-    --_status-border: color-mix(in srgb, var(--red) 24%, var(--border));
+    --_status-fg: var(--color-primary);
+    --_status-bg: var(--color-primary-tint);
+    --_status-border: color-mix(in srgb, var(--color-primary) 24%, var(--color-border));
 }
 
 
 .auth-status--success {
 
-    --_status-fg: var(--green-text);
-    --_status-bg: var(--green-bg);
-    --_status-border: var(--green-border);
+    --_status-fg: var(--color-success-text);
+    --_status-bg: var(--color-success-bg);
+    --_status-border: var(--color-success-border);
 }
 
 
 .auth-status--warning {
 
-    --_status-fg: var(--orange-text);
-    --_status-bg: var(--orange-bg);
-    --_status-border: var(--amber-border);
+    --_status-fg: var(--color-warning-text);
+    --_status-bg: var(--color-warning-bg);
+    --_status-border: var(--color-warning-border);
 }
 
 
@@ -522,13 +541,13 @@ input[type="password"]::-ms-clear {
 
     padding: 12px 14px;
 
-    border: 1px solid var(--danger-border);
+    border: 1px solid var(--color-danger-border);
 
     border-radius: var(--auth-radius);
 
-    background: var(--danger-bg);
+    background: var(--color-danger-bg);
 
-    color: var(--danger);
+    color: var(--color-danger);
 
     font-size: 14px;
 
@@ -554,9 +573,9 @@ input[type="password"]::-ms-clear {
 
     border-radius: 50%;
 
-    background: var(--danger);
+    background: var(--color-danger);
 
-    color: var(--white);
+    color: var(--color-white);
 
     font-size: 12px;
 
@@ -617,7 +636,7 @@ input[type="password"]::-ms-clear {
 
 .auth-label {
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-size: 14px;
 
@@ -642,18 +661,25 @@ input[type="password"]::-ms-clear {
 
     border-radius: var(--auth-radius);
 
-    background: var(--white);
+    background: var(--color-white);
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-family: inherit;
 
     font-size: var(--auth-fs-body);
 
-    /* Keeps a visible indicator in forced-colours mode */
-    outline: 2px solid transparent;
+    /* Hairline border + a whisper of shadow instead of a heavy
+       outline - reads as a clean, professional field in both
+       themes without relying on colour alone for depth. */
+    box-shadow: var(--shadow-xs);
 
-    outline-offset: 2px;
+    /* No default outline - the border-colour + ring below on
+       :focus is the only focus indicator we want (native
+       browser/OS focus outlines are suppressed so a stray
+       system blue never shows through the teal theme). A
+       forced-colours fallback is added separately below. */
+    outline: none;
 
     /* when the keyboard opens the browser scrolls the field
        into view; keep it clear of the screen edge */
@@ -675,21 +701,39 @@ input[type="password"]::-ms-clear {
 
 .auth-input:hover {
 
-    border-color: var(--muted);
+    border-color: var(--auth-field-border-hover);
 }
 
 
 .auth-input:focus {
 
-    border-color: var(--red);
+    border-color: var(--auth-focus-color);
 
     box-shadow: var(--auth-focus-ring);
+
+    outline: none;
+}
+
+
+/* Forced-colours (Windows High Contrast) only: the ring above is
+   suppressed there, so give focus an explicit system-colour
+   outline instead. Invisible in ordinary light/dark mode. */
+
+@media (forced-colors: active) {
+
+    .auth-input:focus {
+
+        outline: 2px solid Highlight;
+
+        outline-offset: 2px;
+    }
+
 }
 
 
 .auth-input[aria-invalid="true"] {
 
-    border-color: var(--danger);
+    border-color: var(--color-danger);
 }
 
 
@@ -757,7 +801,7 @@ input[type="password"]::-ms-clear {
 
 .auth-input-wrap:focus-within .auth-input-icon {
 
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 
@@ -784,7 +828,7 @@ input[type="password"]::-ms-clear {
 
     background: transparent;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     cursor: pointer;
 
@@ -817,15 +861,15 @@ input[type="password"]::-ms-clear {
 
 .auth-toggle:hover {
 
-    background: var(--soft-gray);
+    background: var(--color-section);
 
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 
 .auth-toggle:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 1px;
 }
@@ -835,7 +879,7 @@ input[type="password"]::-ms-clear {
 
 .auth-hint {
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: var(--auth-fs-small);
 
@@ -861,7 +905,7 @@ input[type="password"]::-ms-clear {
 
     gap: 2px;
 
-    color: var(--danger);
+    color: var(--color-danger);
 
     font-size: var(--auth-fs-small);
 
@@ -894,7 +938,7 @@ input[type="password"]::-ms-clear {
 
     min-height: 24px;
 
-    color: var(--text);
+    color: var(--color-text);
 
     font-size: 14px;
 
@@ -913,7 +957,7 @@ input[type="password"]::-ms-clear {
 
     margin-top: 2px;
 
-    accent-color: var(--red);
+    accent-color: var(--color-primary);
 
     cursor: pointer;
 }
@@ -936,11 +980,11 @@ input[type="password"]::-ms-clear {
 
     padding: 14px;
 
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
 
     border-radius: var(--auth-radius);
 
-    background: var(--background);
+    background: var(--color-background);
 
     transition:
         border-color .18s ease,
@@ -956,9 +1000,9 @@ input[type="password"]::-ms-clear {
 
 .auth-consent.has-error {
 
-    border-color: var(--danger);
+    border-color: var(--color-danger);
 
-    background: var(--danger-bg);
+    background: var(--color-danger-bg);
 }
 
 
@@ -995,11 +1039,9 @@ input[type="password"]::-ms-clear {
 
     border-radius: var(--auth-radius);
 
-    background: var(--red);
+    background: var(--color-primary);
 
-    /* --white flips to a dark surface in dark mode, which is
-       exactly the readable text colour on the lighter dark-mode teal */
-    color: var(--white);
+    color: var(--color-white);
 
     font-family: inherit;
 
@@ -1023,13 +1065,13 @@ input[type="password"]::-ms-clear {
 
 .auth-btn:hover {
 
-    background: var(--red-dark);
+    background: var(--color-primary-dark);
 }
 
 
 .auth-btn:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 3px;
 }
@@ -1118,7 +1160,7 @@ input[type="password"]::-ms-clear {
 
 .auth-link {
 
-    color: var(--red);
+    color: var(--color-primary);
 
     font-weight: 600;
 
@@ -1130,13 +1172,13 @@ input[type="password"]::-ms-clear {
 
 .auth-link:hover {
 
-    color: var(--red-dark);
+    color: var(--color-primary-dark);
 }
 
 
 .auth-link:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 2px;
 }
@@ -1185,9 +1227,9 @@ input[type="password"]::-ms-clear {
 
     padding-top: 20px;
 
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--color-border);
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: 14px;
 
@@ -1213,7 +1255,7 @@ input[type="password"]::-ms-clear {
 
     padding: 0 16px 28px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-size: var(--auth-fs-small);
 
@@ -1229,7 +1271,7 @@ input[type="password"]::-ms-clear {
 
     gap: 6px;
 
-    color: var(--muted);
+    color: var(--color-muted);
 
     font-weight: 600;
 
@@ -1257,13 +1299,13 @@ input[type="password"]::-ms-clear {
 
 .auth-back:hover {
 
-    color: var(--red);
+    color: var(--color-primary);
 }
 
 
 .auth-back:focus-visible {
 
-    outline: 2px solid var(--red);
+    outline: 2px solid var(--color-primary);
 
     outline-offset: 3px;
 }
@@ -1355,13 +1397,13 @@ input[type="password"]::-ms-clear {
         background:
             linear-gradient(
                 135deg,
-                var(--navy) 0%,
-                var(--navy-light) 100%
+                var(--color-navy) 0%,
+                var(--color-navy-mid) 100%
             );
 
         box-shadow:
             0 16px 32px -12px
-            color-mix(in srgb, var(--navy-2) 45%, transparent);
+            color-mix(in srgb, var(--color-navy-deep) 45%, transparent);
     }
 
     .auth-mobile-brand:focus-visible {
@@ -1581,8 +1623,8 @@ input[type="password"]::-ms-clear {
 }
 
 
-/* 15.6 Register: smooth-scroll for the step nav's #anchor links
-   (see .reg-progress in register.css). */
+/* 15.6 Smooth-scroll for any in-page #anchor link on an auth
+   page (e.g. Terms / Privacy). */
 
 body.auth-page {
 

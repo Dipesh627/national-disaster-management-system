@@ -13,23 +13,23 @@
     --ru-navy: var(--heading);
     --ru-navy-light: var(--btn-dark-hover);
 
-    --ru-red: var(--red);
-    --ru-red-dark: var(--red-dark);
-    --ru-red-soft: var(--light-red);
+    --ru-red: var(--color-primary);
+    --ru-red-dark: var(--color-primary-dark);
+    --ru-red-soft: var(--color-primary-tint);
 
-    --ru-green: var(--green-text);
-    --ru-green-soft: var(--green-bg);
+    --ru-green: var(--color-success-text);
+    --ru-green-soft: var(--color-success-bg);
 
-    --ru-text: var(--text);
-    --ru-muted: var(--muted);
+    --ru-text: var(--color-text);
+    --ru-muted: var(--color-muted);
     --ru-light-muted: var(--light-muted);
 
-    --ru-border: var(--border);
+    --ru-border: var(--color-border);
     --ru-border-strong: var(--border-strong);
 
-    --ru-bg: var(--background);
-    --ru-soft: var(--soft-gray);
-    --ru-white: var(--white);
+    --ru-bg: var(--color-background);
+    --ru-soft: var(--color-section);
+    --ru-white: var(--color-white);
 
     width: 100%;
     max-width: 1480px;
@@ -57,7 +57,7 @@
 .ru-kicker {
     display: block;
     margin-bottom: 6px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 9.5px;
     font-weight: 750;
     line-height: 1.2;
@@ -102,7 +102,7 @@
 }
 
 .ru-primary-button:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 10%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 10%, transparent);
     outline-offset: 2px;
 }
 
@@ -114,13 +114,13 @@
 .ru-secondary-button {
     padding: 0 12px;
     color: var(--ru-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border-strong);
 }
 
 .ru-secondary-button:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -146,7 +146,7 @@
     align-items: center;
     min-height: 37px;
     width: min(340px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border);
     border-radius: 7px;
 }
@@ -193,7 +193,7 @@
     height: 37px;
     padding: 0 10px;
     color: var(--ru-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border);
     border-radius: 7px;
     outline: none;
@@ -231,7 +231,7 @@
 
 .ru-reset-button:hover {
     color: var(--heading);
-    background: var(--white);
+    background: var(--color-white);
     border-color: var(--ru-border);
 }
 
@@ -242,7 +242,7 @@
 
 .ru-table-panel {
     overflow: visible;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border);
     border-radius: 10px;
 }
@@ -290,7 +290,7 @@
     padding: 0 6px;
     color: var(--ru-muted);
     background: var(--ru-soft);
-    border: 1px solid var(--border);
+    border: 1px solid var(--color-border);
     border-radius: 5px;
     font-size: 9px;
     font-weight: 720;
@@ -317,7 +317,7 @@
     height: 37px;
     padding: 0 17px;
     color: var(--ru-muted);
-    background: var(--background);
+    background: var(--color-background);
     border-bottom: 1px solid var(--ru-border);
     font-size: 9px;
     font-weight: 720;
@@ -329,7 +329,7 @@
 .ru-table tbody td {
     padding: 11px 17px;
     color: var(--ru-text);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--color-border);
     font-size: 10.5px;
     line-height: 1.35;
     vertical-align: middle;
@@ -344,7 +344,7 @@
 }
 
 .ru-table-row:hover {
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ru-col-disaster {
@@ -477,11 +477,11 @@
 }
 
 .ru-action-delete {
-    color: color-mix(in srgb, var(--danger) 55%, var(--muted));
+    color: color-mix(in srgb, var(--color-danger) 55%, var(--color-muted));
 }
 
 .ru-action-delete:hover {
-    color: var(--danger);
+    color: var(--color-danger);
 }
 
 .ru-delete-form {
@@ -489,7 +489,7 @@
 }
 
 .ru-action:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -533,7 +533,7 @@
     height: 27px;
     padding: 0 7px;
     color: var(--ru-muted);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border);
     border-radius: 6px;
     font-size: 9.5px;
@@ -554,7 +554,7 @@
 .ru-pagination-number:hover,
 .ru-pagination-button:not(.is-disabled):hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
     border-color: var(--c-border-9);
 }
 
@@ -619,7 +619,7 @@
 
 .ru-form-shell {
     width: min(760px, 100%);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border);
     border-radius: 10px;
 }
@@ -635,7 +635,7 @@
 .ru-section-kicker {
     display: block;
     margin-bottom: 5px;
-    color: var(--red);
+    color: var(--color-primary);
     font-size: 8.5px;
     font-weight: 750;
     letter-spacing: .08em;
@@ -673,7 +673,7 @@
     min-height: 39px;
     padding: 0 10px;
     color: var(--ru-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border-strong);
     border-radius: 7px;
     outline: none;
@@ -711,7 +711,7 @@ select.ru-form-control {
     flex-direction: column;
     gap: 2px;
     margin-top: 5px;
-    color: var(--danger);
+    color: var(--color-danger);
     font-size: 9px;
     font-weight: 600;
     line-height: 1.35;
@@ -725,9 +725,9 @@ select.ru-form-control {
 .ru-form-error {
     margin: 0 22px 18px;
     padding: 10px 11px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 7px;
     font-size: 9px;
     line-height: 1.4;
@@ -752,7 +752,7 @@ select.ru-form-control {
     justify-content: flex-end;
     gap: 7px;
     padding: 11px 15px;
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--ru-border);
 }
 
@@ -760,13 +760,13 @@ select.ru-form-control {
     min-width: 67px;
     padding: 0 12px;
     color: var(--ru-text);
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border-strong);
 }
 
 .ru-form-cancel:hover {
     color: var(--heading);
-    background: var(--background);
+    background: var(--color-background);
 }
 
 .ru-form-submit {
@@ -801,7 +801,7 @@ select.ru-form-control {
 .ru-modal-backdrop {
     position: absolute;
     inset: 0;
-    background: color-mix(in srgb, var(--navy-2) 46%, transparent);
+    background: color-mix(in srgb, var(--color-navy-deep) 46%, transparent);
     backdrop-filter: blur(2px);
 }
 
@@ -810,12 +810,12 @@ select.ru-form-control {
     width: min(430px, calc(100vw - 32px));
     margin: 12vh auto 0;
     overflow: hidden;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ru-border);
     border-radius: 12px;
     box-shadow:
-        0 22px 48px color-mix(in srgb, var(--navy-2) 15%, transparent),
-        0 4px 12px color-mix(in srgb, var(--navy-2) 6%, transparent);
+        0 22px 48px color-mix(in srgb, var(--color-navy-deep) 15%, transparent),
+        0 4px 12px color-mix(in srgb, var(--color-navy-deep) 6%, transparent);
 }
 
 
@@ -835,9 +835,9 @@ select.ru-form-control {
     place-items: center;
     width: 40px;
     height: 40px;
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid var(--danger-border);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+    border: 1px solid var(--color-danger-border);
     border-radius: 9px;
 }
 
@@ -869,7 +869,7 @@ select.ru-form-control {
 }
 
 .ru-modal-close:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 1px;
 }
 
@@ -974,7 +974,7 @@ select.ru-form-control {
 
     padding: 11px 20px;
 
-    background: var(--background);
+    background: var(--color-background);
     border-top: 1px solid var(--ru-border);
 }
 
@@ -992,7 +992,7 @@ select.ru-form-control {
     padding: 0 12px !important;
 
     color: var(--ru-text) !important;
-    background: var(--white) !important;
+    background: var(--color-white) !important;
 
     border: 1px solid var(--ru-border-strong) !important;
     border-radius: 7px !important;
@@ -1018,13 +1018,13 @@ select.ru-form-control {
 
 .ru-modal-cancel:hover {
     color: var(--heading) !important;
-    background: var(--background) !important;
+    background: var(--color-background) !important;
     border-color: var(--c-border-9) !important;
 }
 
 .ru-modal-cancel:focus,
 .ru-modal-cancel:focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--navy-2) 9%, transparent);
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 9%, transparent);
     outline-offset: 2px;
 }
 
@@ -1053,11 +1053,11 @@ select.ru-form-control {
     margin: 0 !important;
     padding: 0 13px !important;
 
-    color: var(--white) !important;
-    background-color: var(--danger) !important;
+    color: var(--color-white) !important;
+    background-color: var(--color-danger) !important;
     background-image: none !important;
 
-    border: 1px solid var(--danger) !important;
+    border: 1px solid var(--color-danger) !important;
     border-radius: 7px !important;
 
     font-family: inherit !important;
@@ -1098,8 +1098,8 @@ select.ru-form-control {
 
     flex: 0 0 13px !important;
 
-    color: var(--white);
-    stroke: var(--white) !important;
+    color: var(--color-white);
+    stroke: var(--color-white) !important;
 
     opacity: 1 !important;
     visibility: visible !important;
@@ -1108,7 +1108,7 @@ select.ru-form-control {
 .ru-confirm-delete-button span {
     display: inline-block !important;
 
-    color: var(--white);
+    color: var(--color-white);
 
     opacity: 1 !important;
     visibility: visible !important;
@@ -1117,11 +1117,11 @@ select.ru-form-control {
 }
 
 .ru-confirm-delete-button:hover {
-    color: var(--white) !important;
+    color: var(--color-white) !important;
 
-    background-color: var(--danger-dark) !important;
+    background-color: var(--color-danger-dark) !important;
 
-    border-color: var(--danger-dark) !important;
+    border-color: var(--color-danger-dark) !important;
 }
 
 .ru-confirm-delete-button:active {
@@ -1130,11 +1130,11 @@ select.ru-form-control {
 
 .ru-confirm-delete-button:focus,
 .ru-confirm-delete-button:focus-visible {
-    color: var(--white) !important;
+    color: var(--color-white) !important;
 
-    background-color: var(--danger) !important;
+    background-color: var(--color-danger) !important;
 
-    outline: 3px solid color-mix(in srgb, var(--danger) 16%, transparent) !important;
+    outline: 3px solid color-mix(in srgb, var(--color-danger) 16%, transparent) !important;
     outline-offset: 2px !important;
 }
 

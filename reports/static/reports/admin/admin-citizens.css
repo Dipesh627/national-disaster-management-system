@@ -41,7 +41,7 @@
     display: flex;
     align-items: center;
     min-height: 37px;
-    background: var(--white);
+    background: var(--color-white);
     border: 1px solid var(--ndms-border);
     border-radius: 7px;
 }
@@ -127,7 +127,7 @@
 
 .citizens-reset-button:hover {
     color: var(--heading);
-    background: var(--white);
+    background: var(--color-white);
     border-color: var(--ndms-border);
 }
 
@@ -148,11 +148,11 @@
    their own accent color on top of the same card shell. */
 
 .citizens-summary-active::before {
-    background: var(--green);
+    background: var(--color-success);
 }
 
 .citizens-summary-inactive::before {
-    background: var(--danger);
+    background: var(--color-danger);
 }
 
 
@@ -184,13 +184,13 @@
    ========================================================= */
 
 .citizens-status-active {
-    color: var(--green-text);
-    background: var(--green-bg);
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
 }
 
 .citizens-status-inactive {
-    color: var(--danger);
-    background: var(--danger-bg);
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
 }
 
 
