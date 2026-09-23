@@ -132,7 +132,7 @@ button {
         hidden;
 
     background:
-        var(--color-navy-mid);
+        var(--color-navy);
 
     color:
         var(--on-dark);
@@ -4211,15 +4211,43 @@ button.notification-item {
    --------------------------------------------------------- */
 
 .disaster-unread-dot {
+    position: relative;
     display: inline-block;
     flex-shrink: 0;
 
-    width: 6px;
-    height: 6px;
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 
-    background: var(--color-info);
+    background: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+/* A soft, slowly-fading ring so a fresh disaster alert reads as
+   "new" at a glance, without being a loud/blinking effect. */
+.disaster-unread-dot::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+
+    border-radius: 50%;
+    border: 1px solid var(--color-primary);
+
+    opacity: .5;
+    animation: disaster-dot-pulse 2.6s var(--ease, ease-out) infinite;
+}
+
+@keyframes disaster-dot-pulse {
+    0% { transform: scale(.5); opacity: .5; }
+    75%, 100% { transform: scale(2.1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .disaster-unread-dot::after {
+        animation: none;
+        display: none;
+    }
 }
 
 /* .sidebar-group-toggle already lays its children out with

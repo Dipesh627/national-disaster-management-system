@@ -155,7 +155,7 @@ svg {
     min-height: 0;
     overflow: hidden;
 
-    background: var(--color-navy-mid);
+    background: var(--color-navy);
     border-right: 1px solid rgba(255,255,255,.045);
 
     color: var(--on-dark);
@@ -2069,7 +2069,7 @@ svg {
         position: relative;
         z-index: 20;
         padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-        background: var(--color-navy-mid);
+        background: var(--color-navy);
         box-shadow: 0 -7px 18px color-mix(in srgb, var(--color-navy-deep) 13%, transparent);
     }
 
