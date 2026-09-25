@@ -5,6 +5,8 @@
 
      Login              templates/reports/login.html
      Register           templates/reports/register.html
+     Google profile     templates/reports/google_signup_confirm.html
+                        ("Complete Your NDMS Profile", new Google users)
      Forgot password    templates/reports/forgot_password.html
      Reset link sent    templates/reports/password_reset_sent.html
      Set new password   templates/reports/password_reset_confirm.html
@@ -31,7 +33,7 @@
      6. Heading + status icon
      7. Alert
      8. Fields (label, input, password toggle, hint, error)
-     9. Checkboxes + consent
+     9. Checkboxes + consent (9b: Google profile completion)
     10. Buttons
     11. Links + switch line
     12. Panel footer
@@ -595,6 +597,26 @@ input[type="password"]::-ms-clear {
 }
 
 
+/* Non-error variant -- used for Django's messages framework (e.g.
+   "Google sign-in was cancelled") rendered by auth_base.html across
+   a redirect, where the info is a heads-up rather than a problem. */
+
+.auth-alert--info {
+
+    border-color: var(--color-info-border);
+
+    background: var(--color-info-bg);
+
+    color: var(--color-info-text);
+}
+
+
+.auth-alert--info .auth-alert__icon {
+
+    background: var(--color-info);
+}
+
+
 /* =========================================================
    8. FIELDS
    ========================================================= */
@@ -1013,6 +1035,341 @@ input[type="password"]::-ms-clear {
 
 
 /* =========================================================
+   9b. GOOGLE PROFILE COMPLETION ("Complete Your NDMS Profile")
+   Used only on google_signup_confirm.html. Two pieces:
+
+     .google-verified   the "Google Account Verified" card. Plain
+                        read-only text (not an input) showing the
+                        email from the verified Google identity.
+     .google-field-msg  one inline status line under the username:
+                        the server's error, or the live "Username
+                        available" hint from google-signup.js.
+
+   Colour comes only from the shared tokens (success for the
+   verified tick / "available", danger for errors). Icon + text
+   always accompany colour, so state never relies on colour
+   alone.
+   ========================================================= */
+
+.auth-page--google-confirm {
+
+    --gsu-icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5'/%3E%3Cpath d='M12 16.5h.01'/%3E%3C/svg%3E");
+
+    --gsu-icon-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M9 9l6 6M15 9l-6 6'/%3E%3C/svg%3E");
+
+    --gsu-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M8 12.5l3 3 5-6'/%3E%3C/svg%3E");
+}
+
+
+.google-verified {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    /* the form below already has its own gap; this is the space
+       between the card and the first field */
+    margin-bottom: 20px;
+
+    padding: 14px 16px;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-background);
+}
+
+
+.google-verified__icon {
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--color-success-bg);
+
+    color: var(--color-success-text);
+
+    box-shadow: inset 0 0 0 1px var(--color-success-border);
+}
+
+
+.google-verified__icon svg {
+
+    width: 18px;
+    height: 18px;
+}
+
+
+/* min-width: 0 lets the email wrap inside the card instead of
+   pushing it wider than the viewport on a phone. */
+
+.google-verified__body {
+
+    min-width: 0;
+}
+
+
+.google-verified__title {
+
+    color: var(--color-success-text);
+
+    font-size: var(--auth-fs-small);
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+.google-verified__email {
+
+    margin-top: 2px;
+
+    color: var(--color-text);
+
+    font-size: var(--auth-fs-body);
+
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    /* long addresses break anywhere rather than overflow */
+    overflow-wrap: anywhere;
+}
+
+
+/* ---------- Username status line ---------- */
+
+.google-field-msg {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 6px;
+
+    font-size: var(--auth-fs-small);
+
+    font-weight: 600;
+
+    line-height: 1.45;
+}
+
+
+/* Nothing to say -> no gap in the field's layout. */
+
+.google-field-msg:empty {
+
+    display: none;
+}
+
+
+.google-field-msg__icon {
+
+    width: 16px;
+    height: 16px;
+
+    flex: 0 0 16px;
+
+    margin-top: 2px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--gsu-icon-alert) center / contain no-repeat;
+    mask: var(--gsu-icon-alert) center / contain no-repeat;
+}
+
+
+.google-field-msg__text {
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+
+.google-field-msg--error {
+
+    color: var(--color-danger);
+}
+
+
+.google-field-msg--ok {
+
+    color: var(--color-success-text);
+}
+
+
+.google-field-msg--ok .google-field-msg__icon {
+
+    -webkit-mask-image: var(--gsu-icon-check);
+    mask-image: var(--gsu-icon-check);
+}
+
+
+/* "Checking availability..." carries no icon (the spinner in the
+   box already says it), and reads quieter than a result. */
+
+.google-field-msg--checking {
+
+    color: var(--color-muted);
+
+    font-weight: 500;
+}
+
+
+.google-field-msg--checking .google-field-msg__icon {
+
+    display: none;
+}
+
+
+/* ---------- Indicator inside the username box ----------
+   Spinner while checking, tick when free, cross when not.
+   Purely visual (aria-hidden); the text line below carries the
+   same message for screen readers. */
+
+.auth-page--google-confirm .auth-input-wrap:has(.google-input-state) .auth-input {
+
+    padding-right: 46px;
+}
+
+
+.google-input-state {
+
+    position: absolute;
+
+    top: 50%;
+    right: 14px;
+
+    width: 20px;
+    height: 20px;
+
+    transform: translateY(-50%);
+
+    display: none;
+
+    pointer-events: none;
+}
+
+
+.auth-input-wrap[data-state="checking"] .google-input-state,
+.auth-input-wrap[data-state="ok"] .google-input-state,
+.auth-input-wrap[data-state="error"] .google-input-state {
+
+    display: block;
+}
+
+
+.auth-input-wrap[data-state="checking"] .google-input-state {
+
+    box-sizing: border-box;
+
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-muted);
+
+    border-radius: 50%;
+
+    animation: gsu-spin .7s linear infinite;
+}
+
+
+.auth-input-wrap[data-state="ok"] .google-input-state {
+
+    background-color: var(--color-success-text);
+
+    -webkit-mask: var(--gsu-icon-check) center / contain no-repeat;
+    mask: var(--gsu-icon-check) center / contain no-repeat;
+}
+
+
+.auth-input-wrap[data-state="error"] .google-input-state {
+
+    background-color: var(--color-danger);
+
+    -webkit-mask: var(--gsu-icon-x) center / contain no-repeat;
+    mask: var(--gsu-icon-x) center / contain no-repeat;
+}
+
+
+.auth-input-wrap[data-state="ok"] .auth-input {
+
+    border-color: var(--color-success-text);
+}
+
+
+@keyframes gsu-spin {
+
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-input-wrap[data-state="checking"] .google-input-state {
+
+        animation: none;
+    }
+}
+
+
+/* ---------- Terms & Privacy: one compact line ----------
+   Register keeps its boxed panel. Here the box is dropped and the
+   text set a little smaller so the whole sentence fits on a single
+   line at desktop/tablet widths; on a narrow phone it still wraps
+   rather than overflow. The red error box returns when the
+   server rejects the form. */
+
+.auth-page--google-confirm .auth-consent {
+
+    padding: 0;
+
+    border-color: transparent;
+
+    background: none;
+}
+
+
+.auth-page--google-confirm .auth-consent.has-error {
+
+    padding: 10px 12px;
+
+    border-color: var(--color-danger);
+
+    background: var(--color-danger-bg);
+}
+
+
+.auth-page--google-confirm .auth-consent .auth-check {
+
+    font-size: 13px;
+
+    gap: 8px;
+}
+
+
+/* Terms error sits under the checkbox text, like register's. */
+
+.auth-consent .google-field-msg {
+
+    margin: 8px 0 0 28px;
+}
+
+
+/* =========================================================
    10. BUTTONS
    One primary button for every auth action. Works on <button>
    and <a>. Add .auth-btn--arrow for the trailing arrow.
@@ -1155,6 +1512,153 @@ input[type="password"]::-ms-clear {
 
 
 /* =========================================================
+   10b. "OR" DIVIDER + SOCIAL BUTTON (GOOGLE)
+   Sits between the local sign-in/register form and
+   "Continue with Google" on login.html / register.html /
+   google_signup_confirm.html (see 10c below for login.html's
+   single-button row).
+   ========================================================= */
+
+.auth-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin: 22px 0;
+
+    color: var(--color-muted);
+
+    font-size: var(--auth-fs-small, 13px);
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: .04em;
+}
+
+
+.auth-divider::before,
+.auth-divider::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: var(--color-border);
+}
+
+
+/* Secondary button style: white surface, bordered -- visually
+   distinct from the solid-primary .auth-btn used for Sign In /
+   Create Account, so Google auth reads as a separate path rather
+   than NDMS's own login. */
+
+.auth-btn--google {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 0 20px;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-white);
+
+    color: var(--color-text);
+
+    font-family: inherit;
+
+    font-size: var(--auth-fs-body);
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.auth-btn--google:hover {
+
+    background: var(--color-section);
+
+    border-color: color-mix(in srgb, var(--color-text) 25%, var(--color-border));
+}
+
+
+.auth-btn--google:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 3px;
+}
+
+
+.auth-btn--google__icon {
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   10c. SOCIAL SIGN-IN ROW (login.html)
+   Single full-width "Continue with Google" button. The prefix
+   span is always shown now that there is only one button in
+   the row (no side-by-side space constraint to hide it for).
+   ========================================================= */
+
+.auth-social {
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr);
+
+    gap: 12px;
+}
+
+
+.auth-social .auth-btn--google {
+
+    min-width: 0;
+}
+
+
+.auth-social__prefix {
+
+    display: inline;
+}
+
+
+/* =========================================================
    11. LINKS + SWITCH LINE
    ========================================================= */
 
@@ -1181,6 +1685,32 @@ input[type="password"]::-ms-clear {
     outline: 2px solid var(--color-primary);
 
     outline-offset: 2px;
+}
+
+
+/* Same look as .auth-link, for the rare case (e.g. "Back to sign in"
+   on google_signup_confirm.html) where it has to be a
+   <button> -- inside a <form>, submitting a named value -- rather
+   than an <a>. Strips native button chrome so it reads identically
+   to a text link, centered under the primary action. */
+
+.auth-link--button {
+
+    display: block;
+
+    width: 100%;
+
+    margin-top: 14px;
+
+    border: none;
+
+    background: none;
+
+    font: inherit;
+
+    text-align: center;
+
+    cursor: pointer;
 }
 
 

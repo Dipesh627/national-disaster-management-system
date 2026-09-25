@@ -67,9 +67,16 @@ The Admin login is a separate page and does not use this.
 
         <div class="auth-brand__inner">
 
-            <a href="{% url 'home' %}"
+            <!-- Logo intentionally links to the current page
+                 (request.path), not home -- clicking it just
+                 reloads whatever auth page you're on (login,
+                 register, the Google confirm step, ...) instead of
+                 leaving the flow. "Back to home" in the footer
+                 below is the actual exit, and still goes home. -->
+
+            <a href="{{ request.path }}"
                class="auth-brand__logo"
-               aria-label="NDMS home">
+               aria-label="NDMS">
 
                 <img
                     src="{% static 'reports/branding/ndms-logo.png' %}"
@@ -114,9 +121,9 @@ The Admin login is a separate page and does not use this.
                      a centered navy-gradient card so the NDMS identity
                      still reads once the side panel is hidden. -->
 
-                <a href="{% url 'home' %}"
+                <a href="{{ request.path }}"
                    class="auth-mobile-brand"
-                   aria-label="NDMS home">
+                   aria-label="NDMS">
 
                     <img
                         src="{% static 'reports/branding/ndms-logo.png' %}"
@@ -131,6 +138,23 @@ The Admin login is a separate page and does not use this.
                     </span>
 
                 </a>
+
+                {% if messages %}
+                {% comment %}
+                Django's messages framework -- used for anything set
+                across a redirect (e.g. google_login/google_callback
+                in reports/views.py: "Google sign-in was cancelled",
+                a configuration error, ...). Page-local validation
+                errors (login.html, register.html) still use their
+                own "if error" block below and are unaffected.
+                {% endcomment %}
+                {% for message in messages %}
+                <div class="auth-alert{% if message.tags == 'info' %} auth-alert--info{% endif %}" role="alert">
+                    <span class="auth-alert__icon" aria-hidden="true">{% if message.tags == 'info' %}i{% else %}!{% endif %}</span>
+                    <span class="auth-alert__text">{{ message }}</span>
+                </div>
+                {% endfor %}
+                {% endif %}
 
                 {% block content %}{% endblock %}
 

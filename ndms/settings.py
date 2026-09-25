@@ -89,6 +89,15 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    # Serves collected static files directly from the app process in
+    # production (no separate static-file server needed). Whitenoise
+    # was already in requirements.txt but was never wired in here, so
+    # `collectstatic` had nowhere production-appropriate to write to
+    # and the app had no way to actually serve what it collected.
+    # No-op for `runserver` in local dev either way.
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -185,10 +194,32 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Where `collectstatic` writes production static files, and what
+# WhiteNoise serves them from. Was previously undefined, so
+# `python manage.py collectstatic` had no destination and would fail.
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 # Media files (user-uploaded incident photos)
 # https://docs.djangoproject.com/en/6.0/topics/files/
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# NOTE: DEFAULT_AUTO_FIELD is intentionally left unset. This project
+# has 30+ existing migrations built on Django's original AutoField
+# default; setting DEFAULT_AUTO_FIELD now (e.g. to BigAutoField)
+# would make `makemigrations` want to alter every model's primary
+# key column, which is a real schema change that needs its own
+# reviewed migration and a live-environment check — not something to
+# do silently in a cleanup pass. See FINAL_AUDIT_REPORT.md.
 
 AUTH_USER_MODEL = 'reports.User'
 
@@ -245,7 +276,13 @@ if not DEBUG:
     CSRF_COOKIE_SECURE = True
 
     SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_BROWSER_XSS_FILTER = True
+
+    # SECURE_BROWSER_XSS_FILTER intentionally omitted: it only ever
+    # set the X-XSS-Protection header, which every modern browser has
+    # removed support for (the underlying XSS auditor was dropped from
+    # Chrome, Edge, and Safari), and Django itself no longer includes
+    # this setting in new projects. It's a dead no-op, not a security
+    # control, so there is nothing left here for it to do.
 
     SECURE_HSTS_SECONDS = int(
         os.environ.get('DJANGO_HSTS_SECONDS', '31536000')
@@ -355,3 +392,31 @@ DEFAULT_FROM_EMAIL = os.environ.get(
 # =========================================================
 
 GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+
+
+# =========================================================
+# GOOGLE OAUTH ("Continue with Google")
+# =========================================================
+#
+# A completely separate Google integration from GOOGLE_MAPS_API_KEY
+# above -- this is a real OAuth 2.0 / OpenID Connect Client ID +
+# Secret pair for signing citizens in, not a Maps API key. See
+# reports/google_oauth.py for the flow and GOOGLE_OAUTH_SETUP.md
+# (project root) for exact Google Cloud Console setup steps,
+# including the exact redirect URI to register (generated from this
+# project's own URL configuration, not hard-coded anywhere).
+#
+# Scope is deliberately minimal: openid, email, profile only -- no
+# Drive/Gmail/Contacts/Calendar access is ever requested.
+#
+# SECURITY:
+#   Loaded ONLY from the environment, exactly like DJANGO_SECRET_KEY
+#   and GOOGLE_MAPS_API_KEY above -- never hard-coded, never
+#   committed. With no .env set, both are empty and "Continue with
+#   Google" shows a clean configuration error (see
+#   google_oauth.is_configured() and the google_login view) instead
+#   of silently pretending to sign someone in.
+# =========================================================
+
+GOOGLE_OAUTH_CLIENT_ID = os.environ.get('GOOGLE_OAUTH_CLIENT_ID', '')
+GOOGLE_OAUTH_CLIENT_SECRET = os.environ.get('GOOGLE_OAUTH_CLIENT_SECRET', '')

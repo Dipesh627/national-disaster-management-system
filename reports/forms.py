@@ -1175,6 +1175,16 @@ class AdminSettingsForm(forms.ModelForm):
 # =========================================================
 
 class AdminDisasterTypeForm(forms.ModelForm):
+    """Form used by the custom admin Disaster Types module.
+
+    NOTE: this class previously existed in two places — here and (as
+    an exact duplicate, minus cosmetic widget differences) in
+    reports/admin_views.py, where it shadowed this file's import and
+    was the version actually rendered. This is now the single
+    canonical definition; its widget attrs match what was already
+    live in production (autocomplete off, 5-row description) so no
+    visible behavior changed when the duplicate was removed.
+    """
 
     class Meta:
 
@@ -1191,16 +1201,17 @@ class AdminDisasterTypeForm(forms.ModelForm):
             'name': forms.TextInput(
                 attrs={
                     'class': 'dt-form-control',
-                    'placeholder': 'e.g. Flood, Landslide, Earthquake',
+                    'placeholder': 'e.g. Flood',
+                    'autocomplete': 'off',
                 }
             ),
 
             'description': forms.Textarea(
                 attrs={
                     'class': 'dt-form-control dt-form-textarea',
-                    'rows': 4,
+                    'rows': 5,
                     'placeholder': (
-                        'Briefly explain what this category represents.'
+                        'Briefly describe this disaster category...'
                     ),
                 }
             ),

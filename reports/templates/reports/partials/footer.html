@@ -6,17 +6,21 @@ NDMS - GLOBAL PUBLIC FOOTER (shared partial)
 Used by every public page (Home, About, Disasters, Guidelines,
 Agencies, Privacy, Terms). Style: reports/footer.css
 
-Deliberately trimmed to a brand column plus two link columns
-(Quick Links, Legal & Support) with only the essential routes
-— the bottom bar keeps the same Privacy/Terms links layout as
-before. Only routes that exist are linked. Admin (staff/
-superuser) accounts only see Home / About / Dashboard in the
-first column, because the citizen routes would redirect them
-back to the Admin Dashboard (see
-AdminCitizenPortalIsolationMiddleware).
+Brand column + two columns: Quick Links, Contact Us. Privacy
+and Terms live only in the bottom bar now (Legal & Support
+used to repeat them here — removed as a duplicate). Only
+routes that exist are linked. Admin (staff/superuser) accounts
+only see Home / About / Dashboard in the first column, because
+the citizen routes would redirect them back to the Admin
+Dashboard (see AdminCitizenPortalIsolationMiddleware).
 
 Keep the literal double-quoted hrefs for Privacy and Terms:
 reports/test_legal.py asserts on them.
+
+#footerContact is a real anchor target: the "Contact Us" item
+in the logged-in account menu (several templates) links to
+{% url 'home' %}#footerContact now that the Home page no
+longer has its own Contact section.
 =========================================================
 {% endcomment %}
 <footer class="site-footer" id="siteFooter">
@@ -124,19 +128,44 @@ reports/test_legal.py asserts on them.
             </nav>
 
 
-            <!-- LEGAL & SUPPORT -->
+            <!-- CONTACT US -->
 
-            <nav class="footer-col" aria-labelledby="footerLegal">
+            <div class="footer-col footer-col--contact" aria-labelledby="footerContact">
 
-                <h2 class="footer-heading" id="footerLegal">Legal &amp; Support</h2>
+                <h2 class="footer-heading" id="footerContact">Contact Us</h2>
 
-                <ul>
-                    <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                    <li><a href="{% url 'terms' %}">Terms &amp; Conditions</a></li>
-                    <li><a href="{% url 'help_support' %}">Help &amp; Support</a></li>
+                <ul class="footer-contact-list">
+
+                    <li class="footer-contact-item">
+                        <span class="footer-contact-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5a7 7 0 0 0-14 0C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+                        </span>
+                        <span class="footer-contact-value">
+                            <span class="sr-only">Office: </span>Dhangadhi, Nepal
+                        </span>
+                    </li>
+
+                    <li class="footer-contact-item">
+                        <span class="footer-contact-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h3.5l1.7 4.3-2.2 1.4a11 11 0 0 0 6.3 6.3l1.4-2.2L20 15.5V19a1.5 1.5 0 0 1-1.6 1.5A15.5 15.5 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4Z"/></svg>
+                        </span>
+                        <span class="footer-contact-value">
+                            <span class="sr-only">Helpline: </span><a href="tel:0000">0000</a> / <a href="tel:+97714200000">+977-9700000000</a>
+                        </span>
+                    </li>
+
+                    <li class="footer-contact-item">
+                        <span class="footer-contact-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></svg>
+                        </span>
+                        <span class="footer-contact-value">
+                            <span class="sr-only">Email: </span><a href="mailto:info@ndms.com.np">info@ndms.com.np</a>
+                        </span>
+                    </li>
+
                 </ul>
 
-            </nav>
+            </div>
 
         </div>
 

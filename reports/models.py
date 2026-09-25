@@ -63,6 +63,38 @@ class User(AbstractUser):
         default=''
     )
 
+    # ---------------------------------------------------
+    # GOOGLE SIGN-IN -- STABLE IDENTITY (OpenID Connect `sub`)
+    #
+    # The Google account's own permanent identifier, as returned
+    # (and verified) in the ID token's `sub` claim -- see
+    # reports/google_oauth.py / the google_login|google_callback|
+    # google_signup_confirm views in reports/views.py.
+    #
+    # Unlike email, `sub` never changes for a given Google account,
+    # so it -- not email -- is the authoritative match once a
+    # citizen has signed in with Google at least once.
+    #
+    # null=True (not just blank=True) is required alongside
+    # unique=True: every account that has never used Google sign-in
+    # must store NULL here, not '', or the second such account would
+    # collide on the uniqueness constraint. NULL is not treated as a
+    # duplicate of NULL by the database, so any number of
+    # local-only accounts can coexist with this column unset.
+    #
+    # Accounts created before Google sign-in existed, or that have
+    # only ever used username/password, simply have google_sub =
+    # NULL -- exactly like terms_accepted_at above for accounts that
+    # predate the Terms.
+    # ---------------------------------------------------
+
+    google_sub = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+        unique=True,
+    )
+
     def __str__(self):
         return self.username
 

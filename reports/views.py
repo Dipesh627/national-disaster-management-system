@@ -1,3 +1,4 @@
+import logging
 import re
 from datetime import timedelta
 from functools import wraps
@@ -26,6 +27,8 @@ from django.core.paginator import Paginator
 
 from django.db.models import Q
 
+from django.db import IntegrityError, transaction
+
 from django.http import (
     HttpResponseForbidden,
     JsonResponse,
@@ -42,6 +45,10 @@ from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 
 from django.utils.http import url_has_allowed_host_and_scheme
+
+from django.views.decorators.cache import never_cache
+
+from django.views.decorators.http import require_GET
 
 from .models import (
     Disaster,
@@ -73,8 +80,12 @@ from .legal import (
     LEGAL_CONTACT_EMAIL,
 )
 
+from . import google_oauth
+
 
 User = get_user_model()
+
+logger = logging.getLogger('reports.views')
 
 
 # =========================================================
@@ -304,6 +315,93 @@ def home(request):
 USERNAME_RE = re.compile(r'[A-Za-z0-9._-]{3,30}')
 
 PHONE_RE = re.compile(r'\+?[0-9]{7,15}')
+
+
+# ---------------------------------------------------------
+# GOOGLE SIGN-UP -- CHOOSING AN NDMS USERNAME
+#
+# A brand-new Google user picks their own NDMS username on the
+# "Complete Your NDMS Profile" page (google_signup_confirm). NDMS
+# never derives it from their email or Google name -- and never
+# silently swaps in a different one if theirs is taken.
+#
+# The wording below is exactly what that page shows. The form POST
+# and the live availability check (google_username_check) both go
+# through _check_new_username(), so the two can never disagree.
+# ---------------------------------------------------------
+
+GOOGLE_USERNAME_MESSAGES = {
+    'invalid': 'Please enter a valid username.',
+    'taken': 'Username already taken. Please choose another.',
+    'available': 'Username available',
+}
+
+
+def _check_new_username(raw_username):
+    """
+    Classify a proposed NDMS username. Returns (username, status)
+    where `username` is the stripped input and `status` is one of:
+
+        'empty'      nothing (or only spaces) was entered
+        'invalid'    breaks USERNAME_RE (3-30 chars: letters,
+                     digits, dot, underscore, hyphen -- the same
+                     rule register() enforces; also rules out "@",
+                     so an email address can't be used)
+        'taken'      another account already has it, compared
+                     case-insensitively so "Jane" cannot be
+                     claimed next to "jane"
+        'available'  passes both checks
+
+    'available' is advisory: another request can still claim the
+    name before the account is saved, which is why the create step
+    in google_signup_confirm also relies on the database's own
+    uniqueness constraint.
+    """
+
+    username = (raw_username or '').strip()
+
+    if not username:
+        return username, 'empty'
+
+    if not USERNAME_RE.fullmatch(username):
+        return username, 'invalid'
+
+    if User.objects.filter(username__iexact=username).exists():
+        return username, 'taken'
+
+    return username, 'available'
+
+
+def _google_sub_taken(google_sub):
+    """
+    True if an NDMS account is already bound to this Google
+    identity (`sub`).
+    """
+
+    return User.objects.filter(google_sub=google_sub).exists()
+
+
+def _google_display_names(claims):
+    """
+    (first_name, last_name) from the verified Google claims,
+    trimmed to the model's 150-character limit. Google normally
+    sends given_name/family_name; if it sends neither but does send
+    the single `name` claim, that is split on its first space so
+    the account still gets a sensible first/last name.
+    """
+
+    given_name = str(claims.get('given_name') or '').strip()
+    family_name = str(claims.get('family_name') or '').strip()
+
+    if not given_name and not family_name:
+
+        parts = str(claims.get('name') or '').strip().split(None, 1)
+
+        if parts:
+            given_name = parts[0]
+            family_name = parts[1] if len(parts) > 1 else ''
+
+    return given_name[:150], family_name[:150]
 
 
 def register(request):
@@ -776,6 +874,525 @@ def user_logout(request):
     return redirect(
         'home'
     )
+
+
+# =========================================================
+# GOOGLE SIGN-IN ("Continue with Google")
+#
+# Real OAuth 2.0 / OpenID Connect against Google's own endpoints --
+# see reports/google_oauth.py for the flow itself (state, PKCE,
+# nonce, server-verified ID token) and its top-of-file note on why
+# this is hand-rolled rather than django-allauth.
+#
+# Three steps, three views (plus one small helper endpoint):
+#   google_login            -- redirect to Google's consent screen
+#   google_callback          -- Google redirects back here with the
+#                                authorization code (or an error)
+#   google_signup_confirm    -- brand-new Google identities only, the
+#                                "Complete Your NDMS Profile" page:
+#                                the person chooses their NDMS
+#                                username and accepts Terms & Privacy
+#                                before an account is created. First
+#                                name, last name, email and `sub`
+#                                come only from the verified Google
+#                                identity held in the session.
+#   google_username_check    -- JSON availability hint for that page
+#                                (advisory only -- the form POST is
+#                                always re-validated server-side)
+# =========================================================
+
+# Short, clean messages a citizen can see. The real reason (network
+# error, bad signature, provider outage, ...) only ever reaches the
+# server log via reports.google_oauth's own logging -- never the
+# person's browser, never a stack trace.
+GOOGLE_LOGIN_MESSAGES = {
+    'access_denied': 'Google sign-in was cancelled.',
+    'missing_state': 'Your Google sign-in session expired. Please try again.',
+    'token_exchange_failed': 'Google sign-in failed. Please try again.',
+    'provider_unavailable':
+        'Google sign-in is temporarily unavailable. Please try again shortly.',
+    'invalid_token': 'Google sign-in failed. Please try again.',
+    'email_not_verified':
+        'Please verify your email address with Google before using it '
+        'to sign in to NDMS.',
+    'not_configured': 'Google sign-in is not available right now.',
+    'already_registered':
+        'This Google account is already registered with NDMS. '
+        'Please choose Continue with Google to sign in.',
+    'signup_failed':
+        'We could not create your account. Please try again.',
+    'inactive_account':
+        'This account has been deactivated. Contact support for help.',
+    'sub_conflict':
+        "This Google account can't be linked automatically. Please "
+        'sign in with your username and password, or contact support.',
+}
+
+
+def _google_redirect_uri(request):
+    """
+    The callback URL Google sends the browser back to, generated
+    from this project's OWN URL configuration (reverse()) rather
+    than hard-coded -- so it is automatically correct for
+    127.0.0.1:8000, localhost:8000, or whatever production domain
+    the deployment actually runs on. See GOOGLE_OAUTH_SETUP.md for
+    what to paste into Google Cloud Console.
+    """
+
+    return request.build_absolute_uri(reverse('google_callback'))
+
+
+def google_login(request):
+    """
+    Step 1: send the browser to Google's real consent screen.
+    """
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    if not google_oauth.is_configured():
+
+        # Master-prompt requirement: missing credentials must show a
+        # clear, developer-visible configuration error -- never a
+        # silent fake sign-in.
+        logger.error(
+            'Continue with Google was used but GOOGLE_OAUTH_CLIENT_ID '
+            '/ GOOGLE_OAUTH_CLIENT_SECRET are not set in the environment.'
+        )
+
+        messages.error(request, GOOGLE_LOGIN_MESSAGES['not_configured'])
+
+        return redirect('login')
+
+    next_url = request.GET.get('next', '')
+
+    safe_next = next_url if next_url and url_has_allowed_host_and_scheme(
+        url=next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ) else ''
+
+    authorization_url, session_values = google_oauth.start_flow(
+        _google_redirect_uri(request)
+    )
+
+    request.session['google_oauth'] = session_values
+    request.session['google_oauth_next'] = safe_next
+
+    return redirect(authorization_url)
+
+
+def google_callback(request):
+    """
+    Step 2: Google redirects back here with either `code` (the
+    person approved access) or `error` (they cancelled / denied
+    consent). This view never receives, and NDMS never stores, the
+    person's Google password.
+    """
+
+    # Popped unconditionally (even on cancel/error below) so a
+    # half-finished attempt never leaves stale OAuth state sitting
+    # in the session for a later request to accidentally reuse.
+    session_values = request.session.pop('google_oauth', None)
+    next_url = request.session.pop('google_oauth_next', '') or None
+
+    if request.GET.get('error'):
+
+        messages.info(request, GOOGLE_LOGIN_MESSAGES['access_denied'])
+
+        return redirect('login')
+
+    code = request.GET.get('code')
+    state = request.GET.get('state')
+
+    if not session_values or not code or state != session_values.get('state'):
+
+        messages.error(request, GOOGLE_LOGIN_MESSAGES['missing_state'])
+
+        return redirect('login')
+
+    try:
+
+        tokens = google_oauth.exchange_code(
+            code,
+            _google_redirect_uri(request),
+            session_values['code_verifier'],
+        )
+
+        claims = google_oauth.verify_id_token(
+            tokens['id_token'],
+            session_values['nonce'],
+        )
+
+    except google_oauth.GoogleOAuthError as exc:
+
+        messages.error(
+            request,
+            GOOGLE_LOGIN_MESSAGES.get(
+                exc.reason, GOOGLE_LOGIN_MESSAGES['token_exchange_failed']
+            ),
+        )
+
+        return redirect('login')
+
+    email = claims['email']
+    google_sub = claims['sub']
+    given_name, family_name = _google_display_names(claims)
+
+    # -----------------------------------------------------
+    # CASE A -- an NDMS account is already linked to this exact
+    # Google identity (its stable, never-changing `sub`). This is
+    # the authoritative match: sign that account in regardless of
+    # whether the Google account's current email happens to differ
+    # from what NDMS has on file -- `sub` is what NDMS trusts, not
+    # email, once an account has linked one.
+    # -----------------------------------------------------
+
+    existing_by_sub = User.objects.filter(google_sub=google_sub).first()
+
+    if existing_by_sub is not None:
+
+        if not existing_by_sub.is_active:
+
+            messages.error(
+                request, GOOGLE_LOGIN_MESSAGES['inactive_account']
+            )
+
+            return redirect('login')
+
+        login(request, existing_by_sub)
+        request.session.set_expiry(0)
+
+        return redirect(next_url) if next_url else redirect('home')
+
+    # -----------------------------------------------------
+    # CASE B -- no account is linked to this Google identity yet,
+    # but an NDMS account already uses this (Google-verified) email
+    # address. Treated as a controlled, one-time migration for a
+    # legacy username/password account trying Google for the first
+    # time -- NOT as a blind duplicate, and NOT as permission to
+    # silently reassign a Google identity that is already linked
+    # elsewhere.
+    # -----------------------------------------------------
+
+    existing_by_email = User.objects.filter(email__iexact=email).first()
+
+    if existing_by_email is not None:
+
+        if not existing_by_email.is_active:
+
+            messages.error(
+                request, GOOGLE_LOGIN_MESSAGES['inactive_account']
+            )
+
+            return redirect('login')
+
+        if existing_by_email.google_sub and (
+            existing_by_email.google_sub != google_sub
+        ):
+
+            # This account is already linked to a DIFFERENT Google
+            # identity than the one presenting now, even though the
+            # verified email matches. Do not relink -- reject
+            # cleanly and let a human sort it out.
+            logger.warning(
+                'Google sign-in: verified email %s matches NDMS user '
+                '%s, but that account is already linked to a '
+                'different Google identity. Refusing to relink.',
+                email, existing_by_email.pk,
+            )
+
+            messages.error(request, GOOGLE_LOGIN_MESSAGES['sub_conflict'])
+
+            return redirect('login')
+
+        if not existing_by_email.google_sub:
+
+            try:
+                # transaction.atomic() gives this its own savepoint:
+                # if the save fails, only this save rolls back --
+                # not the whole request/transaction (which matters
+                # both for DB-backed sessions writing on every
+                # request, and for tests, which already run inside
+                # their own transaction).
+                with transaction.atomic():
+                    existing_by_email.google_sub = google_sub
+                    existing_by_email.save(update_fields=['google_sub'])
+
+            except IntegrityError:
+
+                # Race: this exact `sub` got linked to a different
+                # account in between our lookup and this save.
+                # Reject rather than silently reassign either side.
+                logger.warning(
+                    'Google sign-in: sub for user %s conflicted with '
+                    'another account during linking; refusing.',
+                    existing_by_email.pk,
+                )
+
+                messages.error(
+                    request, GOOGLE_LOGIN_MESSAGES['sub_conflict']
+                )
+
+                return redirect('login')
+
+        login(request, existing_by_email)
+        request.session.set_expiry(0)
+
+        return redirect(next_url) if next_url else redirect('home')
+
+    # -----------------------------------------------------
+    # CASE C -- no NDMS account uses this Google identity or this
+    # email yet. Do NOT silently create one: Google confirming
+    # someone's identity is not, by itself, consent to create an
+    # NDMS account for them. Stash the verified identity and
+    # require the same explicit Terms & Privacy consent every other
+    # new account gives.
+    # -----------------------------------------------------
+
+    request.session['google_pending_signup'] = {
+        'email': email,
+        'given_name': given_name,
+        'family_name': family_name,
+        'google_sub': google_sub,
+    }
+    request.session['google_oauth_next'] = next_url or ''
+
+    return redirect('google_signup_confirm')
+
+
+def _render_google_confirm(request, pending, username='', errors=None):
+    """
+    Render the "Complete Your NDMS Profile" page. `errors` is
+    {field: [messages]} (keys: username, accept_terms), the same
+    shape register() uses. Only the username is ever sent back to
+    the page; the verified identity always comes from `pending`.
+    """
+
+    context = {
+        'pending': pending,
+        'username': username,
+    }
+
+    if errors:
+
+        context['errors'] = errors
+        context['error'] = (
+            'Please review the highlighted fields and try again.'
+        )
+
+    return render(request, 'reports/google_signup_confirm.html', context)
+
+
+def google_signup_confirm(request):
+    """
+    Step 3 (new Google identities only): "Complete Your NDMS
+    Profile".
+
+    The identity shown and stored here -- email, first name, last
+    name and Google `sub` -- comes ONLY from `google_pending_signup`,
+    which google_callback wrote to the server-side session after
+    Google's ID token passed every check in google_oauth. None of
+    it is read from the form POST, so it cannot be tampered with.
+
+    The only things the person supplies are:
+      * `username`     -- their own NDMS username (validated here)
+      * `accept_terms` -- explicit Terms & Privacy consent,
+                          mirroring register()'s server-side check
+
+    No password is requested or created (see the note at
+    create_user below).
+    """
+
+    if request.user.is_authenticated:
+        return redirect('home')
+
+    pending = request.session.get('google_pending_signup')
+
+    if not pending:
+        return redirect('login')
+
+    if request.method != 'POST':
+        return _render_google_confirm(request, pending)
+
+    if request.POST.get('cancel'):
+
+        request.session.pop('google_pending_signup', None)
+        request.session.pop('google_oauth_next', None)
+
+        return redirect('login')
+
+    # -----------------------------------------------------
+    # IDENTITY GUARDS
+    # Run before the form is even looked at: if this Google
+    # identity or its email became an NDMS account since the
+    # callback ran (a double-click, a second tab, a local
+    # registration), the person must not be shown a form that can
+    # only end in a duplicate.
+    # -----------------------------------------------------
+
+    if _google_sub_taken(pending['google_sub']):
+
+        request.session.pop('google_pending_signup', None)
+
+        messages.info(request, GOOGLE_LOGIN_MESSAGES['already_registered'])
+
+        return redirect('login')
+
+    if User.objects.filter(email__iexact=pending['email']).exists():
+
+        request.session.pop('google_pending_signup', None)
+
+        messages.info(
+            request,
+            'An account with this email already exists. '
+            'Please sign in.',
+        )
+
+        return redirect('login')
+
+    # -----------------------------------------------------
+    # FORM VALIDATION (server-side; the page's JavaScript is only
+    # a convenience)
+    # -----------------------------------------------------
+
+    username, username_status = _check_new_username(
+        request.POST.get('username', '')
+    )
+
+    errors = {}
+
+    if username_status in ('empty', 'invalid'):
+
+        errors['username'] = [GOOGLE_USERNAME_MESSAGES['invalid']]
+
+    elif username_status == 'taken':
+
+        errors['username'] = [GOOGLE_USERNAME_MESSAGES['taken']]
+
+    if request.POST.get('accept_terms') != 'on':
+
+        errors['accept_terms'] = [
+            'Please accept the Terms & Conditions and Privacy Policy '
+            'to create your account.'
+        ]
+
+    if errors:
+
+        return _render_google_confirm(
+            request, pending, username=username, errors=errors,
+        )
+
+    # -----------------------------------------------------
+    # CREATE THE CITIZEN ACCOUNT
+    #
+    # No `password=` -- Django's UserManager.create_user() calls
+    # set_unusable_password() automatically when none is given.
+    # That is deliberate: this person authenticated with Google, so
+    # NDMS neither asks for nor invents a password. A Google-created
+    # account signs in with "Continue with Google". (Adding a
+    # password to such an account would be a separate, explicit
+    # feature.)
+    #
+    # transaction.atomic() gives the insert its own savepoint so an
+    # IntegrityError rolls back only this insert -- not the whole
+    # request's transaction, which matters for DB-backed sessions
+    # and for tests, which run inside a transaction of their own.
+    # -----------------------------------------------------
+
+    try:
+        with transaction.atomic():
+            user = User.objects.create_user(
+                username=username,
+                email=pending['email'],
+                first_name=pending['given_name'],
+                last_name=pending['family_name'],
+                role='CITIZEN',
+                terms_accepted_at=timezone.now(),
+                terms_version=TERMS_VERSION,
+                google_sub=pending['google_sub'],
+            )
+
+    except IntegrityError:
+
+        # Lost a race: between the checks above and this insert,
+        # another request claimed this Google identity, or this
+        # username. The database's UNIQUE constraints are what
+        # stop the duplicate; work out which one it was so the
+        # person gets an accurate message. Never overwrite,
+        # merge or reassign anything.
+
+        if _google_sub_taken(pending['google_sub']):
+
+            logger.warning(
+                'Google sign-up: sub for %s was claimed concurrently; '
+                'no second account created.',
+                pending['email'],
+            )
+
+            request.session.pop('google_pending_signup', None)
+
+            messages.info(
+                request, GOOGLE_LOGIN_MESSAGES['already_registered']
+            )
+
+            return redirect('login')
+
+        if User.objects.filter(username__iexact=username).exists():
+
+            return _render_google_confirm(
+                request,
+                pending,
+                username=username,
+                errors={'username': [GOOGLE_USERNAME_MESSAGES['taken']]},
+            )
+
+        logger.error(
+            'Google sign-up: IntegrityError for %s that matches '
+            'neither the Google sub nor the username.',
+            pending['email'],
+        )
+
+        messages.error(request, GOOGLE_LOGIN_MESSAGES['signup_failed'])
+
+        return _render_google_confirm(
+            request, pending, username=username,
+        )
+
+    login(request, user)
+    request.session.set_expiry(0)
+
+    next_url = request.session.pop('google_oauth_next', '') or None
+    request.session.pop('google_pending_signup', None)
+
+    return redirect(next_url) if next_url else redirect('home')
+
+
+@never_cache
+@require_GET
+def google_username_check(request):
+    """
+    Live "Username available" hint for the Complete Your NDMS
+    Profile page.
+
+    Advisory only: google_signup_confirm re-validates on submit
+    and the database enforces uniqueness, so nothing trusts this
+    answer. It is only available to a browser that is midway
+    through a Google sign-up (a verified identity is held in its
+    session), so it is not an open username-lookup service.
+    """
+
+    if request.user.is_authenticated or not request.session.get(
+        'google_pending_signup'
+    ):
+        return JsonResponse({'status': 'unauthorized'}, status=403)
+
+    _username, status = _check_new_username(request.GET.get('username', ''))
+
+    return JsonResponse({
+        'status': status,
+        'message': GOOGLE_USERNAME_MESSAGES.get(status, ''),
+    })
 
 
 # =========================================================

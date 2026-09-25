@@ -1,0 +1,244 @@
+{% extends 'reports/auth_base.html' %}
+{% load static %}
+
+{% comment %}
+=========================================================
+NDMS - GOOGLE SIGN-UP: COMPLETE YOUR NDMS PROFILE
+=========================================================
+Shown ONLY when "Continue with Google" (login.html / register.html)
+identified a Google account with no matching NDMS account yet.
+
+Google has already verified who the person is. This page asks for
+exactly two things before reports/views.py's google_signup_confirm
+creates the Citizen account:
+
+  1. an NDMS username the person chooses themselves
+  2. explicit Terms & Privacy consent (same as register())
+
+Everything else -- email, first name, last name, Google `sub` --
+comes from the verified Google identity held in the server-side
+session, never from this form. There is deliberately no name,
+password or phone field: NDMS never asks for, receives or stores
+a Google password, and creates no NDMS password for this account.
+
+The logo, brand panel, card, buttons and colours all come from
+auth_base.html + auth.css, exactly like login / register.
+
+Context:
+  pending   {email, given_name, family_name, google_sub} from the
+            verified Google identity (session-held; only `email`
+            is displayed, and never as an editable field --
+            editing it would let someone claim an email they
+            don't control)
+  username  the username the person last typed (shown again
+            after an error)
+  errors    {field: [message, ...]} -- keys: username, accept_terms
+  error     short summary shown in the alert at the top
+
+Script: reports/js/google-signup.js (live "Username available"
+hint + double-submit guard). The server validates everything
+again, so the page works with JavaScript off.
+=========================================================
+{% endcomment %}
+
+{% block title %}NDMS | Complete Your Profile{% endblock %}
+
+{% block body_class %} auth-page--google-confirm{% endblock %}
+
+{% block head_extra %}
+    <script src="{% static 'reports/js/google-signup.js' %}"
+            defer></script>
+{% endblock %}
+
+{% block content %}
+
+    <header class="auth-heading">
+
+        <h1>Complete Your NDMS Profile</h1>
+
+        <p class="auth-lead">
+            Choose a username to finish setting up your account.
+        </p>
+
+    </header>
+
+
+    {% if error %}
+
+    <div class="auth-alert" role="alert">
+        <span class="auth-alert__icon" aria-hidden="true">!</span>
+        <span class="auth-alert__text">{{ error }}</span>
+    </div>
+
+    {% endif %}
+
+
+    <!-- =================================================
+         VERIFIED GOOGLE ACCOUNT
+         Read-only text, not an input. The email is whatever
+         Google's ID token said, as held in the session.
+         ================================================= -->
+
+    <div class="google-verified"
+         role="group"
+         aria-labelledby="google_verified_title">
+
+        <span class="google-verified__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2.4" stroke-linecap="round"
+                 stroke-linejoin="round" focusable="false">
+                <path d="M5 12.5l4.5 4.5L19 7.5" />
+            </svg>
+        </span>
+
+        <div class="google-verified__body">
+
+            <p class="google-verified__title"
+               id="google_verified_title">
+                Google Account Verified
+            </p>
+
+            <p class="google-verified__email">{{ pending.email }}</p>
+
+        </div>
+
+    </div>
+
+
+    <form method="POST"
+          class="auth-form"
+          data-google-signup>
+
+        {% csrf_token %}
+
+        <!-- =============================================
+             USERNAME -- the only editable field.
+             The indicator on the right of the box (spinner /
+             tick / cross) and the line below it are filled in
+             by google-signup.js while the person types.
+             ============================================= -->
+
+        <div class="auth-field">
+
+            <label class="auth-label" for="username">
+                Choose a username
+            </label>
+
+            <div class="auth-input-wrap" data-state="{% if errors.username %}error{% endif %}">
+
+                <span class="auth-input-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <circle cx="12" cy="8" r="3.2" />
+                        <path d="M5.5 20c.8-3.6 3-5.5 6.5-5.5s5.7 1.9 6.5 5.5" />
+                    </svg>
+                </span>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="auth-input"
+                    placeholder="Username"
+                    value="{{ username|default:'' }}"
+                    autocomplete="username"
+                    autocapitalize="none"
+                    spellcheck="false"
+                    minlength="3"
+                    maxlength="30"
+                    pattern="[A-Za-z0-9._\-]{3,30}"
+                    title="3-30 characters: letters, numbers, dots, underscores or hyphens. No @ or spaces."
+                    data-check-url="{% url 'google_username_check' %}"
+                    required
+                    aria-describedby="username_hint username_status"
+                    {% if errors.username %}
+                    aria-invalid="true"
+                    {% endif %}
+                >
+
+                <span class="google-input-state" aria-hidden="true"></span>
+
+            </div>
+
+            {% comment %}
+                Server errors and the live availability hint share this
+                one status line. It is written on ONE line on purpose:
+                when there is nothing to say it must be truly empty so
+                the :empty rule in auth.css collapses it.
+            {% endcomment %}
+            <p class="google-field-msg{% if errors.username %} google-field-msg--error{% endif %}" id="username_status" aria-live="polite">{% if errors.username %}<span class="google-field-msg__icon" aria-hidden="true"></span><span class="google-field-msg__text">{{ errors.username.0 }}</span>{% endif %}</p>
+
+            <p class="auth-hint" id="username_hint">
+                3-30 characters. Letters, numbers, . _ and -
+            </p>
+
+        </div>
+
+
+        <!-- =============================================
+             TERMS & PRIVACY
+             Same consent, same links, same server-side gate
+             as register(); the box is never pre-ticked.
+             ============================================= -->
+
+        <div class="auth-consent{% if errors.accept_terms %} has-error{% endif %}">
+
+            <label for="accept_terms" class="auth-check">
+
+                <input
+                    type="checkbox"
+                    id="accept_terms"
+                    name="accept_terms"
+                    required
+                    {% if errors.accept_terms %}
+                    aria-invalid="true"
+                    aria-describedby="accept_terms_error"
+                    {% endif %}
+                >
+
+                <span>
+                    I agree to the
+                    <a href="{% url 'terms' %}"
+                       class="auth-link"
+                       target="_blank"
+                       rel="noopener noreferrer">Terms &amp; Conditions<span class="sr-only"> (opens in a new tab)</span></a>
+                    and
+                    <a href="{% url 'privacy' %}"
+                       class="auth-link"
+                       target="_blank"
+                       rel="noopener noreferrer">Privacy Policy<span class="sr-only"> (opens in a new tab)</span></a>.
+                </span>
+
+            </label>
+
+            {% if errors.accept_terms %}
+            <p class="google-field-msg google-field-msg--error"
+               id="accept_terms_error">
+                <span class="google-field-msg__icon" aria-hidden="true"></span>
+                <span class="google-field-msg__text">{{ errors.accept_terms.0 }}</span>
+            </p>
+            {% endif %}
+
+        </div>
+
+
+        <button type="submit" class="auth-btn auth-btn--arrow">
+            Create Account
+        </button>
+
+        {% comment %}
+            Exit from the sign-up step, not a form field. It discards the
+            pending Google sign-up and returns to the login page.
+            formnovalidate lets it work while the username is still
+            empty / the box unticked.
+        {% endcomment %}
+        <button type="submit"
+                name="cancel"
+                value="1"
+                formnovalidate
+                class="auth-link auth-link--button">
+            Back to sign in
+        </button>
+
+    </form>
+
+{% endblock %}

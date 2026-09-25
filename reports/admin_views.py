@@ -48,53 +48,6 @@ from .models import (
 
 
 # =========================================================
-# DISASTER TYPE FORM
-# =========================================================
-
-class AdminDisasterTypeForm(forms.ModelForm):
-    """Form used by the custom admin Disaster Types module."""
-
-    class Meta:
-        model = DisasterType
-        fields = ['name', 'description', 'is_active']
-        widgets = {
-            'name': forms.TextInput(attrs={
-                'class': 'dt-form-control',
-                'placeholder': 'e.g. Flood',
-                'autocomplete': 'off',
-            }),
-            'description': forms.Textarea(attrs={
-                'class': 'dt-form-control dt-form-textarea',
-                'placeholder': 'Briefly describe this disaster category...',
-                'rows': 5,
-            }),
-            'is_active': forms.CheckboxInput(attrs={
-                'class': 'dt-toggle-input',
-            }),
-        }
-
-    def clean_name(self):
-        name = self.cleaned_data.get('name', '').strip()
-
-        if not name:
-            raise forms.ValidationError(
-                'Disaster type name is required.'
-            )
-
-        existing = DisasterType.objects.filter(name__iexact=name)
-
-        if self.instance.pk:
-            existing = existing.exclude(pk=self.instance.pk)
-
-        if existing.exists():
-            raise forms.ValidationError(
-                'A disaster type with this name already exists.'
-            )
-
-        return name
-
-
-# =========================================================
 # ACCESS CONTROL
 # =========================================================
 

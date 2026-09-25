@@ -8,8 +8,23 @@ stylesheets, on every Citizen / public page:
 
     {% include 'reports/partials/theme_head.html' %}
 
-Loads the Sentinel Teal design tokens (ndms-theme.css), which is
+Loads the institutional-blue design tokens (ndms-theme.css),
 the single source of truth for colour across the site.
+
+JS FEATURE-DETECT CLASS:
+  Several page stylesheets (home.css, about.css, auth.css,
+  help-support.css, navbar.css, profile.css, report-incident.css)
+  have `.js ...` rules for progressive enhancement — e.g. the
+  "How NDMS Works" connecting line on Home is meant to start
+  collapsed and draw itself left-to-right once scrolled into
+  view, but only when JS actually runs; without JS it should
+  render fully drawn immediately (see the comment above .steps
+  in home.css). That only works if something adds a `js` class
+  to <html> — nothing in the project did, anywhere, so every one
+  of those rules was silently inert and e.g. the connecting line
+  was just always shown fully drawn, never animating. Added here
+  (inline, synchronous, before first paint) fixes it site-wide
+  from one place instead of duplicating it per page.
 
 DARK THEME REMOVAL (Step 1: Citizen, Step 2: Admin):
   This partial used to also bootstrap the Dark Theme system: an
@@ -31,4 +46,5 @@ The Admin panel does not use this partial for anything else.
 =========================================================
 {% endcomment %}
 <meta name="color-scheme" content="light">
+<script>document.documentElement.classList.add("js");</script>
 <link rel="stylesheet" href="{% static 'reports/ndms-theme.css' %}">

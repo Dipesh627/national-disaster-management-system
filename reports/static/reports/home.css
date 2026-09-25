@@ -683,6 +683,7 @@
 
 .steps::after {
     background: var(--color-primary);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--color-primary) 45%, transparent);
 
     transform-origin: left center;
     transition: transform 1.1s var(--ease) .2s;
@@ -724,7 +725,14 @@
 
     transition:
         border-color .4s ease var(--step-delay, 0s),
-        background-color .4s ease var(--step-delay, 0s);
+        background-color .4s ease var(--step-delay, 0s),
+        transform .22s var(--ease),
+        box-shadow .22s var(--ease);
+}
+
+.step:hover .step-node {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
 }
 
 .step:nth-child(1) { --step-delay: .25s; }
@@ -747,11 +755,22 @@
 }
 
 .step-num {
-    color: var(--color-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-    font-size: 12px;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 7px;
+
+    border-radius: var(--radius-full);
+
+    background: var(--color-primary-tint);
+    color: var(--color-primary-dark);
+
+    font-size: 11px;
     font-weight: 700;
-    letter-spacing: .12em;
+    letter-spacing: .08em;
 }
 
 .step h3 {
@@ -1506,98 +1525,11 @@
 
 
 /* =========================================================
-   11. CONTACT
+   11. CONTACT — removed. The Home page no longer has its own
+   Contact section; contact details moved into the shared
+   footer's Contact Us column (reports/partials/footer.html,
+   styled in reports/footer.css).
    ========================================================= */
-
-.contact-grid {
-    display: grid;
-    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
-    align-items: start;
-    gap: clamp(32px, 6vw, 72px);
-}
-
-.contact-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-
-    margin-top: 28px;
-}
-
-.contact-list {
-    margin: 0;
-    padding: 0;
-
-    overflow: hidden;
-
-    list-style: none;
-
-    background: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-}
-
-.contact-item {
-    display: grid;
-    grid-template-columns: 44px minmax(0, 1fr);
-    align-items: center;
-    gap: 16px;
-
-    padding: 20px 24px;
-}
-
-.contact-item + .contact-item {
-    border-top: 1px solid var(--color-border);
-}
-
-.contact-icon {
-    width: 44px;
-    height: 44px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: var(--radius-md);
-
-    background: var(--color-primary-tint);
-    color: var(--color-primary);
-}
-
-.contact-icon svg {
-    width: 21px;
-    height: 21px;
-}
-
-.contact-label {
-    display: block;
-
-    margin-bottom: 2px;
-
-    color: var(--color-muted);
-
-    font-size: 13px;
-}
-
-.contact-value {
-    display: block;
-
-    color: var(--heading);
-
-    font-size: 16px;
-    font-weight: 650;
-    overflow-wrap: anywhere;
-}
-
-.contact-value a {
-    color: inherit;
-    text-decoration: none;
-}
-
-.contact-value a:hover {
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-}
 
 
 /* =========================================================
@@ -1847,8 +1779,7 @@
     }
 
     .about-grid,
-    .feedback-grid,
-    .contact-grid {
+    .feedback-grid {
         grid-template-columns: minmax(0, 1fr);
     }
 
@@ -1906,6 +1837,7 @@
 
     .step:not(:last-child)::after {
         background: var(--color-primary);
+        box-shadow: 0 0 10px color-mix(in srgb, var(--color-primary) 45%, transparent);
 
         transform-origin: top center;
         transition: transform .6s var(--ease) var(--step-delay, 0s);
@@ -1974,7 +1906,6 @@
     }
 
     .feedback-form .btn,
-    .contact-links .btn,
     .gate-actions .btn {
         width: 100%;
     }
@@ -1982,10 +1913,6 @@
     .rating-star svg {
         width: 30px;
         height: 30px;
-    }
-
-    .contact-item {
-        padding: 18px 16px;
     }
 }
 

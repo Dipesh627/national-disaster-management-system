@@ -23,14 +23,15 @@
     padding: 64px 0 28px;
 }
 
-/* Always brand + exactly two link columns (Quick Links,
-   Legal & Support), for both citizen and admin accounts.
-   The link columns are sized to their own content (auto) so
-   they sit snug against each other and land together at the
-   right edge instead of spreading out across the row. */
+/* Always brand + exactly two columns (Quick Links, Contact
+   Us), for both citizen and admin accounts. The link columns
+   are sized to their own content so they sit snug against
+   each other and land together at the right edge instead of
+   spreading out across the row. Contact Us gets a touch more
+   room since it carries a phone number, not just short links. */
 .footer-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-columns: minmax(0, 1fr) auto minmax(200px, auto);
     justify-content: space-between;
     gap: 48px;
 }
@@ -179,6 +180,70 @@
 }
 
 
+/* ---------- Contact Us column ---------- */
+
+.footer-contact-list {
+    display: grid;
+    gap: 20px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-contact-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: var(--radius-full);
+
+    color: var(--on-dark-muted);
+
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.footer-contact-item:hover .footer-contact-icon {
+    background: rgba(255, 255, 255, .1);
+    color: var(--on-dark);
+}
+
+.footer-contact-icon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.footer-contact-value {
+    color: var(--on-dark-muted);
+
+    font-size: calc(14.5px * var(--ndms-font-scale, 1));
+    line-height: 1.4;
+}
+
+.footer-contact-value a {
+    color: var(--on-dark-muted);
+    text-decoration: none;
+}
+
+.footer-contact-value a:hover {
+    color: var(--on-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+
 /* ---------- Bottom bar ---------- */
 
 .footer-bottom {
@@ -203,12 +268,28 @@
 .footer-bottom-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 22px;
+    align-items: center;
+    gap: 6px 16px;
 
     margin: 0;
     padding: 0;
 
     list-style: none;
+}
+
+.footer-bottom-links li:not(:first-child) {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-bottom-links li:not(:first-child)::before {
+    content: "";
+
+    width: 1px;
+    height: 12px;
+
+    background: var(--on-dark-line);
 }
 
 .footer-bottom a {

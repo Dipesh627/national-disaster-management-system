@@ -89,6 +89,37 @@ urlpatterns = [
 
 
     # =====================================================
+    # GOOGLE SIGN-IN ("Continue with Google")
+    # =====================================================
+
+    path(
+        'login/google/',
+        views.google_login,
+        name='google_login'
+    ),
+
+    path(
+        'login/google/callback/',
+        views.google_callback,
+        name='google_callback'
+    ),
+
+    path(
+        'login/google/confirm/',
+        views.google_signup_confirm,
+        name='google_signup_confirm'
+    ),
+
+    # Live "Username available" hint for the Complete Your NDMS
+    # Profile page above. Advisory only; see views.google_username_check.
+    path(
+        'login/google/confirm/username-check/',
+        views.google_username_check,
+        name='google_username_check'
+    ),
+
+
+    # =====================================================
     # FORGOT PASSWORD / PASSWORD RESET
     # =====================================================
 
