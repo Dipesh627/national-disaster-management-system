@@ -1,0 +1,1150 @@
+/* =========================================================
+   NDMS ADMIN — MY PROFILE
+   Clean / Compact / Professional
+   Reuses the --ndms-* tokens defined by admin-dashboard.css
+   on .ndms-dashboard — no new colors are introduced here.
+   All selectors are scoped under .ap-page so nothing here can
+   affect any other admin module.
+   ========================================================= */
+
+.ap-page {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding-bottom: 30px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+   ========================================================= */
+
+.ap-page-header {
+    margin-bottom: 18px;
+}
+
+.ap-kicker {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--color-primary);
+    font-size: 9.5px;
+    font-weight: 750;
+    line-height: 1.2;
+    letter-spacing: .085em;
+}
+
+.ap-page-header h1 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 25px;
+    font-weight: 720;
+    line-height: 1.2;
+    letter-spacing: -.025em;
+}
+
+.ap-page-header p {
+    max-width: 650px;
+    margin: 6px 0 0;
+    color: var(--ndms-muted);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   BUTTONS
+   (same visual language as the rest of the admin shell:
+   navy primary, neutral-bordered secondary)
+   ========================================================= */
+
+.ap-primary-button,
+.ap-secondary-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 37px;
+    padding: 0 14px;
+    border-radius: 7px;
+    font-size: 10.5px;
+    font-weight: 680;
+    line-height: 1;
+    font-family: inherit;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        border-color .15s ease,
+        color .15s ease,
+        box-shadow .15s ease;
+}
+
+.ap-primary-button {
+    color: var(--on-dark);
+    background: var(--btn-dark);
+    border: 1px solid var(--btn-dark);
+}
+
+.ap-primary-button:hover {
+    background: var(--btn-dark-hover);
+    border-color: var(--btn-dark-hover);
+}
+
+.ap-primary-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 10%, transparent);
+    outline-offset: 2px;
+}
+
+.ap-primary-button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.ap-secondary-button {
+    color: var(--ndms-text);
+    background: var(--color-white);
+    border: 1px solid var(--ndms-border);
+}
+
+.ap-secondary-button:hover {
+    color: var(--heading);
+    background: var(--color-background);
+    border-color: var(--c-border-9);
+}
+
+.ap-secondary-button:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--color-navy-deep) 8%, transparent);
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   IDENTITY CARD
+   ========================================================= */
+
+.ap-identity-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: min(760px, 100%);
+    margin-bottom: 14px;
+    padding: 18px 20px;
+    background: var(--color-white);
+    border: 1px solid var(--ndms-border);
+    border-radius: 10px;
+    box-shadow: 0 1px 2px color-mix(in srgb, var(--color-navy-deep) 4%, transparent);
+}
+
+.ap-avatar-edit-wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.ap-identity-avatar {
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--color-white);
+    background: var(--color-primary);
+    border-radius: 50%;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.ap-identity-avatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+.ap-avatar-edit-badge {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-white);
+    border-radius: 50%;
+    background: var(--btn-dark);
+    color: var(--on-dark);
+    cursor: pointer;
+    box-shadow: 0 1px 3px color-mix(in srgb, var(--color-navy-deep) 18%, transparent);
+    transition:
+        background-color .18s ease,
+        transform .18s ease;
+}
+
+.ap-avatar-edit-badge svg {
+    width: 13px;
+    height: 13px;
+}
+
+.ap-avatar-edit-badge:hover {
+    background: var(--color-primary);
+    transform: scale(1.05);
+}
+
+.ap-avatar-edit-badge:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 18%, transparent);
+}
+
+.ap-avatar-popover {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 40;
+    width: 200px;
+    padding: 6px;
+    background: var(--color-white);
+    border: 1px solid var(--ndms-border);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition:
+        opacity .16s ease,
+        transform .16s ease,
+        visibility .16s ease;
+}
+
+.ap-avatar-popover.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+.ap-avatar-popover-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    padding: 8px 9px;
+    border: none;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--heading);
+    font-size: 11.5px;
+    font-weight: 630;
+    font-family: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition: background-color .15s ease;
+}
+
+.ap-avatar-popover-item:hover {
+    background: var(--ndms-soft);
+}
+
+.ap-avatar-popover-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--ndms-muted);
+}
+
+.ap-avatar-popover-item-danger {
+    color: var(--color-danger);
+}
+
+.ap-avatar-popover-item-danger .ap-avatar-popover-icon {
+    color: var(--color-danger);
+}
+
+.ap-avatar-popover-item-danger:hover {
+    background: var(--color-danger-bg);
+}
+
+.ap-avatar-popover-divider {
+    height: 1px;
+    margin: 6px 4px;
+    background: var(--ndms-border);
+}
+
+.ap-identity-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ap-identity-info h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 17px;
+    font-weight: 750;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ap-identity-username {
+    display: block;
+    margin-top: 2px;
+    color: var(--ndms-muted);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.ap-identity-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 7px;
+    color: var(--ndms-muted);
+    font-size: 10.5px;
+    font-weight: 650;
+}
+
+.ap-identity-meta-divider {
+    color: var(--ndms-light-muted);
+}
+
+.ap-status-dot {
+    width: 7px;
+    height: 7px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--color-success);
+}
+
+.ap-status-dot.is-inactive {
+    background: var(--color-danger);
+}
+
+.ap-identity-edit-button {
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   CARDS (Personal Information / Account Information)
+   ========================================================= */
+
+.ap-card {
+    width: min(760px, 100%);
+    margin-bottom: 14px;
+    background: var(--color-white);
+    border: 1px solid var(--ndms-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.ap-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 20px 14px;
+    border-bottom: 1px solid var(--ndms-border);
+}
+
+.ap-card-kicker {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--ndms-light-muted);
+    font-size: 8.5px;
+    font-weight: 750;
+    letter-spacing: .09em;
+}
+
+.ap-card-header h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 13.5px;
+    font-weight: 730;
+    line-height: 1.3;
+}
+
+
+/* =========================================================
+   VIEW MODE (read-only rows, used by both cards)
+   ========================================================= */
+
+.ap-view-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 4px 28px;
+    padding: 6px 20px 18px;
+}
+
+.ap-view-field {
+    display: grid;
+    grid-template-columns: 130px minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    min-height: 42px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.ap-view-field:nth-last-child(-n+2) {
+    border-bottom: 0;
+}
+
+.ap-view-label {
+    color: var(--ndms-muted);
+    font-size: 9px;
+    font-weight: 720;
+    text-transform: uppercase;
+    letter-spacing: .035em;
+}
+
+.ap-view-value {
+    min-width: 0;
+    color: var(--ndms-text);
+    font-size: 11.5px;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+}
+
+.ap-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 9px;
+    font-weight: 780;
+    line-height: 1.4;
+}
+
+.ap-status-pill-active {
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
+}
+
+.ap-status-pill-inactive {
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+}
+
+
+/* =========================================================
+   EDIT MODE
+   Hidden by default; toggled by admin-profile.js via a class
+   on <body> so view/edit are two DOM blocks and nothing in
+   Identity or Account Information is ever removed.
+   ========================================================= */
+
+.ap-edit-form {
+    display: none;
+    padding: 6px 20px 20px;
+}
+
+body.ap-edit-mode #apViewMode {
+    display: none;
+}
+
+body.ap-edit-mode #apEditForm {
+    display: block;
+}
+
+.ap-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 20px;
+}
+
+.ap-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.ap-form-group label {
+    color: var(--ndms-text);
+    font-size: 10.5px;
+    font-weight: 700;
+}
+
+.ap-required {
+    color: var(--color-danger);
+}
+
+.ap-form-group input[type="text"],
+.ap-form-group input[type="email"],
+.ap-form-group input[type="tel"] {
+    width: 100%;
+    min-height: 39px;
+    padding: 0 11px;
+    color: var(--ndms-text);
+    background: var(--color-white);
+    border: 1px solid var(--border-strong);
+    border-radius: 7px;
+    outline: none;
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 500;
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease;
+}
+
+.ap-form-group input[type="text"]::placeholder,
+.ap-form-group input[type="email"]::placeholder,
+.ap-form-group input[type="tel"]::placeholder {
+    color: var(--ndms-light-muted);
+}
+
+.ap-form-group input[type="text"]:focus,
+.ap-form-group input[type="email"]:focus,
+.ap-form-group input[type="tel"]:focus {
+    border-color: var(--field-focus-border);
+    box-shadow: var(--field-focus-ring);
+}
+
+.ap-readonly-input {
+    width: 100%;
+    min-height: 39px;
+    padding: 0 11px;
+    color: var(--ndms-muted);
+    background: var(--ndms-soft);
+    border: 1px solid var(--ndms-border);
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 11.5px;
+    font-weight: 500;
+}
+
+.ap-hint {
+    color: var(--ndms-light-muted);
+    font-size: 9.5px;
+}
+
+.ap-field-error {
+    display: block;
+    margin-top: 2px;
+    color: var(--color-danger);
+    font-size: 9.5px;
+    font-weight: 650;
+    line-height: 1.35;
+}
+
+.ap-edit-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+
+/* =========================================================
+   CHANGE PHOTO MODAL
+   ========================================================= */
+
+.ap-photo-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(23, 32, 51, .82);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+.ap-photo-modal.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.ap-photo-modal-content {
+    width: min(420px, 100%);
+    background: var(--color-white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    padding: 0 24px 24px;
+    transform: translateY(6px);
+    transition: transform .18s ease;
+}
+
+.ap-photo-modal.show .ap-photo-modal-content {
+    transform: translateY(0);
+}
+
+.ap-photo-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 20px 0 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid var(--ndms-border);
+}
+
+.ap-photo-modal-header h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+}
+
+.ap-photo-modal-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background: var(--ndms-soft);
+    color: var(--ndms-muted);
+    font-size: 14px;
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.ap-photo-modal-close:hover {
+    background: var(--ndms-border);
+    color: var(--heading);
+}
+
+/* =========================================================
+   VIEW PHOTO — LIGHTBOX
+   Opened only from the avatar popover's "View Photo" option
+   (only rendered when a real avatar exists). Same overlay/
+   fade pattern as .ap-photo-modal above, but no form — just a
+   centered, aspect-ratio-preserving image and a close button.
+   ========================================================= */
+
+.ap-photo-view-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: rgba(23, 32, 51, .82);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+        opacity .18s ease,
+        visibility .18s ease;
+}
+
+.ap-photo-view-modal.show {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.ap-photo-view-content {
+    display: flex;
+    flex-direction: column;
+    width: min(480px, 100%);
+    max-height: calc(100vh - 48px);
+    background: var(--color-white);
+    border-radius: 16px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.ap-photo-view-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px 16px 14px 20px;
+    border-bottom: 1px solid var(--ndms-border);
+}
+
+.ap-photo-view-header h2 {
+    margin: 0;
+    color: var(--heading);
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+}
+
+.ap-photo-view-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: var(--ndms-soft);
+}
+
+.ap-photo-view-body img {
+    display: block;
+    max-width: 100%;
+    max-height: calc(100vh - 160px);
+    /* Preserve the original photo's aspect ratio — never
+       cropped or distorted here, unlike the circular avatar
+       used everywhere else in the app. */
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+}
+
+@media (max-width: 700px) {
+
+    .ap-photo-view-modal {
+        padding: 16px;
+    }
+
+    .ap-photo-view-header {
+        padding: 14px 14px 12px 16px;
+    }
+
+    .ap-photo-view-body {
+        padding: 14px;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ap-photo-view-modal {
+        transition: none;
+    }
+
+}
+
+.ap-photo-modal-preview {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 6px;
+}
+
+.ap-photo-modal-avatar {
+    width: 96px;
+    height: 96px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: var(--color-white);
+    background: var(--color-primary);
+    border-radius: 50%;
+    font-size: 34px;
+    font-weight: 800;
+}
+
+.ap-photo-modal-avatar img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* Without this, the `display: flex` above wins over the
+   browser's own `[hidden]{display:none}` rule (same-origin
+   author CSS always beats the user-agent stylesheet), so
+   toggling `.hidden` from admin-profile.js would leave this
+   circle visible at the same time as the crop stage below. */
+.ap-photo-modal-avatar[hidden] {
+    display: none;
+}
+
+
+/* =========================================================
+   PHOTO CROP + ZOOM
+   Shown in place of .ap-photo-modal-avatar once a new photo
+   has been picked, so the admin can position and zoom it
+   before it's uploaded. The final crop is rendered client-side
+   onto #apCropOutputCanvas and attached to the existing file
+   input — AvatarUploadForm and admin_profile() still receive
+   a normal image upload, so no backend changes were needed.
+   ========================================================= */
+
+.ap-crop-shell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0 6px;
+}
+
+/* Same `[hidden]` fix as `.ap-photo-modal-avatar` above — keeps
+   the crop stage fully hidden until a photo is actually picked. */
+.ap-crop-shell[hidden] {
+    display: none;
+}
+
+.ap-crop-stage {
+    position: relative;
+    width: 224px;
+    height: 224px;
+    overflow: hidden;
+    background: var(--ndms-soft);
+    border-radius: 50%;
+    cursor: grab;
+    touch-action: none;
+    box-shadow:
+        inset 0 0 0 3px var(--color-white),
+        0 0 0 1px var(--ndms-border),
+        0 10px 22px -10px rgba(16, 24, 40, .3);
+}
+
+.ap-crop-stage.is-dragging {
+    cursor: grabbing;
+}
+
+.ap-crop-stage img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    max-width: none;
+    user-select: none;
+    pointer-events: none;
+}
+
+.ap-crop-zoom-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    max-width: 260px;
+    margin-top: 16px;
+}
+
+.ap-crop-zoom-icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    color: var(--ndms-muted);
+}
+
+.ap-crop-zoom-icon-lg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Custom slider — the bare OS control (plain grey track, dark
+   circular thumb) reads as unfinished next to the rest of the
+   NDMS UI, so it's rebuilt per-browser with a thin navy track
+   and a bordered white thumb that matches the app's button/
+   card styling instead of the browser default. */
+
+.ap-crop-zoom-slider {
+    flex: 1 1 auto;
+    height: 18px;
+    margin: 0;
+    background: transparent;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.ap-crop-zoom-slider::-webkit-slider-runnable-track {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--ndms-border);
+}
+
+.ap-crop-zoom-slider::-moz-range-track {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--ndms-border);
+}
+
+.ap-crop-zoom-slider::-moz-range-progress {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--btn-dark);
+}
+
+.ap-crop-zoom-slider::-webkit-slider-thumb {
+    width: 16px;
+    height: 16px;
+    margin-top: -6px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    background: var(--color-white);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: transform .12s ease;
+}
+
+.ap-crop-zoom-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    background: var(--color-white);
+    box-shadow: 0 1px 4px rgba(16, 24, 40, .25);
+    cursor: pointer;
+    transition: transform .12s ease;
+}
+
+.ap-crop-zoom-slider:hover::-webkit-slider-thumb,
+.ap-crop-zoom-slider:focus-visible::-webkit-slider-thumb {
+    transform: scale(1.12);
+}
+
+.ap-crop-zoom-slider:hover::-moz-range-thumb,
+.ap-crop-zoom-slider:focus-visible::-moz-range-thumb {
+    transform: scale(1.12);
+}
+
+.ap-crop-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    max-width: 260px;
+    margin-top: 12px;
+}
+
+.ap-crop-hint {
+    color: var(--ndms-muted);
+    font-size: 11px;
+    font-weight: 550;
+    line-height: 1.4;
+}
+
+.ap-crop-reset {
+    flex-shrink: 0;
+    padding: 5px 10px;
+    border: 1px solid var(--ndms-border);
+    border-radius: 6px;
+    background: var(--color-white);
+    color: var(--heading);
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        border-color .15s ease,
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.ap-crop-reset:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
+}
+
+
+.ap-photo-modal-hint {
+    margin-top: 4px;
+    text-align: center;
+    color: var(--ndms-muted);
+    font-size: 12px;
+    font-weight: 550;
+    line-height: 1.6;
+}
+
+/* The real file input (rendered by the shared AvatarUploadForm
+   widget, which carries the "pf-avatar-file-input" class used
+   on the citizen Profile page too) is visually hidden here —
+   the label above acts as the button the user actually clicks.
+   Scoped to .ap-page so it only affects this page. */
+.ap-page .pf-avatar-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.ap-choose-photo-btn {
+    display: block;
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px;
+    border: 1px solid var(--ndms-border);
+    border-radius: 8px;
+    background: var(--color-white);
+    color: var(--heading);
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        border-color .18s ease,
+        background-color .18s ease;
+}
+
+.ap-choose-photo-btn:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-tint);
+    color: var(--color-primary);
+}
+
+/* Same `[hidden]` fix as the elements above. */
+.ap-choose-photo-btn[hidden] {
+    display: none;
+}
+
+/* Keyboard focus ring for the visually hidden file input.
+   The <label> (.ap-choose-photo-btn) comes BEFORE the input in
+   the markup, and CSS sibling combinators only look forward, so
+   the label is targeted with :has(). */
+.ap-choose-photo-btn:has(+ .pf-avatar-file-input:focus-visible),
+.pf-avatar-file-input:focus-visible + .ap-photo-modal-filename {
+    outline: none;
+    box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--color-primary) 15%, transparent);
+}
+
+.ap-photo-modal-filename {
+    display: block;
+    margin-top: 8px;
+    color: var(--ndms-muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    word-break: break-all;
+}
+
+.ap-photo-modal-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.ap-photo-modal-actions .ap-primary-button,
+.ap-photo-modal-actions .ap-secondary-button {
+    flex: 1 1 0;
+    justify-content: center;
+}
+
+.ap-photo-modal-actions .ap-primary-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .ap-view-field {
+        grid-template-columns: 110px minmax(0, 1fr);
+    }
+
+}
+
+@media (max-width: 640px) {
+
+    .ap-identity-card {
+        flex-wrap: wrap;
+    }
+
+    .ap-identity-info {
+        flex: 1 1 100%;
+        order: 2;
+    }
+
+    .ap-identity-edit-button {
+        order: 3;
+        width: 100%;
+        margin-top: 4px;
+    }
+
+    .ap-view-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ap-view-field {
+        grid-template-columns: 1fr;
+        gap: 2px;
+        align-items: start;
+        min-height: 0;
+    }
+
+    .ap-view-field:nth-last-child(-n+2) {
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .ap-view-field:last-child {
+        border-bottom: 0;
+    }
+
+    .ap-edit-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ap-edit-actions {
+        flex-direction: column;
+    }
+
+    .ap-edit-actions .ap-primary-button,
+    .ap-edit-actions .ap-secondary-button {
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .ap-page-header h1 {
+        font-size: 21px;
+    }
+
+    .ap-identity-card,
+    .ap-card {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .ap-identity-card {
+        padding: 16px;
+    }
+
+    .ap-card-header,
+    .ap-view-grid,
+    .ap-edit-form {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .ap-avatar-popover {
+        width: 180px;
+    }
+
+    .ap-photo-modal-content {
+        padding: 0 16px 16px;
+    }
+
+    .ap-crop-zoom-row,
+    .ap-crop-actions-row {
+        max-width: 100%;
+    }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .ap-avatar-popover,
+    .ap-photo-modal,
+    .ap-photo-modal-content,
+    .ap-avatar-edit-badge {
+        transition: none;
+    }
+
+}

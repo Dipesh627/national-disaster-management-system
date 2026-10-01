@@ -1,0 +1,180 @@
+/* =========================================================
+   NDMS — NOTIFICATION DETAIL (CITIZEN)
+   Uses the same design tokens as dashboard.css, styled to
+   match report-detail.css's card/info-grid/map patterns.
+   ========================================================= */
+
+.nd-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--color-muted);
+    font-size: calc(10.5px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+    margin-bottom: 16px;
+}
+
+.nd-back-link:hover {
+    color: var(--heading);
+}
+
+.nd-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.nd-header-left .nd-eyebrow {
+    display: block;
+    color: var(--color-primary);
+    font-size: calc(8px * var(--ndms-font-scale, 1));
+    font-weight: 850;
+    letter-spacing: 1.3px;
+}
+
+.nd-header-left h1 {
+    margin-top: 4px;
+    color: var(--heading);
+    font-size: calc(22px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+}
+
+.nd-header-left span.nd-subdate {
+    display: block;
+    margin-top: 4px;
+    color: var(--color-muted);
+    font-size: calc(11px * var(--ndms-font-scale, 1));
+}
+
+.nd-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 11px;
+    box-shadow: var(--shadow-xs);
+    padding: 22px;
+    margin-bottom: 18px;
+}
+
+.nd-card-title {
+    margin-bottom: 16px;
+}
+
+.nd-card-title span {
+    display: block;
+    color: var(--color-primary);
+    font-size: calc(8px * var(--ndms-font-scale, 1));
+    font-weight: 850;
+    letter-spacing: 1.3px;
+}
+
+.nd-card-title h2 {
+    margin-top: 3px;
+    color: var(--heading);
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    font-weight: 800;
+}
+
+.nd-message-text {
+    color: var(--color-text);
+    font-size: calc(12.5px * var(--ndms-font-scale, 1));
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+.nd-map-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.nd-map {
+    width: 100%;
+    height: 100%;
+}
+
+
+/* =========================================================
+   MAP / SATELLITE TOGGLE
+   ========================================================= */
+
+.nd-map-type-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+
+    padding: 3px;
+
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    box-shadow: var(--shadow-xs);
+}
+
+.nd-map-type-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 56px;
+    height: 28px;
+    padding: 0 10px;
+
+    color: var(--color-muted);
+    background: transparent;
+    border: 0;
+    border-radius: 6px;
+
+    font-family: inherit;
+    font-size: calc(10px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+    line-height: 1;
+
+    cursor: pointer;
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.nd-map-type-btn:hover {
+    color: var(--heading);
+}
+
+.nd-map-type-btn.is-active {
+    color: var(--on-dark);
+    background: var(--btn-dark);
+}
+
+.nd-map-fallback {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 16px;
+    color: var(--color-muted);
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+    text-align: center;
+}
+
+
+@media (max-width: 600px) {
+
+    .nd-header {
+        flex-direction: column;
+    }
+
+    .nd-map-container {
+        height: 220px;
+    }
+
+}

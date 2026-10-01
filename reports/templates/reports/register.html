@@ -1,0 +1,378 @@
+{% extends 'reports/auth_base.html' %}
+{% load static %}
+
+{% comment %}
+=========================================================
+NDMS - CITIZEN REGISTRATION
+=========================================================
+Extends auth_base.html (logo + card). Styles: reports/auth.css
+(shared with Login) + reports/register.css (wider card + two
+columns, scoped to body.auth-page--register).
+
+Context (all optional):
+  first_name, last_name, username, email, phone
+                    values to show again after an error
+                    (passwords are never sent back)
+  errors            {field: [message, ...]} - shown under the
+                    field; keys: first_name, last_name, username,
+                    email, phone, password, confirm_password,
+                    accept_terms
+  error             short summary shown in the alert at the top
+
+Unchanged backend contract: field names, the CSRF token and the
+POST target (this URL).
+=========================================================
+{% endcomment %}
+
+{% block title %}NDMS | Create account{% endblock %}
+
+{% block body_class %} auth-page--register{% endblock %}
+
+{% block head_extra %}
+    <link rel="stylesheet"
+          href="{% static 'reports/register.css' %}">
+{% endblock %}
+
+{% block card_modifier %} auth-card--wide{% endblock %}
+
+
+{% block content %}
+
+    <header class="auth-heading">
+
+        <h1>Create your account</h1>
+
+        <p class="auth-subtitle">Get started with NDMS.</p>
+
+    </header>
+
+
+    {% if errors or error %}
+
+    <div class="auth-alert" role="alert">
+
+        <span class="auth-alert__icon" aria-hidden="true">!</span>
+
+        <span class="auth-alert__text">{% if errors %}Please review the highlighted fields and try again.{% else %}{{ error }}{% endif %}</span>
+
+    </div>
+
+    {% endif %}
+
+
+    <form method="POST"
+          class="auth-form reg-form">
+
+        {% csrf_token %}
+
+        <div class="auth-row">
+
+            <div class="auth-field">
+
+                <label class="auth-label" for="first_name">First name</label>
+
+                <div class="auth-input-wrap">
+
+                    <input
+                        id="first_name"
+                        name="first_name"
+                        class="auth-input"
+                        type="text"
+                        value="{{ first_name|default:'' }}"
+                        autocomplete="given-name"
+                        required
+                        {% if errors.first_name %}
+                        aria-invalid="true"
+                        aria-describedby="first_name_error"
+                        {% endif %}
+                    >
+
+                </div>
+
+                {% if errors.first_name %}
+                <p class="auth-field-error reg-error" id="first_name_error">
+                    <span class="reg-error__icon" aria-hidden="true"></span>
+                    <span class="reg-error__text">{% for message in errors.first_name %}{{ message }} {% endfor %}</span>
+                </p>
+                {% endif %}
+
+            </div>
+
+            <div class="auth-field">
+
+                <label class="auth-label" for="last_name">Last name</label>
+
+                <div class="auth-input-wrap">
+
+                    <input
+                        id="last_name"
+                        name="last_name"
+                        class="auth-input"
+                        type="text"
+                        value="{{ last_name|default:'' }}"
+                        autocomplete="family-name"
+                        required
+                        {% if errors.last_name %}
+                        aria-invalid="true"
+                        aria-describedby="last_name_error"
+                        {% endif %}
+                    >
+
+                </div>
+
+                {% if errors.last_name %}
+                <p class="auth-field-error reg-error" id="last_name_error">
+                    <span class="reg-error__icon" aria-hidden="true"></span>
+                    <span class="reg-error__text">{% for message in errors.last_name %}{{ message }} {% endfor %}</span>
+                </p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+        <div class="auth-field">
+
+            <label class="auth-label" for="username">Username</label>
+
+            <div class="auth-input-wrap">
+
+                <input
+                    id="username"
+                    name="username"
+                    class="auth-input"
+                    type="text"
+                    value="{{ username|default:'' }}"
+                    autocomplete="username"
+                    autocapitalize="none"
+                    spellcheck="false"
+                    minlength="3"
+                    maxlength="30"
+                    pattern="[A-Za-z0-9._\-]{3,30}"
+                    title="3-30 characters: letters, numbers, dots, underscores or hyphens. No @ or spaces."
+                    required
+                    {% if errors.username %}
+                    aria-invalid="true"
+                    aria-describedby="username_error"
+                    {% endif %}
+                >
+
+            </div>
+
+            {% if errors.username %}
+            <p class="auth-field-error reg-error" id="username_error">
+                <span class="reg-error__icon" aria-hidden="true"></span>
+                <span class="reg-error__text">{% for message in errors.username %}{{ message }} {% endfor %}</span>
+            </p>
+            {% endif %}
+
+        </div>
+
+        <div class="auth-field">
+
+            <label class="auth-label" for="email">Email</label>
+
+            <div class="auth-input-wrap">
+
+                <input
+                    id="email"
+                    name="email"
+                    class="auth-input"
+                    type="email"
+                    value="{{ email|default:'' }}"
+                    autocomplete="email"
+                    required
+                    {% if errors.email %}
+                    aria-invalid="true"
+                    aria-describedby="email_error"
+                    {% endif %}
+                >
+
+            </div>
+
+            {% if errors.email %}
+            <p class="auth-field-error reg-error" id="email_error">
+                <span class="reg-error__icon" aria-hidden="true"></span>
+                <span class="reg-error__text">{% for message in errors.email %}{{ message }} {% endfor %}</span>
+            </p>
+            {% endif %}
+
+        </div>
+
+        <div class="auth-field">
+
+            <label class="auth-label" for="phone">Phone <span class="reg-optional">(optional)</span></label>
+
+            <div class="auth-input-wrap">
+
+                <input
+                    id="phone"
+                    name="phone"
+                    class="auth-input"
+                    type="tel"
+                    value="{{ phone|default:'' }}"
+                    autocomplete="tel"
+                    inputmode="tel"
+                    maxlength="16"
+                    pattern="\+?[0-9]{7,15}"
+                    title="Digits only (7-15), with an optional + at the start."
+                    data-digits-only
+                    {% if errors.phone %}
+                    aria-invalid="true"
+                    aria-describedby="phone_error"
+                    {% endif %}
+                >
+
+            </div>
+
+            {% if errors.phone %}
+            <p class="auth-field-error reg-error" id="phone_error">
+                <span class="reg-error__icon" aria-hidden="true"></span>
+                <span class="reg-error__text">{% for message in errors.phone %}{{ message }} {% endfor %}</span>
+            </p>
+            {% endif %}
+
+        </div>
+
+        <div class="auth-row">
+
+            <div class="auth-field">
+
+                <label class="auth-label" for="password">Password</label>
+
+                <div class="auth-input-wrap">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        class="auth-input"
+                        autocomplete="new-password"
+                        required
+                        {% if errors.password %}
+                        aria-invalid="true"
+                        aria-describedby="password_error"
+                        {% endif %}
+                    >
+
+                    <button
+                        type="button"
+                        class="auth-toggle"
+                        data-password-toggle
+                        aria-label="Show password"
+                        aria-pressed="false"
+                    ></button>
+
+                </div>
+
+                {% if errors.password %}
+                <p class="auth-field-error reg-error" id="password_error">
+                    <span class="reg-error__icon" aria-hidden="true"></span>
+                    <span class="reg-error__text">{% for message in errors.password %}{{ message }} {% endfor %}</span>
+                </p>
+                {% endif %}
+
+            </div>
+
+            <div class="auth-field">
+
+                <label class="auth-label" for="confirm_password">Confirm password</label>
+
+                <div class="auth-input-wrap">
+
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        class="auth-input"
+                        autocomplete="new-password"
+                        required
+                        {% if errors.confirm_password %}
+                        aria-invalid="true"
+                        aria-describedby="confirm_password_error"
+                        {% endif %}
+                    >
+
+                    <button
+                        type="button"
+                        class="auth-toggle"
+                        data-password-toggle
+                        aria-label="Show confirm password"
+                        aria-pressed="false"
+                    ></button>
+
+                </div>
+
+                {% if errors.confirm_password %}
+                <p class="auth-field-error reg-error" id="confirm_password_error">
+                    <span class="reg-error__icon" aria-hidden="true"></span>
+                    <span class="reg-error__text">{% for message in errors.confirm_password %}{{ message }} {% endfor %}</span>
+                </p>
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        {# Terms & Privacy (required); checked again on the server in views.register(). Links open in a new tab so nothing typed above is lost. #}
+
+        <div class="auth-consent{% if errors.accept_terms %} has-error{% endif %}">
+
+            <label for="accept_terms" class="auth-check">
+
+                <input
+                    type="checkbox"
+                    id="accept_terms"
+                    name="accept_terms"
+                    required
+                    {% if errors.accept_terms %}
+                    aria-invalid="true"
+                    aria-describedby="accept_terms_error"
+                    {% endif %}
+                >
+
+                <span>
+                    I agree to the
+                    <a href="{% url 'terms' %}"
+                       class="auth-link"
+                       target="_blank"
+                       rel="noopener noreferrer">Terms &amp; Conditions<span class="sr-only"> (opens in a new tab)</span></a>
+                    and
+                    <a href="{% url 'privacy' %}"
+                       class="auth-link"
+                       target="_blank"
+                       rel="noopener noreferrer">Privacy Policy<span class="sr-only"> (opens in a new tab)</span></a>.
+                </span>
+
+            </label>
+
+            {% if errors.accept_terms %}
+            <p class="auth-field-error reg-error" id="accept_terms_error">
+                <span class="reg-error__icon" aria-hidden="true"></span>
+                <span class="reg-error__text">{% for message in errors.accept_terms %}{{ message }} {% endfor %}</span>
+            </p>
+            {% endif %}
+
+        </div>
+
+        <button type="submit"
+                class="auth-btn">
+            Create account
+        </button>
+
+    </form>
+
+
+    <p class="auth-switch">
+
+        <span>Already have an account?</span>
+
+        <a href="{% url 'login' %}"
+           class="auth-link">
+            Sign in
+        </a>
+
+    </p>
+
+{% endblock %}

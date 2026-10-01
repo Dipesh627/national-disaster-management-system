@@ -1,0 +1,357 @@
+/* =========================================================
+   NDMS - GLOBAL PUBLIC FOOTER
+   ---------------------------------------------------------
+   Markup: templates/reports/partials/footer.html
+   A dark structural band (--color-navy-deep) in BOTH themes, so all
+   text uses --on-dark tokens (never --color-white, which flips to a
+   dark surface colour in dark mode).
+   ========================================================= */
+
+.site-footer {
+    margin-top: auto;
+
+    background: var(--color-navy-deep);
+    color: var(--on-dark-muted);
+
+    border-top: 1px solid var(--color-navy-mid);
+}
+
+.site-footer-inner {
+    width: min(1240px, calc(100% - 48px));
+    margin-inline: auto;
+
+    padding: 64px 0 28px;
+}
+
+/* Always brand + exactly two columns (Quick Links, Contact
+   Us), for both citizen and admin accounts. The link columns
+   are sized to their own content so they sit snug against
+   each other and land together at the right edge instead of
+   spreading out across the row. Contact Us gets a touch more
+   room since it carries a phone number, not just short links. */
+.footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(200px, auto);
+    justify-content: space-between;
+    gap: 48px;
+}
+
+
+/* ---------- Brand ----------
+   Vertical lockup: logo above the title. The title is normal
+   Title Case (no text-transform). */
+
+.footer-brand-link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+
+    color: var(--on-dark);
+    text-decoration: none;
+}
+
+.footer-logo {
+    height: 40px;
+    width: auto;
+    flex-shrink: 0;
+
+    display: block;
+    object-fit: contain;
+}
+
+.footer-brand-text {
+    display: block;
+
+    color: var(--on-dark);
+
+    font-size: calc(16px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    letter-spacing: 0;
+    line-height: 1.3;
+}
+
+.footer-brand p {
+    max-width: 38ch;
+    margin-top: 16px;
+
+    color: var(--on-dark-muted);
+
+    font-size: calc(14.5px * var(--ndms-font-scale, 1));
+    line-height: 1.7;
+}
+
+
+/* ---------- Social links ----------
+   Icon-only circular buttons. Colour comes from the --on-dark
+   tokens only, so there are no brand-coloured icons. */
+
+.footer-social {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    margin: 22px 0 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-social-link {
+    width: 36px;
+    height: 36px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: var(--radius-full);
+
+    color: var(--on-dark-muted);
+    text-decoration: none;
+
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.footer-social-link svg {
+    width: 17px;
+    height: 17px;
+
+    display: block;
+}
+
+.footer-social-link:hover {
+    background: rgba(255, 255, 255, .1);
+    color: var(--on-dark);
+}
+
+.site-footer .footer-social-link:focus-visible {
+    border-radius: var(--radius-full);
+}
+
+
+/* ---------- Link columns ---------- */
+
+.footer-heading {
+    margin-bottom: 14px;
+
+    color: var(--on-dark);
+
+    font-size: calc(15px * var(--ndms-font-scale, 1));
+    font-weight: 650;
+    line-height: 1.3;
+}
+
+.footer-col ul {
+    display: grid;
+    gap: 4px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-col a {
+    display: inline-block;
+
+    padding: 5px 0;
+
+    color: var(--on-dark-muted);
+
+    font-size: calc(14.5px * var(--ndms-font-scale, 1));
+    text-decoration: none;
+
+    transition: color .16s ease;
+}
+
+.footer-col a:hover {
+    color: var(--on-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+.site-footer a:focus-visible {
+    outline: 2px solid var(--on-dark);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+
+
+/* ---------- Contact Us column ---------- */
+
+.footer-contact-list {
+    display: grid;
+    gap: 20px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-contact-icon {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+
+    display: grid;
+    place-items: center;
+
+    border-radius: var(--radius-full);
+
+    color: var(--on-dark-muted);
+
+    transition:
+        background-color .15s ease,
+        color .15s ease;
+}
+
+.footer-contact-item:hover .footer-contact-icon {
+    background: rgba(255, 255, 255, .1);
+    color: var(--on-dark);
+}
+
+.footer-contact-icon svg {
+    width: 17px;
+    height: 17px;
+}
+
+.footer-contact-value {
+    color: var(--on-dark-muted);
+
+    font-size: calc(14.5px * var(--ndms-font-scale, 1));
+    line-height: 1.4;
+}
+
+.footer-contact-value a {
+    color: var(--on-dark-muted);
+    text-decoration: none;
+}
+
+.footer-contact-value a:hover {
+    color: var(--on-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+
+/* ---------- Bottom bar ---------- */
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+
+    margin-top: 48px;
+    padding-top: 22px;
+
+    border-top: 1px solid var(--on-dark-line);
+}
+
+.footer-bottom p {
+    color: var(--on-dark-muted);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+}
+
+.footer-bottom-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 16px;
+
+    margin: 0;
+    padding: 0;
+
+    list-style: none;
+}
+
+.footer-bottom-links li:not(:first-child) {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.footer-bottom-links li:not(:first-child)::before {
+    content: "";
+
+    width: 1px;
+    height: 12px;
+
+    background: var(--on-dark-line);
+}
+
+.footer-bottom a {
+    color: var(--on-dark-muted);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    text-decoration: none;
+}
+
+.footer-bottom a:hover {
+    color: var(--on-dark);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 960px) {
+
+    .site-footer-inner {
+        padding: 52px 0 24px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        justify-content: normal;
+        gap: 36px 32px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 520px) {
+
+    .site-footer-inner {
+        width: calc(100% - 32px);
+        padding: 44px 0 22px;
+    }
+
+    .footer-grid {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 30px;
+    }
+
+    .footer-col a {
+        padding: 8px 0;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+
+        margin-top: 36px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .footer-col a,
+    .footer-social-link {
+        transition: none;
+    }
+}

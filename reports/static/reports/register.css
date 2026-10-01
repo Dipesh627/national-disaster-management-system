@@ -1,0 +1,36 @@
+/* =========================================================
+   NDMS - CITIZEN REGISTRATION (Register page only)
+   ---------------------------------------------------------
+   Loaded after auth.css by templates/reports/register.html.
+   Everything shared with Login (page, card surface, fields,
+   buttons) comes from auth.css; this file only widens the card
+   and lays selected fields out in two columns.
+
+     Desktop / tablet   First | Last
+                        Username
+                        Email
+                        Phone
+                        Password | Confirm password
+     <= 560px           one column
+   ========================================================= */
+
+.auth-page--register .auth-card {
+    max-width: 560px;
+}
+
+.auth-page--register .auth-form {
+    gap: 14px;
+}
+
+.auth-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 16px;
+}
+
+@media (max-width: 560px) {
+
+    .auth-row {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}

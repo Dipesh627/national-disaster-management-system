@@ -1,0 +1,1971 @@
+/* =========================================================
+   NDMS - CITIZEN AUTHENTICATION
+   ---------------------------------------------------------
+   One stylesheet for every full-screen Citizen auth page:
+
+     Login              templates/reports/login.html
+     Register           templates/reports/register.html
+     Google profile     templates/reports/google_signup_confirm.html
+     Forgot password    templates/reports/forgot_password.html
+     Reset link sent    templates/reports/password_reset_sent.html
+     Set new password   templates/reports/password_reset_confirm.html
+     Password changed   templates/reports/password_reset_complete.html
+
+   All of them extend templates/reports/auth_base.html, which
+   renders ONE layout: the existing disaster photo fills the
+   viewport, a dark navy overlay sits on top, and a centred
+   card holds the NDMS logo + the page content.
+
+   Colour comes only from ndms-theme.css. --color-primary is the
+   NDMS blue. Errors use --color-danger, success uses --green-*.
+
+   Sections
+     1. Tokens
+     2. Reset + page (photo + overlay)
+     3. Shell + card (login 440px, register .auth-card--wide)
+     4. Logo + card footer
+     6. Heading + status icon
+     7. Alert
+     8. Fields (label, input, password toggle, hint, error)
+     9. Checkboxes + consent (9b: Google profile completion)
+    10. Buttons (10b: divider + Google, 10c: social row)
+    11. Links + switch line
+    12. Back link
+    13. Responsive
+    14. Reduced motion
+   ========================================================= */
+
+
+/* =========================================================
+   1. TOKENS
+   Local aliases only - nothing here introduces a new colour.
+   ========================================================= */
+
+.auth-page {
+
+    /* Dark navy overlay over the disaster photo: strong enough for
+       the card to stand out, light enough that the photo stays clearly
+       visible. */
+    --auth-overlay: rgba(6, 26, 48, .58);
+
+    /* Shown while (or if) the photo does not load. */
+    --auth-page-bg: var(--color-navy-deep);
+
+    /* Input outline strong enough to be seen (WCAG 1.4.11),
+       but light and thin rather than a heavy outline - a
+       hairline, not a box. A soft shadow (below, on .auth-input)
+       carries the rest of the definition in both themes. */
+    --auth-field-border: color-mix(in srgb, var(--color-muted) 34%, var(--color-border));
+    --auth-field-border-hover: color-mix(in srgb, var(--color-muted) 55%, var(--color-border));
+
+    --auth-placeholder: color-mix(in srgb, var(--color-muted) 88%, var(--color-white));
+
+    /* Focus: a calm, muted slate rather than the full brand
+       teal - subtle and professional, not a loud accent colour.
+       Ring stays thin (2px) and faint. */
+    --auth-focus-color: color-mix(in srgb, var(--color-navy) 35%, var(--color-muted) 65%);
+    --auth-focus-ring: 0 0 0 2px color-mix(in srgb, var(--auth-focus-color) 16%, transparent);
+    --auth-danger-ring: 0 0 0 3px color-mix(in srgb, var(--color-danger) 18%, transparent);
+
+    --auth-radius: 10px;
+
+    /* Type scale */
+    --auth-fs-eyebrow: 11px;
+    --auth-fs-small: 13px;
+    --auth-fs-body: 15px;
+    --auth-fs-h1: clamp(28px, 3.2vw, 34px);
+
+    /* Icons are drawn with CSS masks so the markup stays free
+       of repeated inline SVG; they inherit currentColor. */
+    --auth-icon-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m13 6 6 6-6 6'/%3E%3C/svg%3E");
+
+    --auth-icon-eye: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6z'/%3E%3Ccircle cx='12' cy='12' r='2.5'/%3E%3C/svg%3E");
+
+    --auth-icon-eye-off: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 3l18 18'/%3E%3Cpath d='M10.6 6.2A10.6 10.6 0 0112 6c6.1 0 9.5 6 9.5 6a16.4 16.4 0 01-3.1 3.7'/%3E%3Cpath d='M6.2 6.8C3.8 8.5 2.5 12 2.5 12s3.4 6 9.5 6c1.5 0 2.8-.3 4-.9'/%3E%3Cpath d='M9.9 9.9a3 3 0 004.2 4.2'/%3E%3C/svg%3E");
+}
+
+
+/* =========================================================
+   2. RESET + PAGE
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+}
+
+
+html {
+
+    min-height: 100%;
+
+    /* Stop iOS from inflating text in landscape */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+
+body.auth-page {
+
+    position: relative;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    background: var(--auth-page-bg);
+
+    color: var(--color-text);
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    font-size: var(--auth-fs-body);
+
+    line-height: 1.5;
+
+    -webkit-font-smoothing: antialiased;
+}
+
+
+/* Photo + overlay are fixed layers behind the content, so the
+   page can scroll (tall Register card, small phones, landscape)
+   while the background always covers the whole viewport.
+   The image path is relative to this stylesheet. */
+
+body.auth-page::before,
+body.auth-page::after {
+
+    content: "";
+
+    position: fixed;
+
+    inset: 0;
+
+    z-index: -1;
+
+    pointer-events: none;
+}
+
+body.auth-page::before {
+
+    background: url("images/disaster-about.jpg") center / cover no-repeat;
+}
+
+body.auth-page::after {
+
+    background: var(--auth-overlay);
+}
+
+
+/* Only NDMS's own show/hide control is used. */
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+
+    display: none;
+}
+
+
+/* =========================================================
+   3. SHELL + CARD
+   The card is centred both ways. `margin: auto` on a flex child
+   (rather than align-items: center) keeps it centred when it
+   fits and lets the page scroll normally when it does not - the
+   top of a tall card is never cut off.
+   ========================================================= */
+
+.auth-shell {
+
+    position: relative;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.auth-main {
+
+    flex: 1 0 auto;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding:
+        clamp(20px, 4vh, 48px)
+        clamp(12px, 4vw, 32px);
+}
+
+
+/* Skip-link target: a region, not a control */
+
+.auth-main:focus {
+
+    outline: none;
+}
+
+
+.auth-card {
+
+    width: 100%;
+
+    max-width: 440px;
+
+    min-width: 0;
+
+    margin: auto;
+
+    background: color-mix(in srgb, var(--color-white) 96%, transparent);
+
+    border: 1px solid rgba(255, 255, 255, .35);
+
+    border-radius: 18px;
+
+    padding: 32px 36px 28px;
+
+    box-shadow:
+        0 24px 60px -16px rgba(0, 0, 0, .55),
+        0 2px 8px rgba(0, 0, 0, .18);
+}
+
+
+/* Register: two-column rows need more room than Login. */
+
+.auth-card--wide {
+
+    max-width: 660px;
+}
+
+
+/* =========================================================
+   4. LOGO + CARD FOOTER
+   ========================================================= */
+
+.auth-logo {
+
+    display: flex;
+
+    justify-content: center;
+
+    margin-bottom: 18px;
+
+    border-radius: 6px;
+
+    text-decoration: none;
+}
+
+
+.auth-logo img {
+
+    display: block;
+
+    height: 44px;
+
+    width: auto;
+
+    max-width: 100%;
+
+    object-fit: contain;
+}
+
+
+.auth-logo:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 4px;
+}
+
+
+.auth-card__footer {
+
+    margin-top: 18px;
+
+    text-align: center;
+}
+
+
+.auth-credit {
+
+    flex-shrink: 0;
+
+    padding: 0 16px 16px;
+
+    color: rgba(255, 255, 255, .72);
+
+    font-size: var(--auth-fs-small);
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   6. HEADING + STATUS ICON
+   ========================================================= */
+
+.auth-heading {
+
+    margin-bottom: 24px;
+
+    text-align: center;
+}
+
+
+.auth-eyebrow {
+
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--color-primary);
+
+    font-size: var(--auth-fs-eyebrow);
+
+    font-weight: 700;
+
+    letter-spacing: .12em;
+
+    text-transform: uppercase;
+}
+
+
+.auth-heading h1 {
+
+    color: var(--heading);
+
+    font-size: clamp(24px, 2.6vw, 28px);
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    letter-spacing: -.01em;
+
+    overflow-wrap: break-word;
+}
+
+
+.auth-lead {
+
+    max-width: 40ch;
+
+    margin: 8px auto 0;
+
+    color: var(--color-muted);
+
+    font-size: var(--auth-fs-body);
+
+    line-height: 1.6;
+}
+
+
+/* Status pages (email sent / link expired / password changed).
+   Tone is set by the modifier: info = teal, success = green,
+   warning = amber. */
+
+.auth-status {
+
+    width: 52px;
+    height: 52px;
+
+    display: grid;
+
+    place-items: center;
+
+    margin-bottom: 20px;
+
+    border: 1px solid var(--_status-border);
+
+    border-radius: 50%;
+
+    background: var(--_status-bg);
+
+    color: var(--_status-fg);
+}
+
+
+.auth-status svg {
+
+    width: 26px;
+    height: 26px;
+
+    display: block;
+}
+
+
+.auth-status--info {
+
+    --_status-fg: var(--color-primary);
+    --_status-bg: var(--color-primary-tint);
+    --_status-border: color-mix(in srgb, var(--color-primary) 24%, var(--color-border));
+}
+
+
+.auth-status--success {
+
+    --_status-fg: var(--color-success-text);
+    --_status-bg: var(--color-success-bg);
+    --_status-border: var(--color-success-border);
+}
+
+
+.auth-status--warning {
+
+    --_status-fg: var(--color-warning-text);
+    --_status-bg: var(--color-warning-bg);
+    --_status-border: var(--color-warning-border);
+}
+
+
+/* =========================================================
+   7. ALERT (errors)
+   Server-rendered and injected by auth.js with the same markup.
+   ========================================================= */
+
+.auth-alert {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+
+    padding: 12px 14px;
+
+    border: 1px solid var(--color-danger-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-danger-bg);
+
+    color: var(--color-danger);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.5;
+}
+
+
+.auth-alert__icon {
+
+    width: 20px;
+    height: 20px;
+
+    flex: 0 0 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 1px;
+
+    border-radius: 50%;
+
+    background: var(--color-danger);
+
+    color: var(--color-white);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+    line-height: 1;
+}
+
+
+/* wraps, even for one very long word */
+
+.auth-alert__text {
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+
+/* Non-error variant -- used for Django's messages framework (e.g.
+   "Google sign-in was cancelled") rendered by auth_base.html across
+   a redirect, where the info is a heads-up rather than a problem. */
+
+.auth-alert--info {
+
+    border-color: var(--color-info-border);
+
+    background: var(--color-info-bg);
+
+    color: var(--color-info-text);
+}
+
+
+.auth-alert--info .auth-alert__icon {
+
+    background: var(--color-info);
+}
+
+
+/* =========================================================
+   8. FIELDS
+   ========================================================= */
+
+.auth-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 20px;
+}
+
+
+.auth-field {
+
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+/* Two columns; minmax(0, 1fr) lets each shrink below its
+   content so an input can never force the row wider. */
+
+.auth-row {
+
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 20px 16px;
+}
+
+
+.auth-label {
+
+    color: var(--color-text);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+}
+
+
+.auth-input {
+
+    width: 100%;
+
+    min-width: 0;
+
+    /* Same as the Admin login's .input-container input */
+    height: 44px;
+
+    padding: 0 14px;
+
+    border: 1px solid var(--auth-field-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-white);
+
+    color: var(--color-text);
+
+    font-family: inherit;
+
+    font-size: var(--auth-fs-body);
+
+    /* Border-only field: no shadow, so depth reads purely from a
+       clean, well-defined border and its colour change on
+       hover/focus - a flatter, more professional filled look. */
+
+    /* No default outline - the border-colour change below on
+       :focus is the only focus indicator we want (native
+       browser/OS focus outlines are suppressed so a stray
+       system blue never shows through the teal theme). A
+       forced-colours fallback is added separately below. */
+    outline: none;
+
+    /* when the keyboard opens the browser scrolls the field
+       into view; keep it clear of the screen edge */
+    scroll-margin-block: 24px;
+
+    transition: border-color .18s ease;
+}
+
+
+.auth-input::placeholder {
+
+    color: var(--auth-placeholder);
+
+    opacity: 1;
+}
+
+
+.auth-input:hover {
+
+    border-color: var(--auth-field-border-hover);
+}
+
+
+.auth-input:focus {
+
+    border-color: var(--auth-focus-color);
+
+    outline: none;
+}
+
+
+/* Forced-colours (Windows High Contrast) only: the ring above is
+   suppressed there, so give focus an explicit system-colour
+   outline instead. Invisible in ordinary light/dark mode. */
+
+@media (forced-colors: active) {
+
+    .auth-input:focus {
+
+        outline: 2px solid Highlight;
+
+        outline-offset: 2px;
+    }
+
+}
+
+
+.auth-input[aria-invalid="true"] {
+
+    border-color: var(--color-danger);
+}
+
+
+.auth-input[aria-invalid="true"]:focus {
+
+    border-color: var(--color-danger);
+}
+
+
+/* ---------- Leading field icon + password show/hide ----------
+   One wrapper handles both: a leading icon (Admin-login style,
+   person / envelope / phone / lock) and, on password fields
+   only, the trailing show/hide toggle. Padding for each is
+   added only when that part is actually present, via :has(). */
+
+.auth-input-wrap {
+
+    position: relative;
+}
+
+
+.auth-input-wrap:has(.auth-toggle) .auth-input {
+
+    /* room for the toggle so text never runs under it */
+    padding-right: 50px;
+}
+
+
+.auth-input-icon {
+
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    width: 16px;
+    height: 16px;
+
+    transform: translateY(-50%);
+
+    display: flex;
+
+    color: var(--auth-placeholder);
+
+    pointer-events: none;
+
+    transition: color .18s ease;
+}
+
+
+.auth-input-icon svg {
+
+    width: 16px;
+    height: 16px;
+
+    display: block;
+}
+
+
+.auth-input-wrap:has(.auth-input-icon) .auth-input {
+
+    padding-left: 42px;
+}
+
+
+.auth-input-wrap:focus-within .auth-input-icon {
+
+    color: var(--color-primary);
+}
+
+
+.auth-toggle {
+
+    position: absolute;
+
+    top: 50%;
+    right: 4px;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform: translateY(-50%);
+
+    border: 0;
+
+    border-radius: 8px;
+
+    background: transparent;
+
+    color: var(--color-muted);
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        color .18s ease;
+}
+
+
+.auth-toggle::before {
+
+    content: "";
+
+    width: 20px;
+    height: 20px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--auth-icon-eye) center / contain no-repeat;
+    mask: var(--auth-icon-eye) center / contain no-repeat;
+}
+
+
+.auth-toggle[aria-pressed="true"]::before {
+
+    -webkit-mask-image: var(--auth-icon-eye-off);
+    mask-image: var(--auth-icon-eye-off);
+}
+
+
+.auth-toggle:hover {
+
+    background: var(--color-section);
+
+    color: var(--color-primary);
+}
+
+
+.auth-toggle:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 1px;
+}
+
+
+/* ---------- Helper + error text ---------- */
+
+.auth-hint {
+
+    color: var(--color-muted);
+
+    font-size: var(--auth-fs-small);
+
+    line-height: 1.5;
+}
+
+
+/* Django renders password rules as a <ul> */
+
+.auth-hint ul {
+
+    display: grid;
+
+    gap: 2px;
+
+    padding-left: 18px;
+}
+
+
+.auth-field-error {
+
+    display: grid;
+
+    gap: 2px;
+
+    color: var(--color-danger);
+
+    font-size: var(--auth-fs-small);
+
+    font-weight: 600;
+
+    line-height: 1.45;
+
+    list-style: none;
+}
+
+
+/* =========================================================
+   9. CHECKBOXES + CONSENT
+   ========================================================= */
+
+.auth-check {
+
+    /* containing block for .sr-only text inside the label */
+    position: relative;
+
+    width: fit-content;
+
+    max-width: 100%;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    min-height: 24px;
+
+    color: var(--color-text);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    cursor: pointer;
+}
+
+
+.auth-check input[type="checkbox"] {
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+    accent-color: var(--color-primary);
+
+    cursor: pointer;
+}
+
+
+/* the sentence wraps freely */
+
+.auth-check > span {
+
+    min-width: 0;
+
+    overflow-wrap: break-word;
+}
+
+
+/* Required Terms & Privacy consent (register). Checked again
+   on the server in views.register(). */
+
+.auth-consent {
+
+    padding: 14px;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-background);
+
+    transition:
+        border-color .18s ease,
+        background-color .18s ease;
+}
+
+
+.auth-consent .auth-check {
+
+    width: auto;
+}
+
+
+.auth-consent.has-error {
+
+    border-color: var(--color-danger);
+
+    background: var(--color-danger-bg);
+}
+
+
+.auth-consent .auth-field-error {
+
+    margin: 8px 0 0 28px;
+}
+
+
+/* =========================================================
+   9b. GOOGLE PROFILE COMPLETION ("Complete Your NDMS Profile")
+   Used only on google_signup_confirm.html. Two pieces:
+
+     .google-verified   the "Google Account Verified" card. Plain
+                        read-only text (not an input) showing the
+                        email from the verified Google identity.
+     .google-field-msg  one inline status line under the username:
+                        the server's error, or the live "Username
+                        available" hint from google-signup.js.
+
+   Colour comes only from the shared tokens (success for the
+   verified tick / "available", danger for errors). Icon + text
+   always accompany colour, so state never relies on colour
+   alone.
+   ========================================================= */
+
+.auth-page--google-confirm {
+
+    --gsu-icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5.5'/%3E%3Cpath d='M12 16.5h.01'/%3E%3C/svg%3E");
+
+    --gsu-icon-x: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M9 9l6 6M15 9l-6 6'/%3E%3C/svg%3E");
+
+    --gsu-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M8 12.5l3 3 5-6'/%3E%3C/svg%3E");
+}
+
+
+.google-verified {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    /* the form below already has its own gap; this is the space
+       between the card and the first field */
+    margin-bottom: 20px;
+
+    padding: 14px 16px;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-background);
+}
+
+
+.google-verified__icon {
+
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--color-success-bg);
+
+    color: var(--color-success-text);
+
+    box-shadow: inset 0 0 0 1px var(--color-success-border);
+}
+
+
+.google-verified__icon svg {
+
+    width: 18px;
+    height: 18px;
+}
+
+
+/* min-width: 0 lets the email wrap inside the card instead of
+   pushing it wider than the viewport on a phone. */
+
+.google-verified__body {
+
+    min-width: 0;
+}
+
+
+.google-verified__title {
+
+    color: var(--color-success-text);
+
+    font-size: var(--auth-fs-small);
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+.google-verified__email {
+
+    margin-top: 2px;
+
+    color: var(--color-text);
+
+    font-size: var(--auth-fs-body);
+
+    font-weight: 600;
+
+    line-height: 1.4;
+
+    /* long addresses break anywhere rather than overflow */
+    overflow-wrap: anywhere;
+}
+
+
+/* ---------- Username status line ---------- */
+
+.google-field-msg {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 6px;
+
+    font-size: var(--auth-fs-small);
+
+    font-weight: 600;
+
+    line-height: 1.45;
+}
+
+
+/* Nothing to say -> no gap in the field's layout. */
+
+.google-field-msg:empty {
+
+    display: none;
+}
+
+
+.google-field-msg__icon {
+
+    width: 16px;
+    height: 16px;
+
+    flex: 0 0 16px;
+
+    margin-top: 2px;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--gsu-icon-alert) center / contain no-repeat;
+    mask: var(--gsu-icon-alert) center / contain no-repeat;
+}
+
+
+.google-field-msg__text {
+
+    min-width: 0;
+
+    overflow-wrap: anywhere;
+}
+
+
+.google-field-msg--error {
+
+    color: var(--color-danger);
+}
+
+
+.google-field-msg--ok {
+
+    color: var(--color-success-text);
+}
+
+
+.google-field-msg--ok .google-field-msg__icon {
+
+    -webkit-mask-image: var(--gsu-icon-check);
+    mask-image: var(--gsu-icon-check);
+}
+
+
+/* "Checking availability..." carries no icon (the spinner in the
+   box already says it), and reads quieter than a result. */
+
+.google-field-msg--checking {
+
+    color: var(--color-muted);
+
+    font-weight: 500;
+}
+
+
+.google-field-msg--checking .google-field-msg__icon {
+
+    display: none;
+}
+
+
+/* ---------- Indicator inside the username box ----------
+   Spinner while checking, tick when free, cross when not.
+   Purely visual (aria-hidden); the text line below carries the
+   same message for screen readers. */
+
+.auth-page--google-confirm .auth-input-wrap:has(.google-input-state) .auth-input {
+
+    padding-right: 46px;
+}
+
+
+.google-input-state {
+
+    position: absolute;
+
+    top: 50%;
+    right: 14px;
+
+    width: 20px;
+    height: 20px;
+
+    transform: translateY(-50%);
+
+    display: none;
+
+    pointer-events: none;
+}
+
+
+.auth-input-wrap[data-state="checking"] .google-input-state,
+.auth-input-wrap[data-state="ok"] .google-input-state,
+.auth-input-wrap[data-state="error"] .google-input-state {
+
+    display: block;
+}
+
+
+.auth-input-wrap[data-state="checking"] .google-input-state {
+
+    box-sizing: border-box;
+
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-muted);
+
+    border-radius: 50%;
+
+    animation: gsu-spin .7s linear infinite;
+}
+
+
+.auth-input-wrap[data-state="ok"] .google-input-state {
+
+    background-color: var(--color-success-text);
+
+    -webkit-mask: var(--gsu-icon-check) center / contain no-repeat;
+    mask: var(--gsu-icon-check) center / contain no-repeat;
+}
+
+
+.auth-input-wrap[data-state="error"] .google-input-state {
+
+    background-color: var(--color-danger);
+
+    -webkit-mask: var(--gsu-icon-x) center / contain no-repeat;
+    mask: var(--gsu-icon-x) center / contain no-repeat;
+}
+
+
+.auth-input-wrap[data-state="ok"] .auth-input {
+
+    border-color: var(--color-success-text);
+}
+
+
+@keyframes gsu-spin {
+
+    to { transform: translateY(-50%) rotate(360deg); }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-input-wrap[data-state="checking"] .google-input-state {
+
+        animation: none;
+    }
+}
+
+
+/* ---------- Terms & Privacy: one compact line ----------
+   Register keeps its boxed panel. Here the box is dropped and the
+   text set a little smaller so the whole sentence fits on a single
+   line at desktop/tablet widths; on a narrow phone it still wraps
+   rather than overflow. The red error box returns when the
+   server rejects the form. */
+
+.auth-page--google-confirm .auth-consent {
+
+    padding: 0;
+
+    border-color: transparent;
+
+    background: none;
+}
+
+
+.auth-page--google-confirm .auth-consent.has-error {
+
+    padding: 10px 12px;
+
+    border-color: var(--color-danger);
+
+    background: var(--color-danger-bg);
+}
+
+
+.auth-page--google-confirm .auth-consent .auth-check {
+
+    font-size: 13px;
+
+    gap: 8px;
+}
+
+
+/* Terms error sits under the checkbox text, like register's. */
+
+.auth-consent .google-field-msg {
+
+    margin: 8px 0 0 28px;
+}
+
+
+/* =========================================================
+   10. BUTTONS
+   One primary button for every auth action. Works on <button>
+   and <a>. Add .auth-btn--arrow for the trailing arrow.
+   ========================================================= */
+
+.auth-btn {
+
+    width: 100%;
+
+    /* Same as the Admin login's .login-button */
+    min-height: 44px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 0 20px;
+
+    border: 1px solid transparent;
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-primary);
+
+    color: var(--color-white);
+
+    font-family: inherit;
+
+    font-size: var(--auth-fs-body);
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.auth-btn:hover {
+
+    background: var(--color-primary-dark);
+}
+
+
+.auth-btn:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 3px;
+}
+
+
+.auth-btn:disabled,
+.auth-btn[aria-disabled="true"] {
+
+    opacity: .6;
+
+    cursor: not-allowed;
+}
+
+
+.auth-btn--arrow::after {
+
+    content: "";
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--auth-icon-arrow) center / contain no-repeat;
+    mask: var(--auth-icon-arrow) center / contain no-repeat;
+
+    transition: transform .18s ease;
+}
+
+
+.auth-btn--arrow:hover::after {
+
+    transform: translateX(2px);
+}
+
+
+/* Busy state (login submits with fetch; see auth.js) */
+
+.auth-btn.is-loading {
+
+    pointer-events: none;
+
+    opacity: .85;
+}
+
+
+.auth-btn.is-loading::after {
+
+    content: "";
+
+    width: 16px;
+    height: 16px;
+
+    flex-shrink: 0;
+
+    border: 2px solid color-mix(in srgb, currentColor 30%, transparent);
+
+    border-top-color: currentColor;
+
+    border-radius: 50%;
+
+    background: none;
+
+    -webkit-mask: none;
+    mask: none;
+
+    transform: none;
+
+    animation: auth-spin .7s linear infinite;
+}
+
+
+@keyframes auth-spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   10b. "OR" DIVIDER + SOCIAL BUTTON (GOOGLE)
+   Sits between the local sign-in/register form and
+   "Continue with Google" on login.html / register.html /
+   google_signup_confirm.html (see 10c below for login.html's
+   single-button row).
+   ========================================================= */
+
+.auth-divider {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    margin: 18px 0;
+
+    color: var(--color-muted);
+
+    font-size: var(--auth-fs-small, 13px);
+
+    font-weight: 600;
+
+    text-transform: uppercase;
+
+    letter-spacing: .04em;
+}
+
+
+.auth-divider::before,
+.auth-divider::after {
+
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background: var(--color-border);
+}
+
+
+/* Secondary button style: white surface, bordered -- visually
+   distinct from the solid-primary .auth-btn used for Sign In /
+   Create Account, so Google auth reads as a separate path rather
+   than NDMS's own login. */
+
+.auth-btn--google {
+
+    width: 100%;
+
+    min-height: 44px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 0 20px;
+
+    border: 1px solid var(--color-border);
+
+    border-radius: var(--auth-radius);
+
+    background: var(--color-white);
+
+    color: var(--color-text);
+
+    font-family: inherit;
+
+    font-size: var(--auth-fs-body);
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    text-align: center;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color .18s ease,
+        border-color .18s ease,
+        box-shadow .18s ease;
+}
+
+
+.auth-btn--google:hover {
+
+    background: var(--color-section);
+
+    border-color: color-mix(in srgb, var(--color-text) 25%, var(--color-border));
+}
+
+
+.auth-btn--google:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 3px;
+}
+
+
+.auth-btn--google__icon {
+
+    width: 18px;
+    height: 18px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   10c. SOCIAL SIGN-IN ROW (login.html)
+   Single full-width "Continue with Google" button. The prefix
+   span is always shown now that there is only one button in
+   the row (no side-by-side space constraint to hide it for).
+   ========================================================= */
+
+.auth-social {
+
+    display: grid;
+
+    grid-template-columns: minmax(0, 1fr);
+
+    gap: 12px;
+}
+
+
+.auth-social .auth-btn--google {
+
+    min-width: 0;
+}
+
+
+.auth-social__prefix {
+
+    display: inline;
+}
+
+
+/* =========================================================
+   11. LINKS + SWITCH LINE
+   ========================================================= */
+
+.auth-link {
+
+    color: var(--color-primary);
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    border-radius: 3px;
+}
+
+
+.auth-link:hover {
+
+    color: var(--color-primary-dark);
+
+    text-decoration: underline;
+}
+
+
+.auth-link:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 2px;
+}
+
+
+/* Same look as .auth-link, for the rare case (e.g. "Back to sign in"
+   on google_signup_confirm.html) where it has to be a
+   <button> -- inside a <form>, submitting a named value -- rather
+   than an <a>. Strips native button chrome so it reads identically
+   to a text link, centered under the primary action. */
+
+.auth-link--button {
+
+    display: block;
+
+    width: 100%;
+
+    margin-top: 14px;
+
+    border: none;
+
+    background: none;
+
+    font: inherit;
+
+    text-align: center;
+
+    cursor: pointer;
+}
+
+
+/* Links inside running text are always underlined */
+
+.auth-check .auth-link {
+
+    font-weight: 600;
+}
+
+
+/* "Forgot password?" under the password field */
+
+.auth-field-aside {
+
+    display: flex;
+
+    justify-content: flex-end;
+}
+
+
+.auth-field-aside .auth-link {
+
+    font-size: var(--auth-fs-small);
+}
+
+
+/* "Don't have an account?  Create an account".
+   Wraps onto two centred lines when it cannot fit on one. */
+
+.auth-switch {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 2px 6px;
+
+    margin-top: 20px;
+
+    padding-top: 16px;
+
+    border-top: 1px solid var(--color-border);
+
+    color: var(--color-muted);
+
+    font-size: 14px;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   12. BACK LINK
+   ========================================================= */
+
+.auth-back {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--color-muted);
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    border-radius: 3px;
+
+    transition: color .18s ease;
+}
+
+
+.auth-back::before {
+
+    content: "";
+
+    width: 15px;
+    height: 15px;
+
+    flex-shrink: 0;
+
+    background-color: currentColor;
+
+    -webkit-mask: var(--auth-icon-arrow) center / contain no-repeat;
+    mask: var(--auth-icon-arrow) center / contain no-repeat;
+
+    transform: scaleX(-1);
+
+    transition: transform .18s ease;
+}
+
+
+.auth-back:hover {
+
+    color: var(--color-primary);
+}
+
+
+.auth-back:hover::before {
+
+    transform: scaleX(-1) translateX(2px);
+}
+
+
+.auth-back:focus-visible {
+
+    outline: 2px solid var(--color-primary);
+
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   13. RESPONSIVE
+   ========================================================= */
+
+/* Phones + touch: 16px stops iOS Safari zooming on focus and
+   every tap target is at least 40-44px. */
+
+@media (max-width: 900px), (pointer: coarse) {
+
+    .auth-input {
+
+        font-size: 16px;
+    }
+
+    .auth-toggle {
+
+        width: 44px;
+        height: 44px;
+
+        right: 2px;
+    }
+
+    .auth-input-wrap .auth-input {
+
+        padding-right: 52px;
+    }
+
+    .auth-check {
+
+        min-height: 32px;
+    }
+
+    .auth-check input[type="checkbox"] {
+
+        width: 20px;
+        height: 20px;
+
+        margin-top: 1px;
+    }
+
+    .auth-field-aside .auth-link,
+    .auth-switch .auth-link,
+    .auth-form-row .auth-link,
+    .auth-back {
+
+        display: inline-flex;
+
+        align-items: center;
+
+        min-height: 40px;
+    }
+}
+
+
+/* One column only where width is genuinely limited */
+
+@media (max-width: 560px) {
+
+    .auth-main {
+
+        padding: 16px 12px;
+    }
+
+    .auth-row {
+
+        grid-template-columns: minmax(0, 1fr);
+
+        gap: 20px;
+    }
+
+    .auth-card {
+
+        padding: 24px 18px 20px;
+
+        border-radius: 16px;
+    }
+
+    .auth-heading {
+
+        margin-bottom: 20px;
+    }
+
+    .auth-logo img {
+
+        height: 38px;
+    }
+}
+
+
+/* Very small phones (320px) */
+
+@media (max-width: 359px) {
+
+    .auth-main {
+
+        padding: 12px 8px;
+    }
+
+    .auth-card {
+
+        padding: 20px 14px 16px;
+    }
+}
+
+
+/* =========================================================
+   Login "remember me" + "forgot password" row
+   ========================================================= */
+
+.auth-form-row {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 8px 12px;
+}
+
+
+/* =========================================================
+   14. REDUCED MOTION
+   Motion is limited to a short card entrance and small
+   hover / focus transitions.
+   ========================================================= */
+
+@media (prefers-reduced-motion: no-preference) {
+
+    .auth-card {
+
+        animation: auth-card-in .3s ease-out both;
+    }
+
+    .auth-btn:hover {
+
+        transform: translateY(-1px);
+    }
+
+    @keyframes auth-card-in {
+
+        from {
+
+            opacity: 0;
+
+            transform: translateY(8px);
+        }
+
+        to {
+
+            opacity: 1;
+
+            transform: none;
+        }
+    }
+}
+
+
+.auth-btn:hover {
+
+    box-shadow: var(--shadow-md);
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    .auth-input,
+    .auth-toggle,
+    .auth-btn,
+    .auth-btn--arrow::after,
+    .auth-consent {
+
+        transition: none;
+    }
+
+    .auth-btn--arrow:hover::after {
+
+        transform: none;
+    }
+
+    .auth-btn.is-loading::after {
+
+        animation-duration: 1.6s;
+    }
+}
+
+/* =========================================================
+   LOGIN FINALISATION
+   - .auth-sr-only: visually hidden but available to screen
+     readers (the login page keeps a real <h1> without showing
+     redundant copy).
+   - Login card is compact and its inputs use a flat 1px border
+     with no shadow, only a clear focus ring.
+   Scoped to body.auth-page--login so register / forgot-password
+   / reset pages are not affected.
+   ========================================================= */
+
+.auth-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+body.auth-page--login .auth-card {
+    max-width: 400px;
+    padding: 24px 28px 20px;
+}
+
+body.auth-page--login .auth-logo {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+body.auth-page--login .auth-input {
+    box-shadow: none;
+}
+
+body.auth-page--login .auth-input:focus-visible,
+body.auth-page--login .auth-input:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--auth-focus-color) 25%, transparent);
+}
+
+body.auth-page--login .auth-btn:focus-visible,
+body.auth-page--login .auth-btn--google:focus-visible,
+body.auth-page--login .auth-link:focus-visible {
+    outline: 2px solid var(--auth-focus-color);
+    outline-offset: 2px;
+}

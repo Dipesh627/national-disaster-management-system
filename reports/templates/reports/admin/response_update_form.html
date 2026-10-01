@@ -1,0 +1,305 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ form_title }} | NDMS Administration
+{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-response-updates.css' %}"
+>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Response Updates</span>
+<span class="ru-breadcrumb-divider">/</span>
+<span>{{ form_mode|title }}</span>
+{% endblock %}
+
+{% block page_title %}
+{{ form_title }}
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard ru-page">
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
+    <header class="ru-page-header ru-form-header">
+
+        <div class="ru-page-header-copy">
+
+            <span class="ru-kicker">
+                DISASTER MANAGEMENT
+            </span>
+
+            <h1>{{ form_title }}</h1>
+
+            <p>
+                {% if form_mode == 'edit' %}
+                    Update this response update's information.
+                {% else %}
+                    Record a new agency response action for a disaster.
+                {% endif %}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% if next_url %}{{ next_url }}{% else %}{% url 'admin_response_updates' %}{% endif %}"
+            class="ru-secondary-button"
+        >
+            <svg
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+            >
+                <path d="M19 12H5"></path>
+                <path d="m12 19-7-7 7-7"></path>
+            </svg>
+
+            <span>Back</span>
+        </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         COMPACT FORM
+         ===================================================== -->
+    <section class="ru-form-shell">
+
+        <form
+            method="post"
+            class="ru-form"
+            novalidate
+        >
+
+            {% csrf_token %}
+
+            {% if next_url %}
+                <input type="hidden" name="next" value="{{ next_url }}">
+            {% endif %}
+
+
+            <!-- RESPONSE UPDATE -->
+            <div class="ru-form-section">
+
+                <div class="ru-form-section-heading">
+
+                    <span class="ru-section-kicker">
+                        RESPONSE UPDATE
+                    </span>
+
+                    <h2>
+                        Response information
+                    </h2>
+
+                </div>
+
+
+                <!-- DISASTER -->
+                <div class="ru-field">
+
+                    <label
+                        for="{{ form.disaster.id_for_label }}"
+                        class="ru-field-label"
+                    >
+                        Disaster
+                    </label>
+
+                    {{ form.disaster }}
+
+                    {% if form.disaster.errors %}
+
+                        <div
+                            class="ru-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.disaster.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- EMERGENCY AGENCY -->
+                <div class="ru-field">
+
+                    <label
+                        for="{{ form.agency.id_for_label }}"
+                        class="ru-field-label"
+                    >
+                        Emergency Agency
+                    </label>
+
+                    {{ form.agency }}
+
+                    {% if form.agency.errors %}
+
+                        <div
+                            class="ru-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.agency.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- UPDATE DETAILS -->
+                <div class="ru-field">
+
+                    <label
+                        for="{{ form.update_details.id_for_label }}"
+                        class="ru-field-label"
+                    >
+                        Update Details
+                    </label>
+
+                    {{ form.update_details }}
+
+                    {% if form.update_details.errors %}
+
+                        <div
+                            class="ru-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.update_details.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- RESPONSE STATUS -->
+                <div class="ru-field">
+
+                    <label
+                        for="{{ form.response_status.id_for_label }}"
+                        class="ru-field-label"
+                    >
+                        Response Status
+                    </label>
+
+                    {{ form.response_status }}
+
+                    {% if form.response_status.errors %}
+
+                        <div
+                            class="ru-field-error"
+                            role="alert"
+                        >
+                            {% for error in form.response_status.errors %}
+                                <span>{{ error }}</span>
+                            {% endfor %}
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM ERRORS -->
+            {% if form.non_field_errors %}
+
+                <div
+                    class="ru-form-error"
+                    role="alert"
+                >
+                    {% for error in form.non_field_errors %}
+                        <span>{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+            {% endif %}
+
+
+            <!-- ACTION FOOTER -->
+            <div class="ru-form-actions">
+
+                <a
+                    href="{% if next_url %}{{ next_url }}{% else %}{% url 'admin_response_updates' %}{% endif %}"
+                    class="ru-form-cancel"
+                >
+                    Cancel
+                </a>
+
+
+                <button
+                    type="submit"
+                    class="ru-primary-button ru-form-submit"
+                >
+
+                    {% if form_mode == 'edit' %}
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                        >
+                            <path d="M5 4h11l3 3v13H5z"></path>
+                            <path d="M8 4v6h8V4"></path>
+                            <path d="M8 20v-6h8v6"></path>
+                        </svg>
+
+                        <span>Save changes</span>
+
+                    {% else %}
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                            stroke-linecap="round"
+                        >
+                            <path d="M12 5v14"></path>
+                            <path d="M5 12h14"></path>
+                        </svg>
+
+                        <span>Save Update</span>
+
+                    {% endif %}
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

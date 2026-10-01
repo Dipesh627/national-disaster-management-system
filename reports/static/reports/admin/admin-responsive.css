@@ -1,0 +1,71 @@
+/* =========================================================
+   NDMS ADMIN - SHARED RESPONSIVE BEHAVIOUR
+
+   Loaded for EVERY Admin page by admin/base.html, after
+   dashboard-shell.css and admin-components.css and before the
+   page stylesheets. It holds only the mobile/tablet behaviour that
+   several pages implemented identically. Page-specific responsive
+   rules (different layouts, extra fields, unique breakpoints) stay
+   in each page's own stylesheet.
+
+   Ordering rule: a component's base rule (admin-components.css)
+   and its responsive rule (this file) must be moved out of a page
+   stylesheet TOGETHER. If only one moves, the page's own later
+   base rule would override the shared responsive rule at equal
+   specificity.
+   ========================================================= */
+
+
+/* =========================================================
+   TABLET: <= 820px
+   ========================================================= */
+
+@media (max-width: 820px) {
+
+    /* Page header: align to the top once the title wraps
+       (bases: admin-components.css, Page header). Must stay ahead of
+       the <=640px block below -- that one overrides it. */
+    .dt-page-header,
+    .ea-page-header {
+        align-items: flex-start;
+    }
+}
+
+
+/* =========================================================
+   MOBILE: <= 640px
+   ========================================================= */
+
+@media (max-width: 640px) {
+
+    /* Filter form: stack the search field, selects and buttons
+       (bases: admin-components.css, Filter form). */
+    .dt-filter-form,
+    .ds-filter-form,
+    .ea-filter-form,
+    .fb-filter-form,
+    .nt-filter-form,
+    .ru-filter-form,
+    .sr-filter-form {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    /* Page header: title above the action button
+       (bases: admin-components.css, Page header). */
+    .dt-page-header,
+    .ea-page-header,
+    .ru-page-header {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 13px;
+    }
+
+    .feedback-header,
+    .nt-page-header,
+    .support-header {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+    }
+}

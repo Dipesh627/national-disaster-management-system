@@ -1,0 +1,119 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS - CITIZEN AUTH SHELL (shared base template)
+=========================================================
+Every full-screen Citizen auth page extends this:
+
+    login, register, google_signup_confirm, forgot_password,
+    password_reset_sent, password_reset_confirm,
+    password_reset_complete
+
+Layout
+  Full-screen disaster photo + dark navy overlay (both drawn by
+  auth.css on body.auth-page) with ONE centred card holding the
+  NDMS logo, the page content and a "Back to home" link.
+
+Blocks
+  title          the <title>
+  card_modifier  optional extra class for the card, e.g. " auth-card--wide"
+  body_class     optional extra class(es) for <body>, e.g. " auth-page--register"
+  head_extra     optional extra stylesheet / script tags
+  content        everything inside the card, under the logo
+
+Styles:  reports/auth.css
+Script:  reports/js/auth.js  (password show/hide + login fetch flow)
+
+The Admin login is a separate page and does not use this.
+=========================================================
+{% endcomment %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}NDMS{% endblock %}</title>
+
+    <link rel="stylesheet"
+          href="{% static 'reports/auth.css' %}">
+
+    {% block head_extra %}{% endblock %}
+
+    {% include 'reports/partials/theme_head.html' %}
+
+    <script src="{% static 'reports/js/auth.js' %}"
+            defer></script>
+</head>
+
+
+<body class="auth-page{% block body_class %}{% endblock %}">
+
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<div class="auth-shell">
+
+    <main class="auth-main"
+          id="main-content"
+          tabindex="-1">
+
+        <div class="auth-card{% block card_modifier %}{% endblock %}">
+
+            <!-- Logo intentionally links to the current page
+                 (request.path), not home: clicking it just reloads
+                 whatever auth page you are on (login, register, the
+                 Google confirm step, ...) instead of leaving the
+                 flow. "Back to home" below is the actual exit. -->
+
+            <a href="{{ request.path }}"
+               class="auth-logo"
+               aria-label="National Disaster Management System (NDMS)">
+
+                <img
+                    src="{% static 'reports/branding/ndms-logo.png' %}"
+                    alt=""
+                    width="154"
+                    height="44"
+                >
+
+            </a>
+
+            {% if messages %}
+            {% comment %}
+            Django's messages framework -- used for anything set
+            across a redirect (e.g. google_login/google_callback
+            in reports/views.py: "Google sign-in was cancelled",
+            a configuration error, ...). Page-local validation
+            errors (login.html, register.html) still use their
+            own "if error" block and are unaffected.
+            {% endcomment %}
+            {% for message in messages %}
+            <div class="auth-alert{% if message.tags == 'info' %} auth-alert--info{% endif %}" role="alert">
+                <span class="auth-alert__icon" aria-hidden="true">{% if message.tags == 'info' %}i{% else %}!{% endif %}</span>
+                <span class="auth-alert__text">{{ message }}</span>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
+
+            <p class="auth-card__footer">
+                <a href="{% url 'home' %}"
+                   class="auth-back">
+                    Back to home
+                </a>
+            </p>
+
+        </div>
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

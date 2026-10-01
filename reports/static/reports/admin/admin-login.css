@@ -1,0 +1,1519 @@
+/* =========================================================
+   NDMS ADMIN LOGIN
+   Clean Enterprise + Existing NDMS Disaster Image
+   ========================================================= */
+
+/* Colour tokens come from the Citizen "Sentinel Teal" design system
+   (ndms-theme.css, loaded by login.html through partials/theme_head.html)
+   so the Admin sign-in page is themed like every other NDMS page. Only
+   names that system does not define are declared here, all derived from
+   it. */
+:root {
+
+    --navy-deep: var(--color-navy-deep);
+
+    --placeholder: color-mix(in srgb, var(--color-muted) 72%, var(--color-white));
+    --light-muted: var(--placeholder);
+    --border-hover: var(--c-border-9);
+
+    /* Same radius as the Citizen auth pages (auth.css --auth-radius) */
+    --radius: 10px;
+
+    --transition: .18s ease;
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+html {
+    min-height: 100%;
+}
+
+
+body {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    margin: 0;
+
+    overflow-x: hidden;
+
+    background:
+        var(--color-background);
+
+    color:
+        var(--color-text);
+
+    /* Same stack as the Citizen auth pages (auth.css body.auth-page).
+       "Inter" was declared here previously but never loaded anywhere
+       in the project, so it silently fell back to the OS font and
+       rendered differently per platform. */
+    font-family:
+        "Segoe UI",
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    -webkit-font-smoothing: antialiased;
+
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+
+button,
+input {
+    font: inherit;
+}
+
+
+button {
+    border: 0;
+}
+
+
+svg {
+    display: block;
+}
+
+
+::selection {
+
+    background:
+        color-mix(in srgb, var(--color-primary) 14%, transparent);
+
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+.admin-login-page {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+}
+
+
+.admin-login-shell {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: grid;
+
+    grid-template-columns:
+        43% 57%;
+
+}
+
+
+/* =========================================================
+   LEFT PANEL
+   ========================================================= */
+
+.admin-brand-panel {
+
+    position: relative;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    background:
+        var(--navy-deep);
+
+    color:
+        var(--on-dark);
+
+    /* Soft separation from the light right panel instead of a hard
+       flat edge - reads as one composed layout rather than two
+       stacked rectangles. */
+    box-shadow:
+        10px 0 30px -12px
+        color-mix(in srgb, var(--color-navy-deep) 35%, transparent);
+
+}
+
+
+/* =========================================================
+   EXISTING ZIP IMAGE
+   reports/static/reports/images/disaster-about.jpg
+   ========================================================= */
+
+.admin-brand-image {
+
+    position: absolute;
+
+    z-index: -3;
+
+    inset: 0;
+
+    /* Relative to this stylesheet (reports/static/reports/admin/),
+       same as auth.css's reference to the same photograph. Resolves
+       correctly regardless of STATIC_URL / static storage backend,
+       unlike a hardcoded "/static/..." path. */
+    background-image:
+        url("../images/disaster-about.jpg");
+
+    background-size:
+        cover;
+
+    background-position:
+        center center;
+
+    transform:
+        scale(1.015);
+
+}
+
+
+/* =========================================================
+   IMAGE OVERLAY
+   Keeps existing photo visible but makes content readable
+   ========================================================= */
+
+.admin-brand-overlay {
+
+    position: absolute;
+
+    z-index: -2;
+
+    inset: 0;
+
+    background:
+
+        linear-gradient(
+            90deg,
+            color-mix(in srgb, var(--color-navy-deep) 97%, transparent) 0%,
+            color-mix(in srgb, var(--color-navy-deep) 86%, transparent) 48%,
+            color-mix(in srgb, var(--color-navy-deep) 67%, transparent) 100%
+        ),
+
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--color-navy-deep) 34%, transparent) 0%,
+            color-mix(in srgb, var(--color-navy-deep) 12%, transparent) 48%,
+            color-mix(in srgb, var(--color-navy-deep) 68%, transparent) 100%
+        );
+
+}
+
+
+/* =========================================================
+   VERY SUBTLE IMAGE DETAIL
+   ========================================================= */
+
+.admin-brand-panel::after {
+
+    content: "";
+
+    position: absolute;
+
+    z-index: -1;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    height: 34%;
+
+    background:
+        linear-gradient(
+            to top,
+            color-mix(in srgb, var(--color-navy-deep) 45%, transparent),
+            transparent
+        );
+
+    pointer-events: none;
+
+}
+
+
+/* =========================================================
+   LEFT CONTENT
+   ========================================================= */
+
+.admin-brand-content {
+
+    position: relative;
+
+    z-index: 2;
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding:
+        46px
+        clamp(42px, 6vw, 82px);
+
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.admin-brand {
+
+    width: fit-content;
+
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    gap: 10px;
+
+}
+
+
+.admin-brand:focus-visible {
+
+    outline:
+        2px solid
+        rgba(255,255,255,.65);
+
+    outline-offset: 6px;
+
+}
+
+
+/* Citizen NDMS logo (same asset as the Citizen auth brand panel). */
+.admin-logo-image {
+
+    display: block;
+
+    height: 42px;
+    width: auto;
+
+    object-fit: contain;
+
+}
+
+
+.admin-brand-text {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+
+}
+
+
+
+
+.admin-brand-text small {
+
+    color:
+        var(--on-dark-muted);
+
+    font-size: 11px;
+
+    line-height: 1.3;
+
+}
+
+
+/* =========================================================
+   BRAND MESSAGE
+   ========================================================= */
+
+.admin-brand-message {
+
+    max-width: 510px;
+
+    margin-top: auto;
+
+    margin-bottom: auto;
+
+    padding:
+        70px 0;
+
+}
+
+
+.admin-brand-kicker {
+
+    display: block;
+
+    margin-bottom: 18px;
+
+    color:
+        rgba(255,255,255,.50);
+
+    /* Same scale as Citizen's .auth-eyebrow (11px) */
+    font-size: 11px;
+
+    font-weight: 750;
+
+    letter-spacing: 1.35px;
+
+}
+
+
+.admin-brand-message h1 {
+
+    margin: 0;
+
+    color:
+        var(--on-dark);
+
+    /* Reined in from clamp(35px, 4vw, 50px): matches the target
+       30-36px main-title scale instead of dwarfing Citizen Login's
+       28-34px heading. */
+    font-size:
+        clamp(30px, 3.4vw, 36px);
+
+    font-weight: 720;
+
+    line-height: 1.08;
+
+    letter-spacing: -.045em;
+
+    text-shadow:
+        0 2px 18px
+        color-mix(in srgb, var(--color-navy-deep) 12%, transparent);
+
+}
+
+
+.admin-brand-message h1 span {
+
+    color:
+        rgba(255,255,255,.70);
+
+}
+
+
+.admin-brand-message p {
+
+    max-width: 450px;
+
+    margin:
+        23px 0 0;
+
+    color:
+        rgba(255,255,255,.55);
+
+    font-size: 15px;
+
+    line-height: 1.75;
+
+}
+
+
+/* =========================================================
+   LEFT FOOTER
+   ========================================================= */
+
+.admin-brand-footer {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color:
+        rgba(255,255,255,.40);
+
+    font-size: 12px;
+
+}
+
+
+.brand-footer-dot {
+
+    width: 6px;
+    height: 6px;
+
+    flex: 0 0 6px;
+
+    border-radius: 50%;
+
+    background:
+        var(--color-success);
+
+    box-shadow:
+        0 0 0 3px
+        color-mix(in srgb, var(--color-success) 10%, transparent);
+
+}
+
+
+/* =========================================================
+   RIGHT PANEL
+   ========================================================= */
+
+.admin-form-panel {
+
+    min-height: 100vh;
+    min-height: 100dvh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding:
+        48px 70px;
+
+    /* Off-white instead of flat white, so the form gets its own
+       elevated white card below rather than blending into the
+       panel background. */
+    background:
+        var(--color-background);
+
+}
+
+
+/* =========================================================
+   FORM CONTAINER
+   ========================================================= */
+
+.admin-form-container {
+
+    width: 100%;
+
+    max-width: 420px;
+
+    padding: 44px 40px;
+
+    border:
+        1px solid
+        var(--color-border);
+
+    border-radius: 20px;
+
+    background:
+        var(--color-white);
+
+    /* Elevated card look instead of the form floating directly on
+       the panel background - the main enterprise-login cue that
+       was missing on both desktop and mobile. */
+    box-shadow:
+        0 28px 60px -24px
+        color-mix(in srgb, var(--color-navy-deep) 24%, transparent),
+        0 2px 10px
+        color-mix(in srgb, var(--color-navy-deep) 5%, transparent);
+
+}
+
+
+/* =========================================================
+   MOBILE BRAND
+   ========================================================= */
+
+.mobile-brand {
+
+    display: none;
+
+}
+
+
+/* =========================================================
+   HEADING
+   ========================================================= */
+
+.login-heading {
+
+    margin-bottom: 26px;
+
+}
+
+
+.login-kicker {
+
+    display: block;
+
+    margin-bottom: 12px;
+
+    color:
+        var(--color-primary);
+
+    /* Same scale as Citizen's .auth-eyebrow (11px) */
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+
+}
+
+
+.login-heading h2 {
+
+    margin: 0;
+
+    color:
+        var(--heading);
+
+    /* Slightly reined in from 30px - a touch more compact on
+       both desktop and mobile without dropping back to the
+       original undersized 12px scale. */
+    font-size: 26px;
+
+    font-weight: 720;
+
+    line-height: 1.2;
+
+    letter-spacing: -.03em;
+
+}
+
+
+.login-heading p {
+
+    max-width: 350px;
+
+    margin:
+        9px 0 0;
+
+    color:
+        var(--color-muted);
+
+    /* Slightly reined in from 15px */
+    font-size: 14px;
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.login-error {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 9px;
+
+    margin-bottom: 20px;
+
+    padding:
+        10px 11px;
+
+    border:
+        1px solid
+        var(--color-danger-border);
+
+    border-radius:
+        var(--radius);
+
+    background:
+        var(--color-danger-bg);
+
+    color:
+        var(--color-danger-dark);
+
+    /* Same scale as Citizen's .auth-alert (14px) */
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1.5;
+
+}
+
+
+.error-icon {
+
+    width: 20px;
+    height: 20px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex: 0 0 20px;
+
+    border-radius: 50%;
+
+    background:
+        var(--color-danger);
+
+    color:
+        var(--color-white);
+
+    font-size: 12px;
+
+    font-weight: 800;
+
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.login-form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 16px;
+
+}
+
+
+.field {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+}
+
+
+.field label {
+
+    color:
+        var(--color-text);
+
+    /* Slightly reined in from 14px */
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.input-container {
+
+    position: relative;
+
+}
+
+
+.input-container input {
+
+    width: 100%;
+
+    /* Slightly reined in from 48px */
+    height: 44px;
+
+    padding:
+        0 42px;
+
+    border:
+        1px solid
+        var(--color-border);
+
+    border-radius:
+        var(--radius);
+
+    outline: none;
+
+    background:
+        var(--color-white);
+
+    color:
+        var(--heading);
+
+    font-family: inherit;
+
+    /* Slightly reined in from 15px. Mobile/touch still forces
+       16px via its own rule further down, to stop iOS Safari
+       zooming the page on focus - this only affects desktop/PC. */
+    font-size: 14px;
+
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition);
+
+}
+
+
+/* The password field also has a show/hide toggle on the right,
+   which is now a larger 40px touch target (see PASSWORD TOGGLE
+   below) - give it more clearance than the plain username field. */
+
+.input-container:has(.password-toggle) input {
+
+    padding-right: 54px;
+
+}
+
+
+.input-container input::placeholder {
+
+    color:
+        var(--placeholder);
+
+}
+
+
+.input-container input:hover {
+
+    border-color:
+        var(--border-hover);
+
+}
+
+
+.input-container input:focus {
+
+    border-color:
+        var(--color-primary);
+
+    box-shadow:
+        0 0 0 3px
+        color-mix(in srgb, var(--color-primary) 6%, transparent);
+
+}
+
+
+.input-icon {
+
+    position: absolute;
+
+    top: 50%;
+    left: 14px;
+
+    width: 16px;
+    height: 16px;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        var(--placeholder);
+
+    pointer-events: none;
+
+    transition:
+        color var(--transition);
+
+}
+
+
+.input-icon svg {
+
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.input-container:focus-within
+.input-icon {
+
+    color:
+        var(--color-primary);
+
+}
+
+
+/* =========================================================
+   PASSWORD TOGGLE
+   ========================================================= */
+
+.password-toggle {
+
+    position: absolute;
+
+    top: 50%;
+    right: 4px;
+
+    /* Was 30x30 - below a practical touch-target size. Same base
+       size as Citizen's .auth-toggle (40x40), enlarged further to
+       44x44 on touch/mobile below. */
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    transform:
+        translateY(-50%);
+
+    border-radius: 8px;
+
+    background:
+        transparent;
+
+    color:
+        var(--placeholder);
+
+    cursor: pointer;
+
+    transition:
+        color var(--transition),
+        background var(--transition);
+
+}
+
+
+.password-toggle:hover {
+
+    color:
+        var(--color-text);
+
+    background:
+        var(--color-section);
+
+}
+
+
+.password-toggle:focus-visible {
+
+    outline:
+        2px solid
+        color-mix(in srgb, var(--color-primary) 25%, transparent);
+
+    outline-offset: 2px;
+
+}
+
+
+.password-toggle svg {
+
+    width: 16px;
+    height: 16px;
+
+}
+
+
+.eye-closed {
+
+    display: none;
+
+}
+
+
+.password-toggle.is-visible
+.eye-open {
+
+    display: none;
+
+}
+
+
+.password-toggle.is-visible
+.eye-closed {
+
+    display: block;
+
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.login-button {
+
+    width: 100%;
+
+    /* Slightly reined in from 48px */
+    height: 44px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 4px;
+
+    border-radius:
+        var(--radius);
+
+    background:
+        var(--color-primary);
+
+    color:
+        var(--color-white);
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    /* Slightly reined in from 15px */
+    font-size: 14px;
+
+    font-weight: 650;
+
+    transition:
+        background var(--transition),
+        transform var(--transition),
+        box-shadow var(--transition);
+
+}
+
+
+.login-button:hover {
+
+    background:
+        var(--color-primary-dark);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 7px 18px
+        color-mix(in srgb, var(--color-primary) 14%, transparent);
+
+}
+
+
+.login-button:active {
+
+    transform:
+        translateY(0);
+
+}
+
+
+.login-button:focus-visible {
+
+    outline:
+        2px solid
+        color-mix(in srgb, var(--color-primary) 28%, transparent);
+
+    outline-offset: 3px;
+
+}
+
+
+.button-default {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+}
+
+
+.button-default svg {
+
+    width: 15px;
+    height: 15px;
+
+    transition:
+        transform var(--transition);
+
+}
+
+
+.login-button:hover
+.button-default svg {
+
+    transform:
+        translateX(2px);
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.button-loading {
+
+    display: none;
+
+    align-items: center;
+
+    gap: 8px;
+
+}
+
+
+.login-button.is-loading {
+
+    pointer-events: none;
+
+    opacity: .82;
+
+}
+
+
+.login-button.is-loading
+.button-default {
+
+    display: none;
+
+}
+
+
+.login-button.is-loading
+.button-loading {
+
+    display: flex;
+
+}
+
+
+.spinner {
+
+    width: 14px;
+    height: 14px;
+
+    border:
+        2px solid
+        rgba(255,255,255,.35);
+
+    border-top-color:
+        var(--color-white);
+
+    border-radius: 50%;
+
+    animation:
+        spin .7s linear infinite;
+
+}
+
+
+@keyframes spin {
+
+    to {
+        transform: rotate(360deg);
+    }
+
+}
+
+
+/* =========================================================
+   SECURITY
+   ========================================================= */
+
+.login-security {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    margin-top: 20px;
+
+    color:
+        var(--color-muted);
+
+    /* Slightly reined in from 13px */
+    font-size: 12px;
+
+    line-height: 1.5;
+
+}
+
+
+.login-security svg {
+
+    width: 14px;
+    height: 14px;
+
+    flex: 0 0 14px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.login-footer {
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 28px;
+
+    padding-top: 17px;
+
+    border-top:
+        1px solid
+        var(--color-border);
+
+    color:
+        var(--color-muted);
+
+    /* Slightly reined in from 13px */
+    font-size: 12px;
+
+}
+
+
+.return-home {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    color:
+        var(--color-muted);
+
+    /* Was 650 (near-bold) - read as a second call-to-action
+       competing with "Sign in". A plain secondary footer link
+       is calmer and more typical of this pattern. */
+    font-weight: 500;
+
+    transition:
+        color var(--transition);
+
+}
+
+
+.return-home:hover {
+
+    color:
+        var(--color-primary);
+
+}
+
+
+.return-home:focus-visible {
+
+    outline:
+        2px solid
+        color-mix(in srgb, var(--color-primary) 25%, transparent);
+
+    outline-offset: 4px;
+
+}
+
+
+.return-home svg {
+
+    width: 13px;
+    height: 13px;
+
+}
+
+
+/* =========================================================
+   TABLET
+   Aligned with Citizen auth.css's tablet breakpoint (1100px)
+   so both auth families reflow at the same viewport width.
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .admin-login-shell {
+
+        grid-template-columns:
+            40% 60%;
+
+    }
+
+
+    .admin-brand-content {
+
+        padding:
+            40px;
+
+    }
+
+
+    .admin-form-panel {
+
+        padding:
+            40px;
+
+    }
+
+
+    .admin-brand-message h1 {
+
+        font-size: 38px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   Aligned with Citizen auth.css's stacking breakpoint (900px).
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .admin-login-shell {
+
+        display: block;
+
+    }
+
+
+    .admin-brand-panel {
+
+        display: none;
+
+    }
+
+
+    .admin-form-panel {
+
+        min-height: 100vh;
+        min-height: 100dvh;
+
+        /* Was flex-start + a forced 100vh height: on a typical
+           phone the two-field form is much shorter than the
+           viewport, so the content stayed pinned to the top and
+           left a large dead white gap below the footer. Centering
+           it makes the page look intentionally composed instead
+           of unfinished; taller content still scrolls normally. */
+        align-items: center;
+
+        padding:
+            32px 20px;
+
+    }
+
+
+    .admin-form-container {
+
+        max-width: 420px;
+
+        margin:
+            0 auto;
+
+    }
+
+
+    /* A small logo dropped top-left with a caption next to it
+       read as an afterthought, not a designed header. This is a
+       centered lockup on the same deep-navy the desktop brand
+       panel uses (--navy-deep), so the "secure administration"
+       identity still reads on mobile instead of disappearing
+       into a plain white page. */
+
+    .mobile-brand {
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 12px;
+
+        width: 100%;
+
+        margin-bottom: 32px;
+
+        padding: 28px 20px;
+
+        border-radius: var(--radius-lg);
+
+        background:
+            linear-gradient(
+                135deg,
+                var(--navy-deep) 0%,
+                var(--color-navy) 100%
+            );
+
+        box-shadow:
+            0 16px 32px -12px
+            color-mix(in srgb, var(--color-navy-deep) 45%, transparent);
+
+    }
+
+
+    .mobile-brand:focus-visible {
+
+        outline:
+            2px solid
+            rgba(255, 255, 255, .65);
+
+        outline-offset: 4px;
+
+    }
+
+
+    .mobile-logo-image {
+
+        display: block;
+
+        height: 34px;
+        width: auto;
+
+        object-fit: contain;
+
+    }
+
+
+    .mobile-brand small {
+
+        color:
+            rgba(255, 255, 255, .60);
+
+        font-size: 10.5px;
+
+        font-weight: 750;
+
+        letter-spacing: 1.5px;
+
+        text-transform: uppercase;
+
+    }
+
+}
+
+
+/* =========================================================
+   PHONES + TOUCH
+   Same treatment as Citizen auth.css: 16px input text stops
+   iOS Safari zooming the page on focus, and the password
+   toggle grows to a full 44x44 touch target.
+   ========================================================= */
+
+@media (max-width: 900px), (pointer: coarse) {
+
+    .input-container input {
+
+        font-size: 16px;
+
+    }
+
+    .password-toggle {
+
+        width: 44px;
+        height: 44px;
+
+        right: 2px;
+
+    }
+
+    .input-container:has(.password-toggle) input {
+
+        padding-right: 56px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   Aligned with Citizen auth.css's small-mobile breakpoint (560px).
+   ========================================================= */
+
+@media (max-width: 560px) {
+
+    .admin-form-panel {
+
+        padding:
+            28px 17px;
+
+    }
+
+
+    .admin-form-container {
+
+        padding: 32px 22px;
+
+        border-radius: 16px;
+
+    }
+
+
+    .mobile-brand {
+
+        margin-bottom: 24px;
+
+        padding: 20px 16px;
+
+    }
+
+
+    .login-heading h2 {
+
+        font-size: 24px;
+
+    }
+
+
+    .login-heading p {
+
+        font-size: 14px;
+
+    }
+
+
+    .login-footer {
+
+        flex-direction: column;
+
+        align-items: center;
+
+        gap: 8px;
+
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            .01ms !important;
+
+    }
+
+}

@@ -1,0 +1,50 @@
+{% load static %}
+{% comment %}
+=========================================================
+NDMS - SHARED DESIGN TOKENS (shared <head> partial)
+=========================================================
+Include ONCE at the very END of <head>, after the page's own
+stylesheets, on every Citizen / public page:
+
+    {% include 'reports/partials/theme_head.html' %}
+
+Loads the institutional-blue design tokens (ndms-theme.css),
+the single source of truth for colour across the site.
+
+JS FEATURE-DETECT CLASS:
+  Several page stylesheets (home.css, about.css, auth.css,
+  help-support.css, navbar.css, profile.css, report-incident.css)
+  have `.js ...` rules for progressive enhancement — e.g. the
+  "How NDMS Works" connecting line on Home is meant to start
+  collapsed and draw itself left-to-right once scrolled into
+  view, but only when JS actually runs; without JS it should
+  render fully drawn immediately (see the comment above .steps
+  in home.css). That only works if something adds a `js` class
+  to <html> — nothing in the project did, anywhere, so every one
+  of those rules was silently inert and e.g. the connecting line
+  was just always shown fully drawn, never animating. Added here
+  (inline, synchronous, before first paint) fixes it site-wide
+  from one place instead of duplicating it per page.
+
+DARK THEME REMOVAL (Step 1: Citizen, Step 2: Admin):
+  This partial used to also bootstrap the Dark Theme system: an
+  inline script that read a saved choice (or the OS preference)
+  from localStorage and set <html data-theme="..."> before first
+  paint, plus a <script> tag loading reports/js/theme.js (the
+  toggle-button wiring / persistence script). Both were removed in
+  Step 1 so the project renders Light Theme only, with no runtime
+  theme detection or switching left anywhere in <head>.
+
+  This file is shared with the Admin panel (admin/base.html and
+  admin/login.html include it too). Step 2 finished the job: the
+  toggle button (partials/theme_toggle.html), its script
+  (reports/js/theme.js), and the dark token block + .theme-toggle
+  CSS in ndms-theme.css have all been deleted/removed, since
+  nothing referenced them any more.
+
+The Admin panel does not use this partial for anything else.
+=========================================================
+{% endcomment %}
+<meta name="color-scheme" content="light">
+<script>document.documentElement.classList.add("js");</script>
+<link rel="stylesheet" href="{% static 'reports/ndms-theme.css' %}">

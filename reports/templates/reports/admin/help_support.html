@@ -1,0 +1,116 @@
+{% extends 'reports/admin/base.html' %}
+{% load static %}
+
+{% block title %}Help &amp; Support | NDMS Administration{% endblock %}
+
+{% block extra_css %}
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-dashboard.css' %}"
+>
+<link
+    rel="stylesheet"
+    href="{% static 'reports/admin/admin-settings.css' %}"
+>
+<style>
+    .as-page .as-card { padding: 20px; }
+    .as-page .as-field { margin-bottom: 16px; border: 0; padding: 0; }
+    .as-page .as-field label,
+    .as-page .as-field legend { display: block; margin-bottom: 6px; font-weight: 600; }
+    .as-page .as-field fieldset label { display: inline-block; margin-right: 12px; font-weight: 500; }
+    .as-page input[type="email"],
+    .as-page textarea {
+        width: 100%; max-width: 560px; box-sizing: border-box;
+        padding: 10px 12px; border: 1px solid #cbd5e1; border-radius: 8px;
+        font: inherit; background: #fff; color: #0f172a;
+    }
+    .as-page input:focus-visible,
+    .as-page textarea:focus-visible,
+    .as-page button:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+    .as-page .as-btn--primary {
+        min-height: 44px; padding: 0 20px; border: 0; border-radius: 8px;
+        background: #1d4ed8; color: #fff; font-weight: 600; cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block breadcrumb %}
+<span>Help &amp; Support</span>
+{% endblock %}
+
+{% block page_title %}
+Help &amp; Support
+{% endblock %}
+
+{% block content %}
+
+<div class="ndms-dashboard as-page">
+
+    <header class="as-page-header">
+
+        <span class="as-kicker">ADMINISTRATOR ACCOUNT</span>
+
+        <h1>Help &amp; Support</h1>
+
+        <p>Send feedback about the NDMS administration portal.</p>
+
+    </header>
+
+    <section class="as-card" aria-labelledby="adminFeedbackHeading">
+
+        <h2 id="adminFeedbackHeading">Send feedback</h2>
+
+        <form method="post"
+              action="{% url 'admin_send_feedback' %}">
+
+            {% csrf_token %}
+
+            <div class="as-field">
+                <label for="adminFeedbackEmail">Email address</label>
+                <input
+                    type="email"
+                    id="adminFeedbackEmail"
+                    name="email"
+                    value="{{ request.user.email }}"
+                    autocomplete="email"
+                    required
+                >
+            </div>
+
+            <fieldset class="as-field">
+                <legend>Rating</legend>
+                {% for value in "12345" %}
+                <label>
+                    <input
+                        type="radio"
+                        name="rating"
+                        value="{{ value }}"
+                        {% if value == "5" %}checked{% endif %}
+                    >
+                    {{ value }}
+                </label>
+                {% endfor %}
+            </fieldset>
+
+            <div class="as-field">
+                <label for="adminFeedbackMessage">Your feedback</label>
+                <textarea
+                    id="adminFeedbackMessage"
+                    name="message"
+                    rows="5"
+                    maxlength="500"
+                    required
+                ></textarea>
+            </div>
+
+            <button type="submit" class="as-btn as-btn--primary">
+                Send feedback
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+{% endblock %}

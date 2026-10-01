@@ -1,0 +1,473 @@
+/* =========================================================
+   NDMS - AVATAR / ACCOUNT DROPDOWN (shared)
+   ---------------------------------------------------------
+   Used by the public navbar AND the dashboard-shell topbar,
+   so there is one avatar implementation project-wide:
+     photo when the user has one, otherwise ONE first letter.
+
+   The public navbar itself (brand, links, Disasters/Agencies
+   dropdowns, mobile menu) lives in navbar.css.
+   ========================================================= */
+
+/* =========================================================
+   UNREAD DISASTER-ALERT DOT
+   Small, non-animated. Beside the "Disasters" toggle in the
+   public navbar and the dashboard sidebar. Blue = information.
+   ========================================================= */
+
+.disaster-unread-dot {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: var(--color-primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 16%, transparent);
+}
+
+/* A soft, slowly-fading ring so a fresh disaster alert reads as
+   "new" at a glance, without being a loud/blinking effect. */
+.disaster-unread-dot::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+
+    border-radius: 50%;
+    border: 1px solid var(--color-primary);
+
+    opacity: .5;
+    animation: disaster-dot-pulse 2.6s var(--ease, ease-out) infinite;
+}
+
+@keyframes disaster-dot-pulse {
+    0% { transform: scale(.5); opacity: .5; }
+    75%, 100% { transform: scale(2.1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .disaster-unread-dot::after {
+        animation: none;
+        display: none;
+    }
+}
+
+/* =========================================================
+   AVATAR
+   ========================================================= */
+
+.ndms-avatar-wrapper {
+    position: relative;
+}
+
+.ndms-avatar-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    height: 42px;
+
+    padding: 4px 10px 4px 4px;
+
+    border: 1px solid transparent;
+    border-radius: 999px;
+
+    background: transparent;
+
+    cursor: pointer;
+
+    transition:
+        background 200ms ease,
+        border-color 200ms ease;
+}
+
+.ndms-avatar-btn:hover {
+    background: var(--color-background);
+}
+
+.ndms-avatar-btn:focus-visible {
+    outline: none;
+
+    border-color: var(--color-primary);
+
+    box-shadow: var(--focus-ring);
+}
+
+.ndms-avatar-circle {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+
+    border-radius: 50%;
+
+    background: var(--color-primary);
+    color: var(--color-white);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+
+    letter-spacing: .3px;
+    line-height: 1;
+
+    transition:
+        background 200ms ease,
+        transform 200ms ease,
+        box-shadow 200ms ease;
+}
+
+.ndms-avatar-btn:hover .ndms-avatar-circle,
+.ndms-avatar-wrapper.open .ndms-avatar-circle {
+    background: var(--color-primary-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.ndms-avatar-caret {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+
+    color: var(--color-muted);
+
+    transition: transform 220ms ease;
+}
+
+.ndms-avatar-wrapper.open .ndms-avatar-caret {
+    transform: rotate(180deg);
+}
+
+/* =========================================================
+   AVATAR IMAGE
+   ========================================================= */
+
+.ndms-avatar-circle img,
+.ndms-avatar-menu-avatar img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+}
+
+/* =========================================================
+   AVATAR DROPDOWN
+   ========================================================= */
+
+.ndms-avatar-menu {
+    position: absolute;
+
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 280px;
+
+    background: var(--color-white);
+
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+
+    box-shadow: var(--shadow-md);
+
+    padding: 8px;
+
+    z-index: 1100;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transform: translateY(-6px);
+
+    transition:
+        opacity 200ms ease,
+        transform 200ms ease,
+        visibility 200ms ease;
+}
+
+.ndms-avatar-wrapper.open .ndms-avatar-menu {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}
+
+/* =========================================================
+   AVATAR MENU HEADER
+   ========================================================= */
+
+.ndms-avatar-menu-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 10px 10px 12px;
+}
+
+.ndms-avatar-menu-avatar {
+    width: 40px;
+    height: 40px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--color-primary);
+    color: var(--color-white);
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 750;
+}
+
+.ndms-avatar-menu-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    min-width: 0;
+}
+
+.ndms-avatar-menu-name {
+    color: var(--heading);
+
+    font-size: calc(14px * var(--ndms-font-scale, 1));
+    font-weight: 700;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ndms-avatar-menu-email {
+    color: var(--color-muted);
+
+    font-size: calc(12px * var(--ndms-font-scale, 1));
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* =========================================================
+   AVATAR DIVIDER
+   ========================================================= */
+
+.ndms-avatar-menu-divider {
+    height: 1px;
+
+    margin: 6px 4px;
+
+    background: var(--color-border);
+}
+
+.ndms-avatar-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* =========================================================
+   AVATAR MENU ITEMS
+   ========================================================= */
+
+.ndms-avatar-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 9px 12px;
+
+    border-radius: 8px;
+
+    color: var(--color-text);
+
+    text-decoration: none;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+
+    transition:
+        background 220ms ease,
+        color 220ms ease,
+        transform 220ms ease;
+}
+
+.ndms-avatar-menu-item:hover,
+.ndms-avatar-menu-item:focus-visible {
+    background: var(--color-background);
+    color: var(--heading);
+
+    transform: translateX(3px);
+}
+
+.ndms-avatar-menu-item:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+}
+
+button.ndms-avatar-menu-item {
+    width: 100%;
+
+    border: none;
+    background: none;
+
+    font-family: inherit;
+
+    font-size: calc(13px * var(--ndms-font-scale, 1));
+    font-weight: 600;
+
+    text-align: left;
+
+    cursor: pointer;
+}
+
+/* =========================================================
+   AVATAR ICONS
+   ========================================================= */
+
+.ndms-avatar-menu-item-icon {
+    width: 17px;
+    height: 17px;
+
+    flex-shrink: 0;
+
+    color: var(--color-muted);
+
+    transition: color 220ms ease;
+}
+
+.ndms-avatar-menu-item:hover .ndms-avatar-menu-item-icon,
+.ndms-avatar-menu-item:focus-visible .ndms-avatar-menu-item-icon {
+    color: var(--color-primary);
+}
+
+/* =========================================================
+   AVATAR ACTIVE ITEM
+   ========================================================= */
+
+.ndms-avatar-menu-item.active {
+    background: var(--color-primary-tint);
+
+    color: var(--color-primary);
+
+    font-weight: 700;
+}
+
+.ndms-avatar-menu-item.active .ndms-avatar-menu-item-icon {
+    color: var(--color-primary);
+}
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+.ndms-avatar-menu-logout {
+    color: var(--color-danger);
+}
+
+.ndms-avatar-menu-logout .ndms-avatar-menu-item-icon {
+    color: var(--color-danger);
+}
+
+.ndms-avatar-menu-logout:hover,
+.ndms-avatar-menu-logout:focus-visible {
+    background: var(--color-danger-bg);
+
+    color: var(--color-danger-dark);
+
+    transform: translateX(3px);
+}
+
+.ndms-avatar-menu-logout:hover .ndms-avatar-menu-item-icon,
+.ndms-avatar-menu-logout:focus-visible .ndms-avatar-menu-item-icon {
+    color: var(--color-danger-dark);
+}
+
+/* =========================================================
+   TOPBAR USER
+   ========================================================= */
+
+.topbar-user.ndms-avatar-wrapper .ndms-avatar-menu {
+    top: calc(100% + 12px);
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) {
+    .ndms-avatar-wrapper {
+        display: flex;
+    }
+}
+
+@media (max-width: 380px) {
+    .ndms-avatar-menu {
+        width: min(280px, calc(100vw - 24px));
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ndms-avatar-btn,
+    .ndms-avatar-circle,
+    .ndms-avatar-caret,
+    .ndms-avatar-menu,
+    .ndms-avatar-menu-item,
+    .ndms-avatar-menu-item-icon {
+        transition: none;
+    }
+
+    .ndms-avatar-menu-item:hover,
+    .ndms-avatar-menu-item:focus-visible,
+    .ndms-avatar-menu-logout:hover,
+    .ndms-avatar-menu-logout:focus-visible,
+    .ndms-avatar-btn:hover .ndms-avatar-circle,
+    .ndms-avatar-wrapper.open .ndms-avatar-circle {
+        transform: none;
+    }
+}
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 380px) {
+    .ndms-avatar-menu {
+        width: min(280px, calc(100vw - 24px));
+
+        right: -12px;
+    }
+}
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+    .ndms-avatar-btn,
+.ndms-avatar-circle,
+.ndms-avatar-menu,
+.ndms-avatar-caret,
+.ndms-avatar-menu-item,
+.ndms-avatar-menu-item-icon,
+.ndms-avatar-menu-logout {
+        transition: none !important;
+        transform: none !important;
+    }
+}
