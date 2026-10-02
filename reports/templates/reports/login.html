@@ -4,13 +4,25 @@
 
 {% block body_class %} auth-page--login{% endblock %}
 
+{% block brand_title %}Report incidents.<br><span>Stay informed.</span>{% endblock %}
+
+{% block brand_text %}Connecting citizens with reliable disaster reporting and emergency support.{% endblock %}
+
 {% block content %}
 
     <!-- =================================================
          HEADING
          ================================================= -->
 
-    <h1 class="auth-sr-only">Sign in</h1>
+    <header class="auth-heading">
+
+        <span class="auth-eyebrow">Citizen account</span>
+
+        <h1>Welcome back</h1>
+
+        <p class="auth-subtitle">Sign in to access your NDMS account and manage your disaster reports.</p>
+
+    </header>
 
 
     <!-- =================================================
@@ -204,7 +216,7 @@
 
         <a href="{% url 'register' %}"
            class="auth-link">
-            Create account
+            Create an account
         </a>
 
     </p>

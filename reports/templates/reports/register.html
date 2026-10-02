@@ -28,6 +28,10 @@ POST target (this URL).
 
 {% block body_class %} auth-page--register{% endblock %}
 
+{% block brand_title %}Join NDMS.<br><span>Help your community.</span>{% endblock %}
+
+{% block brand_text %}Connecting citizens with reliable disaster reporting and emergency support.{% endblock %}
+
 {% block head_extra %}
     <link rel="stylesheet"
           href="{% static 'reports/register.css' %}">
@@ -40,9 +44,11 @@ POST target (this URL).
 
     <header class="auth-heading">
 
+        <span class="auth-eyebrow">Citizen registration</span>
+
         <h1>Create your account</h1>
 
-        <p class="auth-subtitle">Get started with NDMS.</p>
+        <p class="auth-subtitle">Register with NDMS to report incidents, track submissions, and access citizen services.</p>
 
     </header>
 
@@ -358,7 +364,7 @@ POST target (this URL).
 
         <button type="submit"
                 class="auth-btn">
-            Create account
+            Create Account
         </button>
 
     </form>

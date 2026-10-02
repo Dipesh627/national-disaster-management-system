@@ -9,17 +9,23 @@ Every full-screen Citizen auth page extends this:
     password_reset_sent, password_reset_confirm,
     password_reset_complete
 
-Layout
-  Full-screen disaster photo + dark navy overlay (both drawn by
-  auth.css on body.auth-page) with ONE centred card holding the
-  NDMS logo, the page content and a "Back to home" link.
+Layout (same structure as the Admin login)
+  Desktop (> 900px)  split screen: left brand panel (existing
+                     disaster photo + dark navy overlay, NDMS
+                     message) and right form panel holding ONE
+                     .auth-card with the page content.
+  Mobile (<= 900px)  the brand panel is hidden; a compact navy
+                     brand lockup (.auth-logo) sits above the form.
 
 Blocks
   title          the <title>
   card_modifier  optional extra class for the card, e.g. " auth-card--wide"
   body_class     optional extra class(es) for <body>, e.g. " auth-page--register"
   head_extra     optional extra stylesheet / script tags
-  content        everything inside the card, under the logo
+  brand_kicker   small uppercase label on the brand panel
+  brand_title    headline on the brand panel (may contain <br>/<span>)
+  brand_text     one-sentence supporting copy on the brand panel
+  content        everything inside the card, under the mobile logo
 
 Styles:  reports/auth.css
 Script:  reports/js/auth.js  (password show/hide + login fetch flow)
@@ -36,6 +42,9 @@ The Admin login is a separate page and does not use this.
 
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
+
+    <meta name="theme-color"
+          content="#0B2A4D">
 
     <title>{% block title %}NDMS{% endblock %}</title>
 
@@ -57,17 +66,70 @@ The Admin login is a separate page and does not use this.
 
 <div class="auth-shell">
 
-    <main class="auth-main"
+    <!-- =====================================================
+         LEFT BRAND PANEL (desktop only)
+         Same photo + navy overlay as the Admin login.
+         ===================================================== -->
+
+    <aside class="auth-brand-panel"
+           aria-label="About NDMS">
+
+        <div class="auth-brand-panel__image" aria-hidden="true"></div>
+
+        <div class="auth-brand-panel__overlay" aria-hidden="true"></div>
+
+        <div class="auth-brand-panel__content">
+
+            <a href="{{ request.path }}"
+               class="auth-brand"
+               aria-label="National Disaster Management System (NDMS)">
+
+                <img src="{% static 'reports/branding/ndms-logo.png' %}"
+                     alt=""
+                     class="auth-brand__logo"
+                     width="147"
+                     height="42">
+
+                <small>National Disaster Management System</small>
+
+            </a>
+
+            <div class="auth-brand-message">
+
+                <span class="auth-brand-kicker">{% block brand_kicker %}Citizen portal{% endblock %}</span>
+
+                <p class="auth-brand-title">{% block brand_title %}Report incidents.<br><span>Get support faster.</span>{% endblock %}</p>
+
+                <p class="auth-brand-text">{% block brand_text %}Connecting citizens with reliable disaster reporting and emergency support.{% endblock %}</p>
+
+            </div>
+
+            <p class="auth-brand-footer">
+                <span class="auth-brand-footer__dot" aria-hidden="true"></span>
+                Preparedness and safety information for every citizen
+            </p>
+
+        </div>
+
+    </aside>
+
+
+    <!-- =====================================================
+         RIGHT FORM PANEL
+         ===================================================== -->
+
+    <main class="auth-main auth-form-panel"
           id="main-content"
           tabindex="-1">
 
         <div class="auth-card{% block card_modifier %}{% endblock %}">
 
-            <!-- Logo intentionally links to the current page
-                 (request.path), not home: clicking it just reloads
-                 whatever auth page you are on (login, register, the
-                 Google confirm step, ...) instead of leaving the
-                 flow. "Back to home" below is the actual exit. -->
+            <!-- Compact brand lockup, shown only when the brand
+                 panel is hidden (<= 900px). Links to the current
+                 page (request.path), not home, so clicking it just
+                 reloads whatever auth page you are on instead of
+                 leaving the flow. "Back to home" below is the
+                 actual exit. -->
 
             <a href="{{ request.path }}"
                class="auth-logo"
@@ -76,9 +138,11 @@ The Admin login is a separate page and does not use this.
                 <img
                     src="{% static 'reports/branding/ndms-logo.png' %}"
                     alt=""
-                    width="154"
-                    height="44"
+                    width="119"
+                    height="34"
                 >
+
+                <small>National Disaster Management System</small>
 
             </a>
 
@@ -92,8 +156,8 @@ The Admin login is a separate page and does not use this.
             own "if error" block and are unaffected.
             {% endcomment %}
             {% for message in messages %}
-            <div class="auth-alert{% if message.tags == 'info' %} auth-alert--info{% endif %}" role="alert">
-                <span class="auth-alert__icon" aria-hidden="true">{% if message.tags == 'info' %}i{% else %}!{% endif %}</span>
+            <div class="auth-alert{% if message.tags == 'info' %} auth-alert--info{% elif message.tags == 'success' %} auth-alert--success{% endif %}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">
+                <span class="auth-alert__icon" aria-hidden="true">{% if message.tags == 'info' %}i{% elif message.tags == 'success' %}&#10003;{% else %}!{% endif %}</span>
                 <span class="auth-alert__text">{{ message }}</span>
             </div>
             {% endfor %}
@@ -101,14 +165,17 @@ The Admin login is a separate page and does not use this.
 
             {% block content %}{% endblock %}
 
-            <p class="auth-card__footer">
-                <a href="{% url 'home' %}"
-                   class="auth-back">
-                    Back to home
-                </a>
-            </p>
-
         </div>
+
+        <!-- Outside the card: a quiet text link (top-right on
+             desktop, under the card on mobile). -->
+
+        <p class="auth-card__footer">
+            <a href="{% url 'home' %}"
+               class="auth-back">
+                Back to home
+            </a>
+        </p>
 
     </main>
 
